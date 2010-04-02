@@ -2,14 +2,14 @@ package ar.edu.itba.cg.tpe1.geometry;
 
 import java.awt.Color;
 
-import javax.vecmath.Point3f;
+import javax.vecmath.Point3d;
 
 public interface Primitive {
 
 	/**
 	 * Get the intersection between the figure and a ray
 	 */
-	Point3f intersect(Ray ray);
+	Point3d intersect(Ray ray);
 	
 	/**
 	 * Get color of the figure
