@@ -6,18 +6,18 @@ import ar.edu.itba.cg.tpe1.geometry.Primitive;
 
 public class Scene {
 
-	List<Primitive> list;
+	private List<Primitive> list;
 	
 	public Scene(String scene) {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Scene(List<Primitive> list) {
-		
-		// TODO
-		
 		this.list = list;
 	}
 	
+	public List<Primitive> getList() {
+		return list;
+	}
 	
 }
