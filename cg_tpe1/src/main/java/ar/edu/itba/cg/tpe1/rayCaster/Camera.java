@@ -1,16 +1,16 @@
-package ar.edu.itba.cg.tpe1.geometry;
+package ar.edu.itba.cg.tpe1.rayCaster;
 
 import javax.vecmath.Point3d;
 
-public class Ray {
-	
+public class Camera {
+
 	private Point3d origin;
 	
 	private Point3d direction;
 	
-	public Ray(Point3d origin, Point3d direction) {
-		this.origin = origin;
-		this.direction = direction;
+	public Camera(Point3d point3d, Point3d point3d2) {
+		this.origin = point3d;
+		this.direction = point3d2;
 	}
 	
 	public Point3d getOrigin() {
@@ -29,4 +29,5 @@ public class Ray {
 		this.direction = direction;
 	}
 
+	
 }
