@@ -33,16 +33,18 @@ public class App
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera);
     	
-    	// Get image from a viewPort
-    	image = raycaster.getImage(800, 600, BufferedImage.TYPE_INT_RGB);
-    	
-    	// Save image
-    	try {
-			ImageIO.write(image, "PNG", new File(fileName));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+    	for(int i = 0 ; i < 8 ; i++ ){
+	    	// Get image from a viewPort
+	    	image = raycaster.getImage(800, 600, BufferedImage.TYPE_INT_RGB);
+	    	
+	    	// Save image
+	    	try {
+				ImageIO.write(image, "PNG", new File(fileName+i));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	raycaster.cleanup();
     }
 }
