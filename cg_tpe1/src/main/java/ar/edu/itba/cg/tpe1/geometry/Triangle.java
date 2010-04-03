@@ -64,11 +64,10 @@ public class Triangle implements Primitive {
 	    	return null;
 	    
 	    dir.scale(r);
-	    Vector3 intersectionPoint = (Vector3) ray.getOrigin().clone();
+	    Point3d intersectionPoint = (Point3d) ray.getOrigin().clone();
 	    intersectionPoint.add(dir);
 	    
-	    Vector3 w = (Vector3) intersectionPoint.clone();
-	    w.sub(p1);
+	    Vector3 w = new Vector3(p1,intersectionPoint);
 	    
 		return containsPoint((Vector3)u.clone(),(Vector3)v.clone(),w);
 	}
