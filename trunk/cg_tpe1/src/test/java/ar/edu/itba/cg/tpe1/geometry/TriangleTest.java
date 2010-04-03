@@ -27,7 +27,50 @@ public class TriangleTest extends TestCase {
 	}
 	
 	public void testIntersect() {
-		fail("Not yet implemented");
+		Color c = Color.BLACK;
+		double a = 0.5;
+		
+		while ( a < 17 ){
+			Triangle tPositive = new Triangle(new Point3d(a,0,0), new Point3d(0,a,0), new Point3d(0,0,a), c);
+			Triangle tNegative = new Triangle(new Point3d(-a,0,0), new Point3d(0,-a,0), new Point3d(0,0,-a), c);
+
+			Ray r = new Ray(new Point3d(), new Point3d(a/10,a/10,a/10));
+			assertNotNull(tPositive.intersect(r));
+			assertNull(tNegative.intersect(r));
+			
+			r = new Ray(new Point3d(), new Point3d(a,a,a));
+			assertNotNull(tPositive.intersect(r));
+			assertNull(tNegative.intersect(r));
+			
+			r = new Ray(new Point3d(), new Point3d(-a/10,-a/10,-a/10));
+			assertNull(tPositive.intersect(r));
+			assertNotNull(tNegative.intersect(r));
+			
+			r = new Ray(new Point3d(), new Point3d(-a,-a,-a));
+			assertNull(tPositive.intersect(r));
+			assertNotNull(tNegative.intersect(r));
+			a = a * 2;
+		}
+
+		Triangle tOverXY = new Triangle(new Point3d(a/2,a,0), new Point3d(0,0,0), new Point3d(a,0,0), c);
+		Ray rToNegative = new Ray(new Point3d(a/2,0,a), new Point3d(0,0,-1));
+		Ray rToPositive = new Ray(new Point3d(a/2,0,-a), new Point3d(0,0,1));
+		assertEquals(tOverXY.intersect(rToPositive), new Point3d(a/2,0,0));
+		assertEquals(tOverXY.intersect(rToNegative), new Point3d(a/2,0,0));
+		
+		Triangle tOverXYOrigin = new Triangle(new Point3d(0,a,0), new Point3d(-a/2,0,0), new Point3d(a/2,0,0), c);
+		Ray rToNegativeZ = new Ray(new Point3d(0,0,a), new Point3d(0,0,-1));
+		Ray rToPositiveZ = new Ray(new Point3d(0,0,-a), new Point3d(0,0,1));
+		assertEquals(tOverXYOrigin.intersect(rToPositiveZ), new Point3d(0,0,0));
+		assertEquals(tOverXYOrigin.intersect(rToNegativeZ), new Point3d(0,0,0));
+		
+		Ray parallelRay = new Ray(new Point3d(0,0,a), new Point3d(-1,0,0));
+		assertNull(tOverXY.intersect(parallelRay));
+		assertNull(tOverXYOrigin.intersect(parallelRay));
+		
+		Ray samePlaneRay = new Ray(new Point3d(a,0,0), new Point3d(-1,0,0));
+		assertNull(tOverXY.intersect(samePlaneRay));
+		assertNull(tOverXYOrigin.intersect(samePlaneRay));
 	}
 
 }
