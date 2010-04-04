@@ -68,7 +68,6 @@ class RayCasterThread extends Thread {
 		return toX;
 	}
 	
-	
 	/**
 	 * Get first column of the image to work with
 	 * 
