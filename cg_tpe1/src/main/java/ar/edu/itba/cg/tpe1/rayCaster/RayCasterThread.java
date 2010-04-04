@@ -101,7 +101,7 @@ class RayCasterThread extends Thread {
 	 */
 	public void run() {
 		while ( true ){
-			System.out.println(cb.getNumberWaiting()+" threads are waiting");
+			//System.out.println(cb.getNumberWaiting()+" threads are waiting");
 			try { cb.await(); } catch (InterruptedException e) { 
 				//System.out.println("Someone told me to die.");
 				return;
@@ -144,7 +144,6 @@ class RayCasterThread extends Thread {
 				}
 			}
 
-			//System.out.println(cb.getNumberWaiting()+" threads are waiting");
 			try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
 		}
 	}

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe1.geometry.Fog;
 import ar.edu.itba.cg.tpe1.geometry.Primitive;
 import ar.edu.itba.cg.tpe1.geometry.Triangle;
 import ar.edu.itba.cg.tpe1.rayCaster.Camera;
@@ -39,8 +38,6 @@ public class App
     	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,7,0), new Point3d(0,0,-7), Color.YELLOW));
     	list.add(new Triangle(new Point3d(0,0,-7), new Point3d(0,7,0), new Point3d(7,0,0), Color.GREEN));
     	list.add(new Triangle(new Point3d(0,0,7), new Point3d(0,7,0), new Point3d(7,0,0), Color.BLUE));
-    	
-    	//list.add(new Fog(Color.CYAN));
     	
     	// Create an object list of the scene
     	Scene scene = new Scene(list);
