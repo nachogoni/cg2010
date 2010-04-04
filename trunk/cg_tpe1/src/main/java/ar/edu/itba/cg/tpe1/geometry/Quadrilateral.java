@@ -32,7 +32,7 @@ public class Quadrilateral implements Primitive {
 		return null;
 	}
 	
-	public Color getColor() {
+	public Color getColor(Point3d point) {
 		// TODO Auto-generated method stub
 		return this.aColor;
 	}

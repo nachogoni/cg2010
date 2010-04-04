@@ -23,7 +23,7 @@ public class Sphere implements Primitive {
 		return null;
 	}
 	
-	public Color getColor() {
+	public Color getColor(Point3d point) {
 		return color;
 	}
 	
