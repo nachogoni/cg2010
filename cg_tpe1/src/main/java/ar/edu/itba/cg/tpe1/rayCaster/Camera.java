@@ -98,8 +98,8 @@ public class Camera {
 		
 		//double x = v.x + distance * Math.tan((((i * apertureAngle) / width) - (apertureAngle / 2)) / (apertureAngle / 2));
 		//double y = v.y + distance * Math.tan((((j * apertureAngle) / height) - (apertureAngle / 2)) / (apertureAngle / 2));
-		double x =  v.x + i - width / 2;
-		double y =  v.y - j + height /2;
+		double x =  v.x  * this.focus + i - width / 2;
+		double y =  v.y  * this.focus - j + height /2;
 		
 		point = new Point3d(x, y, v.z * this.focus);
 		

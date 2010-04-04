@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe1.geometry.Primitive;
+import ar.edu.itba.cg.tpe1.geometry.Sphere;
 import ar.edu.itba.cg.tpe1.geometry.Triangle;
 import ar.edu.itba.cg.tpe1.rayCaster.Camera;
 import ar.edu.itba.cg.tpe1.rayCaster.RayCaster;
@@ -37,8 +38,8 @@ public class App
     	BufferedImage image;
     	List<Primitive> list = null;
     	File output = null;
-    	int width = 1600;
-    	int height = 1200;
+    	int width = 800;
+    	int height = 600;
     	long start = 0;
     	long stop = 0;
     	
@@ -170,25 +171,27 @@ public class App
 		}
 		
     	// Create an scene
-		//TODO: crear las distintas escenas "en memoria"
-        list = new ArrayList<Primitive>();    	
+        //list = new ArrayList<Primitive>();    	
     	
     	/*list.add(new Triangle(new Point3d(-5,0,-5), new Point3d(0,5,0), new Point3d(-5,0,5), Color.RED));
     	list.add(new Triangle(new Point3d(-5,0,-5), new Point3d(0,5,0), new Point3d(5,0,-5), Color.BLUE));
     	list.add(new Triangle(new Point3d(5,0,-5), new Point3d(0,5,0), new Point3d(5,0,5), Color.YELLOW));
     	list.add(new Triangle(new Point3d(5,0,5), new Point3d(0,5,0), new Point3d(-5,0,5), Color.GREEN));*/
     	
-    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,7,0), new Point3d(0,0,7), Color.RED));
-    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,7,0), new Point3d(0,0,-7), Color.YELLOW));
-    	list.add(new Triangle(new Point3d(0,0,-7), new Point3d(0,7,0), new Point3d(7,0,0), Color.GREEN));
-    	list.add(new Triangle(new Point3d(0,0,7), new Point3d(0,7,0), new Point3d(7,0,0), Color.BLUE));
+    	/*list.add(new Triangle(new Point3d(-5,0,0), new Point3d(0,5,0), new Point3d(0,0,5), Color.RED));
+    	list.add(new Triangle(new Point3d(-5,0,0), new Point3d(0,5,0), new Point3d(0,0,-5), Color.YELLOW));
+    	list.add(new Triangle(new Point3d(0,0,-5), new Point3d(0,5,0), new Point3d(5,0,0), Color.GREEN));
+    	list.add(new Triangle(new Point3d(0,0,5), new Point3d(0,5,0), new Point3d(5,0,0), Color.BLUE));*/
     	
+        //list.add(new Sphere(new Point3d(0,0,0), 18, Color.GREEN));
+
     	// Create an object list of the scene
-    	Scene scene = new Scene(list);
+    	//Scene scene = new Scene(list);
+    	Scene scene = new Scene(sceneName);
     	
     	// Create a camera
     	//Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 30);
-    	Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 0d, 0d), 60);
+    	Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
     	
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera);
