@@ -11,25 +11,19 @@ public class Camera {
 
 	private Point3d origin;
 	private Point3d direction;
-	private double apertureAngle;
-	private double zoom;
+	private double focus;
 	
 	/**
 	 * Constructor for the Camera representation
 	 *  
 	 * @param origin Origin point for the camera, where the viewer is
 	 * @param direction Direction for the viewer
-	 * @param apertureAngle Aperture angle for the camera
-	 * @param zoom Zoom for the camera
+	 * @param focus Focus where the camera place the viewport and take the picture
 	 */
-	public Camera(Point3d origin, Point3d direction, double apertureAngle, double zoom) throws IllegalArgumentException {
-		if (apertureAngle <= 0 || apertureAngle > 360)
-			throw new IllegalArgumentException();
-		
+	public Camera(Point3d origin, Point3d direction, double focus) {
 		this.origin = origin;
 		this.direction = direction;
-		this.apertureAngle = apertureAngle;
-		this.zoom = zoom;
+		this.focus = focus;
 	}
 	
 	/**
@@ -69,71 +63,23 @@ public class Camera {
 	}
 
 	/**
-	 * Get aperture angle for the camera
+	 * Set the focus for the camera
 	 * 
-	 * @return Aperture angle
+	 * @param focus New focus
 	 */
-	public double getApertureAngle() {
-		return apertureAngle;
-	}
-
-	/**
-	 * Set the aperture angle for the camera
-	 * 
-	 * @param apertureAngle New aperture angle
-	 */
-	public void setApertureAngle(int apertureAngle) throws IllegalArgumentException {
-		if (apertureAngle <= 0 || apertureAngle > 360)
-			throw new IllegalArgumentException();
-		
-		this.apertureAngle = apertureAngle;
+	public void setFocus(double focus) {
+		this.focus = focus;
 	}
 	
 	/**
-	 * Set the zoom for the camera
+	 * Get focus for the camera
 	 * 
-	 * @param zoom New zoom
+	 * @return Camera's focus
 	 */
-	public void setZoom(double zoom) {
-		this.zoom = zoom;
+	public double getFocus() {
+		return focus;
 	}
 	
-	/**
-	 * Get zoom for the camera
-	 * 
-	 * @return Camera's zoom
-	 */
-	public double getZoom() {
-		return zoom;
-	}
-	
-	/**
-	 * Get a point at a certain distance from a pixel in the viewport
-	 *  
-	 * @param width Width for the viewport
-	 * @param height Height for the viewport
-	 * @param i Column
-	 * @param j Row
-	 * 
-	 * @return Point at certain distance
-	 */
-	public Point3d getPointFromXY(int width, int height, int i, int j, double distance) {
-		
-		Point3d point = null;
-		
-		Vector3 v = new Vector3(origin, direction);
-		
-		//TODO: cleanup
-		//double x = v.x + distance * Math.tan((((i * apertureAngle) / width) - (apertureAngle / 2)) / (apertureAngle / 2));
-		//double y = v.y + distance * Math.tan((((j * apertureAngle) / height) - (apertureAngle / 2)) / (apertureAngle / 2));
-		double x =  v.x - i + width / 2;
-		double y =  v.y - j + height /2;
-		
-		point = new Point3d(x, y, v.z * this.zoom);
-		
-		return point;
-	}
-
 	/**
 	 * Get a point from a pixel in the viewport
 	 *  
@@ -142,9 +88,22 @@ public class Camera {
 	 * @param i Column
 	 * @param j Row
 	 * 
-	 * @return Point at distance of 1 unit 
+	 * @return Point at certain distance
 	 */
 	public Point3d getPointFromXY(int width, int height, int i, int j) {
-		return this.getPointFromXY(width, height, i, j, Math.abs(origin.distance(direction)));
+		
+		Point3d point = null;
+		
+		Vector3 v = new Vector3(origin, direction);
+		
+		//double x = v.x + distance * Math.tan((((i * apertureAngle) / width) - (apertureAngle / 2)) / (apertureAngle / 2));
+		//double y = v.y + distance * Math.tan((((j * apertureAngle) / height) - (apertureAngle / 2)) / (apertureAngle / 2));
+		double x =  v.x + i - width / 2;
+		double y =  v.y - j + height /2;
+		
+		point = new Point3d(x, y, v.z * this.focus);
+		
+		return point;
 	}
+
 }
