@@ -10,8 +10,8 @@ public class Sphere implements Primitive {
 	double radius;
 	Color color;
 	
-	public Sphere(Point3d radiusCenter, float radius, Color color) throws IllegalArgumentException {
-		if (radius <= 0f)
+	public Sphere(Point3d radiusCenter, double radius, Color color) throws IllegalArgumentException {
+		if (radius <= 0)
 			throw new IllegalArgumentException("Invalid radius");
 		this.radius = radius;
 		this.radiusCenter= radiusCenter;
@@ -36,17 +36,18 @@ public class Sphere implements Primitive {
 		double zc = radiusCenter.z;
 		
 		double a = Math.pow(xd,2) + Math.pow(yd,2) + Math.pow(zd,2);
-		double b = 2 * (xd * (x0-xc)) + yd*(y0 - yc) + zd * (z0-zc) ;
+		double b = 2 * (xd * (x0-xc) + yd*(y0 - yc) + zd * (z0-zc)) ;
 		double c = Math.pow(x0-xc,2) + Math.pow(y0-yc,2) + Math.pow(z0-zc,2) - Math.pow(radius,2);
 		
 		double discriminant = Math.pow(b, 2) - 4*c*a;
-		
+		//System.out.println("pos="+4*c*a+"sq="+Math.pow(b, 2));
+		//System.out.println("rayo"+a);
 		if (discriminant < 0) {
 			return null;
 		}
 		
 		double rootResult = Math.sqrt( discriminant );
-		double t0 = (-b + rootResult) / ( 2 * a ); 
+		double t0 = (-b + rootResult) / ( 2 *a ); //* a 
 		//Ri = [xi, yi, zi] = [x0 + xd * ti ,  y0 + yd * ti,  z0 + zd * ti]
 		
 		Point3d ret;
@@ -54,7 +55,7 @@ public class Sphere implements Primitive {
 		if (t0 > 0) {
 			ret = new Point3d(x0 + xd * t0 ,  y0 + yd * t0,  z0 + zd * t0);
 		} else {
-			double t1 = (-b - rootResult) / ( 2 * a );
+			double t1 = (-b - rootResult) / ( 2 *a );//* a
 			ret = new Point3d(x0 + xd * t1 ,  y0 + yd * t1,  z0 + zd * t1);
 		}
 						
