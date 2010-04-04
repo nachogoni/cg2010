@@ -35,10 +35,10 @@ public class App
     	list.add(new Triangle(new Point3d(50,0,-50), new Point3d(0,-50,0), new Point3d(50,0,50), Color.YELLOW));
     	list.add(new Triangle(new Point3d(50,0,50), new Point3d(0,-50,0), new Point3d(-50,0,50), Color.GREEN));*/
     	
-    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,-7,0), new Point3d(0,0,7), Color.RED));
-    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,-7,0), new Point3d(0,0,-7), Color.YELLOW));
-    	list.add(new Triangle(new Point3d(0,0,-7), new Point3d(0,-7,0), new Point3d(7,0,0), Color.GREEN));
-    	list.add(new Triangle(new Point3d(0,0,7), new Point3d(0,-7,0), new Point3d(7,0,0), Color.BLUE));
+    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,7,0), new Point3d(0,0,7), Color.RED));
+    	list.add(new Triangle(new Point3d(-7,0,0), new Point3d(0,7,0), new Point3d(0,0,-7), Color.YELLOW));
+    	list.add(new Triangle(new Point3d(0,0,-7), new Point3d(0,7,0), new Point3d(7,0,0), Color.GREEN));
+    	list.add(new Triangle(new Point3d(0,0,7), new Point3d(0,7,0), new Point3d(7,0,0), Color.BLUE));
     	
     	//list.add(new Fog(Color.CYAN));
     	
@@ -47,13 +47,13 @@ public class App
     	
     	// Create a camera
     	//Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 65, 30);
-    	Camera camera = new Camera(new Point3d(1d, 1d, 10d), new Point3d(0d, 0d, 0d), 65, 30);
+    	Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 0d, 0d), 65, 30);
     	
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera);
     	
     	// Get image from a viewPort
-    	image = raycaster.getImage(800, 600, BufferedImage.TYPE_INT_RGB);
+    	image = raycaster.getImage(1024, 768, BufferedImage.TYPE_INT_RGB);
 	    	
     	// Save image
     	try {
