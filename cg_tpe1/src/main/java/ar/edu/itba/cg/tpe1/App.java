@@ -1,19 +1,13 @@
 package ar.edu.itba.cg.tpe1;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe1.geometry.Primitive;
-import ar.edu.itba.cg.tpe1.geometry.Sphere;
-import ar.edu.itba.cg.tpe1.geometry.Triangle;
 import ar.edu.itba.cg.tpe1.rayCaster.Camera;
 import ar.edu.itba.cg.tpe1.rayCaster.RayCaster;
 import ar.edu.itba.cg.tpe1.rayCaster.Scene;
@@ -36,7 +30,6 @@ public class App
     	String fileName = null;
     	String format = "PNG";
     	BufferedImage image;
-    	List<Primitive> list = null;
     	File output = null;
     	int width = 800;
     	int height = 600;
@@ -171,27 +164,16 @@ public class App
 		}
 		
     	// Create an scene
-        //list = new ArrayList<Primitive>();    	
-    	
-    	/*list.add(new Triangle(new Point3d(-5,0,-5), new Point3d(0,5,0), new Point3d(-5,0,5), Color.RED));
-    	list.add(new Triangle(new Point3d(-5,0,-5), new Point3d(0,5,0), new Point3d(5,0,-5), Color.BLUE));
-    	list.add(new Triangle(new Point3d(5,0,-5), new Point3d(0,5,0), new Point3d(5,0,5), Color.YELLOW));
-    	list.add(new Triangle(new Point3d(5,0,5), new Point3d(0,5,0), new Point3d(-5,0,5), Color.GREEN));*/
-    	
-    	/*list.add(new Triangle(new Point3d(-5,0,0), new Point3d(0,5,0), new Point3d(0,0,5), Color.RED));
-    	list.add(new Triangle(new Point3d(-5,0,0), new Point3d(0,5,0), new Point3d(0,0,-5), Color.YELLOW));
-    	list.add(new Triangle(new Point3d(0,0,-5), new Point3d(0,5,0), new Point3d(5,0,0), Color.GREEN));
-    	list.add(new Triangle(new Point3d(0,0,5), new Point3d(0,5,0), new Point3d(5,0,0), Color.BLUE));*/
-    	
-        //list.add(new Sphere(new Point3d(0,0,0), 18, Color.GREEN));
-
-    	// Create an object list of the scene
-    	//Scene scene = new Scene(list);
     	Scene scene = new Scene(sceneName);
     	
     	// Create a camera
-    	//Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 30);
-    	Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
+    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 30);
+    	// Button
+    	//Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
+    	// Top
+    	//Camera camera = new Camera(new Point3d(0d, 10d, 10d), new Point3d(0d, 0d, 0d), 45);
+    	// Left
+    	//Camera camera = new Camera(new Point3d(-15d, 0d, 0d), new Point3d(0d, 0d, 0d), 45);
     	
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera);

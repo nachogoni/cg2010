@@ -19,7 +19,7 @@ public class Scene {
 	private List<Primitive> list = new ArrayList<Primitive>();
 	
 	/**
-	 * Contructor for the scene from a file name
+	 * Constructor for the scene from a file name
 	 * 
 	 * @param scene Scene file name
 	 */
@@ -28,7 +28,7 @@ public class Scene {
 	}
 
 	/**
-	 * Contructor for the scene from a primitives list
+	 * Constructor for the scene from a primitives list
 	 * 
 	 * @param list List of primitives in the scene
 	 */
@@ -108,8 +108,18 @@ public class Scene {
 			// 2 spheres of radius 1 between the cubes
 			list.add(new Sphere(new Point3d( -2, 0, 0), 1f,  Color.MAGENTA));
 			list.add(new Sphere(new Point3d(  2, 0, 0), 1f,  Color.MAGENTA));
+		} else if (scene.equals("scene4.sc")) {
+			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
+			for (double x = -4d; x <= 4; x += 4) {
+				for (Primitive p : createCubeT(new Point3d(x,0,0), 2, Color.DARK_GRAY)) {
+					list.add(p);
+				}
+			}
+			// 2 spheres of radius 1 between the cubes
+			list.add(new Sphere(new Point3d( -2, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d(  2, 0, 0), 1f,  Color.MAGENTA));
 		} else {
-			list = null;
+			// Another options?
 		}
     	
     	return list;
@@ -143,6 +153,44 @@ public class Scene {
 		list.add(new Quadrilateral( c, b, f, g,  color));
 		list.add(new Quadrilateral( d, c, g, h,  color));
 		list.add(new Quadrilateral( e, f, g, h,  color));
+		
+		return list;
+	}
+	
+	/**
+	 * Create a cube from a center point, a side and a color with triangles
+	 * 
+	 * @param center Center for the cube
+	 * @param side Side of the cube
+	 * @param color Color for the cube
+	 * 
+	 * @return List of primitives creating the cube
+	 */
+	private static List<Primitive> createCubeT(Point3d center, double side, Color color) {
+		
+		List<Primitive> list = new ArrayList<Primitive>();
+		
+		Point3d a = new Point3d( center.x - side / 2, center.y + side / 2, center.z - side / 2);
+		Point3d b = new Point3d( center.x + side / 2, center.y + side / 2, center.z - side / 2);
+		Point3d c = new Point3d( center.x + side / 2, center.y + side / 2, center.z + side / 2);
+		Point3d d = new Point3d( center.x - side / 2, center.y + side / 2, center.z + side / 2);
+		Point3d e = new Point3d( center.x - side / 2, center.y - side / 2, center.z - side / 2);
+		Point3d f = new Point3d( center.x + side / 2, center.y - side / 2, center.z - side / 2);
+		Point3d g = new Point3d( center.x + side / 2, center.y - side / 2, center.z + side / 2);
+		Point3d h = new Point3d( center.x - side / 2, center.y - side / 2, center.z + side / 2);
+		
+		list.add(new Triangle( a, b, c,  new Color(255,255,255)));
+		list.add(new Triangle( a, c, d,  new Color(  0,  0,128)));
+		list.add(new Triangle( a, b, f,  new Color(  0,  0,255)));
+		list.add(new Triangle( b, a, e,  new Color(  0,128,  0)));
+		list.add(new Triangle( e, d, h,  new Color(  0,128,128)));
+		list.add(new Triangle( d, a, e,  new Color(  0,128,255)));
+		list.add(new Triangle( c, b, f,  new Color(128,  0,  0)));
+		list.add(new Triangle( c, f, g,  new Color(128,  0,128)));
+		list.add(new Triangle( d, c, g,  new Color(128,  0,255)));
+		list.add(new Triangle( d, g, h,  new Color(128,128,  0)));
+		list.add(new Triangle( e, f, g,  new Color(128,128,128)));
+		list.add(new Triangle( e, g, h,  new Color(128,128,255)));
 		
 		return list;
 	}
