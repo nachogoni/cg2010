@@ -14,7 +14,7 @@ public interface Primitive {
 	/**
 	 * Get color of the figure
 	 */
-	Color getColor();
+	Color getColor(Point3d point);
 	
 	/**
 	 * Set color of the figure

@@ -20,6 +20,8 @@ class RayCasterThread extends Thread {
 	private int toX;
 	private int fromY;
 	private int toY;
+	private int width;
+	private int height;
 	private RayCaster rayCaster;
 	private CyclicBarrier cb;
 
@@ -45,12 +47,16 @@ class RayCasterThread extends Thread {
 	 * @param toX Last column
 	 * @param fromY First row
 	 * @param toY Last row
+	 * @param width Viewport width
+	 * @param height Viewport height
 	 */
-	public void setPortion(int fromX, int toX, int fromY, int toY) {
+	public void setPortion(int fromX, int toX, int fromY, int toY, int width, int height) {
 		this.fromX = fromX;
 		this.toX = toX;
 		this.fromY = fromY;
 		this.toY = toY;
+		this.width = width;
+		this.height = height;
 	}
 
 	/**
@@ -108,13 +114,19 @@ class RayCasterThread extends Thread {
 			Point3d origin = camera.getOrigin();
 			Point3d intersection = null, aux = null;
 			Color color;
+			Ray ray;
 			for (int i = fromX; i < toX; i++) {
 				for (int j = fromY; j < toY; j++) {
 					// Set infinite color
-					color = Color.BLUE;
+					color = Color.BLACK;
+					
+					Point3d po = camera.getPointFromXY(width, height, i, j);
 					
 					// Create a new Ray from camera, i, j
-					Ray ray = new Ray(origin, new Point3d());// TODO: (origin, i, j);
+					ray = new Ray(origin, po);
+					
+					// There is no intersection yet
+					intersection = null;
 					
 					// Find intersection in scene with ray
 					for (Primitive p : scene.getList()) {
@@ -122,7 +134,7 @@ class RayCasterThread extends Thread {
 						if (aux != null && (intersection == null || (intersection != null &&
 							aux.distance(origin) < intersection.distance(origin)))) {
 							intersection = aux;
-							color = p.getColor();
+							color = p.getColor(aux);
 						}
 					}
 						

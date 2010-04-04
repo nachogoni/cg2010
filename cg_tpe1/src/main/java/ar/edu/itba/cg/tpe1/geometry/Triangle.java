@@ -97,7 +97,7 @@ public class Triangle implements Primitive {
 	    return insidePoint;
 	}
 
-	public Color getColor() {
+	public Color getColor(Point3d point) {
 		return color;
 	}
 	

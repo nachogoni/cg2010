@@ -9,10 +9,10 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class RayCaster {
 
-	private RayCasterThread t1;
+	private RayCasterThread t1;/*
 	private RayCasterThread t2;
 	private RayCasterThread t3;
-	private RayCasterThread t4;
+	private RayCasterThread t4;*/
 	protected BufferedImage image = null;
 	private CyclicBarrier cb;
 	
@@ -23,15 +23,15 @@ public class RayCaster {
 	 * @param camera Actual camera where the viewer is   
 	 */
 	public RayCaster(Scene scene, Camera camera) {
-		cb = new CyclicBarrier(5);
+		cb = new CyclicBarrier(2);
 		this.t1 = new RayCasterThread(scene, camera, this, cb);
 		this.t1.start();
-		this.t2 = new RayCasterThread(scene, camera, this, cb);
+/*		this.t2 = new RayCasterThread(scene, camera, this, cb);
 		this.t2.start();
 		this.t3 = new RayCasterThread(scene, camera, this, cb);
 		this.t3.start();
 		this.t4 = new RayCasterThread(scene, camera, this, cb);
-		this.t4.start();
+		this.t4.start();*/
 	}
 
 	/**
@@ -46,16 +46,17 @@ public class RayCaster {
 	 * @see The BufferedImage documentation for correct imageTypes
 	 */
 	public BufferedImage getImage(int width, int height, int imageType) {
-		if ( ! t1.isAlive() || ! t2.isAlive() || ! t3.isAlive() || ! t4.isAlive() )
+		if ( ! t1.isAlive())// || ! t2.isAlive() || ! t3.isAlive() || ! t4.isAlive() )
 			return null;
 
 		image = new BufferedImage(width, height, imageType);
 
-		t1.setPortion(0, width/2, 0, height/2);
-		t2.setPortion(width/2, width, 0, height/2);
-		t3.setPortion(0, width/2, height/2, height);
-		t4.setPortion(width/2, width, height/2, height);
-
+		t1.setPortion(0, width, 0, height, width, height);
+/*		t1.setPortion(0, width/2, 0, height/2, width, height);
+		t2.setPortion(width/2, width, 0, height/2, width, height);
+		t3.setPortion(0, width/2, height/2, height, width, height);
+		t4.setPortion(width/2, width, height/2, height, width, height);
+*/
 		try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
 
 		try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
