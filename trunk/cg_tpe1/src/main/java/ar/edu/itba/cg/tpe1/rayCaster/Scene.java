@@ -106,7 +106,7 @@ public class Scene {
 		} else if (scene.equals("scene3.sc")) {
 			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
 			for (double x = -4d; x <= 4; x += 4) {
-				for (Primitive p : createCube(new Point3d(x,0,0), 2, Color.DARK_GRAY)) {
+				for (Primitive p : createCube(new Point3d(x,0,0), 2, Color.BLUE)) {
 					list.add(p);
 				}
 			}
