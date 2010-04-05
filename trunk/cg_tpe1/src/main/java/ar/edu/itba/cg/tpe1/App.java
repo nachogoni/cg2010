@@ -125,6 +125,8 @@ public class App
 	        } else if (arg.equals("-usage")) {
 	        	// Usage
         		failed = true;
+	        } else {
+        		failed = true;
 	        }
         }
         
