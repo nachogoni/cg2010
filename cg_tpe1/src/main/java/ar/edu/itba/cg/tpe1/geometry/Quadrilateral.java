@@ -3,7 +3,6 @@ package ar.edu.itba.cg.tpe1.geometry;
 import java.awt.Color;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 public class Quadrilateral implements Primitive {
 	
@@ -55,33 +54,15 @@ public class Quadrilateral implements Primitive {
 		//Now we calculate in which point it intersects
 		Point3d intersectionPoint = new Point3d(R_0.x + t*R_d.x, R_0.y + t*R_d.y, R_0.z + t*R_d.z);
 		
-//		//Now we check if it's inside the Quadrilateral
-//		Vector3d v_1, v_3, v_4, v_5;
-//		v_1 = new Vector3d(this.p2.x - this.p1.x, this.p2.y - this.p1.y, this.p2.z - this.p1.z);
-//		v_3 = new Vector3d(this.p4.x - this.p3.x, this.p4.y - this.p3.y, this.p4.z - this.p3.z);
-//		v_4 = new Vector3d(intersectionPoint.x - this.p1.x, intersectionPoint.y - this.p1.y, intersectionPoint.z - this.p1.z);
-//		v_5 = new Vector3d(intersectionPoint.x - this.p3.x, intersectionPoint.y - this.p3.y, intersectionPoint.z - this.p3.z);
-//	
-//		//We normalize the vectors
-//		v_1.normalize();
-//		v_3.normalize();
-//		v_4.normalize();
-//		v_5.normalize();
-//		
-//		//We calculate dot products
-//		double v1_4, v3_5;
-//		v1_4 = v_1.dot(v_4);
-//		v3_5 = v_3.dot(v_5);
-//		
-//		if(v1_4 > 0 && v3_5 > 0 ){
-//			System.out.printf("Intercepto: " + intersectionPoint.toString() + "\n");
-//			return intersectionPoint;
-//		}else return null;
-		
-		Point3d isIn = this.containsPoint(new Vector3(this.p2, this.p1), new Vector3(this.p3, this.p1), new Vector3(intersectionPoint, this.p1));
+		Point3d isIn = this.containsPoint(new Vector3(this.p1, this.p2), new Vector3(this.p1, this.p3), new Vector3(this.p1, intersectionPoint));
 		if(isIn == null){
 			//We check the other half
-			isIn = this.containsPoint(new Vector3(this.p4, this.p1), new Vector3(this.p3, this.p1), new Vector3(intersectionPoint, this.p1));
+			isIn = this.containsPoint(new Vector3(this.p1, this.p4), new Vector3(this.p1, this.p3), new Vector3(this.p1, intersectionPoint));
+			if(isIn == null)
+				return null;
+		}
+		if(Double.isNaN(isIn.x) || Double.isNaN(isIn.y) || Double.isNaN(isIn.z)){
+			return null;
 		}
 		
 		return isIn;
