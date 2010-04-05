@@ -61,9 +61,7 @@ public class Quadrilateral implements Primitive {
 			if(isIn == null)
 				return null;
 		}
-		if(Double.isNaN(isIn.x) || Double.isNaN(isIn.y) || Double.isNaN(isIn.z)){
-			return null;
-		}
+		
 		
 		return isIn;
 		
@@ -102,7 +100,10 @@ public class Quadrilateral implements Primitive {
 	    v.scale(t);
 	    insidePoint.add(u);
 	    insidePoint.add(v);
-	    return insidePoint;
+	    
+	    if(Double.isNaN(insidePoint.x) || Double.isNaN(insidePoint.y) || Double.isNaN(insidePoint.z)){
+			return null;
+		}else return insidePoint;
 	}
 	
 }
