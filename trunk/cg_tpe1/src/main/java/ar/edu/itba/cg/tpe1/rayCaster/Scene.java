@@ -94,12 +94,12 @@ public class Scene {
 			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
 			double spheresPerFace=4.0;
 			double distance=0.5;
-			double radius=1;
-			double interval=spheresPerFace*radius + (spheresPerFace-1)*distance + distance/2 - radius; 
+			double radius=0.5;
+			double interval=spheresPerFace*radius + (spheresPerFace/2-1)*distance + distance/2 - radius; 
 			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
 				for (double y = -interval; y <= interval; y += 2*radius + distance) {
 					for (double z = -interval; z <= interval; z += 2*radius + distance) {
-						list.add(new Sphere(new Point3d( x, y, z), 1.0,  new Color((int)(((x + interval)/(2*interval)) * 255), (int)(((y + interval)/(2*interval)) * 255), (int)(((z + interval)/(2*interval)) * 255))));
+						list.add(new Sphere(new Point3d( x, y, z), radius,  new Color((int)(((x + interval)/(2*interval)) * 255), (int)(((y + interval)/(2*interval)) * 255), (int)(((z + interval)/(2*interval)) * 255))));
 					}
 				}
 			}
