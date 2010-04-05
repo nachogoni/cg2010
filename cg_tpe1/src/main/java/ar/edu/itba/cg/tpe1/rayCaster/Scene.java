@@ -123,6 +123,16 @@ public class Scene {
 			// 2 spheres of radius 1 between the cubes
 			list.add(new Sphere(new Point3d( -2, 0, 0), 1f,  Color.MAGENTA));
 			list.add(new Sphere(new Point3d(  2, 0, 0), 1f,  Color.MAGENTA));
+		} else if (scene.equals("scene5.sc")) {
+			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
+			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
+			double spheres=11.0;
+			double distance=0.5;
+			double radius=0.5;
+			double interval=spheres*radius + (spheres/2-1)*distance + distance/2 - radius; 
+			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
+				list.add(new Sphere(new Point3d( x, 0, 0), radius,  new Color(0,0,255)));
+			}
 		} else {
 			// Another options?
 		}

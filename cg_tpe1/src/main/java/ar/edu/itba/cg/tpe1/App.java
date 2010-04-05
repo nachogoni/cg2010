@@ -32,7 +32,7 @@ public class App
     	BufferedImage image;
     	File output = null;
     	int width = 800;
-    	int height = 600;
+    	int height = 800;
     	long start = 0;
     	long stop = 0;
     	
@@ -167,7 +167,7 @@ public class App
     	Scene scene = new Scene(sceneName);
     	
     	// Create a camera
-    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 30);
+    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 45);
     	// Button
     	//Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
     	// Top
