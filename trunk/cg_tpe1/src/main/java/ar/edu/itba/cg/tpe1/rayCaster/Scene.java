@@ -91,10 +91,15 @@ public class Scene {
 			list.add(new Sphere(new Point3d( 0, 0,-8), 0.5f,  Color.PINK));
 		} else if (scene.equals("scene2.sc")) {
 			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
-			for (double x = -2.25d; x <= 2.25; x += 1.5) {
-				for (double y = -2.25d; y <= 2.25; y += 1.5) {
-					for (double z = -2.25d; z <= 2.25; z += 1.5) {
-						list.add(new Sphere(new Point3d( x, y, z), 1,  new Color((int)(((x + 2.25)/4.5) * 255), (int)(((y + 2.25)/4.5) * 255), (int)(((z + 2.25)/4.5) * 255))));
+			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
+			double spheresPerFace=4.0;
+			double distance=0.5;
+			double radius=1;
+			double interval=spheresPerFace*radius + (spheresPerFace-1)*distance + distance/2; 
+			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
+				for (double y = -interval; y <= interval; y += 2*radius + distance) {
+					for (double z = -interval; z <= interval; z += 2*radius + distance) {
+						list.add(new Sphere(new Point3d( x, y, z), 1.0,  new Color((int)(((x + interval)/(2*interval)) * 255), (int)(((y + interval)/(2*interval)) * 255), (int)(((z + interval)/(2*interval)) * 255))));
 					}
 				}
 			}
