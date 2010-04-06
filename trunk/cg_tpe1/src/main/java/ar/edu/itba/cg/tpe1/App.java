@@ -32,7 +32,7 @@ public class App
     	BufferedImage image;
     	File output = null;
     	int width = 800;
-    	int height = 800;
+    	int height = 600;
     	long start = 0;
     	long stop = 0;
     	
@@ -126,6 +126,7 @@ public class App
 	        	// Usage
         		failed = true;
 	        } else {
+	        	i = -1;
         		failed = true;
 	        }
         }

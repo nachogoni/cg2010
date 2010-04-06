@@ -1,0 +1,116 @@
+\documentclass[a4paper,10pt]{article}
+
+%% Paquetes Adicionales %%
+
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\spanishdecimal{.}
+\addto\captionsspanish{\def\tablename{Cuadro}}
+\usepackage{fancyhdr}
+\usepackage{graphics}
+\usepackage[dvips]{graphicx}
+\usepackage[normal]{caption2}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{moreverb}
+
+%% Declaracion de comandos %%
+
+\newtheorem{lema}{Lema}
+\newtheorem{teor}{Teorema}
+\newtheorem{propos}{Proposici\'on}
+\newtheorem{corol}{Corolario}
+
+\newcommand{\mivec}[1]{\mathbf{#1}}
+\newcommand{\vers}[1]{\mivec{\check{#1}}}
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\expo}[1]{~10^{#1}}
+\newcommand{\uni}[1]{\mathrm{#1}} 
+
+\newcommand{\prop}[1]{\begin{propos} #1 \end{propos}}
+\newcommand{\teo}[1]{\begin{teor} #1 \end{teor}}
+\newcommand{\cor}[1]{\begin{corol} #1 \end{corol}}
+\newcommand{\lem}[1]{\begin{lema} #1 \end{lema}}
+
+%% Encabezado y Pie de Pagina %%
+
+\pagestyle{plain}
+\lhead{}
+\chead{}
+\rhead{}
+\cfoot{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\makeindex
+
+%% Titulo %%
+\begin{document}
+\title{{Computaci\'on Gr\'afica \\ Trabajo pr\'actico Especial 1 - Ray Caster\\ Grupo 2}}
+
+\date{}
+
+%% Comienzo del documento %%
+
+\maketitle
+
+\begin{abstract}
+
+ABSTRACT
+
+\textbf{Palabras Clave: }\emph{PKs}.
+\end{abstract}
+
+%\thispagestyle{fancy}
+
+%% COMIENZO DEL TEXTO %%
+
+\section{Introducci\'on}
+\label{introduccion}
+
+INTRO
+
+\section{SECCION}
+\label{seccion}
+
+\subsection{subsection}
+\label{subseccion}
+
+DEMO TABLA
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+LARGO & DESTINO & ORIGEN & COMANDO & DATO & CRC \\
+\hline
+\end{tabular}
+\caption{Formato y header del paquete de datos}
+\label{formato_paquete_tabla}
+\end{center}
+\end{table}
+
+DEMO ITEMIZE
+
+\begin{itemize}
+	\item{COMANDO:} 0x04
+	\item{DATO:} 1 byte con el c\'odigo de error.
+
+	El valor 0x00 indica un error de CRC en el paquete. 
+	En este caso, tambi\'en se agrega el paquete con el CRC err\'oneo y luego el CRC esperado.
+
+	El valor 0x01 indica que el comando es desconocido para la placa destinataria.
+
+	Cualquier otro valor, indica un error que depende de la placa y el comando enviado.
+\end{itemize}
+
+
+DEMO IMG
+
+\begin{figure}
+\centering
+%%\includegraphics[scale=0.75]{daisychain_diagram.png}
+\caption{Diagrama general del m\'etodo daisy chain}
+\label{daisychain_diagram}
+\end{figure}
+
+\end{document}
