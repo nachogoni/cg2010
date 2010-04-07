@@ -9,6 +9,7 @@ import javax.vecmath.Point3d;
 import ar.edu.itba.cg.tpe1.geometry.Primitive;
 import ar.edu.itba.cg.tpe1.geometry.Quadrilateral;
 import ar.edu.itba.cg.tpe1.geometry.Sphere;
+import ar.edu.itba.cg.tpe1.geometry.Star;
 import ar.edu.itba.cg.tpe1.geometry.Triangle;
 
 /**
@@ -133,6 +134,19 @@ public class Scene {
 			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
 				list.add(new Sphere(new Point3d( x, 0, 0), radius,  new Color(0,0,255)));
 			}
+		} else if (scene.equals("scene6.sc")){
+			ArrayList<Color> arrayList = new ArrayList<Color>();
+			arrayList.add(Color.PINK);
+			arrayList.add(Color.BLUE);
+			arrayList.add(Color.RED);
+			arrayList.add(Color.GREEN);
+			arrayList.add(Color.YELLOW);
+			arrayList.add(Color.MAGENTA);
+			arrayList.add(Color.ORANGE);
+			arrayList.add(Color.GRAY);
+			arrayList.add(Color.CYAN);
+			arrayList.add(Color.WHITE);
+			list.add(new Star(10, 5, 3, arrayList));
 		} else {
 			// Another options?
 		}
