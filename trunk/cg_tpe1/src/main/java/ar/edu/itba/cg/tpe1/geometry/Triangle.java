@@ -83,8 +83,10 @@ public class Triangle implements Primitive {
 	    double s, t;
 	    s = (uv * wv - vv * wu) / D;
 	    t = (uv * wu - uu * wv) / D;
-        // Check if is outside the Triangle
-	    if (s < 0.0 || s > 1.0 || t < 0.0 || (s + t) > 1.0 )
+	    if(Math.abs(s) < 0.00001) s = 0;
+	    if(Math.abs(t) < 0.00001) t = 0;
+	    // Check if is outside the Triangle
+	    if (s < 0.0 || s > 1.0 || t < 0.0 || (s + t) > (1.0 + 0.00001))
 	        return false;
 
 	    return true;
