@@ -7,7 +7,7 @@ import javax.vecmath.Point3d;
 public class Quadrilateral implements Primitive {
 	
 	private Point3d p1, p2, p3, p4;
-	private Color aColor;
+	private Color aColor = null;
 
 	// Plane equation values 0 = Ax+By+Cz+D
 	private double A, B, C, D;

@@ -19,7 +19,7 @@ public class Star implements Primitive{
 	 */
 	public Star(double longSide, double shortSide, double depth, List<Color> colors) {
 		ts = new Triangle[10];
-		
+//TODO		
 		Point3d points [] = getPoints(longSide, shortSide, depth);
 		Point3d origin = new Point3d();
 		
