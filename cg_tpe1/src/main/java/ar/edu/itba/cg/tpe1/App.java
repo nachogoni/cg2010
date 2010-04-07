@@ -171,7 +171,7 @@ public class App
     	
     	// Create a camera
     	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 45);
-    	// Button
+    	// Bottom
     	//Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
     	// Top
     	//Camera camera = new Camera(new Point3d(0d, 10d, 10d), new Point3d(0d, 0d, 0d), 45);
