@@ -11,7 +11,6 @@ public class Star implements Primitive{
 	Color c = Color.ORANGE;
 	Triangle ts [];
 
-
 	/**
 	 * Creates a star with center at (0,0,0)
 	 * @param longSide
@@ -68,7 +67,6 @@ public class Star implements Primitive{
 		for ( int i = 0 ; i < ts.length ; i++ ){
 			Point3d intersect = ts[i].intersect(ray);
 			if ( intersect != null ){
-				c = ts[i].color;
 				return intersect;
 			}
 		}

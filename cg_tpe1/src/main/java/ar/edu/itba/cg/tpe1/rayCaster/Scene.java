@@ -80,9 +80,9 @@ public class Scene {
 		if (scene.equals("scene1.sc")) {
 			// Pyramid of side 5
 			list.add(new Triangle(new Point3d(-5, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0, 5),  Color.RED));
+			list.add(new Triangle(new Point3d( 0, 0, 5),  new Point3d( 0, 5, 0), new Point3d( 5, 0, 0),  Color.BLUE));
 			list.add(new Triangle(new Point3d(-5, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0,-5),  Color.YELLOW));
 			list.add(new Triangle(new Point3d( 0, 0,-5),  new Point3d( 0, 5, 0), new Point3d( 5, 0, 0),  Color.GREEN));
-			list.add(new Triangle(new Point3d( 0, 0, 5),  new Point3d( 0, 5, 0), new Point3d( 5, 0, 0),  Color.BLUE));
 			// Sphere of radius 1 at the top of the pyramid
 			list.add(new Sphere(new Point3d( 0, 6, 0), 1,  Color.ORANGE));
 			// Spheres of radius 0.5 at pyramid vertexes
