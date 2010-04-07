@@ -17,9 +17,9 @@ public class Triangle implements Primitive {
 	
 	double uu, uv, vv;
 	
-	Color color;
+	Color color = null;
 	
-	public Triangle(Point3d p1, Point3d p2, Point3d p3, Color color) throws IllegalArgumentException {
+	public Triangle(Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
 		n = new Vector3();
@@ -30,6 +30,22 @@ public class Triangle implements Primitive {
 	    uu = u.dot(u);
 	    uv = u.dot(v);
 	    vv = v.dot(v);
+		this.p1 = p1;
+		this.p2 = p2;
+		this.p3 = p3;
+	}
+	
+	public Triangle(Point3d p1, Point3d p2, Point3d p3, Color color) throws IllegalArgumentException {
+		u = new Vector3(p1,p2);
+		v = new Vector3(p1,p3);
+		n = new Vector3();
+		n.cross(u, v);
+		if ( n.equals(new Vector3()) )
+			// Triangle is either a segment or a point
+			throw new IllegalArgumentException("Triangle is either a segment or a point");
+		uu = u.dot(u);
+		uv = u.dot(v);
+		vv = v.dot(v);
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
