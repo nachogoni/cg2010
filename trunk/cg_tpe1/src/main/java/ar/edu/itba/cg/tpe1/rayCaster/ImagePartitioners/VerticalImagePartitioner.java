@@ -24,11 +24,11 @@ public class VerticalImagePartitioner implements IImagePartitioner {
 		int currentWidth = 0;
 		
 		if ( remainder != 0 ){
-			out.add(new Rectangle(0, 0, width, portionWidth+remainder));
+			out.add(new Rectangle(0, 0, portionWidth+remainder, height ));
 			currentWidth += portionWidth+remainder;
 		}
 		while( currentWidth < width){
-			out.add(new Rectangle(0, currentWidth, width, portionWidth));
+			out.add(new Rectangle(currentWidth, 0, portionWidth, height));
 			currentWidth += portionWidth;
 		}
 		
