@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe1.rayCaster;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -50,11 +51,11 @@ class RayCasterThread extends Thread {
 	 * @param width Viewport width
 	 * @param height Viewport height
 	 */
-	public void setPortion(int fromX, int toX, int fromY, int toY, int width, int height) {
-		this.fromX = fromX;
-		this.toX = toX;
-		this.fromY = fromY;
-		this.toY = toY;
+	public void setPortion(Rectangle portion, int width, int height) {
+		this.fromX = portion.x;
+		this.toX = portion.x+portion.width;
+		this.fromY = portion.y;
+		this.toY = portion.y+portion.height;
 		this.width = width;
 		this.height = height;
 	}

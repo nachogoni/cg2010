@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
@@ -33,8 +31,8 @@ public class App
     	String format = "PNG";
     	BufferedImage image;
     	File output = null;
-    	int width = 640;
-    	int height = 480;
+    	int width = 800;
+    	int height = 600;
     	long start = 0;
     	long stop = 0;
     	
@@ -71,22 +69,27 @@ public class App
                     System.out.println(arg + " requires a scene name");
                     failed = true;
                 }
-            } else if (arg.equals("-size")) {
+            } else if (arg.equals("-r")) {
             	// Resolution
-            	if (i < args.length) {
+            	if ((i+1) < args.length) {
             		arg = args[i++];
-            		// WidthxHeight
-            		Pattern dimensionsPattern = Pattern.compile("(\\d+)x(\\d+)");
-            		Matcher m = dimensionsPattern.matcher(arg);
-            		if ( ! m.find() ) {
+            		// Width
+            		if (arg.matches("[0-9]+") == false) {
             			System.out.println("'" + arg + "' is an invalid image width");
             			failed = true;
             		} else {
-            			width = Integer.parseInt(m.group(1));
-            			height = Integer.parseInt(m.group(2));
+            			width = (new Integer(arg)).intValue();
+            		}
+            		arg = args[i++];
+            		// Height
+            		if (arg.matches("[0-9]+") == false) {
+            			System.out.println("'" + arg + "' is an invalid image height");
+            			failed = true;
+            		} else {
+            			height = (new Integer(arg)).intValue();
             		}
             	} else {
-            		System.out.println(arg + " requires width and height");
+            		System.out.println(arg + " requires width and heigh");
             		failed = true;
             	}
             } else if (arg.equals("-cm")) {
@@ -165,7 +168,7 @@ public class App
 		
     	// Create an scene
     	Scene scene = new Scene(sceneName);
-		
+    	
     	// Create a camera
     	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 45);
     	// Bottom
@@ -176,7 +179,7 @@ public class App
     	//Camera camera = new Camera(new Point3d(-15d, 0d, 0d), new Point3d(0d, 0d, 0d), 45);
     	
     	// Create rayCaster
-    	RayCaster raycaster = new RayCaster(scene, camera);
+    	RayCaster raycaster = new RayCaster(scene, camera, 4);
     	
     	// Take start time
     	if (time == true) {
