@@ -18,10 +18,7 @@ public class Sphere implements Primitive {
 	}
 	
 	public Sphere(Point3d radiusCenter, double radius, Color color) throws IllegalArgumentException {
-		if (radius <= 0)
-			throw new IllegalArgumentException("Invalid radius");
-		this.radius = radius;
-		this.radiusCenter= radiusCenter;
+		this(radiusCenter,radius);
 		this.color = color;
 	}
 	
