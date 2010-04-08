@@ -1,16 +1,23 @@
 package ar.edu.itba.cg.tpe1.geometry;
 
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.vecmath.Point3d;
 
 public class Star implements Primitive{
 
 	Color c = Color.ORANGE;
+	// It'd be better if a point has it's color i.e. ColorPoint3d
+	Map<Double,Map<Double,Map<Double,Color> > > pointColors;
 	Triangle ts [];
 
+	public Star(double sideslength [], double depths[], List<Color> colors) {
+	}
+	
 	/**
 	 * Creates a star with center at (0,0,0)
 	 * @param longSide
@@ -18,8 +25,9 @@ public class Star implements Primitive{
 	 * @param depth
 	 */
 	public Star(double longSide, double shortSide, double depth, List<Color> colors) {
+		pointColors = new HashMap<Double, Map<Double,Map<Double,Color>>>();
 		ts = new Triangle[10];
-//TODO		
+		
 		Point3d points [] = getPoints(longSide, shortSide, depth);
 		Point3d origin = new Point3d();
 		
@@ -67,6 +75,22 @@ public class Star implements Primitive{
 		for ( int i = 0 ; i < ts.length ; i++ ){
 			Point3d intersect = ts[i].intersect(ray);
 			if ( intersect != null ){
+				synchronized (this) {
+		
+				Map<Double, Map<Double, Color>> map = pointColors.get(intersect.x);
+				if ( map == null ){
+					map = new HashMap<Double, Map<Double,Color>>();
+					pointColors.put(intersect.x, map);
+				}
+				
+				Map<Double, Color> map1 = map.get(intersect.y);
+				if ( map1 == null ){
+					map1 = new HashMap<Double,Color>();
+					map.put(intersect.y, map1);
+				}
+				
+				map1.put(intersect.z, ts[i].color);
+				}
 				return intersect;
 			}
 		}
@@ -80,6 +104,20 @@ public class Star implements Primitive{
 	}
 
 	public Color getColor(Point3d point) {
-		return c;
+		Color color = Color.BLACK;
+		synchronized (this) {
+			
+		if ( pointColors.get(point.x) == null )
+			return Color.BLACK;
+		
+		if ( pointColors.get(point.x).get(point.y) == null )
+			return Color.BLACK;
+		
+		if ( pointColors.get(point.x).get(point.y).get(point.z) == null )
+			return Color.BLACK;
+		
+		color = pointColors.get(point.x).get(point.y).get(point.z);
+		}		
+		return color;
 	}
 }
