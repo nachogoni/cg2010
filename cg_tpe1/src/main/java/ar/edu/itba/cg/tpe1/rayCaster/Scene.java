@@ -136,17 +136,13 @@ public class Scene {
 			}
 		} else if (scene.equals("scene6.sc")){
 			ArrayList<Color> arrayList = new ArrayList<Color>();
-			arrayList.add(Color.PINK);
-			arrayList.add(Color.BLUE);
 			arrayList.add(Color.RED);
 			arrayList.add(Color.GREEN);
 			arrayList.add(Color.YELLOW);
-			arrayList.add(Color.MAGENTA);
 			arrayList.add(Color.ORANGE);
-			arrayList.add(Color.GRAY);
-			arrayList.add(Color.CYAN);
-			arrayList.add(Color.WHITE);
-			list.add(new Star(10, 5, 3, arrayList));
+			double distances [] = new double[]{1,2,4};
+			double depths [] = new double[]{-2,-1,0};
+			list.add(new Star(new Point3d(), Math.PI/2, distances, depths, arrayList));
 		} else {
 			// Another options?
 		}
