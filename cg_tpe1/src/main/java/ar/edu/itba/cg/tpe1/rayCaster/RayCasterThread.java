@@ -134,10 +134,14 @@ class RayCasterThread extends Thread {
 						if (aux != null && (intersection == null || (intersection != null &&
 							aux.distance(origin) < intersection.distance(origin)))) {
 							intersection = aux;
-							color = p.getColor(aux);
+							color = adjustColor(p.getColor(aux), intersection.distance(origin));
 						}
 					}
-						
+
+					//if (mode == ) {
+						// Check if this is the first time we see this object
+					//}
+					
 					// Set color to image(i, j)
 					synchronized (rayCaster.image) {
 						rayCaster.getImage().setRGB(i, j, color.getRGB());
@@ -148,4 +152,29 @@ class RayCasterThread extends Thread {
 			try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
 		}
 	}
+	
+    Color adjustColor(Color color, double distance) {
+        //float[] hsb = new float[3];
+
+        //TODO: ver como queda con los 3 canales
+
+/*    	return new Color((color.getRed()/255) * (float)(1f / distance),
+                        (color.getGreen()/255) * (float)(1f / distance),
+                        (color.getBlue()/255) * (float)(1f / distance));*/
+/*        return new Color((color.getRed()/255) * (1 / (float)Math.log(Math.E + distance)),
+        		(color.getGreen()/255) * (1 / (float)Math.log(Math.E + distance)),
+        		(color.getBlue()/255) * (1 / (float)Math.log(Math.E + distance)));*/
+        
+        /*hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb); 
+        
+        //hsb[2] /= (float)Math.log(Math.E + distance);
+        hsb[0] *= 1 / (float)Math.log(Math.E + distance);
+        hsb[1] *= 1 / (float)Math.log(Math.E + distance);
+        hsb[2] *= 1 / (float)Math.log(Math.E + distance);
+        //hsb[2] *= 5/distance;
+        
+        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));*/
+    	return color;
+    }
+	
 }

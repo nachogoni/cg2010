@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe1.rayCaster;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe1.geometry.Vector3;
 
@@ -10,20 +11,46 @@ import ar.edu.itba.cg.tpe1.geometry.Vector3;
 public class Camera {
 
 	private Point3d origin;
-	private Point3d direction;
-	private double focus;
+	private Vector3d FieldCenter;
+	private Vector3d direction;
+	private Vector3d upVector;
+	private double fov;
+	private Vector3d du;
+	private Vector3d dv;
+	private int width = 0;
+	private int height = 0;
+	private int xTranslation = 0;
+	private int yTranslation = 0;
 	
 	/**
 	 * Constructor for the Camera representation
 	 *  
 	 * @param origin Origin point for the camera, where the viewer is
 	 * @param direction Direction for the viewer
-	 * @param focus Focus where the camera place the viewport and take the picture
+	 * @param upVector Up vector for the camera
+	 * @param fov Aperture angle for the camera
 	 */
-	public Camera(Point3d origin, Point3d direction, double focus) {
-		this.origin = origin;
-		this.direction = direction;
-		this.focus = focus;
+	public Camera(Point3d origin, Point3d direction, Point3d upVector, double fov, int height, int width) {
+		this.origin = (Point3d) origin.clone();
+		this.direction = new Vector3(origin, direction);
+		this.direction.normalize();
+		this.upVector = new Vector3(upVector, origin);
+		this.fov = fov;
+		this.width = width;
+		this.height = height;
+		this.FieldCenter = new Vector3d();
+		this.FieldCenter.sub(this.direction, this.origin);
+		this.FieldCenter.normalize();
+		this.FieldCenter.scale((width / 2) / Math.tan(Math.toRadians((this.fov / 2))));
+		// Y unit vector
+		this.dv = (Vector3) this.upVector.clone();
+		this.dv.normalize();
+		// X unit vector
+		this.du = new Vector3();
+		this.du.cross(this.dv, this.direction);
+		this.du.normalize();
+		this.xTranslation = 0;
+		this.yTranslation = 0;
 	}
 	
 	/**
@@ -32,7 +59,7 @@ public class Camera {
 	 * @return Origin point
 	 */
 	public Point3d getOrigin() {
-		return origin;
+		return (Point3d) origin.clone();
 	}
 
 	/**
@@ -41,7 +68,7 @@ public class Camera {
 	 * @param origin New position
 	 */
 	public void setOrigin(Point3d origin) {
-		this.origin = origin;
+		this.origin = (Point3d) origin.clone();
 	}
 
 	/**
@@ -49,8 +76,8 @@ public class Camera {
 	 * 
 	 * @return Camera direction
 	 */
-	public Point3d getDirection() {
-		return direction;
+	public Vector3d getDirection() {
+		return (Vector3d) direction.clone();
 	}
 
 	/**
@@ -58,26 +85,26 @@ public class Camera {
 	 * 
 	 * @param direction New camera direction
 	 */
-	public void setDirection(Point3d direction) {
-		this.direction = direction;
+	public void setDirection(Vector3d direction) {
+		this.direction = (Vector3d) direction.clone();;
 	}
 
 	/**
-	 * Set the focus for the camera
+	 * Set the aperture angle for the camera
 	 * 
-	 * @param focus New focus
+	 * @param fov New aperture angle
 	 */
-	public void setFocus(double focus) {
-		this.focus = focus;
+	public void setFov(double fov) {
+		this.fov = fov;
 	}
 	
 	/**
-	 * Get focus for the camera
+	 * Get focus aperture angle the camera
 	 * 
-	 * @return Camera's focus
+	 * @return Camera's aperture angle
 	 */
-	public double getFocus() {
-		return focus;
+	public double getFov() {
+		return fov;
 	}
 	
 	/**
@@ -92,18 +119,16 @@ public class Camera {
 	 */
 	public Point3d getPointFromXY(int width, int height, int i, int j) {
 		
-		Point3d point = null;
+		// Get the center for the image
+		Vector3d v = new Vector3d(this.FieldCenter);
 		
-		Vector3 v = new Vector3(origin, direction);
+		// v1 = i * this.du + v
+		v.scaleAdd(i - width / 2, this.du, v);
+
+		// v = j * this.dv + v
+		v.scaleAdd(j - height /2, this.dv, v);
 		
-		//double x = v.x + distance * Math.tan((((i * apertureAngle) / width) - (apertureAngle / 2)) / (apertureAngle / 2));
-		//double y = v.y + distance * Math.tan((((j * apertureAngle) / height) - (apertureAngle / 2)) / (apertureAngle / 2));
-		double x =  v.x  * this.focus + i - width / 2;
-		double y =  v.y  * this.focus - j + height /2;
-		
-		point = new Point3d(x, y, v.z * this.focus);
-		
-		return point;
+		return new Point3d(v.x, v.y, v.z);
 	}
 
 }
