@@ -170,13 +170,7 @@ public class App
     	Scene scene = new Scene(sceneName);
     	
     	// Create a camera
-    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 45);
-    	// Bottom
-    	//Camera camera = new Camera(new Point3d(-1d, -1d, 10d), new Point3d(0d, 3d, 0d), 45);
-    	// Top
-    	//Camera camera = new Camera(new Point3d(0d, 10d, 10d), new Point3d(0d, 0d, 0d), 45);
-    	// Left
-    	//Camera camera = new Camera(new Point3d(-15d, 0d, 0d), new Point3d(0d, 0d, 0d), 45);
+    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), new Point3d(0d, 10d ,10d), 65, width, height);
     	
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera, 4);
