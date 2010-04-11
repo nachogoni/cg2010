@@ -29,6 +29,8 @@ public class Camera {
 	 * @param direction Direction for the viewer
 	 * @param upVector Up vector for the camera
 	 * @param fov Aperture angle for the camera
+	 * @param height Height for the image
+	 * @param width Width for the image
 	 */
 	public Camera(Point3d origin, Point3d direction, Point3d upVector, double fov, int height, int width) {
 		this.origin = (Point3d) origin.clone();
