@@ -55,7 +55,7 @@
 
 \begin{abstract}
 
-Se dise\~no y desarroll\'o un motor de Ray Casting que determine intersecciones entre rayos y objetos permitiendo representar en pantalla un conjunto de escenas predefinidas.
+Se dise\~n\'o y desarroll\'o un motor de Ray Casting que determine intersecciones entre rayos y objetos permitiendo representar en pantalla un conjunto de escenasb.
 
 \textbf{Palabras Clave: }\emph{Ray Casting, escena, rayos, objetos.}.
 \end{abstract}
@@ -76,46 +76,169 @@ los triangulos y los cuadrilateros.  En la cuarta secci\'on nos enfocaremos en l
 
 \subsection{Descripci\'on}
 \label{subseccion}
-Ray Casting es una t\'ecnica que utiliza la intersecci\'on de rayos con una superficie para resolver un conjunto de problemas en el campo de la computaci\'on gr\'afica.
+Ray Casting es una t\'ecnica que utiliza la intersecci\'on de rayos con una superficie para resolver un conjunto de problemas en el campo de la computaci\'on gr\'afica.  Representa una soluci\'on f\'acil al problema de visibilidad en una escena.
 
- 
+En este caso se modela una escena almancenada en memoria, para la cual se fija una posici\'on y direcci\'on para la c\'amara.  Desde esta se disparan rayos a intervalos regulares y para cada uno se muestra el color correspondiente al objeto m\'as cercano con el que colisiona.
 
-DEMO TABLA
 
-\begin{table}[h]
+\subsection{La C\'amara y la Escena}
+
+PARA QUE JUANI LA COMPLETE.
+
+\subsection{Modo de Uso}
+Para ejecutar el Ray Caster hay diferentes opciones.  A continuaci\'on especificamos cuales son estas opciones y mostramos su modo de uso.
+
+\subsubsection{Nombre de Archivo de Entrada}
+Para poder utilizar el Ray Caster, es necesario especificar un nombre de archivo de entrada.  Los posibles nombres para las escenas de entradas son de la forma $*.sc$ y para utilizar el ray caster con un archivo de este tipo hay que especificarlo de la siguiente manera:
+
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-LARGO & DESTINO & ORIGEN & COMANDO & DATO & CRC \\
-\hline
-\end{tabular}
-\caption{Formato y header del paquete de datos}
-\label{formato_paquete_tabla}
+ \textbf{\texttt{-i [nombre de archivo]}}
 \end{center}
-\end{table}
 
-DEMO ITEMIZE
+Suponiendo un nombre de escena $scene1.sc$, una posible llamada al Ray Caster ser\'ia:
 
-\begin{itemize}
-	\item{COMANDO:} 0x04
-	\item{DATO:} 1 byte con el c\'odigo de error.
+\begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc}}
+\end{center}
 
-	El valor 0x00 indica un error de CRC en el paquete. 
-	En este caso, tambi\'en se agrega el paquete con el CRC err\'oneo y luego el CRC esperado.
+Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
+\subsubsection{Nombre de Archivo de Salida}
 
-	El valor 0x01 indica que el comando es desconocido para la placa destinataria.
+Al ejecutar el Ray Caster, se producirá un archivo de salida.  El usuario de la aplicación puede elegir un nombre en particular para el mismo.  Esto se hace utilizando la siguiente opci\'on:
 
-	Cualquier otro valor, indica un error que depende de la placa y el comando enviado.
-\end{itemize}
+\begin{center}
+  \textbf{\texttt{-o [nombre de archivo]}}
+\end{center}
 
+En caso de no especificar ning\'un nombre en particular para el mismo, el nombre del archivo de salida ser\'a el mismo que el archivo de entrada pero con extensi\'on $*.bmp$ o $*.png$.  Suponiendo que se requiere un nombre de archivo espec\'ifico, el uso de la opci\'on es la siguiente:
 
-DEMO IMG
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -o scene1.png}}
+\end{center}
 
-\begin{figure}
-\centering
-%%\includegraphics[scale=0.75]{daisychain_diagram.png}
-\caption{Diagrama general del m\'etodo daisy chain}
-\label{daisychain_diagram}
-\end{figure}
+El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'on.
 
+\subsubsection{Pixeles en la Imagen de Salida}
+Para indicar la cantidad de pixeles en la imagen de salida, se utiliza la opci\'on indicada a continuaci\'on:
+
+\begin{center}
+  \textbf{\texttt{-size <alto>x<ancho>}}
+\end{center}
+
+En caso de no especificar ninguna cantidad en particular, se utilizar\'a el tama\~no por defecto de 640x480 pixeles.  Un ejemplo de su uso ser\'ia:
+
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -size 800x600}}
+\end{center}
+
+Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
+
+\subsubsection{Campo de Visi\'on}
+Para indicar el \'angulo de apertura horizontal en grados, se va a utilizar:
+
+\begin{center}
+  \textbf{\texttt{-fov x}}
+\end{center}
+
+donde x es un n\'umero en grados.  En caso de no especificarse ning\'un \'angulo, el valor por defecto es de 60°.  Un ejemplo de su uso ser\'ia:
+
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -fov 80}}
+\end{center}
+
+Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
+
+\subsubsection{Asignaci\'on de Color}
+Para indicar el modo de asignaci\'on de color de las primitivas en la escena, hay que utilizar esta opci\'on:
+\begin{center}
+  \textbf{\texttt{-cm [random | ordered]}}
+\end{center}
+
+Donde $random$ es el valor por defecto e indica una asignaci\'on de colores de forma aleatoria y $ordered$, donde la asignaci\'on de color depender\'a del orden en que fueron descubiertas las primitivas.  El orden de asignaci\'on es: $violeta$, $azul$, $verde$, $amarillo$, $naranja$ y $rojo$.  Un ejemplo de su uso ser\'ia:
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -cm ordered}}
+\end{center}
+
+El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'on.
+
+\subsubsection{Variaci\'on del Color}
+
+Para indicar el modo de variaci\'on del color de los elementos de la escena, hay que utilizar esta opci\'on:
+
+\begin{center}
+  \textbf{\texttt{-cv [linear | log]}}
+\end{center}
+
+Donde $linear$ es el valor por defecto e indica que la variaci\'on del color es proporcional a la distancia a la cual la primitiva se encuentra de la posici\'on de la c\'amara y $log$, donde la variaci\'on del color es logar\'itmica.  Un ejemplo de su uso ser\'ia:
+
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -cv log}}
+\end{center}
+
+El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'on.
+
+\subsubsection{Tiempo de Ejecuci\'on}
+
+Para determinar el tiempo que demor\'o la ejecuci\'on de la aplicaci\'on para renderizar la escena indicada, se utiliza:
+
+\begin{center}
+  \textbf{\texttt{-time}}
+\end{center}
+
+Un ejemplo de su uso ser\'ia:
+
+ \begin{center}
+ \textbf{\texttt{cg\_tpe1 -i scene1.sc -time}}
+\end{center}
+El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'on.
+
+\section{Primitivas}
+
+Para modelar las escenas, se debieron modelar los distintos objetos presentes en la misma.  En este caso, las primitivas seleccionadas fueron: $tri\'angulo$, $cuadril\'atero$ y $esfera$.
+
+A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi\'o el diseño de las mismas.
+
+\subsection{Rayo}
+
+\subsubsection{Representaci\'on}
+
+\subsection{Tri\'angulo}
+\label{triangulo}
+\subsubsection{Representaci\'on}
+
+\subsubsection{Intersecci\'on}
+
+\subsection{Cuadril\'atero}
+
+\subsubsection{Representaci\'on}
+Para representar un cuadrilatero, se pens\'o en la utilizaci\'on de los cuatro puntos en el espacio.  Se eligi\'o esta representaci\'on debido a que, adem\'as de ser la m\'as simple, tambi\'en resulta \'util al momento de calcular los planos en los que se encuentra para poder determinar la intersecci\'on de los rayos con el mismo.
+
+En la siguiente secci\'on, se explicar\'a a grandes rasgos, c\'omo fue realizada la intersecci\'on del rayo con el cuadrila\'atero.
+\subsubsection{Intersecci\'on}
+Para determinar la intersecci\'on entre un cuadril\'atero y un rayo, se dividi\'o el c\'alculo en dos partes.
+
+La primera parte consistie en determinar si el rayo en cuesti\'on, intersecta al plano que contiene a la primitiva.  Para realizar esto, se calcula el $plano$ $contenedor$ y una vez obtenida la ecuaci\'on del tipo
+
+ \begin{center}
+ Ax + By + Cz + D = 0
+\end{center}
+
+En esta ecuaci\'on, se obtiene el $t$ para el cual el rayo intersecta al plano y en caso de no existir tal $t$, el rayo no intersecta a la primitiva, pero en caso de si existir, es necesario determinar si el punto de intersecci\'on entre el plano y el rayo pertenece a la primitiva.
+
+Para la segunda parte del c\'alculo, se supuso que cualquier cuadril\'atero son dos tri\'angulos.  Donde si el cuadril\'atero tiene por puntos $p1$, $p2$, $p3$ y $p4$, el primer tri\'angulo estar\'ia compuesto por $p1$, $p2$ y $p3$ y el segundo estar\'ia compuesto por $p1$, $p4$ y $p3$.
+Asumiendo esto, despues se utiliza una funci\'on que determina si un punto est\'a dentro de un tri\'angulo que fue explicada en la secci\'on \ref{triangulo}.
+
+\subsection{Esfera}
+
+\subsubsection{Representaci\'on}
+
+\subsubsection{Intersecci\'on}
+
+\section{Resultados Obtenidos}
+
+ACA VA UNA DESCRIPCI\'ON DE LAS ESCENAS Y LAS IM\'AGENES OBTENIDAS.
+
+\section{Comentarios Finales}
+
+\section{Bilbiograf\'ia}
 \end{document}
