@@ -30,6 +30,7 @@ class RayCasterThread extends Thread {
 	private CyclicBarrier cb;
 	private int colorMode = RayCaster.COLOR_MODE_ORDERED;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
+	static private List<Primitive> viewedObjects = new ArrayList<Primitive>();
 
 	//TODO: hacer el enum...
 	static private Color nextColor = null;
@@ -158,7 +159,6 @@ class RayCasterThread extends Thread {
 				return;
 			}
 
-			List<Primitive> viewedObjects = new ArrayList<Primitive>();
 			Primitive primitive = null;
 			Point3d origin = camera.getOrigin();
 			Point3d intersection = null, aux = null;
@@ -191,17 +191,19 @@ class RayCasterThread extends Thread {
 					}
 
 					if (primitive != null) {
-						// Check if this is the first time we see this object
-						if (viewedObjects.contains(primitive) == false) {
-							// Add it to the list and set the color
-							viewedObjects.add(primitive);
-							// ColorMode?
-							if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
-								// ColorMode -> ORDERED
-								primitive.setColor(getNextColor());
-							} else { 
-								// ColorMode -> RANDOM
-								primitive.setColor(getRandomColor());
+						synchronized (viewedObjects) {
+							// Check if this is the first time we see this object
+							if ( ! viewedObjects.contains(primitive) ) {
+								// Add it to the list and set the color
+								viewedObjects.add(primitive);
+								// ColorMode?
+								if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
+									// ColorMode -> ORDERED
+									primitive.setColor(getNextColor());
+								} else { 
+									// ColorMode -> RANDOM
+									primitive.setColor(getRandomColor());
+								}
 							}
 						}
 						// Get the color to be painted
