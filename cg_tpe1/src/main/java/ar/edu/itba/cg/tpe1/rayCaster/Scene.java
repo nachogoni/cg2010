@@ -79,7 +79,7 @@ public class Scene {
 		
 		if (scene.equals("scene1.sc")) {
 			
-			double a = Math.sqrt(Math.pow(2.5d, 2) + Math.pow(5d, 2));
+			double a = Math.sqrt(Math.pow(2.5d, 2) + Math.pow(2.5d, 2));
 			
 			// Pyramid of side 5
 			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, a, 0), new Point3d( 0, 0, a),  Color.RED));
