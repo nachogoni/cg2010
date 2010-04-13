@@ -167,7 +167,7 @@ public class App
     	
     	// Set colors for primitives
     	if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
-    		raycaster = new RayCaster(scene, camera, 1, colorMode, colorVar);
+    		raycaster = new RayCaster(scene, camera, 4, colorMode, colorVar);
     	} else {
     		raycaster = new RayCaster(scene, camera, 4, colorMode, colorVar);
     	}
