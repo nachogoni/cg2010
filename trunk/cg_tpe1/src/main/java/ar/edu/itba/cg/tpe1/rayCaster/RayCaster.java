@@ -32,15 +32,15 @@ public class RayCaster {
 	 * @param scene Scene representation to work with
 	 * @param camera Actual camera where the viewer is   
 	 * @param numThreads Number of threads to use
-	 * @param colorMode Color mode: Random or Ordered
+	 * @param colorProvider Color mode: Random or Ordered
 	 * @param colorVariation Color variation type: Linear or Log
 	 */
-	public RayCaster(Scene scene, Camera camera, int numThreads, int colorMode, int colorVariation) {
+	public RayCaster(Scene scene, Camera camera, int numThreads, IColorProvider colorProvider, int colorVariation) {
 		cb = new CyclicBarrier(numThreads+1);
 		threads = new ArrayList<RayCasterThread>(numThreads);
 		for (int i=0; i < numThreads; i++){
 			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this, cb);
-			rayCasterThread.setColorMode(colorMode);
+			rayCasterThread.setColorMode(colorProvider);
 			rayCasterThread.setColorVariation(colorVariation);
 			rayCasterThread.start();
 			threads.add(rayCasterThread);

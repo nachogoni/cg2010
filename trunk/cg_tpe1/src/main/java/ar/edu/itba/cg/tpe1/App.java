@@ -1,16 +1,22 @@
 package ar.edu.itba.cg.tpe1;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe1.rayCaster.Camera;
+import ar.edu.itba.cg.tpe1.rayCaster.IColorProvider;
 import ar.edu.itba.cg.tpe1.rayCaster.RayCaster;
 import ar.edu.itba.cg.tpe1.rayCaster.Scene;
+import ar.edu.itba.cg.tpe1.rayCaster.ColorProviders.CyclicColorProvider;
+import ar.edu.itba.cg.tpe1.rayCaster.ColorProviders.RandomColorProvider;
 
 /**
  * TPE1
@@ -18,13 +24,23 @@ import ar.edu.itba.cg.tpe1.rayCaster.Scene;
  */
 public class App 
 {
+
+	
     public static void main( String[] args )
     {
+    	List<Color> colors = new ArrayList<Color>();
+    	colors.add(Color.CYAN);
+    	colors.add(Color.BLUE);
+    	colors.add(Color.GREEN);
+    	colors.add(Color.YELLOW);
+    	colors.add(Color.ORANGE);
+    	colors.add(Color.RED);
+
 		int i = 0;
 		String arg;
 		boolean failed = false;
 		boolean time = false;
-		int colorMode = RayCaster.COLOR_MODE_RANDOM;
+		IColorProvider colorProvider = new RandomColorProvider();
 		int colorVar = RayCaster.COLOR_VARIATION_LINEAR;
     	String sceneName = null;
     	String fileName = null;
@@ -96,11 +112,9 @@ public class App
             	// Color mode
                 if (i < args.length) {
                 	arg = args[i++];
-                	if (arg.equals("random")) {
-                		colorMode = RayCaster.COLOR_MODE_RANDOM;
-                	} else if (arg.equals("ordered")) {
-	                	colorMode = RayCaster.COLOR_MODE_ORDERED;
-                	} else {
+                	if (arg.equals("ordered")) {
+                		colorProvider = new CyclicColorProvider(colors);
+                	} else if ( ! arg.equals("random")) {
                 		System.out.println("Invalid color mode");
                 	}
                 } else {
@@ -166,10 +180,10 @@ public class App
     	RayCaster raycaster = null;
     	
     	// Set colors for primitives
-    	if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
-    		raycaster = new RayCaster(scene, camera, 4, colorMode, colorVar);
+    	if ( colorProvider instanceof CyclicColorProvider) {
+    		raycaster = new RayCaster(scene, camera, 4, colorProvider, colorVar);
     	} else {
-    		raycaster = new RayCaster(scene, camera, 4, colorMode, colorVar);
+    		raycaster = new RayCaster(scene, camera, 4, colorProvider, colorVar);
     	}
     	
     	// Take start time
