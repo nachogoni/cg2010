@@ -17,10 +17,6 @@ public class Camera {
 	private double fov;
 	private Vector3d du;
 	private Vector3d dv;
-	private int width = 0;
-	private int height = 0;
-	private int xTranslation = 0;
-	private int yTranslation = 0;
 	
 	/**
 	 * Constructor for the Camera representation
@@ -38,8 +34,6 @@ public class Camera {
 		this.direction.normalize();
 		this.upVector = new Vector3(upVector, origin);
 		this.fov = fov;
-		this.width = width;
-		this.height = height;
 		this.FieldCenter = new Vector3d();
 		this.FieldCenter.sub(this.direction, this.origin);
 		this.FieldCenter.normalize();
@@ -51,8 +45,6 @@ public class Camera {
 		this.du = new Vector3();
 		this.du.cross(this.dv, this.direction);
 		this.du.normalize();
-		this.xTranslation = 0;
-		this.yTranslation = 0;
 	}
 	
 	/**

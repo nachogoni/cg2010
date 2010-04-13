@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -17,13 +18,6 @@ import ar.edu.itba.cg.tpe1.geometry.Ray;
  */
 class RayCasterThread extends Thread {
 
-	//TODO: pasarlo a los enums
-	public final int COLOR_MODE_RANDOM = 0;
-	public final int COLOR_MODE_ORDERED = 1;
-	//TODO: pasarlo a los enums
-	public final int COLOR_VARIATION_LINEAR = 0;
-	public final int COLOR_VARIATION_LOG = 1;
-	
 	private Scene scene;
 	private Camera camera;
 	private int fromX;
@@ -34,13 +28,14 @@ class RayCasterThread extends Thread {
 	private int height;
 	private RayCaster rayCaster;
 	private CyclicBarrier cb;
-	private int colorMode = COLOR_MODE_RANDOM;
-	private int colorVariation = COLOR_VARIATION_LINEAR;
+	private int colorMode = RayCaster.COLOR_MODE_ORDERED;
+	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 
 	//TODO: hacer el enum...
 	static private Color nextColor = null;
 	static private int nextOne = 0;
 	
+	static Random rnd = new Random();
 	
 	/**
 	 * Constructor for RayCasterThread class
@@ -164,7 +159,7 @@ class RayCasterThread extends Thread {
 			}
 
 			List<Primitive> viewedObjects = new ArrayList<Primitive>();
-			
+			Primitive primitive = null;
 			Point3d origin = camera.getOrigin();
 			Point3d intersection = null, aux = null;
 			Color color;
@@ -182,20 +177,35 @@ class RayCasterThread extends Thread {
 					// There is no intersection yet
 					intersection = null;
 					
+					// There is no primitive intersection
+					primitive = null;
+					
 					// Find intersection in scene with ray
 					for (Primitive p : scene.getList()) {
 						aux = p.intersect(ray);
 						if (aux != null && (intersection == null || (intersection != null &&
 							aux.distance(origin) < intersection.distance(origin)))) {
 							intersection = aux;
-							color = adjustColor(p.getColor(aux), intersection.distance(origin));
+							primitive = p;
 						}
 					}
 
-					if (colorMode == COLOR_MODE_ORDERED) {
+					if (primitive != null) {
 						// Check if this is the first time we see this object
-						// Add it to the list and set the next color in the list
-						// else get the color from the object and use it
+						if (viewedObjects.contains(primitive) == false) {
+							// Add it to the list and set the color
+							viewedObjects.add(primitive);
+							// ColorMode?
+							if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
+								// ColorMode -> ORDERED
+								primitive.setColor(getNextColor());
+							} else { 
+								// ColorMode -> RANDOM
+								primitive.setColor(getRandomColor());
+							}
+						}
+						// Get the color to be painted
+						color = adjustColor(primitive.getColor(intersection), intersection.distance(origin));
 					}
 					
 					// Set color to image(i, j)
@@ -233,9 +243,8 @@ class RayCasterThread extends Thread {
     	return color;
     }
 	
-    Color getNextColor() {
-    	
-    	//TODO: crear un iterador o un enum para los colores
+    private Color getNextColor() {
+    	//TODO: crear un iterador o un enum para los colores thread safety ;)
     	switch (nextOne) {
     	case 0:
     		// Violet
@@ -269,6 +278,10 @@ class RayCasterThread extends Thread {
     		nextOne = 0;
     	
     	return nextColor;
+    }
+    
+    private Color getRandomColor() {
+    	return new Color(rnd.nextFloat(), rnd.nextFloat(), rnd.nextFloat());
     }
     
 }

@@ -14,6 +14,13 @@ import ar.edu.itba.cg.tpe1.rayCaster.ImagePartitioners.HorizontalImagePartitione
  */
 public class RayCaster {
 
+	//TODO: pasarlo a los enums
+	public static final int COLOR_MODE_RANDOM = 0;
+	public static final int COLOR_MODE_ORDERED = 1;
+	//TODO: pasarlo a los enums
+	public static final int COLOR_VARIATION_LINEAR = 0;
+	public static final int COLOR_VARIATION_LOG = 1;
+	
 	private List<RayCasterThread> threads;
 	protected BufferedImage image = null;
 	private CyclicBarrier cb;
@@ -24,12 +31,17 @@ public class RayCaster {
 	 * 
 	 * @param scene Scene representation to work with
 	 * @param camera Actual camera where the viewer is   
+	 * @param numThreads Number of threads to use
+	 * @param colorMode Color mode: Random or Ordered
+	 * @param colorVariation Color variation type: Linear or Log
 	 */
-	public RayCaster(Scene scene, Camera camera, int numThreads) {
+	public RayCaster(Scene scene, Camera camera, int numThreads, int colorMode, int colorVariation) {
 		cb = new CyclicBarrier(numThreads+1);
 		threads = new ArrayList<RayCasterThread>(numThreads);
 		for (int i=0; i < numThreads; i++){
 			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this, cb);
+			rayCasterThread.setColorMode(colorMode);
+			rayCasterThread.setColorVariation(colorVariation);
 			rayCasterThread.start();
 			threads.add(rayCasterThread);
 		}
