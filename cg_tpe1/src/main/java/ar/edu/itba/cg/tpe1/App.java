@@ -24,8 +24,8 @@ public class App
 		String arg;
 		boolean failed = false;
 		boolean time = false;
-		boolean colorMode = false;
-		boolean colorVar = false;
+		int colorMode = RayCaster.COLOR_MODE_RANDOM;
+		int colorVar = RayCaster.COLOR_VARIATION_LINEAR;
     	String sceneName = null;
     	String fileName = null;
     	String format = "PNG";
@@ -97,9 +97,9 @@ public class App
                 if (i < args.length) {
                 	arg = args[i++];
                 	if (arg.equals("random")) {
-                		colorMode = false;
+                		colorMode = RayCaster.COLOR_MODE_RANDOM;
                 	} else if (arg.equals("ordered")) {
-	                	colorMode = true;
+	                	colorMode = RayCaster.COLOR_MODE_ORDERED;
                 	} else {
                 		System.out.println("Invalid color mode");
                 	}
@@ -112,9 +112,9 @@ public class App
                 if (i < args.length) {
                 	arg = args[i++];
                 	if (arg.equals("linear")) {
-                		colorVar = false;
+                		colorVar = RayCaster.COLOR_VARIATION_LINEAR;
                 	} else if (arg.equals("log")) {
-	                	colorVar = true;
+	                	colorVar = RayCaster.COLOR_VARIATION_LOG;
                 	} else {
                 		System.out.println("Invalid color variation");
                 	}
@@ -163,16 +163,13 @@ public class App
     	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), new Point3d(0d, 10d ,10d), 65, width, height);
     	
     	// Create rayCaster
-    	RayCaster raycaster = new RayCaster(scene, camera, 4);
-    	
-    	// Set color variation for primitives
-    	if (colorVar == true) {
-    		//TODO: Log
-    	}
+    	RayCaster raycaster = null;
     	
     	// Set colors for primitives
-    	if (colorMode == true) {
-    		//TODO: Ordered
+    	if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
+    		raycaster = new RayCaster(scene, camera, 1, colorMode, colorVar);
+    	} else {
+    		raycaster = new RayCaster(scene, camera, 4, colorMode, colorVar);
     	}
     	
     	// Take start time
