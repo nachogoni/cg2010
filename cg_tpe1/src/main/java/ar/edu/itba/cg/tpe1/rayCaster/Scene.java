@@ -78,18 +78,21 @@ public class Scene {
 		List<Primitive> list = new ArrayList<Primitive>();
 		
 		if (scene.equals("scene1.sc")) {
+			
+			double a = Math.sqrt(Math.pow(2.5d, 2) + Math.pow(5d, 2));
+			
 			// Pyramid of side 5
-			list.add(new Triangle(new Point3d(-5, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0, 5),  Color.RED));
-			list.add(new Triangle(new Point3d( 0, 0, 5),  new Point3d( 0, 5, 0), new Point3d( 5, 0, 0),  Color.BLUE));
-			list.add(new Triangle(new Point3d(-5, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0,-5),  Color.YELLOW));
-			list.add(new Triangle(new Point3d( 0, 0,-5),  new Point3d( 0, 5, 0), new Point3d( 5, 0, 0),  Color.GREEN));
+			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, a, 0), new Point3d( 0, 0, a),  Color.RED));
+			list.add(new Triangle(new Point3d( 0, 0, a),  new Point3d( 0, a, 0), new Point3d( a, 0, 0),  Color.BLUE));
+			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, a, 0), new Point3d( 0, 0,-a),  Color.YELLOW));
+			list.add(new Triangle(new Point3d( 0, 0,-a),  new Point3d( 0, a, 0), new Point3d( a, 0, 0),  Color.GREEN));
 			// Sphere of radius 1 at the top of the pyramid
-			list.add(new Sphere(new Point3d( 0, 6, 0), 1,  Color.ORANGE));
+			list.add(new Sphere(new Point3d( 0, a + 1, 0), 1,  Color.ORANGE));
 			// Spheres of radius 0.5 at pyramid vertexes
-			list.add(new Sphere(new Point3d( 8, 0, 0), 0.5f,  Color.CYAN));
-			list.add(new Sphere(new Point3d(-8, 0, 0), 0.5f,  Color.GRAY));
-			list.add(new Sphere(new Point3d( 0, 0, 8), 0.5f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d( 0, 0,-8), 0.5f,  Color.PINK));
+			list.add(new Sphere(new Point3d( a + 3, 0, 0), 0.5f,  Color.CYAN));
+			list.add(new Sphere(new Point3d(-(a + 3), 0, 0), 0.5f,  Color.GRAY));
+			list.add(new Sphere(new Point3d( 0, 0, a + 3), 0.5f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d( 0, 0,-(a + 3)), 0.5f,  Color.PINK));
 		} else if (scene.equals("scene2.sc")) {
 			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
 			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
@@ -107,13 +110,13 @@ public class Scene {
 		} else if (scene.equals("scene3.sc")) {
 			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
 			for (double x = -4d; x <= 4; x += 4) {
-				for (Primitive p : createCube(new Point3d(x,0,0), 2, Color.BLUE)) {
+				for (Primitive p : createCube(new Point3d(x,1,0), 2, Color.BLUE)) {
 					list.add(p);
 				}
 			}
 			// 2 spheres of radius 1 between the cubes
-			list.add(new Sphere(new Point3d( -2, 0, 0), 1f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d(  2, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d( -2, 1, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d(  2, 1, 0), 1f,  Color.MAGENTA));
 		} else if (scene.equals("scene4.sc")) {
 			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
 			for (double x = -4d; x <= 4; x += 4) {
