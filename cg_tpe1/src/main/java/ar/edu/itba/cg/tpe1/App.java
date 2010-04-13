@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
@@ -29,11 +31,11 @@ public class App
     public static void main( String[] args )
     {
     	List<Color> colors = new ArrayList<Color>();
-    	colors.add(Color.CYAN);
+    	colors.add(new Color(143, 0, 255));
     	colors.add(Color.BLUE);
     	colors.add(Color.GREEN);
     	colors.add(Color.YELLOW);
-    	colors.add(Color.ORANGE);
+    	colors.add(new Color(255, 140, 0));
     	colors.add(Color.RED);
 
 		int i = 0;
@@ -47,10 +49,11 @@ public class App
     	String format = "PNG";
     	BufferedImage image;
     	File output = null;
-    	int width = 800;
-    	int height = 600;
+    	int width = 640;
+    	int height = 480;
     	long start = 0;
     	long stop = 0;
+    	int fov = 60;
     	
         //Parameters parsing
         while (!failed && i < args.length && args[i].startsWith("-")) {
@@ -85,27 +88,39 @@ public class App
                     System.out.println(arg + " requires a scene name");
                     failed = true;
                 }
-            } else if (arg.equals("-r")) {
-            	// Resolution
-            	if ((i+1) < args.length) {
+            } else if (arg.equals("-size")) {
+                // Resolution
+                if (i < args.length) {
+                    arg = args[i++];
+                    // WidthxHeight
+                    Pattern dimensionsPattern = Pattern.compile("(\\d+)x(\\d+)");
+                    Matcher m = dimensionsPattern.matcher(arg);
+                    if ( ! m.find() ) {
+                        System.out.println("'" + arg + "' is an invalid image width");
+                        failed = true;
+                    } else {
+                        width = Integer.parseInt(m.group(1));
+                        height = Integer.parseInt(m.group(2));
+                    }
+                } else {
+	                System.out.println(arg + " requires width and height");
+	                failed = true;
+                }
+            } else if (arg.equals("-fov")) {
+            	// Aperture size
+            	if (i < args.length) {
             		arg = args[i++];
-            		// Width
-            		if (arg.matches("[0-9]+") == false) {
-            			System.out.println("'" + arg + "' is an invalid image width");
+            		// Angle
+            		Pattern anglePattern = Pattern.compile("(\\d+)");
+            		Matcher m = anglePattern.matcher(arg);
+            		if ( ! m.find() ) {
+            			System.out.println("'" + arg + "' is an invalid aperture angle");
             			failed = true;
             		} else {
-            			width = (new Integer(arg)).intValue();
-            		}
-            		arg = args[i++];
-            		// Height
-            		if (arg.matches("[0-9]+") == false) {
-            			System.out.println("'" + arg + "' is an invalid image height");
-            			failed = true;
-            		} else {
-            			height = (new Integer(arg)).intValue();
+            			fov = Integer.parseInt(m.group(1));
             		}
             	} else {
-            		System.out.println(arg + " requires width and heigh");
+            		System.out.println(arg + " requires an aperture angle");
             		failed = true;
             	}
             } else if (arg.equals("-cm")) {
@@ -163,7 +178,6 @@ public class App
     	try {
     		output = new File(fileName);
 		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -174,14 +188,14 @@ public class App
     	Scene scene = new Scene(sceneName);
     	
     	// Create a camera
-    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), new Point3d(0d, 10d ,10d), 65, width, height);
+    	Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), new Point3d(0d, 10d ,10d), fov, width, height);
     	
     	// Create rayCaster
     	RayCaster raycaster = null;
     	
     	// Set colors for primitives
     	if ( colorProvider instanceof CyclicColorProvider) {
-    		raycaster = new RayCaster(scene, camera, 4, colorProvider, colorVar);
+    		raycaster = new RayCaster(scene, camera, 1, colorProvider, colorVar);
     	} else {
     		raycaster = new RayCaster(scene, camera, 4, colorProvider, colorVar);
     	}
@@ -203,7 +217,6 @@ public class App
     	try {
 			ImageIO.write(image, format, output);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -218,7 +231,7 @@ public class App
     }
     
 	public static void showUsage() {
-		System.out.println("Usage: App -i sceneX.sc [-o output] [-time] [-cm [random|ordered]] [-cm [linear|log]] [-r width height] [-usage]");
+		System.out.println("Usage: App -i sceneX.sc [-o output] [-time] [-cm [random|ordered]] [-cm [linear|log]] [-size widthxheight] [-fov angle] [-usage]");
 		return;
 	}
 }

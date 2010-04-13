@@ -82,17 +82,17 @@ public class Scene {
 			double a = Math.sqrt(Math.pow(2.5d, 2) + Math.pow(2.5d, 2));
 			
 			// Pyramid of side 5
-			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, a, 0), new Point3d( 0, 0, a),  Color.RED));
-			list.add(new Triangle(new Point3d( 0, 0, a),  new Point3d( 0, a, 0), new Point3d( a, 0, 0),  Color.BLUE));
-			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, a, 0), new Point3d( 0, 0,-a),  Color.YELLOW));
-			list.add(new Triangle(new Point3d( 0, 0,-a),  new Point3d( 0, a, 0), new Point3d( a, 0, 0),  Color.GREEN));
+			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0, a),  Color.RED));
+			list.add(new Triangle(new Point3d( 0, 0, a),  new Point3d( 0, 5, 0), new Point3d( a, 0, 0),  Color.BLUE));
+			list.add(new Triangle(new Point3d(-a+0.01, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0,-a),  Color.YELLOW));
+			list.add(new Triangle(new Point3d( 0, 0,-a),  new Point3d( 0, 5, 0), new Point3d( a-0.01, 0, 0),  Color.GREEN));
 			// Sphere of radius 1 at the top of the pyramid
-			list.add(new Sphere(new Point3d( 0, a + 1, 0), 1,  Color.ORANGE));
+			list.add(new Sphere(new Point3d( 0, 6, 0), 1,  Color.ORANGE));
 			// Spheres of radius 0.5 at pyramid vertexes
-			list.add(new Sphere(new Point3d( a + 3, 0, 0), 0.5f,  Color.CYAN));
-			list.add(new Sphere(new Point3d(-(a + 3), 0, 0), 0.5f,  Color.GRAY));
-			list.add(new Sphere(new Point3d( 0, 0, a + 3), 0.5f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d( 0, 0,-(a + 3)), 0.5f,  Color.PINK));
+			list.add(new Sphere(new Point3d( a + 3.5, 0, 0), 0.5f,  Color.CYAN));
+			list.add(new Sphere(new Point3d(-(a + 3.5), 0, 0), 0.5f,  Color.GRAY));
+			list.add(new Sphere(new Point3d( 0, 0, a + 3.5), 0.5f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d( 0, 0,-(a + 3.5)), 0.5f,  Color.PINK));
 		} else if (scene.equals("scene2.sc")) {
 			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
 			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
@@ -108,28 +108,34 @@ public class Scene {
 				}
 			}
 		} else if (scene.equals("scene3.sc")) {
-			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
-			for (double x = -4d; x <= 4; x += 4) {
+			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis over the y=0 surface.
+			// Ambiguous scene:
+			/*Escena 3 (scene3.sc): deberá contener de forma intercalada 3 cubos de lado 2 y
+			dos esferas de radio 1 alineados de manera centrada sobre el eje x. Las bases de
+			los cubos y las esferas deben estar “apoyadas” sobre el plano y = 0. La separación
+			entre las figuras, esto es, el “hueco de aire” entre ellas es de 0.5. La escena debe
+			estar centrada a lo largo del eje x. Los centros de las figuras deben coincidir con el
+			plano z = 0.
+			*/
+			for (double x = -5d; x <= 5; x += 5) {
 				for (Primitive p : createCube(new Point3d(x,1,0), 2, Color.BLUE)) {
 					list.add(p);
 				}
 			}
 			// 2 spheres of radius 1 between the cubes
-			list.add(new Sphere(new Point3d( -2, 1, 0), 1f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d(  2, 1, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d( -2.5, 1, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d(  2.5, 1, 0), 1f,  Color.MAGENTA));
 		} else if (scene.equals("scene4.sc")) {
 			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
-			for (double x = -4d; x <= 4; x += 4) {
+			for (double x = -5d; x <= 5; x += 5) {
 				for (Primitive p : createCubeT(new Point3d(x,0,0), 2, Color.DARK_GRAY)) {
 					list.add(p);
 				}
 			}
 			// 2 spheres of radius 1 between the cubes
-			list.add(new Sphere(new Point3d( -2, 0, 0), 1f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d(  2, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d( -2.5, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere(new Point3d(  2.5, 0, 0), 1f,  Color.MAGENTA));
 		} else if (scene.equals("scene5.sc")) {
-			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
-			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
 			double spheres=11.0;
 			double distance=0.5;
 			double radius=0.5;

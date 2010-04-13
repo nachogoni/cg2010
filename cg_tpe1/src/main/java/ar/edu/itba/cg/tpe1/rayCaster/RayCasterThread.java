@@ -212,8 +212,13 @@ class RayCasterThread extends Thread {
         //float[] hsb = new float[3];
     	Color ret=null;
         //TODO: ver como queda con los 3 canales
-
-    	if (distance >= farthestDistance) {
+		
+/*    	distance /= 10;
+		
+		if (distance < 1)
+			distance = 1;
+*/
+		if (distance >= farthestDistance) {
     		ret = new Color(0,0,0);    		
     	} else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
 			ret= new Color((int)(-color.getRed()/farthestDistance + color.getRed()),
