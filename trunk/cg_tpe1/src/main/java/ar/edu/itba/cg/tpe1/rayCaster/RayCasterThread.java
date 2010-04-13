@@ -29,6 +29,7 @@ class RayCasterThread extends Thread {
 	private CyclicBarrier cb;
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
+	static private double farthestDistance=20.0;
 	static private List<Primitive> viewedObjects = new ArrayList<Primitive>();
 
 	/**
@@ -209,9 +210,21 @@ class RayCasterThread extends Thread {
 	
     Color adjustColor(Color color, double distance) {
         //float[] hsb = new float[3];
-
+    	Color ret=null;
         //TODO: ver como queda con los 3 canales
 
+    	if (distance >= farthestDistance) {
+    		ret = new Color(0,0,0);    		
+    	} else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
+			ret= new Color((int)(-color.getRed()/farthestDistance + color.getRed()),
+					(int)(-color.getGreen()/farthestDistance + color.getGreen()),
+					(int)(-color.getBlue()/farthestDistance + color.getBlue()));    			
+    	} else {
+    		ret= new Color((color.getRed()/255) * (float)(1f / distance),
+                    (color.getGreen()/255) * (float)(1f / distance),
+                    (color.getBlue()/255) * (float)(1f / distance));    		
+    	}
+    	
 /*    	return new Color((color.getRed()/255) * (float)(1f / distance),
                         (color.getGreen()/255) * (float)(1f / distance),
                         (color.getBlue()/255) * (float)(1f / distance));*/
