@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -28,16 +27,10 @@ class RayCasterThread extends Thread {
 	private int height;
 	private RayCaster rayCaster;
 	private CyclicBarrier cb;
-	private int colorMode = RayCaster.COLOR_MODE_ORDERED;
+	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private List<Primitive> viewedObjects = new ArrayList<Primitive>();
 
-	//TODO: hacer el enum...
-	static private Color nextColor = null;
-	static private int nextOne = 0;
-	
-	static Random rnd = new Random();
-	
 	/**
 	 * Constructor for RayCasterThread class
 	 * 
@@ -58,17 +51,17 @@ class RayCasterThread extends Thread {
 	 * 
 	 * @return Color mode
 	 */
-	public int getColorMode() {
+	public IColorProvider getColorMode() {
 		return colorMode;
 	}
 	
 	/**
 	 * Set the color mode for the ray caster
 	 * 
-	 * @param colorMode Color mode to be set to the ray caster
+	 * @param colorProvider Color mode to be set to the ray caster
 	 */
-	public void setColorMode(int colorMode) {
-		this.colorMode = colorMode;
+	public void setColorMode(IColorProvider colorProvider) {
+		this.colorMode = colorProvider;
 	}
 	
 	/**
@@ -196,14 +189,7 @@ class RayCasterThread extends Thread {
 							if ( ! viewedObjects.contains(primitive) ) {
 								// Add it to the list and set the color
 								viewedObjects.add(primitive);
-								// ColorMode?
-								if (colorMode == RayCaster.COLOR_MODE_ORDERED) {
-									// ColorMode -> ORDERED
-									primitive.setColor(getNextColor());
-								} else { 
-									// ColorMode -> RANDOM
-									primitive.setColor(getRandomColor());
-								}
+								primitive.setColor(colorMode.getNextColor());
 							}
 						}
 						// Get the color to be painted
@@ -245,45 +231,4 @@ class RayCasterThread extends Thread {
     	return color;
     }
 	
-    private Color getNextColor() {
-    	//TODO: crear un iterador o un enum para los colores thread safety ;)
-    	switch (nextOne) {
-    	case 0:
-    		// Violet
-    		nextColor = Color.CYAN;
-    		break;
-    	case 1:
-    		// Blue
-    		nextColor = Color.BLUE;
-    		break;
-    	case 2:
-    		// Green
-    		nextColor = Color.GREEN;
-    		break;
-    	case 3:
-    		// Yellow
-    		nextColor = Color.YELLOW;
-    		break;
-    	case 4:
-    		// Orange
-    		nextColor = Color.ORANGE;
-    		break;
-    	case 5:
-    		// Red
-    		nextColor = Color.RED;
-    		break;
-    	}
-    	
-    	nextOne++;
-    	
-    	if (nextOne == 6)
-    		nextOne = 0;
-    	
-    	return nextColor;
-    }
-    
-    private Color getRandomColor() {
-    	return new Color(rnd.nextFloat(), rnd.nextFloat(), rnd.nextFloat());
-    }
-    
 }
