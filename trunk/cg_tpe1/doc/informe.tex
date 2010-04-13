@@ -236,7 +236,73 @@ Asumiendo esto, despues se utiliza una funci\'on que determina si un punto est\'
 
 \section{Resultados Obtenidos}
 
-ACA VA UNA DESCRIPCI\'ON DE LAS ESCENAS Y LAS IM\'AGENES OBTENIDAS.
+El motor de Ray Casting tiene la capacidad de renderizar cualquier escena que esté cargada en memoria.  En esta implementaci\'on, se decidi\'o mostrar la capacidad del motor mediante la renderizaci\'on de seis escenas.  Tres de ellas, propuestas por la c\'atedra y las otras tres, propuestas por el grupo desarrollador.  A continuaci\'on, ense\~naremos cada una de ellas con una breve descripci\'on.
+
+\subsection{Primera Escena: \texttt{scene1.sc}}
+Esta escena contiene una pir\'amide rectangular, cuyo lado de la base y su altura tiene una longitud de 5.  La base de la misma est\'a centrada en el origen, en su v\'ertice superior tiene posicionada en perfecto equilibrio una esfera de radio 1 y a una distacia de 3, en cada uno de los v\'ertices, tiene una esfera de radio 0.5. Ver \textbf{Figura \ref{fig:1}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene1.png}
+ % scene1.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Escena n\'umero 1, tri\'angulo y esferas.}
+ \label{fig:1}
+\end{figure}
+
+\subsection{Segunda Escena: \texttt{scene2.sc}}
+Esta escena contiene 64 esferas de radio 0.5 dispuestas en forma de cubo.  Esto es, 4 esferas sobre el eje $x$, 4 sobre el eje $y$ y 4 sobre el eje $z$ formando un cubo de 64 esferas. Cada una de ellas debe estar a una distacia de 1.5 de la otra y el centro de la figura debe estar en el centro del sistema de coordenadas. Ver \textbf{Figura \ref{fig:2}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene2.png}
+ % scene1.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Escena n\'umero 2, esferas formando un cubo.}
+ \label{fig:2}
+\end{figure}
+
+\subsection{Tercera Escena: \texttt{scene3.sc}}
+Esta escena contiene, de forma intercalada, 3 cubos de lados 2 y dos esferas de radio 1 alineados de manera centrada sobre el eje $x$.  Las bases de los cubos y las esferas est\'an apoyadas sobre el eje $y=0$ y la separaci\'on entre las figuras es de 0.5. Ver \textbf{Figura \ref{fig:3}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene3.png}
+ % scene3.png: 800x600 pixel, 72dpi, 28.22x21.17 cm, bb=0 0 800 600
+ \caption{Escena n\'umero 3, cubos y esferas intercaladas.}
+ \label{fig:3}
+\end{figure}
+
+\subsection{Cuarta Escena: \texttt{scene4.sc}}
+Esta escena es similar a la tercera escena, pero la distancia entre las primitivas es 0.  Ver \textbf{Figura \ref{fig:4}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene4.png}
+ % scene3.png: 800x600 pixel, 72dpi, 28.22x21.17 cm, bb=0 0 800 600
+ \caption{Escena n\'umero 4, cubos y esferas intercaladas.}
+ \label{fig:4}
+\end{figure}
+
+\subsection{Quinta Escena: \texttt{scene5.sc}}
+Esta escena contiene 11 esferas alineadas a lo largo del eje $x$.  Todas ellas a una distancia de 0.5 y con un radio de 0.5. Ver \textbf{Figura \ref{fig:5}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene5.png}
+ % scene3.png: 800x600 pixel, 72dpi, 28.22x21.17 cm, bb=0 0 800 600
+ \caption{Escena n\'umero 5, 11 esferas alineadas.}
+ \label{fig:5}
+\end{figure}
+
+\subsection{Sexta Escena: \texttt{scene6.sc}}
+Esta escena contiene 20 tri\'angulos que forman una estrella con centro en el centro del sistema de coordenadas.  Ver \textbf{Figura \ref{fig:6}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene6.png}
+ % scene3.png: 800x600 pixel, 72dpi, 28.22x21.17 cm, bb=0 0 800 600
+ \caption{Escena n\'umero 6, 20 tri\'angulos formando una estrella.}
+ \label{fig:6}
+\end{figure}
 
 \section{Comentarios Finales}
 
