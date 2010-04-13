@@ -156,16 +156,6 @@ public class App
 		// Set output format
 		format = fileName.substring(fileName.length() - 3, fileName.length()).toUpperCase();
     	
-		// Set color variation for primitives
-		if (colorVar == true) {
-			//TODO: Log
-		}
-		
-    	// Set colors for primitives
-		if (colorMode == true) {
-			//TODO: Ordered
-		}
-		
     	// Create an scene
     	Scene scene = new Scene(sceneName);
     	
@@ -174,6 +164,16 @@ public class App
     	
     	// Create rayCaster
     	RayCaster raycaster = new RayCaster(scene, camera, 4);
+    	
+    	// Set color variation for primitives
+    	if (colorVar == true) {
+    		//TODO: Log
+    	}
+    	
+    	// Set colors for primitives
+    	if (colorMode == true) {
+    		//TODO: Ordered
+    	}
     	
     	// Take start time
     	if (time == true) {

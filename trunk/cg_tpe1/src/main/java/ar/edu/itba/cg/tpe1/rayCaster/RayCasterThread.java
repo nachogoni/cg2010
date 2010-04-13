@@ -2,6 +2,8 @@ package ar.edu.itba.cg.tpe1.rayCaster;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -15,6 +17,13 @@ import ar.edu.itba.cg.tpe1.geometry.Ray;
  */
 class RayCasterThread extends Thread {
 
+	//TODO: pasarlo a los enums
+	public final int COLOR_MODE_RANDOM = 0;
+	public final int COLOR_MODE_ORDERED = 1;
+	//TODO: pasarlo a los enums
+	public final int COLOR_VARIATION_LINEAR = 0;
+	public final int COLOR_VARIATION_LOG = 1;
+	
 	private Scene scene;
 	private Camera camera;
 	private int fromX;
@@ -25,7 +34,14 @@ class RayCasterThread extends Thread {
 	private int height;
 	private RayCaster rayCaster;
 	private CyclicBarrier cb;
+	private int colorMode = COLOR_MODE_RANDOM;
+	private int colorVariation = COLOR_VARIATION_LINEAR;
 
+	//TODO: hacer el enum...
+	static private Color nextColor = null;
+	static private int nextOne = 0;
+	
+	
 	/**
 	 * Constructor for RayCasterThread class
 	 * 
@@ -41,6 +57,42 @@ class RayCasterThread extends Thread {
 		this.rayCaster = rayCaster;
 	}
 
+	/**
+	 * Get the color mode for the ray caster
+	 * 
+	 * @return Color mode
+	 */
+	public int getColorMode() {
+		return colorMode;
+	}
+	
+	/**
+	 * Set the color mode for the ray caster
+	 * 
+	 * @param colorMode Color mode to be set to the ray caster
+	 */
+	public void setColorMode(int colorMode) {
+		this.colorMode = colorMode;
+	}
+	
+	/**
+	 * Get color variation set to the ray caster
+	 * 
+	 * @return Color variation type
+	 */
+	public int getColorVariation() {
+		return colorVariation;
+	}
+	
+	/**
+	 * Set the color variation used by the ray caster
+	 * 
+	 * @param colorVariation Color variation type
+	 */
+	public void setColorVariation(int colorVariation) {
+		this.colorVariation = colorVariation;
+	}
+	
 	/**
 	 * Set image portion to work with
 	 * 
@@ -111,6 +163,8 @@ class RayCasterThread extends Thread {
 				return;
 			}
 
+			List<Primitive> viewedObjects = new ArrayList<Primitive>();
+			
 			Point3d origin = camera.getOrigin();
 			Point3d intersection = null, aux = null;
 			Color color;
@@ -138,9 +192,11 @@ class RayCasterThread extends Thread {
 						}
 					}
 
-					//if (mode == ) {
+					if (colorMode == COLOR_MODE_ORDERED) {
 						// Check if this is the first time we see this object
-					//}
+						// Add it to the list and set the next color in the list
+						// else get the color from the object and use it
+					}
 					
 					// Set color to image(i, j)
 					synchronized (rayCaster.image) {
@@ -177,4 +233,42 @@ class RayCasterThread extends Thread {
     	return color;
     }
 	
+    Color getNextColor() {
+    	
+    	//TODO: crear un iterador o un enum para los colores
+    	switch (nextOne) {
+    	case 0:
+    		// Violet
+    		nextColor = Color.CYAN;
+    		break;
+    	case 1:
+    		// Blue
+    		nextColor = Color.BLUE;
+    		break;
+    	case 2:
+    		// Green
+    		nextColor = Color.GREEN;
+    		break;
+    	case 3:
+    		// Yellow
+    		nextColor = Color.YELLOW;
+    		break;
+    	case 4:
+    		// Orange
+    		nextColor = Color.ORANGE;
+    		break;
+    	case 5:
+    		// Red
+    		nextColor = Color.RED;
+    		break;
+    	}
+    	
+    	nextOne++;
+    	
+    	if (nextOne == 6)
+    		nextOne = 0;
+    	
+    	return nextColor;
+    }
+    
 }
