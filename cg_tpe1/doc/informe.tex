@@ -219,7 +219,27 @@ A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi
 \label{triangulo}
 \subsubsection{Representaci\'on}
 
+Hay muchas formas de representar un tri\'angulo: 3 puntos, 3 vectores, entre otras. Nos pareci\'o que la m\'as
+intuitiva era representarlo como 3 puntos en el espacio, y eso hicimos. Pero tres puntos en el espacio pueden no
+formar un triángulo, por lo que se corrobor\'o que lo hagan. \'Esto consiste en obtener 2 de los 3 vectores de lado
+( por ejemplo, el vector que une p1 y p2 y el que une p2 y p3) y el vector normal al plano que pasa por p1 y que ellos definen.
+Entonces si el vector normal es nulo, los tres puntos no forman un tri\'angulo.
+
 \subsubsection{Intersecci\'on}
+Para determinar la intersecci\'on de un tri\'angulo(p1,p2,p3) y un rayo (r0,r1) se implement\'o el siguiente algoritmo:
+
+Primero, se obtiene el vector direcci\'on del rayo y se hace el producto escalar con el vector normal del tri\'angulo. Si \'este
+producto es muy cercano a 0 ( una tolerancia predefinida ), entonces el rayo est\'a sobre un plano paralelo(o el mismo) al del tri\'angulo.
+Para saber si est\'a en el mismo plano o en uno paralelo, se calcula el producto escalar entre el vector normal y el vector que une
+el punto p1 del triángulo y el punto de origen del rayo r0. Entonces, si \'este producto escalar es muy cercano a cero, entonces se toma
+que el rayo y el tri\'angulo est\'an sobre el mismo plano, caso contrario, est\'an en planos paralelos. El cociente entre estos dos productos escalares
+determina si el rayo va hacia el plano o no dependiendo si es mayor a cero o no.
+
+Una vez que se sabe que el plano determinado por el tri\'angulo y el rayo intersectan, se busca ver si el punto donde intersectan est\'a dentro
+del tri\'angulo o no. El punto de intersecci\'on est\'a determinado por la suma entre el punto de origen del rayo r0 y el vector direcci\'on del rayo
+escalado al cociente de los productos escalares mencionado anteriormente. Finalmente, se calculan determinantes para saber si el punto est\'a dentro
+de la figura del tri\'angulo o no.
+
 
 \subsection{Cuadril\'atero}
 
@@ -321,3 +341,5 @@ Esta escena contiene 20 tri\'angulos que forman una estrella con centro en el ce
 
 \section{Bilbiograf\'ia}
 \end{document}
+
+
