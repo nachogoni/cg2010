@@ -152,6 +152,9 @@ public class Scene {
 			double distances [] = new double[]{1,2,4};
 			double depths [] = new double[]{-2,-1,0};
 			list.add(new Star(new Point3d(), Math.PI/2, distances, depths, arrayList));
+		} else if (scene.equals("scene7.sc")){
+			list.add(new Triangle(new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
+					new Point3d( 5, 5, -10),  Color.WHITE));
 		} else {
 			// Another options?
 		}
@@ -181,12 +184,12 @@ public class Scene {
 		Point3d g = new Point3d( center.x + side / 2, center.y - side / 2, center.z + side / 2);
 		Point3d h = new Point3d( center.x - side / 2, center.y - side / 2, center.z + side / 2);
 		
-		list.add(new Quadrilateral( a, b, c, d,  color));
-		list.add(new Quadrilateral( a, b, f, e,  color));
-		list.add(new Quadrilateral( a, d, h, e,  color));
-		list.add(new Quadrilateral( c, b, f, g,  color));
-		list.add(new Quadrilateral( d, c, g, h,  color));
-		list.add(new Quadrilateral( e, f, g, h,  color));
+		list.add(new Quadrilateral( a, b, f, e,  Color.CYAN));
+		list.add(new Quadrilateral( a, d, h, e,  Color.GREEN));
+		list.add(new Quadrilateral( c, b, f, g,  Color.PINK));
+		list.add(new Quadrilateral( d, c, g, h,  Color.ORANGE));
+		list.add(new Quadrilateral( e, f, g, h,  Color.ORANGE));
+		list.add(new Quadrilateral( a, b, c, d,  Color.BLUE));
 		
 		return list;
 	}
@@ -213,8 +216,6 @@ public class Scene {
 		Point3d g = new Point3d( center.x + side / 2, center.y - side / 2, center.z + side / 2);
 		Point3d h = new Point3d( center.x - side / 2, center.y - side / 2, center.z + side / 2);
 		
-		list.add(new Triangle( a, b, c,  new Color(255,255,255)));
-		list.add(new Triangle( a, c, d,  new Color(  0,  0,128)));
 		list.add(new Triangle( a, b, f,  new Color(  0,  0,255)));
 		list.add(new Triangle( b, a, e,  new Color(  0,128,  0)));
 		list.add(new Triangle( e, d, h,  new Color(  0,128,128)));
@@ -225,6 +226,8 @@ public class Scene {
 		list.add(new Triangle( d, g, h,  new Color(128,128,  0)));
 		list.add(new Triangle( e, f, g,  new Color(128,128,128)));
 		list.add(new Triangle( e, g, h,  new Color(128,128,255)));
+		list.add(new Triangle( a, b, c,  new Color(255,255,255)));
+		list.add(new Triangle( a, c, d,  new Color(  0,  0,128)));
 		
 		return list;
 	}
