@@ -215,6 +215,25 @@ A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi
 
 \subsubsection{Representaci\'on}
 
+La representaci\'on de un rayo consiste en un punto de origen y un punto de destino.  Considerando que un rayo es de la forma:
+
+\begin{center}
+  \begin{equation}
+    Ray (t) = R_0 + t * R_d = (x_0, y_0, z_0) + t * (x_d, y_d, z_d)
+  \end{equation}
+\end{center}
+
+Donde $R_0$ representa el punto donde se origina el rayo y $R_d$ es la direcci\'on del mismo.  Para calcular la direcci\'on del rayo realizamos la resta entre el destino y el inicio del mismo:
+
+\begin{center}
+  \begin{equation}
+   R_d = (x_{destino} - x_{origen}, y_{destino} - y_{origen}, z_{destino} - z_{origen})
+  \end{equation}
+
+\end{center}
+
+Al representar el rayo de esta forma, se simplifica la prueba de intersecci\'on entre el rayo y el plano que incluye a la figura, ya que si existe un $t$ tal que se intersecten y adem\'as $t>0$ entonces el rayo intersectar\'a a la figura.
+
 \subsection{Tri\'angulo}
 \label{triangulo}
 \subsubsection{Representaci\'on}
@@ -363,9 +382,13 @@ Un \'unico tri\'angulo con una punta cerca de la c\'amara y las otras en forma l
 La utilizaci\'on del Ray Caster para representar una escena resulta muy conveniente por su simplicidad, aunque no provee una soluci\'on real
 si las necesidades de respuesta solicitan im\'agenes rendereadas en tiempo real.
 
+Luego de dise\~nar y desarrollar el motor de Ray Casting, podemos concluir que el motor es \'util para el problema de visi\'on de objetos en una escena desde un punto dado.  Utilizando este motor, es posible determinar si un objeto es visible desde donde est\'a la c\'amara o si el mismo es obstruido por otro objeto en el medio.
+
 Durante la implementaci\'on, fuimos agregando optimizaciones tempranas para aumentar la performance. La utilizaci\'on de \emph{Threads} y
 particionado de la im\'agen disminuy\'o en gran medida el tiempo de renderizaci\'on, aunque con ciertos comandos, tuvo que ser deshabilitada dicha
 optimizaci\'on para cumplir con los requerimientos del problema.
+
+Adem\'as, se nos ocurri\'o como una posibilidad, implementar el motor de Ray Casting para HTML5.  Esto es debido a que es una nueva tecnolog\'ia donde no hay nada similar implementado y se podr\'ia, de manera simple, obtener un motor 3D de reconocimiento de primitivas gracias al conocimiento adquirido en el desarrollo de este trabajo pr\'actico.
 
 \end{document}
 
