@@ -305,7 +305,7 @@ Esta escena contiene, de forma intercalada, 3 cubos de lados 2 y dos esferas de 
 \end{figure}
 
 \subsection{Cuarta Escena: \texttt{scene4.sc}}
-Esta escena es similar a la tercera escena, pero la distancia entre las primitivas es 0.  Ver \textbf{Figura \ref{fig:4}}.
+Esta escena es similar a la tercera escena, pero los cubos estan formados por tri\'angulos en vez de cuadril\'ateros.  Ver \textbf{Figura \ref{fig:4}}.
 
 \begin{figure}[h]
  \centering
@@ -337,9 +337,33 @@ Esta escena contiene 20 tri\'angulos que forman una estrella con centro en el ce
  \label{fig:6}
 \end{figure}
 
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene6.png}
+ % scene3.png: 800x600 pixel, 72dpi, 28.22x21.17 cm, bb=0 0 800 600
+ \caption{Escena n\'umero 6, 20 tri\'angulos formando una estrella.}
+ \label{fig:6}
+\end{figure}
+
+\subsection{Septima Escena: \texttt{scene7.sc}}
+Un \'unico tri\'angulo con una punta cerca de la c\'amara y las otras en forma lejana para ver la variaci\'on de color.  Ver \textbf{Figura \ref{fig:7}}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=320pt,keepaspectratio=true]{../scene7.png}
+ \caption{Escena n\'umero 7, un \'unico tri\'angulo que muestra la variaci\'on de color.}
+ \label{fig:7}
+\end{figure}
+
 \section{Comentarios Finales}
 
-\section{Bilbiograf\'ia}
+La utilizaci\'on del Ray Caster para representar una escena resulta muy conveniente por su simplicidad, aunque no provee una soluci\'on real
+si las necesidades de respuesta solicitan im\'agenes rendereadas en tiempo real.
+
+Durante la implementaci\'on, fuimos agregando optimizaciones tempranas para aumentar la performance. La utilizaci\'on de \emph{Threads} y
+particionado de la im\'agen disminuy\'o en gran medida el tiempo de renderizaci\'on, aunque con ciertos comandos, tuvo que ser deshabilitada dicha
+optimizaci\'on para cumplir con los requerimientos del problema.
+
 \end{document}
 
 
