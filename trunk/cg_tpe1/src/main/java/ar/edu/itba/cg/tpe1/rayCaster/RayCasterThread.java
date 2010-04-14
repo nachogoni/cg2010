@@ -209,7 +209,7 @@ class RayCasterThread extends Thread {
 	}
 		
     Color adjustColor(Color color, double distance) {
-    	Color ret=null;
+    	Color ret=color;
     	//Implementacion 3 canales de color
 		/*if (distance >= farthestDistance) {
     		ret = new Color(0,0,0);    		
@@ -235,9 +235,9 @@ class RayCasterThread extends Thread {
         } else {
             hsb[2] *= 1 / (float)Math.log(Math.E + distance);
             ret= new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
-        }*/
-        
-    	return color;
+        }
+        */
+    	return ret;
     }
 	
 }
