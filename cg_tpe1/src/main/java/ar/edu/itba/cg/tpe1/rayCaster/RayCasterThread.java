@@ -207,36 +207,24 @@ class RayCasterThread extends Thread {
 			try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
 		}
 	}
-	
+		
     Color adjustColor(Color color, double distance) {
         //float[] hsb = new float[3];
     	Color ret=null;
         //TODO: ver como queda con los 3 canales
 		
-/*    	distance /= 10;
-		
-		if (distance < 1)
-			distance = 1;
-*/
 		if (distance >= farthestDistance) {
     		ret = new Color(0,0,0);    		
     	} else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
-			ret= new Color((int)(-color.getRed()/farthestDistance + color.getRed()),
-					(int)(-color.getGreen()/farthestDistance + color.getGreen()),
-					(int)(-color.getBlue()/farthestDistance + color.getBlue()));    			
+			ret= new Color((int)(-color.getRed()*distance/farthestDistance + color.getRed()),
+					(int)(-color.getGreen()*distance/farthestDistance + color.getGreen()),
+					(int)(-color.getBlue()*distance/farthestDistance + color.getBlue()));    			
     	} else {
-    		ret= new Color((color.getRed()/255) * (float)(1f / distance),
-                    (color.getGreen()/255) * (float)(1f / distance),
-                    (color.getBlue()/255) * (float)(1f / distance));    		
+    		ret= new Color((int) (color.getRed() / Math.log(Math.E + distance)),
+                    (int)(color.getGreen() / Math.log(Math.E + distance)),
+                    (int)(color.getBlue() / Math.log(Math.E + distance)));    		
     	}
     	
-/*    	return new Color((color.getRed()/255) * (float)(1f / distance),
-                        (color.getGreen()/255) * (float)(1f / distance),
-                        (color.getBlue()/255) * (float)(1f / distance));*/
-/*        return new Color((color.getRed()/255) * (1 / (float)Math.log(Math.E + distance)),
-        		(color.getGreen()/255) * (1 / (float)Math.log(Math.E + distance)),
-        		(color.getBlue()/255) * (1 / (float)Math.log(Math.E + distance)));*/
-        
         /*hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb); 
         
         //hsb[2] /= (float)Math.log(Math.E + distance);
