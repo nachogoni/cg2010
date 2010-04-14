@@ -209,11 +209,9 @@ class RayCasterThread extends Thread {
 	}
 		
     Color adjustColor(Color color, double distance) {
-        //float[] hsb = new float[3];
     	Color ret=null;
-        //TODO: ver como queda con los 3 canales
-		
-		if (distance >= farthestDistance) {
+    	//Implementacion 3 canales de color
+		/*if (distance >= farthestDistance) {
     		ret = new Color(0,0,0);    		
     	} else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
 			ret= new Color((int)(-color.getRed()*distance/farthestDistance + color.getRed()),
@@ -223,17 +221,22 @@ class RayCasterThread extends Thread {
     		ret= new Color((int) (color.getRed() / Math.log(Math.E + distance)),
                     (int)(color.getGreen() / Math.log(Math.E + distance)),
                     (int)(color.getBlue() / Math.log(Math.E + distance)));    		
-    	}
+    	}*/
     	
-        /*hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb); 
+		//Implementacion con brillo
+		/*float[] hsb = new float[3];
+        hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb); 
         
-        //hsb[2] /= (float)Math.log(Math.E + distance);
-        hsb[0] *= 1 / (float)Math.log(Math.E + distance);
-        hsb[1] *= 1 / (float)Math.log(Math.E + distance);
-        hsb[2] *= 1 / (float)Math.log(Math.E + distance);
-        //hsb[2] *= 5/distance;
+        if (distance >= farthestDistance) {
+            ret = new Color(0,0,0);         
+        } else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
+            hsb[2] = (float)(-hsb[2]*distance/farthestDistance + hsb[2]);
+            ret= new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
+        } else {
+            hsb[2] *= 1 / (float)Math.log(Math.E + distance);
+            ret= new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
+        }*/
         
-        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));*/
     	return color;
     }
 	
