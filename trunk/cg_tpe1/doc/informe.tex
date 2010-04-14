@@ -45,8 +45,8 @@
 
 %% Titulo %%
 \begin{document}
-\title{{Computaci\'on Gr\'afica \\ Trabajo pr\'actico Especial 1 - Ray Caster\\ Grupo 2}}
-\author{Guillermo Campelo\\Juan Ignacion Go\~ni\\Juan Tenaillon\\Santiago Vazquez}
+\title{{Computaci\'on Gr\'afica \\ Trabajo pr\'actico especial 1 - Ray Caster\\ Grupo 2}}
+\author{Guillermo Campelo\\Juan Ignacio Go\~ni\\Juan Tenaillon\\Santiago Vazquez}
 \date{}
 
 %% Comienzo del documento %%
@@ -55,41 +55,53 @@
 
 \begin{abstract}
 
-Se dise\~n\'o y desarroll\'o un motor de Ray Casting que determine intersecciones entre rayos y objetos permitiendo representar en pantalla un conjunto de escenasb.
+Se dise\~n\'o y desarroll\'o un motor de Ray Casting, determinando intersecciones entre rayos originados en la c\'amara y objetos.
+Esto permite representar escenas con figuras dentro.
 
-\textbf{Palabras Clave: }\emph{Ray Casting, escena, rayos, objetos.}.
+\textbf{Palabras Clave: }\emph{Ray Casting, escena, rayos, objetos, primitivas, tri\'angulo, esfera, cuadril\'atero.}.
 \end{abstract}
 
 %\thispagestyle{fancy}
 
 %% COMIENZO DEL TEXTO %%
-
 \section{Introducci\'on}
 \label{introduccion}
 
 En este informe, se explicar\'a el dise\~no y el desarrollo del motor de Ray Casting, explicando cada una de sus componentes y que nos motivo a desarrollarlas de la manera en que lo hicimos.
 
 En la segunda secci\'on nos enfocaremos en el motor de Ray Casting y como se utiliza, luego en la tercera secci\'on nos enfocaremos en la escena y los objetos que la componen, como sean las esferas, 
-los triangulos y los cuadrilateros.  En la cuarta secci\'on nos enfocaremos en los resultados obtenidos y por \'ultimo, en la quinta secci\'on, presentamos nuestras conclusiones.
+los tri\'angulos y los cuadril\'ateros.  En la cuarta secci\'on nos enfocaremos en los resultados obtenidos y por \'ultimo, en la quinta secci\'on, presentamos nuestras conclusiones.
 \section{Ray Caster}
 \label{raycaster}
 
 \subsection{Descripci\'on}
 \label{subseccion}
-Ray Casting es una t\'ecnica que utiliza la intersecci\'on de rayos con una superficie para resolver un conjunto de problemas en el campo de la computaci\'on gr\'afica.  Representa una soluci\'on f\'acil al problema de visibilidad en una escena.
+Ray Casting es una t\'ecnica que utiliza la intersecci\'on de rayos con una superficie para resolver un conjunto de problemas en el campo de la computaci\'on gr\'afica.  Representa una soluci\'on f\'acil al problema de la representaci\'on en una escena.
 
 En este caso se modela una escena almancenada en memoria, para la cual se fija una posici\'on y direcci\'on para la c\'amara.  Desde esta se disparan rayos a intervalos regulares y para cada uno se muestra el color correspondiente al objeto m\'as cercano con el que colisiona.
 
+\subsection{La Escena}
 
-\subsection{La C\'amara y la Escena}
+Actualmente existen $6$ escena predefinidas, pero la arquitectura contempla obtener nuevas escenas desde otras fuentes, por ejemplo de
+un archivo. En la secci\'on \ref{escenas} se describen y se muestran las im\'agenes obtenidas.
 
-PARA QUE JUANI LA COMPLETE.
+\subsection{La C\'amara}
+
+El modelo de la c\'amara contempla el \'angulo de apertura del lente para el c\'alculo de la representaci\'on de la escena.
+Conociendo el \'angulo de apertura horizontal y la relaci\'on entre el ancho y el alto de la imagen, se toma un plano imaginario
+con normal al vector director de la c\'amara. Se utiliza un vector para dar la rotaci\'on de la c\'amara y se realizan las correcciones
+necesarias al plano.
+
+Luego en funci\'on de la resoluci\'on horizontal y vertical, se toma el delta \'angulo en el eje $x$ y eje $y$ relativos a la c\'amara.
+
+El Ray Caster iterar\'a por los pixeles de la imagen y la c\'amara devolver\'a el rayo con origen en el centro de la c\'amara y que
+pase por el correspondiente pixel.
 
 \subsection{Modo de Uso}
 Para ejecutar el Ray Caster hay diferentes opciones.  A continuaci\'on especificamos cuales son estas opciones y mostramos su modo de uso.
 
 \subsubsection{Nombre de Archivo de Entrada}
-Para poder utilizar el Ray Caster, es necesario especificar un nombre de archivo de entrada.  Los posibles nombres para las escenas de entradas son de la forma $*.sc$ y para utilizar el ray caster con un archivo de este tipo hay que especificarlo de la siguiente manera:
+Para poder utilizar el Ray Caster, es necesario especificar un nombre de archivo de entrada.  Los posibles nombres para las escenas de entradas son de la forma $scene\#.sc$ y para utilizar el ray caster con un archivo de este tipo hay que especificarlo de la siguiente manera:
 
 \begin{center}
  \textbf{\texttt{-i [nombre de archivo]}}
@@ -104,7 +116,7 @@ Suponiendo un nombre de escena $scene1.sc$, una posible llamada al Ray Caster se
 Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
 \subsubsection{Nombre de Archivo de Salida}
 
-Al ejecutar el Ray Caster, se producirá un archivo de salida.  El usuario de la aplicación puede elegir un nombre en particular para el mismo.  Esto se hace utilizando la siguiente opci\'on:
+Al ejecutar el Ray Caster, se producir\'a un archivo de salida.  El usuario de la aplicaci\'on puede elegir un nombre en particular para el mismo.  Esto se hace utilizando la siguiente opci\'on:
 
 \begin{center}
   \textbf{\texttt{-o [nombre de archivo]}}
@@ -131,7 +143,7 @@ En caso de no especificar ninguna cantidad en particular, se utilizar\'a el tama
  \textbf{\texttt{cg\_tpe1 -i scene1.sc -size 800x600}}
 \end{center}
 
-Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
+Este campo \textbf{no es obligatorio} para poder utilizar la aplicaci\'on.
 
 \subsubsection{Campo de Visi\'on}
 Para indicar el \'angulo de apertura horizontal en grados, se va a utilizar:
@@ -140,13 +152,13 @@ Para indicar el \'angulo de apertura horizontal en grados, se va a utilizar:
   \textbf{\texttt{-fov x}}
 \end{center}
 
-donde x es un n\'umero en grados.  En caso de no especificarse ning\'un \'angulo, el valor por defecto es de 60°.  Un ejemplo de su uso ser\'ia:
+donde x es un n\'umero en grados.  En caso de no especificarse ning\'un \'angulo, el valor por defecto es de 60 grados.  Un ejemplo de su uso ser\'ia:
 
  \begin{center}
  \textbf{\texttt{cg\_tpe1 -i scene1.sc -fov 80}}
 \end{center}
 
-Este campo es \textbf{obligatorio} para poder utilizar la aplicaci\'on.
+Este campo \textbf{no es obligatorio} para poder utilizar la aplicaci\'on.
 
 \subsubsection{Asignaci\'on de Color}
 Para indicar el modo de asignaci\'on de color de las primitivas en la escena, hay que utilizar esta opci\'on:
@@ -154,7 +166,8 @@ Para indicar el modo de asignaci\'on de color de las primitivas en la escena, ha
   \textbf{\texttt{-cm [random | ordered]}}
 \end{center}
 
-Donde $random$ es el valor por defecto e indica una asignaci\'on de colores de forma aleatoria y $ordered$, donde la asignaci\'on de color depender\'a del orden en que fueron descubiertas las primitivas.  El orden de asignaci\'on es: $violeta$, $azul$, $verde$, $amarillo$, $naranja$ y $rojo$.  Un ejemplo de su uso ser\'ia:
+Donde $random$ es el valor por defecto e indica una asignaci\'on de colores de forma aleatoria y $ordered$, donde la asignaci\'on de color depender\'a del orden en que fueron descubiertas las primitivas.  El orden de asignaci\'on es: $violeta$, $azul$, $verde$, $amarillo$, $naranja$ y $rojo$. El orden de asignaci\'on a las figuras en la escena esta determinado por la secuencia de colisiones. El primer objeto dibujado en pantalla, obtiene el primer color de la lista. Luego siguen los dem\'as objetos con los siguientes colores.
+Un ejemplo de su uso ser\'ia:
  \begin{center}
  \textbf{\texttt{cg\_tpe1 -i scene1.sc -cm ordered}}
 \end{center}
@@ -169,7 +182,7 @@ Para indicar el modo de variaci\'on del color de los elementos de la escena, hay
   \textbf{\texttt{-cv [linear | log]}}
 \end{center}
 
-Donde $linear$ es el valor por defecto e indica que la variaci\'on del color es proporcional a la distancia a la cual la primitiva se encuentra de la posici\'on de la c\'amara y $log$, donde la variaci\'on del color es logar\'itmica.  Un ejemplo de su uso ser\'ia:
+Donde $linear$ es el valor por defecto e indica que la variaci\'on del color es proporcional a la distancia entre el punto de colisi\'on en la primitiva y la posici\'on de la c\'amara y $log$, donde la variaci\'on del color es logar\'itmica.  Un ejemplo de su uso ser\'ia:
 
  \begin{center}
  \textbf{\texttt{cg\_tpe1 -i scene1.sc -cv log}}
@@ -179,7 +192,7 @@ El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'o
 
 \subsubsection{Tiempo de Ejecuci\'on}
 
-Para determinar el tiempo que demor\'o la ejecuci\'on de la aplicaci\'on para renderizar la escena indicada, se utiliza:
+Para determinar el tiempo que demor\'o la aplicaci\'on para renderizar la escena indicada, se utiliza:
 
 \begin{center}
   \textbf{\texttt{-time}}
@@ -194,9 +207,9 @@ El uso de esta opci\'on \textbf{no es obligatoria} para el uso de la aplicaci\'o
 
 \section{Primitivas}
 
-Para modelar las escenas, se debieron modelar los distintos objetos presentes en la misma.  En este caso, las primitivas seleccionadas fueron: $tri\'angulo$, $cuadril\'atero$ y $esfera$.
+Para modelar las escenas, se debieron modelar los distintos objetos presentes en la misma.  En este caso, las primitivas seleccionadas fueron: \emph{tri\'angulo}, \emph{cuadril\'atero} y \emph{esfera}.
 
-A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi\'o el diseño de las mismas.
+A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi\'o el dise\~no de las mismas.
 
 \subsection{Rayo}
 
@@ -211,13 +224,13 @@ A continuaci\'on explicaremos, para cada una de las primitivas, c\'omo se decidi
 \subsection{Cuadril\'atero}
 
 \subsubsection{Representaci\'on}
-Para representar un cuadrilatero, se pens\'o en la utilizaci\'on de los cuatro puntos en el espacio.  Se eligi\'o esta representaci\'on debido a que, adem\'as de ser la m\'as simple, tambi\'en resulta \'util al momento de calcular los planos en los que se encuentra para poder determinar la intersecci\'on de los rayos con el mismo.
+Para representar un cuadril\'atero, se pens\'o en la utilizaci\'on de los cuatro puntos en el espacio.  Se eligi\'o esta representaci\'on debido a que, adem\'as de ser la m\'as simple, tambi\'en resulta \'util al momento de calcular los planos en los que se encuentra para poder determinar la intersecci\'on de los rayos con el mismo.
 
-En la siguiente secci\'on, se explicar\'a a grandes rasgos, c\'omo fue realizada la intersecci\'on del rayo con el cuadrila\'atero.
+En la siguiente secci\'on, se explicar\'a a grandes rasgos, c\'omo fue realizada la intersecci\'on del rayo con el cuadril\'atero.
 \subsubsection{Intersecci\'on}
 Para determinar la intersecci\'on entre un cuadril\'atero y un rayo, se dividi\'o el c\'alculo en dos partes.
 
-La primera parte consistie en determinar si el rayo en cuesti\'on, intersecta al plano que contiene a la primitiva.  Para realizar esto, se calcula el $plano$ $contenedor$ y una vez obtenida la ecuaci\'on del tipo
+La primera parte consistie en determinar si el rayo en cuesti\'on, intersecta al plano que contiene a la primitiva.  Para realizar esto, se calcula el \emph{plano contenedor} y una vez obtenida la ecuaci\'on del tipo
 
  \begin{center}
  Ax + By + Cz + D = 0
@@ -235,8 +248,8 @@ Asumiendo esto, despues se utiliza una funci\'on que determina si un punto est\'
 \subsubsection{Intersecci\'on}
 
 \section{Resultados Obtenidos}
-
-El motor de Ray Casting tiene la capacidad de renderizar cualquier escena que esté cargada en memoria.  En esta implementaci\'on, se decidi\'o mostrar la capacidad del motor mediante la renderizaci\'on de seis escenas.  Tres de ellas, propuestas por la c\'atedra y las otras tres, propuestas por el grupo desarrollador.  A continuaci\'on, ense\~naremos cada una de ellas con una breve descripci\'on.
+\label{escenas}
+El motor de Ray Casting tiene la capacidad de renderizar cualquier escena que est\'e cargada en memoria.  En esta implementaci\'on, se decidi\'o mostrar la capacidad del motor mediante la renderizaci\'on de seis escenas.  Tres de ellas, propuestas por la c\'atedra y las otras tres, propuestas por el grupo desarrollador.  A continuaci\'on, ense\~naremos cada una de ellas con una breve descripci\'on.
 
 \subsection{Primera Escena: \texttt{scene1.sc}}
 Esta escena contiene una pir\'amide rectangular, cuyo lado de la base y su altura tiene una longitud de 5.  La base de la misma est\'a centrada en el origen, en su v\'ertice superior tiene posicionada en perfecto equilibrio una esfera de radio 1 y a una distacia de 3, en cada uno de los v\'ertices, tiene una esfera de radio 0.5. Ver \textbf{Figura \ref{fig:1}}.
