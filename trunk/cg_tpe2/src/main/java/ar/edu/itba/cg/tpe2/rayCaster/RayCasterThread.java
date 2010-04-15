@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1.rayCaster;
+package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -9,8 +9,8 @@ import java.util.concurrent.CyclicBarrier;
 
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe1.geometry.Primitive;
-import ar.edu.itba.cg.tpe1.geometry.Ray;
+import ar.edu.itba.cg.tpe2.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.geometry.Ray;
 
 /**
  * RayCasterThread is an optimization using threads 

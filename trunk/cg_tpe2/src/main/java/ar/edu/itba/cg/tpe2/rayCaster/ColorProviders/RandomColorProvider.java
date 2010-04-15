@@ -1,9 +1,9 @@
-package ar.edu.itba.cg.tpe1.rayCaster.ColorProviders;
+package ar.edu.itba.cg.tpe2.rayCaster.ColorProviders;
 
 import java.awt.Color;
 import java.util.Random;
 
-import ar.edu.itba.cg.tpe1.rayCaster.IColorProvider;
+import ar.edu.itba.cg.tpe2.rayCaster.IColorProvider;
 
 /**
  * Gives a random color each time it is called

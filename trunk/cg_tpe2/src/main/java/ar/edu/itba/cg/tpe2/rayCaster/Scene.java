@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1.rayCaster;
+package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,11 +6,11 @@ import java.util.List;
 
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe1.geometry.Primitive;
-import ar.edu.itba.cg.tpe1.geometry.Quadrilateral;
-import ar.edu.itba.cg.tpe1.geometry.Sphere;
-import ar.edu.itba.cg.tpe1.geometry.Star;
-import ar.edu.itba.cg.tpe1.geometry.Triangle;
+import ar.edu.itba.cg.tpe2.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.geometry.Quadrilateral;
+import ar.edu.itba.cg.tpe2.geometry.Sphere;
+import ar.edu.itba.cg.tpe2.geometry.Star;
+import ar.edu.itba.cg.tpe2.geometry.Triangle;
 
 /**
  * Create a scene representation

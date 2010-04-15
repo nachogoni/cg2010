@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1;
+package ar.edu.itba.cg.tpe2;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -13,12 +13,12 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe1.rayCaster.Camera;
-import ar.edu.itba.cg.tpe1.rayCaster.IColorProvider;
-import ar.edu.itba.cg.tpe1.rayCaster.RayCaster;
-import ar.edu.itba.cg.tpe1.rayCaster.Scene;
-import ar.edu.itba.cg.tpe1.rayCaster.ColorProviders.CyclicColorProvider;
-import ar.edu.itba.cg.tpe1.rayCaster.ColorProviders.RandomColorProvider;
+import ar.edu.itba.cg.tpe2.rayCaster.Camera;
+import ar.edu.itba.cg.tpe2.rayCaster.IColorProvider;
+import ar.edu.itba.cg.tpe2.rayCaster.RayCaster;
+import ar.edu.itba.cg.tpe2.rayCaster.Scene;
+import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.CyclicColorProvider;
+import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.RandomColorProvider;
 
 /**
  * TPE1

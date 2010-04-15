@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1.rayCaster;
+package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-import ar.edu.itba.cg.tpe1.rayCaster.ImagePartitioners.HorizontalImagePartitioner;
+import ar.edu.itba.cg.tpe2.rayCaster.ImagePartitioners.HorizontalImagePartitioner;
 
 /**
  * RayCaster creates an image form a scene viewed from a camera

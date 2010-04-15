@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1.geometry;
+package ar.edu.itba.cg.tpe2.geometry;
 
 import java.awt.Color;
 import java.util.ArrayList;

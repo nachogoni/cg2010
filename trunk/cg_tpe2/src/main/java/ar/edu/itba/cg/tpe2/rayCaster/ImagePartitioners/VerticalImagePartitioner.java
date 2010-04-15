@@ -1,10 +1,10 @@
-package ar.edu.itba.cg.tpe1.rayCaster.ImagePartitioners;
+package ar.edu.itba.cg.tpe2.rayCaster.ImagePartitioners;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.itba.cg.tpe1.rayCaster.IImagePartitioner;
+import ar.edu.itba.cg.tpe2.rayCaster.IImagePartitioner;
 
 /**
  * Splits the image in vertical stripes ( along the width )
