@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1.rayCaster;
+package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 

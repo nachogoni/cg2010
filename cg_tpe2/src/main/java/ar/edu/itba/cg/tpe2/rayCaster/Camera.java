@@ -1,9 +1,9 @@
-package ar.edu.itba.cg.tpe1.rayCaster;
+package ar.edu.itba.cg.tpe2.rayCaster;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import ar.edu.itba.cg.tpe1.geometry.Vector3;
+import ar.edu.itba.cg.tpe2.geometry.Vector3;
 
 /**
  * Create a camera representation

@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe1;
+package ar.edu.itba.cg.tpe2;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
