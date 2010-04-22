@@ -200,6 +200,7 @@ class RayCasterThread extends Thread {
 		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
 		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
 		
+		// Stopping recursive calls and gets only ilumination color
 		if (maxRebounds-- != 0) {
 			refractColor = getColor(refractRay, maxRebounds);
 			reflectColor = getColor(reflectRay, maxRebounds);
@@ -212,6 +213,7 @@ class RayCasterThread extends Thread {
     	
     	float [] resultingRGBArray = new float [3];
     	
+    	//TODO cambiar esto por los valores posta
     	float refleccion=0.0f;
     	float refraccion=0.0f;
     	
