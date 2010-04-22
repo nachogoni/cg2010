@@ -2,8 +2,6 @@ package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -30,7 +28,7 @@ class RayCasterThread extends Thread {
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private double farthestDistance = 20.0;
-	static private List<Primitive> viewedObjects = new ArrayList<Primitive>();
+	private static final int MAX_REBOUNDS=3;
 
 	/**
 	 * Constructor for RayCasterThread class
@@ -153,9 +151,8 @@ class RayCasterThread extends Thread {
 				return;
 			}
 
-			Primitive primitive = null;
 			Point3d origin = camera.getOrigin();
-			Point3d intersection = null, aux = null;
+
 			Color color;
 			Ray ray;
 			for (int i = fromX; i < toX; i++) {
@@ -168,34 +165,8 @@ class RayCasterThread extends Thread {
 					// Create a new Ray from camera, i, j
 					ray = new Ray(origin, po);
 					
-					// There is no intersection yet
-					intersection = null;
-					
-					// There is no primitive intersection
-					primitive = null;
-					
-					// Find intersection in scene with ray
-					for (Primitive p : scene.getList()) {
-						aux = p.intersect(ray);
-						if (aux != null && (intersection == null || (intersection != null &&
-							aux.distance(origin) < intersection.distance(origin)))) {
-							intersection = aux;
-							primitive = p;
-						}
-					}
-
-					if (primitive != null) {
-						synchronized (viewedObjects) {
-							// Check if this is the first time we see this object
-							if ( ! viewedObjects.contains(primitive) ) {
-								// Add it to the list and set the color
-								viewedObjects.add(primitive);
-								primitive.setColor(colorMode.getNextColor());
-							}
-						}
-						// Get the color to be painted
-						color = adjustColor(primitive.getColor(intersection), intersection.distance(origin));
-					}
+					// Get pixel color
+					color = getColor(ray, MAX_REBOUNDS);
 					
 					// Set color to image(i, j)
 					synchronized (rayCaster.image) {
@@ -208,37 +179,65 @@ class RayCasterThread extends Thread {
 		}
 	}
 		
-    Color adjustColor(Color color, double distance) {
-    	Color ret=color;
+    private Color getColor(Ray ray, int maxRebounds) {
     	
-    	//Implementacion 3 canales de color
-		if (distance >= farthestDistance) {
-    		ret = new Color(0,0,0);    		
-    	} else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
-			ret= new Color((int)(-color.getRed()*distance/farthestDistance + color.getRed()),
-					(int)(-color.getGreen()*distance/farthestDistance + color.getGreen()),
-					(int)(-color.getBlue()*distance/farthestDistance + color.getBlue()));    			
-    	} else {
-    		ret= new Color((int) (color.getRed() / Math.log(Math.E + distance)),
-                    (int)(color.getGreen() / Math.log(Math.E + distance)),
-                    (int)(color.getBlue() / Math.log(Math.E + distance)));    		
-    	}
+    	Point3d intersectionPoint=new Point3d();
+    	Primitive impactedFigure;
+		Color refractColor, reflectColor, ilumColor;
     	
-		//Implementacion con brillo
-		/*float[] hsb = new float[3];
-        hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb); 
-        
-        if (distance >= farthestDistance) {
-            ret = new Color(0,0,0);         
-        } else if (colorVariation==RayCaster.COLOR_VARIATION_LINEAR) {
-            hsb[2] = (float)(-hsb[2]*distance/farthestDistance + hsb[2]);
-            ret= new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
-        } else {
-            hsb[2] *= 1 / (float)Math.log(Math.E + distance);
-            ret= new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
-        }
-        */
-    	return ret;
-    }
-	
+		impactedFigure = scene.getFirstIntersection(ray, intersectionPoint);
+		
+		if (impactedFigure == null) {
+			return new Color(0.0f, 0.0f, 0.0f);
+		}
+		
+    	/*
+    	 * Calcula los rayos de refleccion y refraccion (los que atraviesan y se reflejan)
+    	 */
+		Ray refractRay = getRefractRay(ray, impactedFigure);
+		Ray reflectRay = getReflectRay(ray, impactedFigure);    	
+		
+		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
+		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
+		
+		if (maxRebounds-- != 0) {
+			refractColor = getColor(refractRay, maxRebounds);
+			reflectColor = getColor(reflectRay, maxRebounds);
+			reflactRGBArray = refractColor.getRGBColorComponents(null);
+			reflectRGBArray = reflectColor.getRGBColorComponents(null);
+		}
+    	
+    	ilumColor = ilumination(ray, impactedFigure, intersectionPoint);
+    	float [] ilumRGBArray = ilumColor.getRGBColorComponents(null);
+    	
+    	float [] resultingRGBArray = new float [3];
+    	
+    	float refleccion=0.0f;
+    	float refraccion=0.0f;
+    	
+    	resultingRGBArray[0] = ilumRGBArray[0] + refraccion*reflactRGBArray[0] + refleccion*reflectRGBArray[0];
+    	resultingRGBArray[1] = ilumRGBArray[1] + refraccion*reflactRGBArray[1] + refleccion*reflectRGBArray[1];
+    	resultingRGBArray[2] = ilumRGBArray[2] + refraccion*reflactRGBArray[2] + refleccion*reflectRGBArray[2];
+    	
+		
+    	
+    	return new Color(resultingRGBArray[0],resultingRGBArray[1], resultingRGBArray[2]);
+	}
+
+	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint) {
+		// the color of the impacted figure
+		//TODO hacer bien, deberia usar el rayo!!!
+		return impactedFigure.getColor(intersectionPoint);
+	}
+
+	private Ray getReflectRay(Ray ray, Primitive p) {
+		// TODO Auto-generated method stub
+		return ray;
+	}
+
+	private Ray getRefractRay(Ray ray, Primitive p) {
+		// TODO Auto-generated method stub
+		return ray;
+	}
+
 }
