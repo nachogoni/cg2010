@@ -2,12 +2,14 @@ package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.geometry.Quadrilateral;
+import ar.edu.itba.cg.tpe2.geometry.Ray;
 import ar.edu.itba.cg.tpe2.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.geometry.Star;
 import ar.edu.itba.cg.tpe2.geometry.Triangle;
@@ -17,7 +19,7 @@ import ar.edu.itba.cg.tpe2.geometry.Triangle;
  */
 public class Scene {
 
-	private List<Primitive> list = new ArrayList<Primitive>();
+	private List<Primitive> list = Collections.synchronizedList(new ArrayList<Primitive>());
 	
 	/**
 	 * Constructor for the scene from a file name
@@ -75,7 +77,7 @@ public class Scene {
 	 */
 	public static List<Primitive> read(String scene) {
 		
-		List<Primitive> list = new ArrayList<Primitive>();
+		List<Primitive> list = Collections.synchronizedList(new ArrayList<Primitive>());
 		
 		if (scene.equals("scene1.sc")) {
 			
@@ -230,6 +232,28 @@ public class Scene {
 		list.add(new Triangle( a, c, d,  new Color(  0,  0,128)));
 		
 		return list;
+	}
+
+	public Primitive getFirstIntersection(Ray ray, Point3d intersectionPoint) {
+		Primitive nearestPrimitive = null;
+		Point3d currIntersection = null, nearestIntersection=null;
+		Point3d origin = ray.getOrigin();
+		
+		// Find intersection in scene with ray
+		for (Primitive p : list) {
+			currIntersection = p.intersect(ray);
+			if (currIntersection != null && (nearestIntersection == null || (nearestIntersection != null &&
+				currIntersection.distance(origin) < nearestIntersection.distance(origin)))) {
+				nearestIntersection = currIntersection;
+				nearestPrimitive = p;
+			}
+		}
+		
+		if (nearestIntersection !=null) {
+			intersectionPoint.set(nearestIntersection);
+		}
+		
+		return nearestPrimitive;
 	}
 	
 }
