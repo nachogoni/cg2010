@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe2.core;
+package ar.edu.itba.cg.tpe2.core.scene;
 
 import java.util.ArrayList;
 import java.util.List;

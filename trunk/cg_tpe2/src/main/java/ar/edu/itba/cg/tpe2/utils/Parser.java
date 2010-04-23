@@ -1,6 +1,6 @@
 package ar.edu.itba.cg.tpe2.utils;
 
-import ar.edu.itba.cg.tpe2.core.Scene;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 public class Parser {
 
