@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.vecmath.Point3d;
 
 import org.apache.commons.cli.CommandLine;
@@ -29,7 +31,7 @@ import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.CyclicColorProvider;
 import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.RandomColorProvider;
 
 /**
- * TPE1
+ * TPE2
  *
  */
 public class App 
@@ -105,7 +107,7 @@ public class App
     		}
     		
     		if (cl.hasOption("show")) {
-    			showImage(image);
+    			showImage(image, sceneName);
     		}
     		
     		// Save image
@@ -135,9 +137,17 @@ public class App
 		return null;
 	}
 
-	private static void showImage(BufferedImage image) {
-		// TODO Funcion que tiene que abrir una ventana y mostrar la imagen recibida como parametro
-		
+	private static void showImage(BufferedImage image, String sceneName) {
+		ImagePanel contentPane = new ImagePanel(image);
+        JScrollPane jsp = new JScrollPane(contentPane);
+		jsp.setVisible(true);
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setContentPane(jsp);
+        f.setTitle("G2 - "+sceneName+" rendered");
+        f.setSize(image.getWidth(),image.getHeight());
+        f.setLocation(200,200);
+        f.setVisible(true);
 	}
 
 	private static int getColorVariation(CommandLine cl) throws IllegalArgumentException{
