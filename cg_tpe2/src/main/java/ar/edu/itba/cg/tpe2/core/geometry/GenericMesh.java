@@ -1,22 +1,19 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
+import java.util.List;
 
-import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe2.core.shader.Shader;
+public class GenericMesh extends ComplexFigure {
 
-public class GenericMesh extends Primitive {
-
-	// Type: GenericMesh
-	// Point's...
-	// Triangle's...
-	// Normals?
-	// UVS?
-	
-	public GenericMesh(String name, Shader shader) {
-		super(name, shader);
+	public GenericMesh(String name) {
+		super(name);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public List<Primitive> intersect(Ray ray) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -61,16 +58,10 @@ public class GenericMesh extends Primitive {
 		
 	}
 
-	@Override
-	public Point3d intersect(Ray ray) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Color getColor(Point3d point) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// Type: GenericMesh
+	// Point's...
+	// Triangle's...
+	// Normals?
+	// UVS?
 	
 }
