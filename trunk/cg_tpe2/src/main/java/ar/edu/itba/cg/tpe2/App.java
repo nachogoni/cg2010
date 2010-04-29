@@ -48,6 +48,10 @@ public class App
     		//Parameters parsing
     		CommandLine cl= parseCommands(args);
     		
+    		if (cl.hasOption("gui")) {
+    			cl = showCommandsGUI();
+    		}
+    		
     		// Validate and get the sceneName
     		String sceneName = getSceneName(cl);
     		
@@ -100,6 +104,10 @@ public class App
     			stop = Calendar.getInstance().getTimeInMillis();
     		}
     		
+    		if (cl.hasOption("show")) {
+    			showImage(image);
+    		}
+    		
     		// Save image
     		try {
     			ImageIO.write(image, format, output);
@@ -122,6 +130,16 @@ public class App
 		
     }
     
+	private static CommandLine showCommandsGUI() {
+		// TODO Funcion que abre una ventana con todos los comandos disponibles y retorna un CommandLine con las opciones seleccionadas
+		return null;
+	}
+
+	private static void showImage(BufferedImage image) {
+		// TODO Funcion que tiene que abrir una ventana y mostrar la imagen recibida como parametro
+		
+	}
+
 	private static int getColorVariation(CommandLine cl) throws IllegalArgumentException{
 		
 		int colorVar  = RayCaster.COLOR_VARIATION_LINEAR;
@@ -221,6 +239,154 @@ public class App
     	Options options = new Options();
     	
     	// -i <scene file>
+    	addInputFileCommand(options);
+    	
+       	// [ -time ]
+    	addTimeCommand(options);
+       	
+       	// [ -o <output file> ]
+    	addOutputFileCommand(options);
+
+       	// [ -cm random|ordered ]
+    	addColorAssignmentCommand(options);
+       	
+       	// [ -cv lineal|log ]
+    	addColorVariationCommand(options);
+
+       	// [-size widthxheight]
+    	addSizeCommand(options);
+
+       	// [-fov angle]
+    	addFovCommand(options);
+
+       	// [-usage]
+    	addUsageCommand(options);
+
+       	//NEW COMMANDS -> TP2
+    	
+       	// [ -progress ]
+    	addProgressCommand(options);
+       	
+       	// [ -gui ]
+    	addGUICommand(options);
+    	
+    	// [ -dof <T>]
+    	addDofCommand(options);
+    	
+    	// [ -show ]
+       	addShowCommand(options);
+    	
+       	CommandLineParser parser = new PosixParser();
+       	CommandLine line =  null;
+       	
+       	// parse the command line arguments
+	    line = parser.parse( options, args );
+       	
+	    return line;
+	}
+	
+	private static void addShowCommand(Options options) {
+    	OptionBuilder.withDescription( "display the image after processing" );
+       	Option show   = OptionBuilder.create( "show" );
+       	
+       	options.addOption(show);
+		
+	}
+
+	private static void addDofCommand(Options options) {
+    	OptionBuilder.withArgName( "depth of field" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "sets the depth of field" );
+       	Option dof   = OptionBuilder.create( "dof" );
+   	
+       	options.addOption(dof);
+		
+	}
+
+	private static void addGUICommand(Options options) {
+    	OptionBuilder.withDescription( "open a graphic interface ignoring all the other parameters" );
+       	Option gui   = OptionBuilder.create( "gui" );
+       	
+       	options.addOption(gui);
+		
+	}
+
+	private static void addProgressCommand(Options options) {
+    	OptionBuilder.withDescription( "show rendering progress" );
+       	Option progress   = OptionBuilder.create( "progress" );
+       	
+       	options.addOption(progress);
+		
+	}
+
+	private static void addUsageCommand(Options options) {
+    	OptionBuilder.withDescription( "display the list of options available" );
+       	Option usage   = OptionBuilder.create( "usage" );
+
+       	options.addOption(usage);       	
+		
+	}
+
+	@Deprecated
+	private static void addFovCommand(Options options) {
+    	OptionBuilder.withArgName( "angle" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "color variation mode" );
+       	Option fov   = OptionBuilder.create( "fov" );
+
+       	options.addOption(fov);
+		
+	}
+
+	@Deprecated
+	private static void addSizeCommand(Options options) {
+    	OptionBuilder.withArgName( "widthxheight" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "color variation mode" );
+       	Option size   = OptionBuilder.create( "size" );
+   	
+       	options.addOption(size);
+		
+	}
+
+	@Deprecated
+	private static void addColorVariationCommand(Options options) {
+    	OptionBuilder.withArgName( "lineal|log" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "color variation mode" );
+       	Option cv   = OptionBuilder.create( "cv" );
+   	
+       	options.addOption(cv);
+		
+	}
+	@Deprecated
+	private static void addColorAssignmentCommand(Options options) {
+    	OptionBuilder.withArgName( "random|ordered" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "color assignment order" );
+       	Option cm   = OptionBuilder.create( "cm" );
+   	
+       	options.addOption(cm); 
+		
+	}
+
+	private static void addOutputFileCommand(Options options) {
+    	OptionBuilder.withArgName( "output" );
+    	OptionBuilder.hasArg();
+    	OptionBuilder.withDescription( "output file" );
+       	Option outputFile   = OptionBuilder.create( "o" );
+   	
+       	options.addOption(outputFile);
+	}
+
+	private static void addTimeCommand(Options options) {
+    	OptionBuilder.withDescription( "show processing time" );
+       	Option time   = OptionBuilder.create( "time" );
+       	
+       	options.addOption(time);
+	}
+
+	private static void addInputFileCommand(Options options) {
     	OptionBuilder.withArgName( "sceneX.sc" );
     	OptionBuilder.hasArg();
     	OptionBuilder.withDescription( "use scene file for render" );
@@ -228,68 +394,8 @@ public class App
        	Option sceneFile   = OptionBuilder.create( "i" );
    	
        	options.addOption(sceneFile);
-    	
-       	// [ -time ]
-    	OptionBuilder.withDescription( "show processing time" );
-       	Option time   = OptionBuilder.create( "time" );
-       	
-       	options.addOption(time);
-       	
-       	// [ -o <output file> ]
-    	OptionBuilder.withArgName( "output" );
-    	OptionBuilder.hasArg();
-    	OptionBuilder.withDescription( "output file" );
-       	Option outputFile   = OptionBuilder.create( "o" );
-   	
-       	options.addOption(outputFile);       	
-
-       	// [ -cm random|ordered ]
-    	OptionBuilder.withArgName( "random|ordered" );
-    	OptionBuilder.hasArg();
-    	OptionBuilder.withDescription( "color assignment order" );
-       	Option cm   = OptionBuilder.create( "cm" );
-   	
-       	options.addOption(cm);       	
-       	
-       	// [ -cv lineal|log ]
-    	OptionBuilder.withArgName( "lineal|log" );
-    	OptionBuilder.hasArg();
-    	OptionBuilder.withDescription( "color variation mode" );
-       	Option cv   = OptionBuilder.create( "cv" );
-   	
-       	options.addOption(cv);
-       	
-       	// [-size widthxheight]
-    	OptionBuilder.withArgName( "widthxheight" );
-    	OptionBuilder.hasArg();
-    	OptionBuilder.withDescription( "color variation mode" );
-       	Option size   = OptionBuilder.create( "size" );
-   	
-       	options.addOption(size);
-       	
-       	// [-fov angle]       	
-    	OptionBuilder.withArgName( "angle" );
-    	OptionBuilder.hasArg();
-    	OptionBuilder.withDescription( "color variation mode" );
-       	Option fov   = OptionBuilder.create( "fov" );
-
-       	options.addOption(fov);
-
-       	// [-usage]       	
-    	OptionBuilder.withDescription( "display the list of options available" );
-       	Option usage   = OptionBuilder.create( "usage" );
-
-       	options.addOption(usage);       	
-       	
-       	CommandLineParser parser = new PosixParser();
-       	CommandLine line =  null;
-
-       	// parse the command line arguments
-	    line = parser.parse( options, args );
-       	
-    	return line;
 	}
-
+	
 	public static File getOutputFile(CommandLine cl) throws IllegalArgumentException {
 		String fileName = null;
 		File output;
