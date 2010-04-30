@@ -1,5 +1,6 @@
 package ar.edu.itba.cg.tpe2;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -23,6 +24,7 @@ public class ImagePanel extends JPanel {
         int x = (getWidth() - image.getWidth())/2;
         int y = (getHeight() - image.getHeight())/2;
         g.drawImage(image, x, y, this);
+        this.setPreferredSize(new Dimension(image.getWidth(),image.getHeight()));
     }
 
 }
