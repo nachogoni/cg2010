@@ -2,7 +2,8 @@ package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.concurrent.BrokenBarrierException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
 import javax.vecmath.Point3d;
@@ -21,15 +22,20 @@ class RayCasterThread extends Thread {
 	private int toX;
 	private int fromY;
 	private int toY;
-	private int width;
-	private int height;
+	private static int width;
+	private static int height;
 	private RayCaster rayCaster;
-	private CyclicBarrier cb;
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private double farthestDistance = 20.0;
 	private static final int MAX_REBOUNDS=3;
 
+	private static List<Rectangle> tasks = null;
+	private static Iterator<Rectangle> taskIterator;
+	private static int finishedTasks;
+	
+	private static int i=0;
+	private int id;
 	/**
 	 * Constructor for RayCasterThread class
 	 * 
@@ -38,11 +44,12 @@ class RayCasterThread extends Thread {
 	 * @param rayCaster RayCaster class parent
 	 * @param cb CyclicBarrier for the threads
 	 */
-	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster, CyclicBarrier cb) {
-		this.cb = cb;
+	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster) {
 		this.scene = scene;
 		this.camera = camera;
 		this.rayCaster = rayCaster;
+		id = i;
+		i++;
 	}
 
 	/**
@@ -96,8 +103,6 @@ class RayCasterThread extends Thread {
 		this.toX = portion.x+portion.width;
 		this.fromY = portion.y;
 		this.toY = portion.y+portion.height;
-		this.width = width;
-		this.height = height;
 	}
 
 	/**
@@ -136,21 +141,43 @@ class RayCasterThread extends Thread {
 		return toY;
 	}
 	
+	synchronized public static void setTasks(List<Rectangle> tasks) {
+		RayCasterThread.tasks = tasks;
+		RayCasterThread.taskIterator = tasks.iterator();
+		finishedTasks = 0;
+	}
+
+	public boolean allTasksFinished(){
+		return tasks.size() == finishedTasks;
+	}
+	
+	private Rectangle getTask() {
+		Rectangle r;
+		synchronized (this.getClass()) {
+			if ( tasks == null || !taskIterator.hasNext() )
+				return null;
+			r = taskIterator.next();
+		}
+		return r;
+	}
+
+	public static void setImageSize(int neww, int newh) {
+		width = neww;
+		height = newh;
+	}
+	
 	/**
 	 * Start the rayCaster
 	 * 
 	 */
 	public void run() {
 		while ( true ){
-			//System.out.println(cb.getNumberWaiting()+" threads are waiting");
-			try { cb.await(); } catch (InterruptedException e) { 
-				//System.out.println("Someone told me to die.");
-				return;
-			} catch (BrokenBarrierException e) { 
-				//System.out.println("Someone broke the barrier.");
-				return;
+			Rectangle task = getTask();
+			while ( task == null ){
+				task = getTask();
 			}
-
+			System.out.println("Thread "+id+" processing ( "+task.x+" , "+task.y+" ) ( "+task.width+" , "+task.height+" ) ");
+			setPortion(task, width, height);
 			Point3d origin = camera.getOrigin();
 
 			Color color;
@@ -174,11 +201,16 @@ class RayCasterThread extends Thread {
 					}
 				}
 			}
-
-			try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
+			synchronized( this.getClass() ){
+				finishedTasks++;
+				if ( allTasksFinished() )
+					synchronized (rayCaster) {
+						rayCaster.notify();	
+					}
+			}
 		}
 	}
-		
+
     private Color getColor(Ray ray, int maxRebounds) {
     	
     	Point3d intersectionPoint=new Point3d();
@@ -241,5 +273,7 @@ class RayCasterThread extends Thread {
 		// TODO Auto-generated method stub
 		return ray;
 	}
+
+	
 
 }
