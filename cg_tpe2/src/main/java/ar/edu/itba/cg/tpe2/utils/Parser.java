@@ -335,11 +335,11 @@ public class Parser {
 
 	private void parseImageSettings() throws NumberFormatException, IOException {
 		String current;
-		Integer width, height;
-		Integer aa_min, aa_max;
-		Integer samples;
-		Integer bucket_size;
-		String bucket_type;
+		Integer width = -1, height = -1;
+		Integer aa_min = -1, aa_max = -1;
+		Integer samples = -1;
+		Integer bucket_size = -1;
+		String bucket_type = null;
 		do{
 			current = aParser.getNextToken();
 			if(current.equals("resolution")){
@@ -356,7 +356,9 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		//Aca habria que crear el objeto.
+		System.out.println("Resolución: (" + width + ", " + height + ")");
+		System.out.println("Antialiasing: (" + aa_min + ", " + aa_max + ")");
+		System.out.println("Samples: " + samples);
 		
 	}
 	
