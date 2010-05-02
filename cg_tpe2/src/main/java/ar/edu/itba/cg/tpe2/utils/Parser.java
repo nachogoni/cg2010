@@ -6,6 +6,7 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 public class Parser {
@@ -49,11 +50,57 @@ public class Parser {
 			} else if (current.equalsIgnoreCase("light")){
 				System.out.println("Reading Light Settings...");
 				this.parseLightSettings();
+			} else if (current.equalsIgnoreCase("object")){
+				System.out.println("Reading Object Settings...");
+				this.parseObjectSettings();
 			}
 		}
 	}
 
 	
+
+	private void parseObjectSettings() throws IOException {
+		String current;
+		do{
+			current = aParser.getNextToken();
+		}while(!current.equals("}"));
+		
+	}
+	
+	private Transform parseTransform() throws IOException{
+		String current;
+		Transform aTrans = new Transform();
+		Point3d translate;
+		do{
+			current = aParser.getNextToken();
+			
+			if(current.equals("translate")){
+				translate = new Point3d(new Double(aParser.getNextToken()),
+						new Double(aParser.getNextToken()),
+						new Double(aParser.getNextToken()));
+				aTrans.setTranslate(translate);
+			} else if (current.equals("rotatex")){
+				aTrans.setRotatex(new Integer(aParser.getNextToken()));
+			} else if (current.equals("rotatey")){
+				aTrans.setRotatey(new Integer(aParser.getNextToken()));
+			} else if (current.equals("rotatez")){
+				aTrans.setRotatez(new Integer(aParser.getNextToken()));
+			} else if (current.equals("scalex")) {
+				aTrans.setScalex(new Double(aParser.getNextToken()));
+			} else if (current.equals("scaley")) {
+				aTrans.setScaley(new Double(aParser.getNextToken()));
+			} else if (current.equals("scalez")) {
+				aTrans.setScalez(new Double(aParser.getNextToken()));
+			} else if (current.equals("scaleu")) {
+				aTrans.setScaleu(new Double(aParser.getNextToken()));
+			}
+			
+		}while(!current.equals("}"));
+		
+		return aTrans;
+		
+	}
+
 
 	private void parseLightSettings() throws IOException {
 		String current, type, light_color;
