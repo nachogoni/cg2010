@@ -7,12 +7,14 @@ import java.util.List;
 
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.geometry.Plane;
 import ar.edu.itba.cg.tpe2.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.geometry.Quadrilateral;
 import ar.edu.itba.cg.tpe2.geometry.Ray;
 import ar.edu.itba.cg.tpe2.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.geometry.Star;
 import ar.edu.itba.cg.tpe2.geometry.Triangle;
+import ar.edu.itba.cg.tpe2.geometry.Vector3;
 
 /**
  * Create a scene representation
@@ -157,6 +159,10 @@ public class Scene {
 		} else if (scene.equals("scene7.sc")){
 			list.add(new Triangle(new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
 					new Point3d( 5, 5, -10),  Color.WHITE));
+		} else if (scene.equals("scene8.sc")){
+			Plane plane = new Plane(null, null, new Point3d(),new Vector3(new Point3d(),new Point3d(0, 0, 1)));
+			plane.setColor(Color.WHITE);
+			list.add(plane);
 		} else {
 			// Another options?
 		}

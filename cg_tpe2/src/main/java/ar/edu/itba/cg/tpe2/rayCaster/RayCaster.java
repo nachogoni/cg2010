@@ -4,8 +4,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 import ar.edu.itba.cg.tpe2.rayCaster.ImagePartitioners.HorizontalImagePartitioner;
 
@@ -23,23 +21,24 @@ public class RayCaster {
 	
 	private List<RayCasterThread> threads;
 	protected BufferedImage image = null;
-	private CyclicBarrier cb;
 	private IImagePartitioner imagePartitioner;
+	private int bucketsSize;
 	
 	/**
 	 * RayCaster constructor
 	 * 
 	 * @param scene Scene representation to work with
 	 * @param camera Actual camera where the viewer is   
-	 * @param numThreads Number of threads to use
+	 * @param numberOfThreads Number of threads to create
+	 * @param numberOfBuckets Number of buckets to make 
 	 * @param colorProvider Color mode: Random or Ordered
 	 * @param colorVariation Color variation type: Linear or Log
 	 */
-	public RayCaster(Scene scene, Camera camera, int numThreads, IColorProvider colorProvider, int colorVariation) {
-		cb = new CyclicBarrier(numThreads+1);
-		threads = new ArrayList<RayCasterThread>(numThreads);
-		for (int i=0; i < numThreads; i++){
-			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this, cb);
+	public RayCaster(Scene scene, Camera camera, int numberOfThreads, int numberOfBuckets, IColorProvider colorProvider, int colorVariation) {
+		threads = new ArrayList<RayCasterThread>(numberOfThreads);
+		this.bucketsSize = numberOfBuckets;
+		for (int i=0; i < numberOfThreads; i++){
+			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this);
 			rayCasterThread.setColorMode(colorProvider);
 			rayCasterThread.setColorVariation(colorVariation);
 			rayCasterThread.start();
@@ -65,15 +64,23 @@ public class RayCaster {
 
 		image = new BufferedImage(width, height, imageType);
 
-		List<Rectangle> portions = imagePartitioner.getPortions(threads.size(),width,height);
+		List<Rectangle> tasks = imagePartitioner.getPortions(bucketsSize,width,height);
+//		cb = new CyclicBarrier(2);
+		synchronized (RayCasterThread.class) {
+			RayCasterThread.setImageSize(width,height);
+			RayCasterThread.setTasks(tasks);
+		}
 		
-		for(int i=0; i < threads.size() ; i++){
-			threads.get(i).setPortion(portions.get(i), width, height);
+//		while ( ! RayCasterThread.allTasksFinished() );
+		try {
+			synchronized (this) {
+				this.wait();	
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
-
-		try { cb.await(); } catch (InterruptedException e) { e.printStackTrace(); } catch (BrokenBarrierException e) { e.printStackTrace(); }
 		return image;
 	}
 

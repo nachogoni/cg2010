@@ -85,11 +85,13 @@ public class App
     		// Create rayCaster
     		RayCaster raycaster = null;
     		
+    		int numberOfBuckets = 128;
+
     		// Set colors for primitives
     		if ( colorProvider instanceof CyclicColorProvider) {
-    			raycaster = new RayCaster(scene, camera, 1, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
     		} else {
-    			raycaster = new RayCaster(scene, camera, 4, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
     		}
     		
     		// Take start time
@@ -117,13 +119,15 @@ public class App
     			e.printStackTrace();
     		}
     		
-    		raycaster.cleanup();
-    		
     		if (cl.hasOption("time")) {
     			System.out.println("Done in " + (stop - start) + " milliseconds!");
     		} else {
     			System.out.println("Done!");
     		}
+    		
+    		raycaster.cleanup();
+    		
+    		
     	} catch (ParseException pe) {
     		showUsage();
     		System.out.println(pe.getMessage());
