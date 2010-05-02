@@ -32,16 +32,19 @@ public class FileParser {
 	}
 	
 	private boolean getLine() throws IOException{
-		
+		String aLine;
 		if(this.aFile == null){
 			return false;
 		}
 	
-		String aLine = this.aBReader.readLine();
+		do{
+			aLine = this.aBReader.readLine();
+			
+			if(aLine == null){
+				return false;
+			}
+		} while(aLine.startsWith("##") || aLine.startsWith("%"));
 		
-		if(aLine == null){
-			return false;
-		}
 		
 		StringTokenizer aST = new StringTokenizer(aLine);
 		
@@ -60,6 +63,7 @@ public class FileParser {
 	}
 
 	public String getNextToken() throws IOException {
+		String token;
 		if(this.aFile == null){
 			return null;
 		}
@@ -74,6 +78,17 @@ public class FileParser {
 		}
 		String aRet = this.aList.get(this.index);
 		this.index++;
+		if(aRet.equals("/*")){
+			do {
+                token = this.aList.get(this.index);
+                this.index++;
+                if (token == null)
+                    return null;
+            } while (!token.equals("*/"));
+			aRet = this.aList.get(this.index);
+			this.index++;
+		}
+		
 		return aRet;
 	}
 	
