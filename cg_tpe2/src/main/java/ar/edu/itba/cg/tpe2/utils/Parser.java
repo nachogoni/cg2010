@@ -1,9 +1,12 @@
 package ar.edu.itba.cg.tpe2.utils;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
@@ -61,8 +64,67 @@ public class Parser {
 
 	private void parseObjectSettings() throws IOException {
 		String current;
+		String shader_name, type, object_name;
+		List<Point3d> points = new LinkedList<Point3d>();
+		List<Point3i> triangles = new LinkedList<Point3i>();
+		Point3d normal, center;
+		Double radious;
+		Integer pts_qty, tri_qty;
 		do{
 			current = aParser.getNextToken();
+			if( current.equals("shader")){
+				shader_name = aParser.getNextToken();
+			} else if (current.equals("type")){
+				type = aParser.getNextToken();
+				if(type.equals("plane")){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("p")){
+							points.add(new Point3d(new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken())));
+						} else if(current.equals("n")){
+							normal = new Point3d(new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken()));
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("sphere")){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("name")){
+							object_name = aParser.getNextToken();
+						} else if(current.equals("c")){
+							center = new Point3d(new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken()), 
+									new Double(aParser.getNextToken()));
+						} else if(current.equals("r")){
+							radious = new Double(aParser.getNextToken());
+						}
+					}while (current.equals("}"));
+				} else if (current.equals("generic-mesh")){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("name")){
+							object_name = aParser.getNextToken();
+						} else if(current.equals("points")){
+							pts_qty = new Integer(aParser.getNextToken());
+							for(int i = 0; i < pts_qty; i++){
+								points.add(new Point3d(new Double(aParser.getNextToken()), 
+										new Double(aParser.getNextToken()), 
+										new Double(aParser.getNextToken())));
+							}
+						} else if(current.equals("triangles")){
+							tri_qty = new Integer(aParser.getNextToken());
+							for(int i = 0; i < tri_qty; i++){
+								triangles.add(new Point3i(new Integer(aParser.getNextToken()),
+										new Integer(aParser.getNextToken()),
+										new Integer(aParser.getNextToken())));
+							}
+						}
+					}while(!current.equals("}"));
+				}
+			}
 		}while(!current.equals("}"));
 		
 	}
