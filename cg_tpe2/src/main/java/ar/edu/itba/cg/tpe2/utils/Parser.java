@@ -9,6 +9,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.geometry.Specification;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
@@ -37,10 +38,10 @@ public class Parser {
 		aParser = new FileParser(this.filename);
 		while(true){
 			current = aParser.getNextToken();
-			System.out.println(current);
 			if(current == null){
 				return null;
 			}
+			System.out.println(current);
 			if(current.equalsIgnoreCase("image")){
 				System.out.println("Reading the image settings...");
 				this.parseImageSettings();
@@ -56,6 +57,10 @@ public class Parser {
 			} else if (current.equalsIgnoreCase("object")){
 				System.out.println("Reading Object Settings...");
 				this.parseObjectSettings();
+			} else {
+				do{
+					current = aParser.getNextToken();
+				} while (!current.equals("}"));
 			}
 		}
 	}
@@ -123,10 +128,40 @@ public class Parser {
 							}
 						}
 					}while(!current.equals("}"));
+				} else if (current.equals("box")){
+					
+				} else {
+					// It's none of the accepted types of Shader
+					do{
+						current = aParser.getNextToken();
+						// We consume all the discarded tokens.
+					}while(!current.equals("}"));
+					return;
 				}
 			}
 		}while(!current.equals("}"));
 		
+	}
+	
+	private Specification parseSpec() throws IOException{
+		String current, color;
+		Specification aSpec = new Specification();
+		Double __a, __b, __c;
+	
+		// We discard the first {
+		current = aParser.getNextToken();
+		current = aParser.getNextToken() + aParser.getNextToken();
+		int length = current.length();
+		color = current.substring(1, length-1);
+		System.out.println("color: " + color);
+		__a = new Double(aParser.getNextToken());
+		__b = new Double(aParser.getNextToken());
+		__c = new Double(aParser.getNextToken());
+		// Now we discard the last }
+		current = aParser.getNextToken();
+		System.out.println("current: " + current);
+		
+		return new Specification(color, new Point3d(__a, __b, __c));
 	}
 	
 	private Transform parseTransform() throws IOException{
@@ -165,25 +200,17 @@ public class Parser {
 
 
 	private void parseLightSettings() throws IOException {
-		String current, type, light_color;
+		String current, type = null, light_color;
 		Double __a, __b, __c, power;
 		Point3d light_pos;
+		Specification aSpec;
 		do{
 			current = aParser.getNextToken();
+			System.out.println("super current: " + current);
 			if(current.equals("type")){
 				type = aParser.getNextToken();
 			} else if (current.equals("color")){
-				// We discard the first {
-				current = aParser.getNextToken();
-				current = aParser.getNextToken() + aParser.getNextToken();
-				int length = current.length();
-				light_color = current.substring(1, length);
-				__a = new Double(aParser.getNextToken());
-				__b = new Double(aParser.getNextToken());
-				__c = new Double(aParser.getNextToken());
-				// Now we discard the last }
-				current = aParser.getNextToken();
-				current = light_color;
+				aSpec = this.parseSpec();
 			}else if (current.equals("power")){
 				power = new Double(aParser.getNextToken());
 			}else if (current.equals("p")){
@@ -192,17 +219,26 @@ public class Parser {
 						new Double(aParser.getNextToken()));
 			}
 		}while(!current.equals("}"));
+		
+		if(!type.equals("point")){
+			return;
+		}
+		
+		System.out.println("Type of Light: " + type);
+		// Build Object Light
 	}
 
 
 	private void parseShaderSettings() throws IOException {
 		String current;
-		String name, type, texture_path;
-		String shader_color, abs_color;
-		Double __a, __b, __c, eta, abs_dst, abs__a, abs__b, abs__c;
-		Integer samples;
+		String name = null, type = null, texture_path = null;
+		String shader_color = null, abs_color = null;
+		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
+		Integer samples = -1;
+		Specification aSpec = null;
 		do{
 			current = aParser.getNextToken();
+			System.out.println("Shader: " + current);
 			if(current.equals("name")){
 				name = aParser.getNextToken();
 			} else if (current.equals("type")){
@@ -216,17 +252,7 @@ public class Parser {
 							int length = texture_path.length();
 							texture_path = texture_path.substring(1, length);
 						} else if(current.equals("spec")){
-							// We discard the first {
-							current = aParser.getNextToken();
-							current = aParser.getNextToken() + aParser.getNextToken();
-							int length = current.length();
-							shader_color = current.substring(1, length);
-							__a = new Double(aParser.getNextToken());
-							__b = new Double(aParser.getNextToken());
-							__c = new Double(aParser.getNextToken());
-							// Now we discard the last }
-							current = aParser.getNextToken();
-							current = type;
+							aSpec = this.parseSpec();
 						} else if (current.equals("samples")){
 							samples = new Integer(aParser.getNextToken());
 						}
@@ -237,54 +263,37 @@ public class Parser {
 						if(current.equals("eta")){
 							eta = new Double(aParser.getNextToken());
 						} else if(current.equals("color")){
-							// We discard the first {
-							current = aParser.getNextToken();
-							current = aParser.getNextToken() + aParser.getNextToken();
-							int length = current.length();
-							shader_color = current.substring(1, length);
-							__a = new Double(aParser.getNextToken());
-							__b = new Double(aParser.getNextToken());
-							__c = new Double(aParser.getNextToken());
-							// Now we discard the last }
-							current = aParser.getNextToken();
-							current = type;
+							aSpec = this.parseSpec();
 						} else if (current.equals("absorbtion.distance")){
 							abs_dst = new Double(aParser.getNextToken());
 						} else if (current.equals("absorbtion.color")){
-							// We discard the first {
-							current = aParser.getNextToken();
-							current = aParser.getNextToken() + aParser.getNextToken();
-							int length = current.length();
-							abs_color = current.substring(1, length);
-							abs__a = new Double(aParser.getNextToken());
-							abs__b = new Double(aParser.getNextToken());
-							abs__c = new Double(aParser.getNextToken());
-							// Now we discard the last }
-							current = aParser.getNextToken();
-							current = type;
+							aSpec = this.parseSpec();
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("mirror")){
 					do{
 						current = aParser.getNextToken();
 						if(current.equals("refl")){
-							// We discard the first {
-							current = aParser.getNextToken();
-							current = aParser.getNextToken() + aParser.getNextToken();
-							int length = current.length();
-							shader_color = current.substring(1, length);
-							__a = new Double(aParser.getNextToken());
-							__b = new Double(aParser.getNextToken());
-							__c = new Double(aParser.getNextToken());
-							// Now we discard the last }
-							current = aParser.getNextToken();
-							current = type;
+							aSpec = this.parseSpec();
 						}
 					}while(current.equals("}"));
+				} else {
+					// It's none of the accepted types of Shader
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("color")  || current.equals("diff") || current.equals("spec")){
+							aSpec = this.parseSpec();
+						}
+					}while(!current.equals("}"));
+					return;
 				}
 			}
 		}while(!current.equals("}"));
 		
+		System.out.println("Nombre: " + name);
+		System.out.println("Tipo: " + type);
+		System.out.println("Textura: " + texture_path);
+		System.out.println("Color/Spec: (" + __a + ", " + __b + ", " + __c + ")");
 		// Aca habria que armar el objeto
 		
 	}
@@ -292,10 +301,10 @@ public class Parser {
 
 	private void parseCameraSettings() throws IOException {
 		String current;
-		String type;
-		Point3d eye, target;
-		Vector3d up;
-		Double fov, aspect;
+		String type = null;
+		Point3d eye = null, target = null;
+		Vector3d up = null;
+		Double fov = -1d, aspect = -1d;
 		Double tl_fdist, tl_lensr;
 		Point2d shift;
 		do {
@@ -328,6 +337,12 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
+		System.out.println("Tipo de Cámara: " + type);
+		System.out.println("Ojo: " + eye.toString());
+		System.out.println("Objetivo: " + target.toString());
+		System.out.println("Up: " + up.toString());
+		System.out.println("FOV: " + fov);
+		System.out.println("Aspect: " + aspect);
 		//Aca habria que crear el objeto.
 		
 	}
