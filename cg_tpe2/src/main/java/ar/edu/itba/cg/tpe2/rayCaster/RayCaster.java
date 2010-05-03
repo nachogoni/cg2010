@@ -67,7 +67,7 @@ public class RayCaster {
 		List<Rectangle> tasks = imagePartitioner.getPortions(bucketsSize,width,height);
 //		cb = new CyclicBarrier(2);
 		synchronized (RayCasterThread.class) {
-			RayCasterThread.setImageSize(width,height);
+			RayCasterThread.setImage(image);
 			RayCasterThread.setTasks(tasks);
 		}
 		

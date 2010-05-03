@@ -2,9 +2,10 @@ package ar.edu.itba.cg.tpe2.rayCaster;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CyclicBarrier;
 
 import javax.vecmath.Point3d;
 
@@ -35,6 +36,7 @@ class RayCasterThread extends Thread {
 	private static int finishedTasks;
 	
 	private static int i=0;
+	private static BufferedImage image;
 	private int id;
 	/**
 	 * Constructor for RayCasterThread class
@@ -161,9 +163,10 @@ class RayCasterThread extends Thread {
 		return r;
 	}
 
-	public static void setImageSize(int neww, int newh) {
-		width = neww;
-		height = newh;
+	public static void setImage(BufferedImage img) {
+		image = img;
+		width = img.getWidth();
+		height = img.getHeight();
 	}
 	
 	/**
@@ -176,7 +179,7 @@ class RayCasterThread extends Thread {
 			while ( task == null ){
 				task = getTask();
 			}
-			System.out.println("Thread "+id+" processing ( "+task.x+" , "+task.y+" ) ( "+task.width+" , "+task.height+" ) ");
+//			System.out.println("Thread "+id+" processing ( "+task.x+" , "+task.y+" ) ( "+task.width+" , "+task.height+" ) ");
 			setPortion(task, width, height);
 			Point3d origin = camera.getOrigin();
 
@@ -196,8 +199,8 @@ class RayCasterThread extends Thread {
 					color = getColor(ray, MAX_REBOUNDS);
 					
 					// Set color to image(i, j)
-					synchronized (rayCaster.image) {
-						rayCaster.getImage().setRGB(i, j, color.getRGB());
+					synchronized (image) {
+						image.setRGB(i, j, color.getRGB());
 					}
 				}
 			}
@@ -213,7 +216,7 @@ class RayCasterThread extends Thread {
 
     private Color getColor(Ray ray, int maxRebounds) {
     	
-    	Point3d intersectionPoint=new Point3d();
+    	Point3d intersectionPoint = new Point3d();
     	Primitive impactedFigure;
 		Color refractColor, reflectColor, ilumColor;
     	
@@ -252,8 +255,6 @@ class RayCasterThread extends Thread {
     	resultingRGBArray[0] = ilumRGBArray[0] + refraccion*reflactRGBArray[0] + refleccion*reflectRGBArray[0];
     	resultingRGBArray[1] = ilumRGBArray[1] + refraccion*reflactRGBArray[1] + refleccion*reflectRGBArray[1];
     	resultingRGBArray[2] = ilumRGBArray[2] + refraccion*reflactRGBArray[2] + refleccion*reflectRGBArray[2];
-    	
-		
     	
     	return new Color(resultingRGBArray[0],resultingRGBArray[1], resultingRGBArray[2]);
 	}
