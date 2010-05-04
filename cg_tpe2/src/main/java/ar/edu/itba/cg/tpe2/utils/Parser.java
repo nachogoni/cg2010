@@ -153,13 +153,11 @@ public class Parser {
 		current = aParser.getNextToken() + aParser.getNextToken();
 		int length = current.length();
 		color = current.substring(1, length-1);
-		System.out.println("color: " + color);
 		__a = new Double(aParser.getNextToken());
 		__b = new Double(aParser.getNextToken());
 		__c = new Double(aParser.getNextToken());
 		// Now we discard the last }
 		current = aParser.getNextToken();
-		System.out.println("current: " + current);
 		
 		return new Specification(color, new Point3d(__a, __b, __c));
 	}
@@ -201,12 +199,11 @@ public class Parser {
 
 	private void parseLightSettings() throws IOException {
 		String current, type = null, light_color;
-		Double __a, __b, __c, power;
-		Point3d light_pos;
-		Specification aSpec;
+		Double __a, __b, __c, power = -1d;
+		Point3d light_pos = null;
+		Specification aSpec = null;
 		do{
 			current = aParser.getNextToken();
-			System.out.println("super current: " + current);
 			if(current.equals("type")){
 				type = aParser.getNextToken();
 			} else if (current.equals("color")){
@@ -225,6 +222,9 @@ public class Parser {
 		}
 		
 		System.out.println("Type of Light: " + type);
+		System.out.println("Color: " + aSpec.getColor_type() + " " + aSpec.getaPoint());
+		System.out.println("Power: " + power);
+		System.out.println("Light Position: " + light_pos.toString());
 		// Build Object Light
 	}
 
@@ -238,7 +238,6 @@ public class Parser {
 		Specification aSpec = null;
 		do{
 			current = aParser.getNextToken();
-			System.out.println("Shader: " + current);
 			if(current.equals("name")){
 				name = aParser.getNextToken();
 			} else if (current.equals("type")){
@@ -293,7 +292,7 @@ public class Parser {
 		System.out.println("Nombre: " + name);
 		System.out.println("Tipo: " + type);
 		System.out.println("Textura: " + texture_path);
-		System.out.println("Color/Spec: (" + __a + ", " + __b + ", " + __c + ")");
+		System.out.println("Color/Spec: " + aSpec.getColor_type() + " " + aSpec.getaPoint());
 		// Aca habria que armar el objeto
 		
 	}
