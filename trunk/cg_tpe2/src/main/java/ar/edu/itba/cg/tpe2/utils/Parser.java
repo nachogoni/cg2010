@@ -75,6 +75,7 @@ public class Parser {
 		Point3d normal, center;
 		Double radious;
 		Integer pts_qty, tri_qty;
+		Transform aTrans = null;
 		do{
 			current = aParser.getNextToken();
 			if( current.equals("shader")){
@@ -92,6 +93,8 @@ public class Parser {
 							normal = new Point3d(new Double(aParser.getNextToken()), 
 									new Double(aParser.getNextToken()), 
 									new Double(aParser.getNextToken()));
+						} else if (current.equals("transform")){
+							aTrans = this.parseTransform();
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("sphere")){
@@ -105,6 +108,8 @@ public class Parser {
 									new Double(aParser.getNextToken()));
 						} else if(current.equals("r")){
 							radious = new Double(aParser.getNextToken());
+						} else if (current.equals("transform")){
+							aTrans = this.parseTransform();
 						}
 					}while (current.equals("}"));
 				} else if (current.equals("generic-mesh")){
@@ -126,6 +131,8 @@ public class Parser {
 										new Integer(aParser.getNextToken()),
 										new Integer(aParser.getNextToken())));
 							}
+						} else if (current.equals("transform")){
+							aTrans = this.parseTransform();
 						}
 					}while(!current.equals("}"));
 				} else if (current.equals("box")){
@@ -135,31 +142,48 @@ public class Parser {
 					do{
 						current = aParser.getNextToken();
 						// We consume all the discarded tokens.
+						if(current.equals("transform")){
+							aTrans = this.parseTransform();
+						}
 					}while(!current.equals("}"));
 					return;
 				}
+			} else if (current.equals("transform")){
+				aTrans = this.parseTransform();
 			}
 		}while(!current.equals("}"));
 		
 	}
 	
-	private Specification parseSpec() throws IOException{
-		String current, color;
+	private Specification parseSpec( String type ) throws IOException{
+		String current, color = null;
 		Specification aSpec = new Specification();
 		Double __a, __b, __c;
-	
 		// We discard the first {
-		current = aParser.getNextToken();
-		current = aParser.getNextToken() + aParser.getNextToken();
-		int length = current.length();
-		color = current.substring(1, length-1);
+		if(aParser.peekNextToken().equals("{")){
+			current = aParser.getNextToken();
+			current = aParser.getNextToken() + aParser.getNextToken();
+			int length = current.length();
+			color = current.substring(1, length-1);
+		}
+
 		__a = new Double(aParser.getNextToken());
 		__b = new Double(aParser.getNextToken());
 		__c = new Double(aParser.getNextToken());
 		// Now we discard the last }
-		current = aParser.getNextToken();
+		if(aParser.peekNextToken().equals("}"))
+			current = aParser.getNextToken();
+		// We check if there's Specularity
+		if(type.equals("spec")){
+			aSpec.setSpecularity(new Integer(aParser.getNextToken()));
+		}
 		
-		return new Specification(color, new Point3d(__a, __b, __c));
+		aSpec.setaPoint(new Point3d(__a, __b, __c));
+		aSpec.setColor_type(color);
+		
+		System.out.println(aSpec.toString());
+		
+		return aSpec;
 	}
 	
 	private Transform parseTransform() throws IOException{
@@ -192,6 +216,8 @@ public class Parser {
 			
 		}while(!current.equals("}"));
 		
+		System.out.println(aTrans.toString());
+		
 		return aTrans;
 		
 	}
@@ -207,7 +233,7 @@ public class Parser {
 			if(current.equals("type")){
 				type = aParser.getNextToken();
 			} else if (current.equals("color")){
-				aSpec = this.parseSpec();
+				aSpec = this.parseSpec(current);
 			}else if (current.equals("power")){
 				power = new Double(aParser.getNextToken());
 			}else if (current.equals("p")){
@@ -251,7 +277,7 @@ public class Parser {
 							int length = texture_path.length();
 							texture_path = texture_path.substring(1, length);
 						} else if(current.equals("spec")){
-							aSpec = this.parseSpec();
+							aSpec = this.parseSpec(current);
 						} else if (current.equals("samples")){
 							samples = new Integer(aParser.getNextToken());
 						}
@@ -262,26 +288,26 @@ public class Parser {
 						if(current.equals("eta")){
 							eta = new Double(aParser.getNextToken());
 						} else if(current.equals("color")){
-							aSpec = this.parseSpec();
+							aSpec = this.parseSpec(current);
 						} else if (current.equals("absorbtion.distance")){
 							abs_dst = new Double(aParser.getNextToken());
 						} else if (current.equals("absorbtion.color")){
-							aSpec = this.parseSpec();
+							aSpec = this.parseSpec(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("mirror")){
 					do{
 						current = aParser.getNextToken();
 						if(current.equals("refl")){
-							aSpec = this.parseSpec();
+							aSpec = this.parseSpec(current);
 						}
 					}while(current.equals("}"));
 				} else {
 					// It's none of the accepted types of Shader
 					do{
 						current = aParser.getNextToken();
-						if(current.equals("color")  || current.equals("diff") || current.equals("spec")){
-							aSpec = this.parseSpec();
+						if(current.equals("color") || current.equals("spec") || current.equals("diff")){
+							aSpec = this.parseSpec(current);
 						}
 					}while(!current.equals("}"));
 					return;

@@ -59,6 +59,15 @@ public class Transform {
 	public void setRotatez(Integer rotatez) {
 		this.rotatez = rotatez;
 	}
+
+	@Override
+	public String toString() {
+		return "Transform [rotatex=" + rotatex + ", rotatey=" + rotatey
+				+ ", rotatez=" + rotatez + ", scaleu=" + scaleu + ", scalex="
+				+ scalex + ", scaley=" + scaley + ", scalez=" + scalez
+				+ ", translate=" + translate + "]";
+	}
+	
 	
 	
 }
