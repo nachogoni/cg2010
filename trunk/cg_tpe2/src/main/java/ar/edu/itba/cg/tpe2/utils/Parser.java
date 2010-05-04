@@ -60,6 +60,11 @@ public class Parser {
 			} else {
 				do{
 					current = aParser.getNextToken();
+					if(current.equals("transform")){
+						Transform aTrans = this.parseTransform();
+					} else if (current.equals("spec") || current.equals("diff") || current.equals("color")){
+						Specification aSpec = this.parseSpec(current);
+					}
 				} while (!current.equals("}"));
 			}
 		}

@@ -10,7 +10,7 @@ public class ParserTest {
 	public static void main(String[] args) {
 		String curr_dir = System.getProperty("user.dir");
 		System.out.println(curr_dir);
-		Parser aParser = new Parser(curr_dir + "/external/examples/aliens_shiny.sc");
+		Parser aParser = new Parser(curr_dir + "/external/examples/bump_demo.sc");
 		try {
 			aParser.parse();
 		} catch (IOException e) {
