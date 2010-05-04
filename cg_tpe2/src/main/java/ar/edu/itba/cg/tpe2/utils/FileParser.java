@@ -92,4 +92,35 @@ public class FileParser {
 		return aRet;
 	}
 	
+	public String peekNextToken() throws IOException {
+		String token;
+		Integer index = this.index;
+		if(this.aFile == null){
+			return null;
+		}
+		if(this.aList.size() <= this.index){
+			// We've reached the last token, we have to add more.
+			do{
+				if(this.getLine() == false){
+					return null;
+				}
+			}while(this.aList.size() <= this.index);
+			
+		}
+		String aRet = this.aList.get(index);
+		index++;
+		if(aRet.equals("/*")){
+			do {
+                token = this.aList.get(index);
+                this.index++;
+                if (token == null)
+                    return null;
+            } while (!token.equals("*/"));
+			aRet = this.aList.get(index);
+			index++;
+		}
+		
+		return aRet;
+	}
+	
 }

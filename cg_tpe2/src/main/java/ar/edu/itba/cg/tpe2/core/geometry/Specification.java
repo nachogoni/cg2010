@@ -6,6 +6,7 @@ public class Specification {
 
 	private String color_type;
 	private Point3d aPoint;
+	private Integer specularity;
 	
 	public Specification(){
 		
@@ -36,6 +37,22 @@ public class Specification {
 	public void setaPoint(Point3d aPoint) {
 		this.aPoint = aPoint;
 	}
+
+	public void setSpecularity(Integer specularity) {
+		this.specularity = specularity;
+	}
+
+	public Integer getSpecularity() {
+		return specularity;
+	}
+
+	@Override
+	public String toString() {
+		return "Specification [aPoint=" + aPoint + ", color_type=" + color_type
+				+ ", specularity=" + specularity + "]";
+	}
+	
+	
 
 }
 
