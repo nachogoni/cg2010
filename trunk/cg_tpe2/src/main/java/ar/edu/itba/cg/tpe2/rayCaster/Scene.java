@@ -7,14 +7,13 @@ import java.util.List;
 
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.core.geometry.Plane;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.geometry.Quadrilateral;
+import ar.edu.itba.cg.tpe2.core.geometry.Ray;
+import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
+import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
 import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
-import ar.edu.itba.cg.tpe2.geometry.Plane;
-import ar.edu.itba.cg.tpe2.geometry.Primitive;
-import ar.edu.itba.cg.tpe2.geometry.Quadrilateral;
-import ar.edu.itba.cg.tpe2.geometry.Ray;
-import ar.edu.itba.cg.tpe2.geometry.Sphere;
-import ar.edu.itba.cg.tpe2.geometry.Star;
-import ar.edu.itba.cg.tpe2.geometry.Triangle;
 
 /**
  * Create a scene representation
@@ -86,17 +85,17 @@ public class Scene {
 			double a = Math.sqrt(Math.pow(2.5d, 2) + Math.pow(2.5d, 2));
 			
 			// Pyramid of side 5
-			list.add(new Triangle(new Point3d(-a, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0, a),  Color.RED));
-			list.add(new Triangle(new Point3d( 0, 0, a),  new Point3d( 0, 5, 0), new Point3d( a, 0, 0),  Color.BLUE));
-			list.add(new Triangle(new Point3d(-a+0.01, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0,-a),  Color.YELLOW));
-			list.add(new Triangle(new Point3d( 0, 0,-a),  new Point3d( 0, 5, 0), new Point3d( a-0.01, 0, 0),  Color.GREEN));
+			list.add(new Triangle("",null,new Point3d(-a, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0, a),  Color.RED));
+			list.add(new Triangle("",null,new Point3d( 0, 0, a),  new Point3d( 0, 5, 0), new Point3d( a, 0, 0),  Color.BLUE));
+			list.add(new Triangle("",null,new Point3d(-a+0.01, 0, 0),  new Point3d( 0, 5, 0), new Point3d( 0, 0,-a),  Color.YELLOW));
+			list.add(new Triangle("",null,new Point3d( 0, 0,-a),  new Point3d( 0, 5, 0), new Point3d( a-0.01, 0, 0),  Color.GREEN));
 			// Sphere of radius 1 at the top of the pyramid
-			list.add(new Sphere(new Point3d( 0, 6, 0), 1,  Color.ORANGE));
+			list.add(new Sphere("",null,new Point3d( 0, 6, 0), 1,  Color.ORANGE));
 			// Spheres of radius 0.5 at pyramid vertexes
-			list.add(new Sphere(new Point3d( a + 3.5, 0, 0), 0.5f,  Color.CYAN));
-			list.add(new Sphere(new Point3d(-(a + 3.5), 0, 0), 0.5f,  Color.GRAY));
-			list.add(new Sphere(new Point3d( 0, 0, a + 3.5), 0.5f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d( 0, 0,-(a + 3.5)), 0.5f,  Color.PINK));
+			list.add(new Sphere("",null,new Point3d( a + 3.5, 0, 0), 0.5f,  Color.CYAN));
+			list.add(new Sphere("",null,new Point3d(-(a + 3.5), 0, 0), 0.5f,  Color.GRAY));
+			list.add(new Sphere("",null,new Point3d( 0, 0, a + 3.5), 0.5f,  Color.MAGENTA));
+			list.add(new Sphere("",null,new Point3d( 0, 0,-(a + 3.5)), 0.5f,  Color.PINK));
 		} else if (scene.equals("scene2.sc")) {
 			// 64 spheres of radius 1 in a 4 x 4 x 4 cube distribution with a separation of 0.5
 			//list.add ( new Sphere(new Point3d( 0, 0, 0), 0.5,  Color.CYAN ));
@@ -107,7 +106,7 @@ public class Scene {
 			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
 				for (double y = -interval; y <= interval; y += 2*radius + distance) {
 					for (double z = -interval; z <= interval; z += 2*radius + distance) {
-						list.add(new Sphere(new Point3d( x, y, z), radius,  new Color((int)(((x + interval)/(2*interval)) * 255), (int)(((y + interval)/(2*interval)) * 255), (int)(((z + interval)/(2*interval)) * 255))));
+						list.add(new Sphere("",null,new Point3d( x, y, z), radius,  new Color((int)(((x + interval)/(2*interval)) * 255), (int)(((y + interval)/(2*interval)) * 255), (int)(((z + interval)/(2*interval)) * 255))));
 					}
 				}
 			}
@@ -127,8 +126,8 @@ public class Scene {
 				}
 			}
 			// 2 spheres of radius 1 between the cubes
-			list.add(new Sphere(new Point3d( -2.5, 1, 0), 1f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d(  2.5, 1, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere("",null,new Point3d( -2.5, 1, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere("",null,new Point3d(  2.5, 1, 0), 1f,  Color.MAGENTA));
 		} else if (scene.equals("scene4.sc")) {
 			// 3 cubes of side 2 and 2 spheres of radius 1 distributed and aligned to X axis
 			for (double x = -5d; x <= 5; x += 5) {
@@ -137,27 +136,21 @@ public class Scene {
 				}
 			}
 			// 2 spheres of radius 1 between the cubes
-			list.add(new Sphere(new Point3d( -2.5, 0, 0), 1f,  Color.MAGENTA));
-			list.add(new Sphere(new Point3d(  2.5, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere("",null,new Point3d( -2.5, 0, 0), 1f,  Color.MAGENTA));
+			list.add(new Sphere("",null,new Point3d(  2.5, 0, 0), 1f,  Color.MAGENTA));
 		} else if (scene.equals("scene5.sc")) {
 			double spheres=11.0;
 			double distance=0.5;
 			double radius=0.5;
 			double interval=spheres*radius + (spheres/2-1)*distance + distance/2 - radius; 
 			for (double x = -interval ; x <= interval; x += 2*radius + distance) {
-				list.add(new Sphere(new Point3d( x, 0, 0), radius,  new Color(0,0,255)));
+				list.add(new Sphere("",null,new Point3d( x, 0, 0), radius,  new Color(0,0,255)));
 			}
 		} else if (scene.equals("scene6.sc")){
-			ArrayList<Color> arrayList = new ArrayList<Color>();
-			arrayList.add(Color.RED);
-			arrayList.add(Color.GREEN);
-			arrayList.add(Color.YELLOW);
-			arrayList.add(Color.ORANGE);
-			double distances [] = new double[]{1,2,4};
-			double depths [] = new double[]{-5,-1,0};
-			list.add(new Star(new Point3d(), Math.PI/2, distances, depths, arrayList));
+			list.add(new Triangle("",null,new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
+					new Point3d( 5, 5, -10),  Color.WHITE));
 		} else if (scene.equals("scene7.sc")){
-			list.add(new Triangle(new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
+			list.add(new Triangle("",null,new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
 					new Point3d( 5, 5, -10),  Color.WHITE));
 		} else if (scene.equals("scene8.sc")){
 			Plane plane = new Plane(null, null, new Point3d(0,0,0),new Vector3(new Point3d(),new Point3d(1, 0, 0)));
@@ -200,12 +193,12 @@ public class Scene {
 		Point3d g = new Point3d( center.x + side / 2, center.y - side / 2, center.z + side / 2);
 		Point3d h = new Point3d( center.x - side / 2, center.y - side / 2, center.z + side / 2);
 		
-		list.add(new Quadrilateral( a, b, f, e,  Color.CYAN));
-		list.add(new Quadrilateral( a, d, h, e,  Color.GREEN));
-		list.add(new Quadrilateral( c, b, f, g,  Color.PINK));
-		list.add(new Quadrilateral( d, c, g, h,  Color.ORANGE));
-		list.add(new Quadrilateral( e, f, g, h,  Color.ORANGE));
-		list.add(new Quadrilateral( a, b, c, d,  Color.BLUE));
+		list.add(new Quadrilateral("",null, a, b, f, e,  Color.CYAN));
+		list.add(new Quadrilateral("",null, a, d, h, e,  Color.GREEN));
+		list.add(new Quadrilateral("",null, c, b, f, g,  Color.PINK));
+		list.add(new Quadrilateral("",null, d, c, g, h,  Color.ORANGE));
+		list.add(new Quadrilateral("",null, e, f, g, h,  Color.ORANGE));
+		list.add(new Quadrilateral("",null, a, b, c, d,  Color.BLUE));
 		
 		return list;
 	}
@@ -232,18 +225,18 @@ public class Scene {
 		Point3d g = new Point3d( center.x + side / 2, center.y - side / 2, center.z + side / 2);
 		Point3d h = new Point3d( center.x - side / 2, center.y - side / 2, center.z + side / 2);
 		
-		list.add(new Triangle( a, b, f,  new Color(  0,  0,255)));
-		list.add(new Triangle( b, a, e,  new Color(  0,128,  0)));
-		list.add(new Triangle( e, d, h,  new Color(  0,128,128)));
-		list.add(new Triangle( d, a, e,  new Color(  0,128,255)));
-		list.add(new Triangle( c, b, f,  new Color(128,  0,  0)));
-		list.add(new Triangle( c, f, g,  new Color(128,  0,128)));
-		list.add(new Triangle( d, c, g,  new Color(128,  0,255)));
-		list.add(new Triangle( d, g, h,  new Color(128,128,  0)));
-		list.add(new Triangle( e, f, g,  new Color(128,128,128)));
-		list.add(new Triangle( e, g, h,  new Color(128,128,255)));
-		list.add(new Triangle( a, b, c,  new Color(255,255,255)));
-		list.add(new Triangle( a, c, d,  new Color(  0,  0,128)));
+		list.add(new Triangle("",null, a, b, f,  new Color(  0,  0,255)));
+		list.add(new Triangle("",null, b, a, e,  new Color(  0,128,  0)));
+		list.add(new Triangle("",null, e, d, h,  new Color(  0,128,128)));
+		list.add(new Triangle("",null, d, a, e,  new Color(  0,128,255)));
+		list.add(new Triangle("",null, c, b, f,  new Color(128,  0,  0)));
+		list.add(new Triangle("",null, c, f, g,  new Color(128,  0,128)));
+		list.add(new Triangle("",null, d, c, g,  new Color(128,  0,255)));
+		list.add(new Triangle("",null, d, g, h,  new Color(128,128,  0)));
+		list.add(new Triangle("",null, e, f, g,  new Color(128,128,128)));
+		list.add(new Triangle("",null, e, g, h,  new Color(128,128,255)));
+		list.add(new Triangle("",null, a, b, c,  new Color(255,255,255)));
+		list.add(new Triangle("",null, a, c, d,  new Color(  0,  0,128)));
 		
 		return list;
 	}

@@ -3,7 +3,7 @@ package ar.edu.itba.cg.tpe2.core.scene;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.itba.cg.tpe2.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.utils.PrimitiveOctree;
 
 /**

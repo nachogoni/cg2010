@@ -3,14 +3,13 @@ package ar.edu.itba.cg.tpe2.rayCaster;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe2.geometry.Primitive;
-import ar.edu.itba.cg.tpe2.geometry.Ray;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 
 /**
  * RayCasterThread is an optimization using threads 
