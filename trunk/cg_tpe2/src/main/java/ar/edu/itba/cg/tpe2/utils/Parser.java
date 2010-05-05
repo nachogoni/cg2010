@@ -74,11 +74,11 @@ public class Parser {
 
 	private void parseObjectSettings() throws IOException {
 		String current;
-		String shader_name, type, object_name;
+		String shader_name = null, type = null, object_name = null;
 		List<Point3d> points = new LinkedList<Point3d>();
 		List<Point3i> triangles = new LinkedList<Point3i>();
-		Point3d normal, center;
-		Double radious;
+		Point3d normal = null, center = null;
+		Double radious = null;
 		Integer pts_qty, tri_qty;
 		Transform aTrans = null;
 		do{
@@ -116,7 +116,7 @@ public class Parser {
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
 						}
-					}while (current.equals("}"));
+					}while (!current.equals("}"));
 				} else if (current.equals("generic-mesh")){
 					do{
 						current = aParser.getNextToken();
@@ -158,25 +158,43 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
+		System.out.println("Object Type: " + type);
+		System.out.println("Shader Name: " + shader_name);
+		if(type.equals("sphere")){
+			System.out.println("Center: " + center.toString());
+			System.out.println("Radious: " + radious);
+		} else if(type.equals("plane")){
+			for(int i = 0; i < points.size(); i++)
+				System.out.println("Point("+ i +"): " + points.get(i).toString());
+			System.out.println("Normal: " + normal.toString());
+		} else if(type.equals("generic-mesh")){
+			for(int i = 0; i < points.size(); i++)
+				System.out.println("Point("+ i +"): " + points.get(i).toString());
+			for(int i = 0; i < triangles.size(); i++)
+				System.out.println("Triangle("+ i +"): " + triangles.get(i).toString());
+
+		}
+		
 	}
 	
 	private Specification parseSpec( String type ) throws IOException{
 		String current, color = null;
 		Specification aSpec = new Specification();
 		Double __a, __b, __c;
+		int flag = 0;
 		// We discard the first {
 		if(aParser.peekNextToken().equals("{")){
 			current = aParser.getNextToken();
 			current = aParser.getNextToken() + aParser.getNextToken();
 			int length = current.length();
 			color = current.substring(1, length-1);
-		}
+		} else flag = 1;
 
 		__a = new Double(aParser.getNextToken());
 		__b = new Double(aParser.getNextToken());
 		__c = new Double(aParser.getNextToken());
 		// Now we discard the last }
-		if(aParser.peekNextToken().equals("}"))
+		if(aParser.peekNextToken().equals("}") && flag == 0)
 			current = aParser.getNextToken();
 		// We check if there's Specularity
 		if(type.equals("spec")){
@@ -187,6 +205,7 @@ public class Parser {
 		aSpec.setColor_type(color);
 		
 		System.out.println(aSpec.toString());
+
 		
 		return aSpec;
 	}
@@ -401,7 +420,7 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		System.out.println("Resolución: (" + width + ", " + height + ")");
+		System.out.println("Resolucion: (" + width + ", " + height + ")");
 		System.out.println("Antialiasing: (" + aa_min + ", " + aa_max + ")");
 		System.out.println("Samples: " + samples);
 		
