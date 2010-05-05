@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
@@ -67,6 +68,12 @@ public class Box extends Primitive {
 
 	@Override
 	public Color getColor(Point3d point) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Point3d> getBoundaryPoints() {
 		// TODO Auto-generated method stub
 		return null;
 	}

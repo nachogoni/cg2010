@@ -1,7 +1,9 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
+import java.util.List;
 
+import javax.swing.text.html.ListView;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -111,5 +113,11 @@ public abstract class Primitive {
 	 */
 	public abstract Color getColor(Point3d point);
 
+	/**
+	 * Get the list of boundary points of the primitive
+	 * 
+	 * @return List of boundary points
+	 */
+	public abstract List<Point3d> getBoundaryPoints();
 	
 }

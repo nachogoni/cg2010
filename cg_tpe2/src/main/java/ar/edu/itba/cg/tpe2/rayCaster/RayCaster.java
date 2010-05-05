@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.rayCaster.ImagePartitioners.HorizontalImagePartitioner;
 
 /**
