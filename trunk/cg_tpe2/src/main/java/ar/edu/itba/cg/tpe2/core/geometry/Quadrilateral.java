@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
@@ -144,6 +145,12 @@ public class Quadrilateral extends Primitive {
 	public void scalez(double scale) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Point3d> getBoundaryPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

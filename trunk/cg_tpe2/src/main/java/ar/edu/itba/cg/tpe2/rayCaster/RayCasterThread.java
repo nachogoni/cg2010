@@ -10,6 +10,7 @@ import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 /**
  * RayCasterThread is an optimization using threads 

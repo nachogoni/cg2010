@@ -23,10 +23,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.rayCaster.Camera;
 import ar.edu.itba.cg.tpe2.rayCaster.IColorProvider;
 import ar.edu.itba.cg.tpe2.rayCaster.RayCaster;
-import ar.edu.itba.cg.tpe2.rayCaster.Scene;
 import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.CyclicColorProvider;
 import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.RandomColorProvider;
 
@@ -79,8 +79,8 @@ public class App
     		Scene scene = new Scene(sceneName);
     		
     		// Create a camera
-    		Camera camera = new Camera(new Point3d(5d, 5d, 5d), new Point3d(0d, 0d ,0d), 
-    				new Point3d(-5d, 10d ,-5d), fov, imageResolution[0], imageResolution[1]);
+    		Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 
+    				new Point3d(0d, 10d ,10d), fov, imageResolution[0], imageResolution[1]);
     		
     		// Create rayCaster
     		RayCaster raycaster = null;
