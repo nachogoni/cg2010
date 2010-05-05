@@ -303,8 +303,13 @@ public class Scene {
 		Point3d currIntersection = null, nearestIntersection=null;
 		Point3d origin = ray.getOrigin();
 		
+		// Check if the octree is created
+		if (octree == null) {
+			this.optimize();
+		}
+		
 		// Find intersection in scene with ray
-		for (Primitive p : list) {
+		for (Primitive p : octree.intersect(ray)) {
 			currIntersection = p.intersect(ray);
 			if (currIntersection != null && (nearestIntersection == null || (nearestIntersection != null &&
 				currIntersection.distance(origin) < nearestIntersection.distance(origin)))) {

@@ -1,5 +1,6 @@
 package ar.edu.itba.cg.tpe2.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Point3d;
@@ -9,11 +10,11 @@ import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 
 public class PrimitiveOctree {
 
-	static final int MAX_PRIMITIVES = 10;
+	static final int MAX_PRIMITIVES = 1000;
 	
 	PrimitiveOctree[] nodes = null;
 	
-	List<Primitive> primitives = null;
+	List<Primitive> primitives = new ArrayList<Primitive>();
 	
 	private double xMin;
 	private double xMax;
@@ -48,16 +49,17 @@ public class PrimitiveOctree {
 		
 		
 		// Soy hoja? si-> supere el maximo de elementos? si -> me rompo; no-> me agrego p
-		divide(); //FIXME
+		//divide(); //FIXME
 
 		// Soy nodo? si-> chequeo si lo tengo que meter en que hijos y se los doy
 		
+		primitives.add(p);
 		
 		return;
 	}
 	
 	public void add(List<Primitive> list) {
-		for (Primitive p : primitives) {
+		for (Primitive p : list) {
 			add(p);
 		}
 	}
@@ -74,16 +76,16 @@ public class PrimitiveOctree {
 	
 */		
 		// This is not a leaf anymore
-		primitives = null;
+		primitives.clear();
 		return;
 	}
 	
 	public boolean isLeaf() {
-		return primitives == null;
+		return primitives.isEmpty();
 	}
 	
 	public boolean isEmpty() {
-		return (primitives == null) && (nodes == null);
+		return (primitives.isEmpty()) && (nodes == null);
 	}
 	
 	/**
@@ -94,7 +96,7 @@ public class PrimitiveOctree {
 		
 		// chequea contra todos los hijos y si colisiona se mete ahi adentro y devuelve el merge de todas las listas
 		
-		return null;
+		return primitives;
 	}
 
 	public double getxMin() {
