@@ -13,4 +13,14 @@ public abstract class Light {
 		// Power
 		// Point
 	
+	public enum ELightType { point }
+
+	private ELightType type;
+	private String name;
+	
+	public Light(ELightType type, String name) {
+		this.type = type;
+		this.name = name;
+	}
+	
 }
