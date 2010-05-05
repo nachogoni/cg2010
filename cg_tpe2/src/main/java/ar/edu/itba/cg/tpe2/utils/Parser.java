@@ -74,7 +74,9 @@ public class Parser {
 
 	private void parseObjectSettings() throws IOException {
 		String current;
-		String shader_name = null, type = null, object_name = null;
+		String shader_name = "";
+		String type = "";
+		String object_name = "";
 		List<Point3d> points = new LinkedList<Point3d>();
 		List<Point3i> triangles = new LinkedList<Point3i>();
 		Point3d normal = null, center = null;
@@ -132,10 +134,12 @@ public class Parser {
 						} else if(current.equals("triangles")){
 							tri_qty = new Integer(aParser.getNextToken());
 							for(int i = 0; i < tri_qty; i++){
+								// TODO Get point according to the index
 								triangles.add(new Point3i(new Integer(aParser.getNextToken()),
 										new Integer(aParser.getNextToken()),
 										new Integer(aParser.getNextToken())));
 							}
+							// TODO Add each triangle as an element of the scene
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
 						}
@@ -160,6 +164,8 @@ public class Parser {
 		
 		System.out.println("Object Type: " + type);
 		System.out.println("Shader Name: " + shader_name);
+		// TODO Get shader associated with the shader's name
+		
 		if(type.equals("sphere")){
 			System.out.println("Center: " + center.toString());
 			System.out.println("Radious: " + radious);
@@ -201,8 +207,8 @@ public class Parser {
 			aSpec.setSpecularity(new Integer(aParser.getNextToken()));
 		}
 		
-		aSpec.setaPoint(new Point3d(__a, __b, __c));
-		aSpec.setColor_type(color);
+		aSpec.setValue(new Point3d(__a, __b, __c));
+		aSpec.setColorType(color);
 		
 		System.out.println(aSpec.toString());
 
@@ -272,7 +278,7 @@ public class Parser {
 		}
 		
 		System.out.println("Type of Light: " + type);
-		System.out.println("Color: " + aSpec.getColor_type() + " " + aSpec.getaPoint());
+		System.out.println("Color: " + aSpec.getColorType() + " " + aSpec.getValue());
 		System.out.println("Power: " + power);
 		System.out.println("Light Position: " + light_pos.toString());
 		// Build Object Light
@@ -342,7 +348,7 @@ public class Parser {
 		System.out.println("Nombre: " + name);
 		System.out.println("Tipo: " + type);
 		System.out.println("Textura: " + texture_path);
-		System.out.println("Color/Spec: " + aSpec.getColor_type() + " " + aSpec.getaPoint());
+		System.out.println("Color/Spec: " + aSpec.getColorType() + " " + aSpec.getValue());
 		// Aca habria que armar el objeto
 		
 	}

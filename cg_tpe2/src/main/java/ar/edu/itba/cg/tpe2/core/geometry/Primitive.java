@@ -79,6 +79,7 @@ public abstract class Primitive {
 	/**
 	 * Scale primitive in X axis
 	 * 
+	 * 
 	 */
 	public abstract void scalex(double scale); 
 	

@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe2.geometry;
+package ar.edu.itba.cg.tpe2.core.geometry;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;

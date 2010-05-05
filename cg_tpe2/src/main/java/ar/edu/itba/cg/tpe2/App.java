@@ -79,8 +79,8 @@ public class App
     		Scene scene = new Scene(sceneName);
     		
     		// Create a camera
-    		Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 
-    				new Point3d(0d, 10d ,10d), fov, imageResolution[0], imageResolution[1]);
+    		Camera camera = new Camera(new Point3d(5d, 5d, 5d), new Point3d(0d, 0d ,0d), 
+    				new Point3d(-5d, 10d ,-5d), fov, imageResolution[0], imageResolution[1]);
     		
     		// Create rayCaster
     		RayCaster raycaster = null;
@@ -149,7 +149,7 @@ public class App
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setContentPane(jsp);
         f.setTitle("G2 - "+sceneName+" rendered");
-        f.setSize(image.getWidth(),image.getHeight());
+        f.setSize(image.getWidth()+40,image.getHeight()+40);
         f.setLocation(200,200);
         f.setVisible(true);
 	}

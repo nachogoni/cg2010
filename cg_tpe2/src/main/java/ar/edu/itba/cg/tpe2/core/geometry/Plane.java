@@ -1,11 +1,10 @@
-package ar.edu.itba.cg.tpe2.core.geometry;
+ package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
 
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
-import ar.edu.itba.cg.tpe2.geometry.Vector3;
 
 public class Plane extends Primitive {
 
@@ -20,10 +19,9 @@ public class Plane extends Primitive {
 	// Point
 	// Point
 
-	private static final double DISTANCE_TOLE  = 0.00000000000001;	
 	Point3d p1, p2, p3;
 	Vector3 u, v, n;
-	
+	private static final double DISTANCE_TOLE  = 0.00000000000001;
 	Color color = null;
 	
 	public Plane(String name, Shader shader, Point3d p1, Vector3 n) throws IllegalArgumentException{
@@ -50,15 +48,34 @@ public class Plane extends Primitive {
 		Point3d destiny = (Point3d) ray.getOrigin().clone();
 		destiny.add(ray.getDirection());
 
-		// compute vector that goes from p1 to the end of the ray
-		Vector3 r = new Vector3(p1,destiny);
+		// ray direction vector
+		Vector3 dir = new Vector3(ray.getOrigin(),destiny);
+	    
+		Vector3 w0 = new Vector3(p1,ray.getOrigin());
 		
-		// From http://en.citizendium.org/wiki/Plane_%28geometry%29
-		if ( n.dot(r) != 0 )
-			// Point not in plane
-			return null;
+		double a = -n.dot(w0);
+		double b = n.dot(dir);
 		
-	    return ray.getDirection();
+        // Check if ray is parallel to triangle plane
+	    if ( Math.abs(b) < DISTANCE_TOLE ) {
+	    	// Ray lies in triangle plane ( Determinant is near zero )
+	        if ( a < DISTANCE_TOLE && a > -DISTANCE_TOLE )
+	            return null;
+	        // Ray disjoint from plane
+	        else
+	        	return null;
+	    }
+	    
+	    double r = a/b;
+	    
+	    // Check if ray goes away from triangle
+	    if ( r < 0.0 )
+	    	return null;
+	    
+	    Point3d intersectionPoint = new Point3d ( ray.getOrigin() );
+	    dir.scale(r);
+	    intersectionPoint.add(dir);
+	    return intersectionPoint;
 	}
 		
 	@Override
