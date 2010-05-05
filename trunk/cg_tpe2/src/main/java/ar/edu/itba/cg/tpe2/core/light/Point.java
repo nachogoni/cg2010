@@ -16,5 +16,28 @@ public class Point extends Light {
 		this.power = power;
 		this.p = p;
 	}
-	
+
+	public Specification getASpec() {
+		return aSpec;
+	}
+
+	public double getPower() {
+		return power;
+	}
+
+	public Point3d getP() {
+		return p;
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Specification: ")
+			.append(aSpec)
+			.append("\nPower: ")
+			.append(power)
+			.append("\nAt: ")
+			.append(p);
+		
+		return sb.toString();
+	}	
 }

@@ -8,10 +8,6 @@ import javax.vecmath.Point3d;
  */
 public class Ray {
 	
-
-	//TODO: CAMBIARLO?!
-	
-	
 	private Point3d origin;
 	
 	private Point3d direction;

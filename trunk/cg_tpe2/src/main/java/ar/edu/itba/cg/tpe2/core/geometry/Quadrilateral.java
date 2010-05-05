@@ -5,7 +5,6 @@ import java.awt.Color;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
-import ar.edu.itba.cg.tpe2.geometry.Vector3;
 
 public class Quadrilateral extends Primitive {
 	

@@ -18,23 +18,22 @@ public class Specification {
 	}
 	
 	public Specification(String color_type, Double a, Double b, Double c){
-		this.color_type = color_type;
-		this.aPoint = new Point3d(a, b, c);
+		this(color_type,new Point3d(a, b, c));
 	}
 
-	public String getColor_type() {
+	public String getColorType() {
 		return color_type;
 	}
 
-	public void setColor_type(String colorType) {
+	public void setColorType(String colorType) {
 		color_type = colorType;
 	}
 
-	public Point3d getaPoint() {
+	public Point3d getValue() {
 		return aPoint;
 	}
 
-	public void setaPoint(Point3d aPoint) {
+	public void setValue(Point3d aPoint) {
 		this.aPoint = aPoint;
 	}
 

@@ -1,14 +1,16 @@
-package ar.edu.itba.cg.tpe2.geometry;
+package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
 
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.core.shader.Shader;
+
 /**
  * Ray Intersection algorithm based on http://softsurfer.com/Archive/algorithm_0105/algorithm_0105.htm 
  *
  */
-public class Triangle implements Primitive {
+public class Triangle extends Primitive {
 
 	private static final double DISTANCE_TOLE  = 0.00000000000001;
 	Point3d p1, p2, p3;
@@ -19,7 +21,8 @@ public class Triangle implements Primitive {
 	
 	Color color = null;
 	
-	public Triangle(Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
+		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
 		n = new Vector3();
@@ -35,8 +38,8 @@ public class Triangle implements Primitive {
 		this.p3 = p3;
 	}
 	
-	public Triangle(Point3d p1, Point3d p2, Point3d p3, Color color) throws IllegalArgumentException {
-		this(p1,p2,p3);
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Color color) throws IllegalArgumentException {
+		this(name, shader, p1,p2,p3);
 		this.color = color;
 	}
 	
@@ -106,5 +109,47 @@ public class Triangle implements Primitive {
 	
 	public String toString() {
 		return "( "+p1+" , "+p2+" , "+p3+" ; "+color.toString()+" )";
+	}
+	
+	@Override
+	public void rotatex(double angle) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rotatey(double angle) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rotatez(double angle) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scaleu(double scale) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scalex(double scale) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scaley(double scale) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scalez(double scale) {
+		// TODO Auto-generated method stub
+		
 	}
 }
