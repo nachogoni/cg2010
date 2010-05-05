@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.itba.cg.tpe2.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.utils.PrimitiveOctree;
 
 /**
  * Create a scene representation
@@ -11,6 +12,8 @@ import ar.edu.itba.cg.tpe2.geometry.Primitive;
 public class Scene {
 
 	private List<Primitive> list = new ArrayList<Primitive>();
+	
+	private PrimitiveOctree octree = null;
 	
 	/**
 	 * Constructor for the scene from a file name
@@ -53,6 +56,9 @@ public class Scene {
 	 */
 	public void add(Primitive p) {
     	list.add(p);
+    
+    	
+    	
 	}
 	
 	/**
@@ -77,5 +83,19 @@ public class Scene {
 		//TODO: crear la escena en base a lo que el parser lea del archivo
     	return null;
 	}
+	
+	public void optimize() {
+		
+		// TODO:
+		
+		// Recorre la lista y obtiene los maximos y minimos
+		// crea el octree con los max y min
+		// recorre la lista agregando las p al octree o se la damos directamente
+		
+		// tenemos el octree de la escena
+		
+		return;
+	}
+	
 	
 }
