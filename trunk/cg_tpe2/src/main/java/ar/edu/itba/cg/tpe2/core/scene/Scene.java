@@ -66,9 +66,6 @@ public class Scene {
 	 */
 	public void add(Primitive p) {
     	list.add(p);
-    
-    	
-    	
 	}
 	
 	/**
