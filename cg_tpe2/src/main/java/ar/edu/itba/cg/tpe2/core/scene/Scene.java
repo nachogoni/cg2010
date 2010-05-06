@@ -32,6 +32,7 @@ public class Scene {
 	 */
 	public Scene(String scene) {
 		this.list = read(scene);
+		this.optimize();
 	}
 
 	/**
@@ -57,15 +58,6 @@ public class Scene {
 	 */
 	public List<Primitive> getList() {
 		return list;
-	}
-	
-	/**
-	 * Add a primitive in the scene
-	 * 
-	 * @param p New primitive
-	 */
-	public void add(Primitive p) {
-    	list.add(p);
 	}
 	
 	/**
@@ -304,11 +296,6 @@ public static List<Primitive> read(String scene) {
 		Primitive nearestPrimitive = null;
 		Point3d currIntersection = null, nearestIntersection=null;
 		Point3d origin = ray.getOrigin();
-		
-		// Check if the octree is created
-		if (octree == null) {
-			this.optimize();
-		}
 		
 		// Find intersection in scene with ray
 		for (Primitive p : octree.intersect(ray)) {
