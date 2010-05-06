@@ -17,6 +17,7 @@ public class Parser {
 
 	private String filename = null;
 	private FileParser aParser;
+	private Scene scene;
 	
 	public Parser(String filename) {
 		if (filename == null)
@@ -33,7 +34,7 @@ public class Parser {
 	 */
 	public Scene parse() throws IOException {
 		
-		Scene scene = new Scene();
+		this.scene = new Scene();
 		String current;
 		aParser = new FileParser(this.filename);
 		while(true){
@@ -79,9 +80,11 @@ public class Parser {
 		String object_name = "";
 		List<Point3d> points = new LinkedList<Point3d>();
 		List<Point3i> triangles = new LinkedList<Point3i>();
+		List<Vector3d> normals = new LinkedList<Vector3d>();
+		List<Point2d> uvs = new LinkedList<Point2d>();
 		Point3d normal = null, center = null;
 		Double radious = null;
-		Integer pts_qty, tri_qty;
+		Integer pts_qty = 0, tri_qty = 0;
 		Transform aTrans = null;
 		do{
 			current = aParser.getNextToken();
@@ -119,7 +122,7 @@ public class Parser {
 							aTrans = this.parseTransform();
 						}
 					}while (!current.equals("}"));
-				} else if (current.equals("generic-mesh")){
+				} else if (type.equals("generic-mesh")){
 					do{
 						current = aParser.getNextToken();
 						if(current.equals("name")){
@@ -139,9 +142,22 @@ public class Parser {
 										new Integer(aParser.getNextToken()),
 										new Integer(aParser.getNextToken())));
 							}
-							// TODO Add each triangle as an element of the scene
+							
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
+						} else if (current.equals("normals")){
+							String normals_type = aParser.getNextToken();
+							for(int i = 0; i < pts_qty; i++){
+								normals.add(new Vector3d(new Double(aParser.getNextToken()), 
+										new Double(aParser.getNextToken()), 
+										new Double(aParser.getNextToken())));
+							}
+						} else if (current.equals("uvs")){
+							String uvs_type = aParser.getNextToken();
+							for(int i = 0; i < pts_qty; i++){
+								uvs.add(new Point2d(new Double(aParser.getNextToken()), 
+										new Double(aParser.getNextToken())));
+							}
 						}
 					}while(!current.equals("}"));
 				} else if (current.equals("box")){
@@ -178,7 +194,10 @@ public class Parser {
 				System.out.println("Point("+ i +"): " + points.get(i).toString());
 			for(int i = 0; i < triangles.size(); i++)
 				System.out.println("Triangle("+ i +"): " + triangles.get(i).toString());
-
+			for(int i = 0; i < normals.size(); i++)
+				System.out.println("Normals("+ i +"): " + normals.get(i).toString());
+			for(int i = 0; i < uvs.size(); i++)
+				System.out.println("UVs("+ i +"): " + uvs.get(i).toString());
 		}
 		
 	}
