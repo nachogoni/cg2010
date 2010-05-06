@@ -131,7 +131,7 @@ public class Scene {
 	 * @return List of primitives
 	 */
 	@Deprecated
-	public static List<Primitive> read(String scene) {
+public static List<Primitive> read(String scene) {
 		
 		List<Primitive> list = Collections.synchronizedList(new ArrayList<Primitive>());
 		
@@ -205,8 +205,13 @@ public class Scene {
 			list.add(new Triangle("",null,new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
 					new Point3d( 5, 5, -10),  Color.WHITE));
 		} else if (scene.equals("scene7.sc")){
-			list.add(new Triangle("",null,new Point3d( 0, 0, 9),  new Point3d( -5, 5, -4), 
-					new Point3d( 5, 5, -10),  Color.WHITE));
+			Triangle triangle = new Triangle("",null,new Point3d( 0, 0, 2),  new Point3d( 0, 1, 2), new Point3d( 1, 0, 2),  Color.YELLOW);
+			Triangle triangle2 = new Triangle("",null,new Point3d( 1, 1, 2),  new Point3d( 0, 1, 2), new Point3d( 1, 0, 2),  Color.BLUE);
+			triangle.scalex(0.5d);
+			triangle2.scaley(0.5d);
+			triangle.scalez(-10d);
+			list.add(triangle);
+			list.add(triangle2);
 		} else if (scene.equals("scene8.sc")){
 			Plane plane = new Plane(null, null, new Point3d(0,0,0),new Vector3(new Point3d(),new Point3d(1, 0, 0)));
 			plane.setColor(Color.BLUE);

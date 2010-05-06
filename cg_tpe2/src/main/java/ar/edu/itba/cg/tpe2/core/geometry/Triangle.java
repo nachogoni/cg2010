@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -112,25 +113,42 @@ public class Triangle extends Primitive {
 	public String toString() {
 		return "( "+p1+" , "+p2+" , "+p3+" ; "+color.toString()+" )";
 	}
+
+	private void applyMatrix(Matrix3d m){
+		m.transform(p1);
+		m.transform(p2);
+		m.transform(p3);
+		recalculate();
+	}
+
+	
+	private void recalculate(){
+		u = new Vector3(p1,p2);
+		v = new Vector3(p1,p3);
+		n = new Vector3();
+		n.cross(u, v);
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+	}
 	
 	@Override
 	public void rotatex(double angle) {
-		// TODO Auto-generated method stub
-		
+		applyMatrix(new Matrix3d(1,0,0,0,Math.cos(angle),-Math.sin(angle),0,Math.sin(angle),Math.cos(angle)));
 	}
 
 	@Override
 	public void rotatey(double angle) {
-		// TODO Auto-generated method stub
-		
+		applyMatrix(new Matrix3d(Math.cos(angle),0,Math.sin(angle),0,1,0,-Math.sin(angle),0,Math.cos(angle)));
 	}
 
 	@Override
 	public void rotatez(double angle) {
-		// TODO Auto-generated method stub
-		
+		applyMatrix(new Matrix3d(Math.cos(angle),-Math.sin(angle),0,Math.sin(angle),Math.cos(angle),0,0,0,1));
 	}
 
+	
+	
 	@Override
 	public void scaleu(double scale) {
 		// TODO Auto-generated method stub
@@ -139,20 +157,19 @@ public class Triangle extends Primitive {
 
 	@Override
 	public void scalex(double scale) {
-		// TODO Auto-generated method stub
+		applyMatrix(new Matrix3d(scale,0,0,0,1,0,0,0,1));
 		
 	}
 
 	@Override
 	public void scaley(double scale) {
-		// TODO Auto-generated method stub
+		applyMatrix(new Matrix3d(1,0,0,0,scale,0,0,0,1));
 		
 	}
 
 	@Override
 	public void scalez(double scale) {
-		// TODO Auto-generated method stub
-		
+		applyMatrix(new Matrix3d(1,0,0,0,1,0,0,0,scale));		
 	}
 
 	@Override
