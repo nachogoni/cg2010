@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
@@ -22,11 +23,11 @@ public class Plane extends Primitive {
 	// Point
 
 	Point3d p1, p2, p3;
-	Vector3 u, v, n;
+	Vector3d u, v, n;
 	private static final double DISTANCE_TOLE  = 0.00000000000001;
 	Color color = null;
 	
-	public Plane(String name, Shader shader, Point3d p1, Vector3 n) throws IllegalArgumentException{
+	public Plane(String name, Shader shader, Point3d p1, Vector3d n) throws IllegalArgumentException{
 		super(name,shader);
 		if ( n.equals(new Vector3()) )
 			throw new IllegalArgumentException("Normal of a plane shouldn't be the 0 vector");
