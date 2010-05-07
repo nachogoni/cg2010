@@ -79,8 +79,8 @@ public class App
     		Scene scene = new Scene(sceneName);
     		
     		// Create a camera
-    		Camera camera = new Camera(new Point3d(0d, 0d, 10d), new Point3d(0d, 0d ,0d), 
-    				new Point3d(0d, 10d ,10d), fov, imageResolution[0], imageResolution[1]);
+    		Camera camera = new Camera(new Point3d(0d, 0d, 6d), new Point3d(0d, 0d ,0d), 
+    				new Point3d(0d, 10d ,6d), fov, imageResolution[0], imageResolution[1]);
     		
     		// Create rayCaster
     		RayCaster raycaster = null;
