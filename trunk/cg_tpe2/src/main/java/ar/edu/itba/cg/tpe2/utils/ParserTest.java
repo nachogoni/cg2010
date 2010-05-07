@@ -10,6 +10,7 @@ public class ParserTest {
 	public static void main(String[] args) {
 		String curr_dir = System.getProperty("user.dir");
 		System.out.println(curr_dir);
+
 		Parser aParser = new Parser(curr_dir + "/escenas/prueba.sc");
 		try {
 			aParser.parse();
