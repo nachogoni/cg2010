@@ -1,9 +1,13 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -13,6 +17,9 @@ public class Sphere extends Primitive {
 	// Type: Sphere
 	// Center
 	// Radious
+	
+	
+	BufferedImage img;
 	
 	
 	Point3d radiusCenter;
@@ -25,6 +32,19 @@ public class Sphere extends Primitive {
 			throw new IllegalArgumentException("Invalid radius");
 		this.radius = radius;
 		this.radiusCenter= radiusCenter;
+		
+		
+		try {
+			
+			File input = new File("earth.jpg");
+			img = ImageIO.read(input);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 	
 	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius, Color color) throws IllegalArgumentException {
@@ -77,8 +97,29 @@ public class Sphere extends Primitive {
 	}
 	
 	public Color getColor(Point3d point) {
+		
+		Point3d p = new Point3d(point);
+		
+		// Get p into sphere coordinates
+		p.sub(radiusCenter);
+		
+		// Get uv coordinates
+		double u = p.x / Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2) + Math.pow(p.z, 2));
+		double v = p.y / Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2) + Math.pow(p.z, 2));
+		
+		if (u > 1 || u < -1)
+			System.out.println(u);
+		u++;
+		u/=2;
+		
+		Color color = new Color(img.getRGB((int)(u * img.getWidth()), (int)(v * img.getHeight())/2 + img.getHeight() / 2));
+		
 		return color;
 	}
+	
+	/*public Color getColor(Point3d point) {
+		return color;
+	}*/
 	
 	public void setColor(Color color) {
 		this.color = color; 

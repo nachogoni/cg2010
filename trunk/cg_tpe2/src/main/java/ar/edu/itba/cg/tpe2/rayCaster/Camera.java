@@ -1,5 +1,8 @@
 package ar.edu.itba.cg.tpe2.rayCaster;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
@@ -17,6 +20,8 @@ public class Camera {
 	private double fov;
 	private Vector3d du;
 	private Vector3d dv;
+	private int height;
+	private int width;
 	
 	/**
 	 * Constructor for the Camera representation
@@ -45,6 +50,8 @@ public class Camera {
 		this.du = new Vector3();
 		this.du.cross(this.dv, this.direction);
 		this.du.normalize();
+		this.height = height;
+		this.width = width;
 	}
 	
 	/**
@@ -124,5 +131,40 @@ public class Camera {
 		
 		return new Point3d(v.x, v.y, v.z);
 	}
+
+	/**
+	 * Get a point from a pixel in the viewport
+	 *  
+	 * @param width Width for the viewport
+	 * @param height Height for the viewport
+	 * @param i Column
+	 * @param j Row
+	 * 
+	 * @return Point at certain distance
+	 */
+	/*public List<Point3d> getPointListFromXY(int width, int height, int i, int j) {
+		
+		List<Point3d> points = new ArrayList<Point3d>();
+		
+		// Get the center for the image
+		Vector3d v = new Vector3d(this.FieldCenter);
+		
+		// v1 = i * this.du + v
+		v.scaleAdd(i - width / 2, this.du, v);
+
+		// v = j * this.dv + v
+		v.scaleAdd(j - height /2, this.dv, v);
+		
+		
+		// Add center point
+		points.add(new Point3d(v.x, v.y, v.z));
+		points.add(new Point3d(v.x , v.y, v.z));
+		points.add(new Point3d(v.x, v.y, v.z));
+		points.add(new Point3d(v.x, v.y, v.z));
+		
+		
+		
+		return points;
+	}*/
 
 }
