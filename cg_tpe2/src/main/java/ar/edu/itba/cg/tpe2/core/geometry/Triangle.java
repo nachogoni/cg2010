@@ -1,6 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +22,6 @@ public class Triangle extends Primitive {
 	Vector3 u, v, n;
 	
 	double uu, uv, vv;
-	
-	Color color = null;
 	
 	//Vectores Normales a cada punto
 	private Vector3d n1, n2, n3;
@@ -117,11 +114,6 @@ public class Triangle extends Primitive {
 		this.p3 = p3;
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Color color) throws IllegalArgumentException {
-		this(name, shader, p1,p2,p3);
-		this.color = color;
-	}
-	
 	public Point3d intersect(Ray ray) {
 		Point3d destiny = (Point3d) ray.getOrigin().clone();
 		destiny.add(ray.getDirection());
@@ -178,22 +170,14 @@ public class Triangle extends Primitive {
 	    return true;
 	}
 
-	public Color getColor(Point3d point) {
-		return color;
-	}
-	
-	public void setColor(Color color) {
-		this.color = color; 
-	}
-	
-
 	@Override
 	public String toString() {
-		return "Triangle [color=" + color + ", n=" + n + ", n1=" + n1 + ", n2="
+		return "Triangle [n=" + n + ", n1=" + n1 + ", n2="
 				+ n2 + ", n3=" + n3 + ", p1=" + p1 + ", p2=" + p2 + ", p3="
 				+ p3 + ", u=" + u + ", uu=" + uu + ", uv=" + uv + ", uv1="
 				+ uv1 + ", uv2=" + uv2 + ", uv3=" + uv3 + ", v=" + v + ", vv="
-				+ vv + "]";
+				+ vv + ", getName()=" + getName() + ", getShader()="
+				+ getShader() + "]";
 	}
 
 	private void applyMatrix(Matrix3d m){

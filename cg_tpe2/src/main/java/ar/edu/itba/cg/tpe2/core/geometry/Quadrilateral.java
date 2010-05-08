@@ -1,6 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
 public class Quadrilateral extends Primitive {
 	
 	private Point3d p1, p2, p3, p4;
-	private Color aColor = null;
 
 	// Plane equation values 0 = Ax+By+Cz+D
 	private double A, B, C, D;
@@ -23,12 +21,6 @@ public class Quadrilateral extends Primitive {
 		this.p3 = p3;
 		this.p4 = p4;
 	}
-	
-	public Quadrilateral(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point3d p4, Color aColor){
-		this(name, shader, p1,p2,p3,p4);
-		this.aColor = aColor;
-	}
-
 	
 	public Point3d intersect(Ray ray) {
 		
@@ -69,15 +61,6 @@ public class Quadrilateral extends Primitive {
 		
 	}
 		
-	public Color getColor(Point3d point) {
-		return this.aColor;
-	}
-	
-	public void setColor(Color color) {
-		this.aColor = color;
-		
-	}
-	
 	private Point3d containsPoint(Vector3 u, Vector3 v, Vector3 w) {
 		double uu, uv, vv, wu, wv, D;
 	    uu = u.dot(u);

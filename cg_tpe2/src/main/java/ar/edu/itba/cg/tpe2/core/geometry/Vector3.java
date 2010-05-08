@@ -16,4 +16,8 @@ public class Vector3 extends Vector3d{
 	public Vector3(Point3d origin, Point3d destiny) {
 		super(destiny.x - origin.x,destiny.y - origin.y,destiny.z - origin.z);
 	}
+	
+	public Vector3(double x, double y, double z){
+		super(x,y,z);
+	}
 }

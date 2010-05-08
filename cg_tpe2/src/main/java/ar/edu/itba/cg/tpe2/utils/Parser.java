@@ -365,6 +365,8 @@ public class Parser {
 		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
 		Integer samples = -1;
 		Specular aSpec = null, absSpec = null;
+		Diffuse aDiff = null;
+		
 		do{
 			current = aParser.getNextToken();
 			if(current.equals("name")){
@@ -380,10 +382,13 @@ public class Parser {
 							texture_path = aParser.getNextToken();
 							int length = texture_path.length();
 							texture_path = texture_path.substring(1, length);
+							aDiff = new Diffuse(texture_path);
 						} else if(current.equals("spec")){
 							aSpec = this.parseSpec(current);
 						} else if (current.equals("samples")){
 							samples = new Integer(aParser.getNextToken());
+						} else if (current.equals("diff")){
+							aDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("glass")){
@@ -423,13 +428,37 @@ public class Parser {
 			Shader aMirror = new Mirror(name, type, aSpec);
 			shaders.put(aMirror.getName(), aMirror);
 		} else if (type.equals("phong")){
-			Shader aPhong = new Phong(name, type, new Diffuse(texture_path), samples, aSpec);
+			Shader aPhong = new Phong(name, type, aDiff, samples, aSpec);
 			shaders.put(aPhong.getName(), aPhong);
 		} else if (type.equals("glass")){
 			Shader aGlass = new Glass(name, type, eta.doubleValue(), abs_dst.doubleValue(), aSpec, absSpec);
 			shaders.put(aGlass.getName(), aGlass);
 		}
 		
+	}
+
+
+	private Diffuse parseDiff(String type) throws IOException {
+		String current, color = null;
+		Diffuse aDiff = null;
+		float __a, __b, __c;
+		int flag = 0;
+		// We discard the first {
+		if(aParser.peekNextToken().equals("{")){
+			current = aParser.getNextToken();
+			current = aParser.getNextToken() + aParser.getNextToken();
+			int length = current.length();
+			color = current.substring(1, length-1);
+		} else flag = 1;
+
+		__a = new Float(aParser.getNextToken());
+		__b = new Float(aParser.getNextToken());
+		__c = new Float(aParser.getNextToken());
+		// Now we discard the last }
+		if(aParser.peekNextToken().equals("}") && flag == 0)
+			current = aParser.getNextToken();
+		
+		return new Diffuse(__a, __b, __c);
 	}
 
 

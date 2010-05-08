@@ -1,5 +1,9 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
+import java.awt.Color;
+
+import javax.vecmath.Point3d;
+
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 
 public class Mirror extends Shader {
@@ -20,6 +24,13 @@ public class Mirror extends Shader {
 		return "Mirror [spec=" + spec + ", getName()=" + getName()
 				+ ", getType()=" + getType() + "]";
 	}
+
+	@Override
+	public Color getColorAt(Point3d aPoint) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 	
