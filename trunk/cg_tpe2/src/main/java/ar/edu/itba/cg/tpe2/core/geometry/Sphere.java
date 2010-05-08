@@ -19,9 +19,14 @@ public class Sphere extends Primitive {
 	// Radious
 	
 	
+	@Override
+	public String toString() {
+		return "Sphere [color=" + color + ", radius=" + radius
+				+ ", radiusCenter=" + radiusCenter + ", getName()=" + getName()
+				+ ", getShader()=" + getShader() + "]";
+	}
+
 	BufferedImage img;
-	
-	
 	Point3d radiusCenter;
 	double radius;
 	Color color = null;
