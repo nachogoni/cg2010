@@ -18,7 +18,7 @@ import ar.edu.itba.cg.tpe2.core.scene.Scene;
 class RayCasterThread extends Thread {
 
 	private Scene scene;
-	private Camera camera;
+	private ar.edu.itba.cg.tpe2.core.camera.Camera camera;
 	private int fromX;
 	private int toX;
 	private int fromY;
@@ -46,7 +46,7 @@ class RayCasterThread extends Thread {
 	 * @param rayCaster RayCaster class parent
 	 * @param cb CyclicBarrier for the threads
 	 */
-	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster) {
+	public RayCasterThread(Scene scene, ar.edu.itba.cg.tpe2.core.camera.Camera camera, RayCaster rayCaster) {
 		this.scene = scene;
 		this.camera = camera;
 		this.rayCaster = rayCaster;
@@ -181,7 +181,7 @@ class RayCasterThread extends Thread {
 			}
 //			System.out.println("Thread "+id+" processing ( "+task.x+" , "+task.y+" ) ( "+task.width+" , "+task.height+" ) ");
 			setPortion(task, width, height);
-			Point3d origin = camera.getOrigin();
+			Point3d origin = camera.getEye();
 
 			Color color;
 			Ray ray;
@@ -262,7 +262,7 @@ class RayCasterThread extends Thread {
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint) {
 		// the color of the impacted figure
 		//TODO hacer bien, deberia usar el rayo!!!
-		return impactedFigure.getColor(intersectionPoint);
+		return impactedFigure.getShader().getColorAt(intersectionPoint);
 	}
 
 	private Ray getReflectRay(Ray ray, Primitive p) {

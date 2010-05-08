@@ -1,6 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class Sphere extends Primitive {
 	
 	@Override
 	public String toString() {
-		return "Sphere [color=" + color + ", radius=" + radius
+		return "Sphere [radius=" + radius
 				+ ", radiusCenter=" + radiusCenter + ", getName()=" + getName()
 				+ ", getShader()=" + getShader() + "]";
 	}
@@ -29,7 +28,6 @@ public class Sphere extends Primitive {
 	BufferedImage img;
 	Point3d radiusCenter;
 	double radius;
-	Color color = null;
 	
 	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius) throws IllegalArgumentException {
 		super(name,shader);
@@ -50,11 +48,6 @@ public class Sphere extends Primitive {
 		
 		
 		
-	}
-	
-	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius, Color color) throws IllegalArgumentException {
-		this(name, shader, radiusCenter,radius);
-		this.color = color;
 	}
 	
 	// A = Xd^2 + Yd^2 + Zd^2
@@ -100,7 +93,7 @@ public class Sphere extends Primitive {
 						
 		return ret;
 	}
-	
+	/*
 	public Color getColor(Point3d point) {
 		
 		Point3d p = new Point3d(point);
@@ -122,15 +115,8 @@ public class Sphere extends Primitive {
 		return color;
 	}
 	
-	/*public Color getColor(Point3d point) {
-		return color;
 	}*/
 	
-	public void setColor(Color color) {
-		this.color = color; 
-	}
-	
-
 	@Override
 	public void rotatex(double angle) {
 		// TODO Auto-generated method stub

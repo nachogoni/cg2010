@@ -15,13 +15,13 @@ public class ParserTest {
 		String curr_dir = System.getProperty("user.dir");
 		System.out.println(curr_dir);
 
-		Parser aParser = new Parser(curr_dir + "/escenas/prueba2.sc");
+		Parser aParser = new Parser(curr_dir + "/escenas/scene1.sc");
 		try {
 			Scene aScene = aParser.parse();
-			List<Primitive> aList = aScene.getList();
-			for(int i = 0; i < aList.size(); i++){
-				System.out.println(aList.get(i).toString());
-			}
+//			List<Primitive> aList = aScene.getList();
+//			for(int i = 0; i < aList.size(); i++){
+//				System.out.println(aList.get(i).toString());
+//			}
 			System.out.println(aScene);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

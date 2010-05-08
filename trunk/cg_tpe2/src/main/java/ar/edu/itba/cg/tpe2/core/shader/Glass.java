@@ -1,5 +1,9 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
+import java.awt.Color;
+
+import javax.vecmath.Point3d;
+
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 
 public class Glass extends Shader {
@@ -31,6 +35,11 @@ public class Glass extends Shader {
 		return "Glass [abs_color=" + abs_color + ", abs_dist=" + abs_dist
 				+ ", color=" + color + ", eta=" + eta + ", getName()="
 				+ getName() + ", getType()=" + getType() + "]";
+	}
+	@Override
+	public Color getColorAt(Point3d aPoint) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

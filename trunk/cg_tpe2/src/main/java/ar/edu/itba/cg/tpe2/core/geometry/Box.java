@@ -1,6 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +62,6 @@ public class Box extends Primitive {
 
 	@Override
 	public Point3d intersect(Ray ray) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Color getColor(Point3d point) {
 		// TODO Auto-generated method stub
 		return null;
 	}

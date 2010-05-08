@@ -1,6 +1,5 @@
  package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class Plane extends Primitive {
 	Point3d p1, p2, p3;
 	Vector3d u, v, n;
 	private static final double DISTANCE_TOLE  = 0.00000000000001;
-	Color color = null;
 	
 	public Plane(String name, Shader shader, Point3d p1, Vector3d n) throws IllegalArgumentException{
 		super(name,shader);
@@ -82,20 +80,8 @@ public class Plane extends Primitive {
 	}
 		
 	@Override
-	public Color getColor(Point3d point) {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color; 
-	}
-		
-
-
-
-	@Override
 	public String toString() {
-		return "Plane [color=" + color + ", n=" + n + ", p1=" + p1 + ", p2="
+		return "Plane [n=" + n + ", p1=" + p1 + ", p2="
 				+ p2 + ", p3=" + p3 + ", u=" + u + ", v=" + v + ", getName()="
 				+ getName() + ", getShader()=" + getShader() + "]";
 	}

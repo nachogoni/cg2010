@@ -33,4 +33,11 @@ public class Diffuse {
 		
 		return new Color(img.getRGB(x, y));
 	}
+
+	@Override
+	public String toString() {
+		return "Diffuse [c=" + c + ", img=" + img + "]";
+	}
+	
+	
 }

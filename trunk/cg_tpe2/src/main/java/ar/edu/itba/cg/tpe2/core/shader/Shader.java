@@ -1,5 +1,9 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
+import java.awt.Color;
+
+import javax.vecmath.Point3d;
+
 public abstract class Shader {
 
 	// Name
@@ -26,6 +30,7 @@ public abstract class Shader {
 		return type;
 	}
 	
+	abstract public Color getColorAt(Point3d aPoint);
 	
 	// Implementations
 	

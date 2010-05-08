@@ -1,9 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.awt.Color;
 import java.util.List;
 
-import javax.swing.text.html.ListView;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -107,11 +105,6 @@ public abstract class Primitive {
 	 * Get the intersection between the figure and a ray
 	 */
 	public abstract Point3d intersect(Ray ray);
-
-	/**
-	 * Get color of the figure
-	 */
-	public abstract Color getColor(Point3d point);
 
 	/**
 	 * Get the list of boundary points of the primitive

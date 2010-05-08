@@ -23,12 +23,13 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
-import ar.edu.itba.cg.tpe2.rayCaster.Camera;
 import ar.edu.itba.cg.tpe2.rayCaster.IColorProvider;
 import ar.edu.itba.cg.tpe2.rayCaster.RayCaster;
 import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.CyclicColorProvider;
 import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.RandomColorProvider;
+import ar.edu.itba.cg.tpe2.utils.Parser;
 
 /**
  * TPE2
@@ -38,7 +39,7 @@ public class App
 {
 
 	
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException
     {
     	try {
     		
@@ -76,11 +77,17 @@ public class App
     		String format = output.getName().substring(output.getName().length() - 3, output.getName().length()).toUpperCase();
     		
     		// Create an scene
-    		Scene scene = new Scene(sceneName);
+//    		Scene scene = new Scene(sceneName);
+    		String curr_dir = System.getProperty("user.dir");
+    		Parser aParser = new Parser(curr_dir + "/escenas/scene1.sc");
+    		Scene scene = aParser.parse();
+    		System.out.println(scene.toString());
     		
     		// Create a camera
-    		Camera camera = new Camera(new Point3d(0d, 0d, 6d), new Point3d(0d, 0d ,0d), 
-    				new Point3d(0d, 10d ,6d), fov, imageResolution[0], imageResolution[1]);
+//    		Camera camera = new Camera(new Point3d(0d, 0d, 6d), new Point3d(0d, 0d ,0d), 
+//    				new Point3d(0d, 10d ,6d), fov, imageResolution[0], imageResolution[1]);
+    		Camera camera = scene.getaCamera();
+    		camera.setWidth(scene.getAnImage().getWidth());
     		
     		// Create rayCaster
     		RayCaster raycaster = null;
@@ -91,7 +98,7 @@ public class App
     		if ( colorProvider instanceof CyclicColorProvider) {
     			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
     		} else {
-    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
     		}
     		
     		// Take start time

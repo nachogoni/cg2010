@@ -47,7 +47,7 @@ public class Specular {
 
 	@Override
 	public String toString() {
-		return "Specification [aPoint=" + color + ", color_type=" + color_type
+		return "Specular [aPoint=" + color + ", color_type=" + color_type
 				+ ", specularity=" + specularity + "]";
 	}
 	
