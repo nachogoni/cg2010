@@ -4,6 +4,28 @@ public abstract class Shader {
 
 	// Name
 	// Type
+	private String name;
+	private String type;
+	
+	public Shader(String name, String type) {
+		super();
+		this.name = name;
+		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "Shader [name=" + name + ", type=" + type + "]";
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getType() {
+		return type;
+	}
+	
 	
 	// Implementations
 	
