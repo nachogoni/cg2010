@@ -13,7 +13,7 @@ import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
-import ar.edu.itba.cg.tpe2.core.geometry.Specification;
+import ar.edu.itba.cg.tpe2.core.geometry.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
@@ -77,7 +77,7 @@ public class Parser {
 					if(current.equals("transform")){
 						Transform aTrans = this.parseTransform();
 					} else if (current.equals("spec") || current.equals("diff") || current.equals("color")){
-						Specification aSpec = this.parseSpec(current);
+						Specular aSpec = this.parseSpec(current);
 					}
 				} while (!current.equals("}"));
 			}
@@ -251,9 +251,9 @@ public class Parser {
 		
 	}
 	
-	private Specification parseSpec( String type ) throws IOException{
+	private Specular parseSpec( String type ) throws IOException{
 		String current, color = null;
-		Specification aSpec = new Specification();
+		Specular aSpec = new Specular();
 		float __a, __b, __c;
 		int flag = 0;
 		// We discard the first {
@@ -325,7 +325,7 @@ public class Parser {
 		String current, type = null, light_color;
 		Float __a, __b, __c, power = -1f;
 		Point3d light_pos = null;
-		Specification aSpec = null;
+		Specular aSpec = null;
 		do{
 			current = aParser.getNextToken();
 			if(current.equals("type")){
@@ -359,7 +359,7 @@ public class Parser {
 		String shader_color = null, abs_color = null;
 		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
 		Integer samples = -1;
-		Specification aSpec = null, absSpec = null;
+		Specular aSpec = null, absSpec = null;
 		do{
 			current = aParser.getNextToken();
 			if(current.equals("name")){

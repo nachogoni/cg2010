@@ -1,17 +1,17 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
-import ar.edu.itba.cg.tpe2.core.geometry.Specification;
+import ar.edu.itba.cg.tpe2.core.geometry.Specular;
 
 public class Mirror extends Shader {
 
-	private Specification spec;
+	private Specular spec;
 
-	public Mirror(String name, String type, Specification spec) {
+	public Mirror(String name, String type, Specular spec) {
 		super(name, type);
 		this.spec = spec;
 	}
 
-	public Specification getSpec() {
+	public Specular getSpec() {
 		return spec;
 	}
 
