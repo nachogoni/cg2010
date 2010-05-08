@@ -244,32 +244,9 @@ public class Parser {
 			scene.add(planeList);
 //			for(int i = 0; i < planeList.size(); i++)
 //				System.out.println(planeList.get(i).toString());
+		} else if (type.equals("box")){
+			
 		}
-		
-		
-		
-//
-//		System.out.println("Object Type: " + type);
-//		System.out.println("Shader Name: " + shader_name);
-//		// TODO Get shader associated with the shader's name
-//		
-//		if(type.equals("sphere")){
-//			System.out.println("Center: " + center.toString());
-//			System.out.println("radius: " + radius);
-//		} else if(type.equals("plane")){
-//			for(int i = 0; i < points.size(); i++)
-//				System.out.println("Point("+ i +"): " + points.get(i).toString());
-//			System.out.println("Normal: " + normal.toString());
-//		} else if(type.equals("generic-mesh")){
-//			for(int i = 0; i < points.size(); i++)
-//				System.out.println("Point("+ i +"): " + points.get(i).toString());
-//			for(int i = 0; i < triangles.size(); i++)
-//				System.out.println("Triangle("+ i +"): " + triangles.get(i).toString());
-//			for(int i = 0; i < normals.size(); i++)
-//				System.out.println("Normals("+ i +"): " + normals.get(i).toString());
-//			for(int i = 0; i < uvs.size(); i++)
-//				System.out.println("UVs("+ i +"): " + uvs.get(i).toString());
-//		}
 		
 	}
 	
