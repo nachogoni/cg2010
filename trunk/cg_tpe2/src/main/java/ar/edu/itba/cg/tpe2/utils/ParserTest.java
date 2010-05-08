@@ -22,6 +22,7 @@ public class ParserTest {
 			for(int i = 0; i < aList.size(); i++){
 				System.out.println(aList.get(i).toString());
 			}
+			System.out.println(aScene);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

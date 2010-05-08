@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Quadrilateral;
@@ -25,6 +26,41 @@ public class Scene {
 	
 	private PrimitiveOctree octree = null;
 	
+	private Camera aCamera = null;
+	private Image anImage = null;
+	
+	public Scene(List<Primitive> list, PrimitiveOctree octree, Camera aCamera,
+			Image anImage) {
+		super();
+		this.list = list;
+		this.octree = octree;
+		this.aCamera = aCamera;
+		this.anImage = anImage;
+		this.optimize();
+	}
+
+	public Camera getaCamera() {
+		return aCamera;
+	}
+
+	public void setaCamera(Camera aCamera) {
+		this.aCamera = aCamera;
+	}
+
+	public Image getAnImage() {
+		return anImage;
+	}
+
+	public void setAnImage(Image anImage) {
+		this.anImage = anImage;
+	}
+
+	@Override
+	public String toString() {
+		return "Scene [aCamera=" + aCamera + ", anImage=" + anImage + ", list="
+				+ list + ", octree=" + octree + "]";
+	}
+
 	/**
 	 * Constructor for the scene from a file name
 	 * 
