@@ -10,7 +10,10 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.geometry.Plane;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Specification;
+import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
@@ -48,7 +51,8 @@ public class Parser {
 		while(true){
 			current = aParser.getNextToken();
 			if(current == null){
-				return null;
+				// se termino el archivo
+				return scene;
 			}
 			System.out.println(current);
 			if(current.equalsIgnoreCase("image")){
@@ -90,7 +94,8 @@ public class Parser {
 		List<Point3i> triangles = new LinkedList<Point3i>();
 		List<Vector3d> normals = new LinkedList<Vector3d>();
 		List<Point2d> uvs = new LinkedList<Point2d>();
-		Point3d normal = null, center = null;
+		Point3d center = null;
+		Vector3d normal = null;
 		Double radious = null;
 		Integer pts_qty = 0, tri_qty = 0;
 		Transform aTrans = null;
@@ -108,7 +113,7 @@ public class Parser {
 									new Double(aParser.getNextToken()), 
 									new Double(aParser.getNextToken())));
 						} else if(current.equals("n")){
-							normal = new Point3d(new Double(aParser.getNextToken()), 
+							normal = new Vector3d(new Double(aParser.getNextToken()), 
 									new Double(aParser.getNextToken()), 
 									new Double(aParser.getNextToken()));
 						} else if (current.equals("transform")){
@@ -191,7 +196,7 @@ public class Parser {
 		
 		if(type.equals("generic-mesh")){
 			//Armo el generic-mesh, un listado de triangulos.
-			LinkedList<Triangle> triangleList = new LinkedList<Triangle>();
+			LinkedList<Primitive> triangleList = new LinkedList<Primitive>();
 			for(int i = 0; i < triangles.size(); i++){
 				if(normals.size()>0){
 					if(uvs.size()>0){
@@ -216,9 +221,29 @@ public class Parser {
 							points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1)));
 				}
 			}
-			for(int i = 0; i < triangles.size(); i++){
-				System.out.println(triangleList.get(i).toString());
+			scene.add(triangleList);
+//			for(int i = 0; i < triangleList.size(); i++){
+//				System.out.println(triangleList.get(i).toString());
+//			}
+		} else if (type.equals("sphere")){
+			//Aca armamos la esfera
+			LinkedList<Primitive> sphereList = new LinkedList<Primitive>();
+			sphereList.add(new Sphere(object_name, shaders.get(shader_name), center, radious));
+			scene.add(sphereList);
+//			for(int i = 0; i < sphereList.size(); i++){
+//				System.out.println(sphereList.get(i).toString());
+//			}
+		} else if(type.equals("plane")){
+			LinkedList<Primitive> planeList = new LinkedList<Primitive>();
+			if(points.size()>1){
+				//Es la sintaxis de 3 puntos
+				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), points.get(1), points.get(2)));
+			} else {
+				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), normal));
 			}
+			scene.add(planeList);
+//			for(int i = 0; i < planeList.size(); i++)
+//				System.out.println(planeList.get(i).toString());
 		}
 		
 		
@@ -230,7 +255,7 @@ public class Parser {
 //		
 //		if(type.equals("sphere")){
 //			System.out.println("Center: " + center.toString());
-//			System.out.println("Radious: " + radious);
+//			System.out.println("radius: " + radius);
 //		} else if(type.equals("plane")){
 //			for(int i = 0; i < points.size(); i++)
 //				System.out.println("Point("+ i +"): " + points.get(i).toString());

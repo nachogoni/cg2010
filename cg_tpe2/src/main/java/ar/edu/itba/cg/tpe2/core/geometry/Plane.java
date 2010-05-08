@@ -90,13 +90,16 @@ public class Plane extends Primitive {
 		this.color = color; 
 	}
 		
+
+
+
+	@Override
 	public String toString() {
-		if ( color != null )
-			return "( "+p1+" , "+p2+" , "+p3+" ; "+color.toString()+" )";
-			
-		return "( "+p1+" , "+p2+" , "+p3+" )";
+		return "Plane [color=" + color + ", n=" + n + ", p1=" + p1 + ", p2="
+				+ p2 + ", p3=" + p3 + ", u=" + u + ", v=" + v + ", getName()="
+				+ getName() + ", getShader()=" + getShader() + "]";
 	}
-	
+
 	@Override
 	public void rotatex(double angle) {
 		// TODO Auto-generated method stub
