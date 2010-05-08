@@ -11,7 +11,7 @@ public class ParserTest {
 		String curr_dir = System.getProperty("user.dir");
 		System.out.println(curr_dir);
 
-		Parser aParser = new Parser(curr_dir + "/escenas/prueba.sc");
+		Parser aParser = new Parser(curr_dir + "/escenas/prueba2.sc");
 		try {
 			aParser.parse();
 		} catch (IOException e) {

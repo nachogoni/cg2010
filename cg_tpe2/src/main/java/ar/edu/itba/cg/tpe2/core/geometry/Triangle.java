@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Matrix3d;
+import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
@@ -23,6 +25,80 @@ public class Triangle extends Primitive {
 	double uu, uv, vv;
 	
 	Color color = null;
+	
+	//Vectores Normales a cada punto
+	private Vector3d n1, n2, n3;
+	
+	//Mapeos para Texturas para cada punto
+	private Point2d uv1, uv2, uv3;
+	
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Point2d uv1, Point2d uv2, Point2d uv3) throws IllegalArgumentException {
+		super(name,shader);
+		u = new Vector3(p1,p2);
+		v = new Vector3(p1,p3);
+		n = new Vector3();
+		n.cross(u, v);
+		if ( n.equals(new Vector3()) )
+			// Triangle is either a segment or a point
+			throw new IllegalArgumentException("Triangle is either a segment or a point");
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+		this.p1 = p1;
+		this.p2 = p2;
+		this.p3 = p3;
+		
+		this.n1 = n1;
+		this.n2 = n2;
+		this.n3 = n3;
+		
+		this.uv1 = uv1;
+		this.uv2 = uv2;
+		this.uv3 = uv3;
+	}
+	
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3) throws IllegalArgumentException {
+		super(name,shader);
+		u = new Vector3(p1,p2);
+		v = new Vector3(p1,p3);
+		n = new Vector3();
+		n.cross(u, v);
+		if ( n.equals(new Vector3()) )
+			// Triangle is either a segment or a point
+			throw new IllegalArgumentException("Triangle is either a segment or a point");
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+		this.p1 = p1;
+		this.p2 = p2;
+		this.p3 = p3;
+		
+		this.n1 = n1;
+		this.n2 = n2;
+		this.n3 = n3;
+
+	}
+	
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3) throws IllegalArgumentException {
+		super(name,shader);
+		u = new Vector3(p1,p2);
+		v = new Vector3(p1,p3);
+		n = new Vector3();
+		n.cross(u, v);
+		if ( n.equals(new Vector3()) )
+			// Triangle is either a segment or a point
+			throw new IllegalArgumentException("Triangle is either a segment or a point");
+	    uu = u.dot(u);
+	    uv = u.dot(v);
+	    vv = v.dot(v);
+		this.p1 = p1;
+		this.p2 = p2;
+		this.p3 = p3;
+
+		this.uv1 = uv1;
+		this.uv2 = uv2;
+		this.uv3 = uv3;
+	}
 	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
 		super(name,shader);
@@ -110,8 +186,14 @@ public class Triangle extends Primitive {
 		this.color = color; 
 	}
 	
+
+	@Override
 	public String toString() {
-		return "( "+p1+" , "+p2+" , "+p3+" ; "+color.toString()+" )";
+		return "Triangle [color=" + color + ", n=" + n + ", n1=" + n1 + ", n2="
+				+ n2 + ", n3=" + n3 + ", p1=" + p1 + ", p2=" + p2 + ", p3="
+				+ p3 + ", u=" + u + ", uu=" + uu + ", uv=" + uv + ", uv1="
+				+ uv1 + ", uv2=" + uv2 + ", uv3=" + uv3 + ", v=" + v + ", vv="
+				+ vv + "]";
 	}
 
 	private void applyMatrix(Matrix3d m){
@@ -177,4 +259,6 @@ public class Triangle extends Primitive {
 		// TODO Auto-generated method stub
 		return new ArrayList<Point3d>();
 	}
+	
+	
 }

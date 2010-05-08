@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe2.utils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,13 +12,19 @@ import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Specification;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
+import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
+import ar.edu.itba.cg.tpe2.core.shader.Glass;
+import ar.edu.itba.cg.tpe2.core.shader.Mirror;
+import ar.edu.itba.cg.tpe2.core.shader.Phong;
+import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 public class Parser {
 
 	private String filename = null;
 	private FileParser aParser;
 	private Scene scene;
+	private HashMap<String, Shader> shaders;
 	
 	public Parser(String filename) {
 		if (filename == null)
@@ -35,6 +42,7 @@ public class Parser {
 	public Scene parse() throws IOException {
 		
 		this.scene = new Scene();
+		this.shaders = new HashMap<String, Shader>();
 		String current;
 		aParser = new FileParser(this.filename);
 		while(true){
@@ -145,14 +153,14 @@ public class Parser {
 							
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
-						} else if (current.equals("normals")){
+						} else if (current.equals("normals") && !aParser.peekNextToken().equals("none")){
 							String normals_type = aParser.getNextToken();
 							for(int i = 0; i < pts_qty; i++){
 								normals.add(new Vector3d(new Double(aParser.getNextToken()), 
 										new Double(aParser.getNextToken()), 
 										new Double(aParser.getNextToken())));
 							}
-						} else if (current.equals("uvs")){
+						} else if (current.equals("uvs") && !aParser.peekNextToken().equals("none")){
 							String uvs_type = aParser.getNextToken();
 							for(int i = 0; i < pts_qty; i++){
 								uvs.add(new Point2d(new Double(aParser.getNextToken()), 
@@ -178,27 +186,65 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		System.out.println("Object Type: " + type);
-		System.out.println("Shader Name: " + shader_name);
-		// TODO Get shader associated with the shader's name
 		
-		if(type.equals("sphere")){
-			System.out.println("Center: " + center.toString());
-			System.out.println("Radious: " + radious);
-		} else if(type.equals("plane")){
-			for(int i = 0; i < points.size(); i++)
-				System.out.println("Point("+ i +"): " + points.get(i).toString());
-			System.out.println("Normal: " + normal.toString());
-		} else if(type.equals("generic-mesh")){
-			for(int i = 0; i < points.size(); i++)
-				System.out.println("Point("+ i +"): " + points.get(i).toString());
-			for(int i = 0; i < triangles.size(); i++)
-				System.out.println("Triangle("+ i +"): " + triangles.get(i).toString());
-			for(int i = 0; i < normals.size(); i++)
-				System.out.println("Normals("+ i +"): " + normals.get(i).toString());
-			for(int i = 0; i < uvs.size(); i++)
-				System.out.println("UVs("+ i +"): " + uvs.get(i).toString());
+		//Aca armamos los objetos
+		
+		if(type.equals("generic-mesh")){
+			//Armo el generic-mesh, un listado de triangulos.
+			LinkedList<Triangle> triangleList = new LinkedList<Triangle>();
+			for(int i = 0; i < triangles.size(); i++){
+				if(normals.size()>0){
+					if(uvs.size()>0){
+						//Tengo Normals y UVs
+						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
+								points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), normals.get(triangles.get(i).x-1),
+								normals.get(triangles.get(i).y-1), normals.get(triangles.get(i).z-1), uvs.get(triangles.get(i).x-1), uvs.get(triangles.get(i).y-1), uvs.get(triangles.get(i).z-1)));
+					} else {
+						//Tengo solo Normals
+						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
+								points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), normals.get(triangles.get(i).x-1),
+								normals.get(triangles.get(i).y-1), normals.get(triangles.get(i).z-1)));
+					}
+				} else if(uvs.size()>0){
+					//Tengo solo UVs
+					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
+							points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), 
+							uvs.get(triangles.get(i).x-1), uvs.get(triangles.get(i).y-1), uvs.get(triangles.get(i).z-1)));
+				} else {
+					//No tengo ninguno de los dos
+					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
+							points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1)));
+				}
+			}
+			for(int i = 0; i < triangles.size(); i++){
+				System.out.println(triangleList.get(i).toString());
+			}
 		}
+		
+		
+		
+//
+//		System.out.println("Object Type: " + type);
+//		System.out.println("Shader Name: " + shader_name);
+//		// TODO Get shader associated with the shader's name
+//		
+//		if(type.equals("sphere")){
+//			System.out.println("Center: " + center.toString());
+//			System.out.println("Radious: " + radious);
+//		} else if(type.equals("plane")){
+//			for(int i = 0; i < points.size(); i++)
+//				System.out.println("Point("+ i +"): " + points.get(i).toString());
+//			System.out.println("Normal: " + normal.toString());
+//		} else if(type.equals("generic-mesh")){
+//			for(int i = 0; i < points.size(); i++)
+//				System.out.println("Point("+ i +"): " + points.get(i).toString());
+//			for(int i = 0; i < triangles.size(); i++)
+//				System.out.println("Triangle("+ i +"): " + triangles.get(i).toString());
+//			for(int i = 0; i < normals.size(); i++)
+//				System.out.println("Normals("+ i +"): " + normals.get(i).toString());
+//			for(int i = 0; i < uvs.size(); i++)
+//				System.out.println("UVs("+ i +"): " + uvs.get(i).toString());
+//		}
 		
 	}
 	
@@ -310,7 +356,7 @@ public class Parser {
 		String shader_color = null, abs_color = null;
 		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
 		Integer samples = -1;
-		Specification aSpec = null;
+		Specification aSpec = null, absSpec = null;
 		do{
 			current = aParser.getNextToken();
 			if(current.equals("name")){
@@ -341,7 +387,7 @@ public class Parser {
 						} else if (current.equals("absorbtion.distance")){
 							abs_dst = new Double(aParser.getNextToken());
 						} else if (current.equals("absorbtion.color")){
-							aSpec = this.parseSpec(current);
+							absSpec = this.parseSpec(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("mirror")){
@@ -364,11 +410,16 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		System.out.println("Nombre: " + name);
-		System.out.println("Tipo: " + type);
-		System.out.println("Textura: " + texture_path);
-		System.out.println("Color/Spec: " + aSpec.getColorType() + " " + aSpec.getValue());
-		// Aca habria que armar el objeto
+		if(type.equals("mirror")){
+			Shader aMirror = new Mirror(name, type, aSpec);
+			shaders.put(aMirror.getName(), aMirror);
+		} else if (type.equals("phong")){
+			Shader aPhong = new Phong(name, type, texture_path, samples, aSpec);
+			shaders.put(aPhong.getName(), aPhong);
+		} else if (type.equals("glass")){
+			Shader aGlass = new Glass(name, type, eta.doubleValue(), abs_dst.doubleValue(), aSpec, absSpec);
+			shaders.put(aGlass.getName(), aGlass);
+		}
 		
 	}
 
