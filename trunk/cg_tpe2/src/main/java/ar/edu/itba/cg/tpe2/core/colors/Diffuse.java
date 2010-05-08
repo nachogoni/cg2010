@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.tpe2.core.geometry;
+package ar.edu.itba.cg.tpe2.core.colors;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

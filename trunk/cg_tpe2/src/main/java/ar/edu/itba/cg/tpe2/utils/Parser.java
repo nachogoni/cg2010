@@ -11,9 +11,9 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
-import ar.edu.itba.cg.tpe2.core.geometry.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;

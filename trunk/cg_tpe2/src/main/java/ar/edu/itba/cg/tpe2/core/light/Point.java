@@ -2,7 +2,7 @@ package ar.edu.itba.cg.tpe2.core.light;
 
 import javax.vecmath.Point3d;
 
-import ar.edu.itba.cg.tpe2.core.geometry.Specular;
+import ar.edu.itba.cg.tpe2.core.colors.Specular;
 
 public class Point extends Light {
 

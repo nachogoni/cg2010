@@ -1,6 +1,6 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
-import ar.edu.itba.cg.tpe2.core.geometry.Specular;
+import ar.edu.itba.cg.tpe2.core.colors.Specular;
 
 public class Glass extends Shader {
 
