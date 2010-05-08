@@ -11,6 +11,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -370,6 +371,7 @@ public class Parser {
 				if(type.equals("phong")){
 					do{
 						current = aParser.getNextToken();
+						// TODO what if current is diff { "sRGB nonlinear" 0.800 0.800 0.800 } ??
 						if(current.equals("texture")){
 							texture_path = aParser.getNextToken();
 							int length = texture_path.length();
@@ -417,7 +419,7 @@ public class Parser {
 			Shader aMirror = new Mirror(name, type, aSpec);
 			shaders.put(aMirror.getName(), aMirror);
 		} else if (type.equals("phong")){
-			Shader aPhong = new Phong(name, type, texture_path, samples, aSpec);
+			Shader aPhong = new Phong(name, type, new Diffuse(texture_path), samples, aSpec);
 			shaders.put(aPhong.getName(), aPhong);
 		} else if (type.equals("glass")){
 			Shader aGlass = new Glass(name, type, eta.doubleValue(), abs_dst.doubleValue(), aSpec, absSpec);
