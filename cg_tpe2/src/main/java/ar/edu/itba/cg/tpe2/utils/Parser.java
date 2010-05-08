@@ -11,6 +11,9 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.camera.Camera;
+import ar.edu.itba.cg.tpe2.core.camera.Pinhole;
+import ar.edu.itba.cg.tpe2.core.camera.Thinlens;
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
@@ -18,6 +21,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
+import ar.edu.itba.cg.tpe2.core.scene.Image;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.Glass;
 import ar.edu.itba.cg.tpe2.core.shader.Mirror;
@@ -430,13 +434,14 @@ public class Parser {
 
 
 	private void parseCameraSettings() throws IOException {
+		Camera aCamera = null;
 		String current;
 		String type = null;
 		Point3d eye = null, target = null;
 		Vector3d up = null;
 		Double fov = -1d, aspect = -1d;
-		Double tl_fdist, tl_lensr;
-		Point2d shift;
+		Double tl_fdist = null, tl_lensr = null;
+		Point2d shift = null;
 		do {
 			current = aParser.getNextToken();
 			if(current.equals("type")){
@@ -467,13 +472,17 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		System.out.println("Tipo de Cámara: " + type);
-		System.out.println("Ojo: " + eye.toString());
-		System.out.println("Objetivo: " + target.toString());
-		System.out.println("Up: " + up.toString());
-		System.out.println("FOV: " + fov);
-		System.out.println("Aspect: " + aspect);
-		//Aca habria que crear el objeto.
+		if(type.equals("pinhole")){
+			//Armo una camara del tipo pinhole
+			if(shift != null)
+				aCamera = new Pinhole(type, eye, target, up, fov, aspect, shift);
+			else aCamera = new Pinhole(type, eye, target, up, fov, aspect);
+		} else if(type.equals("thinlens")){
+			aCamera = new Thinlens(type, eye, target, up, fov.doubleValue(), aspect.doubleValue(), tl_fdist.doubleValue(), tl_lensr.doubleValue());
+		}
+		
+		System.out.println(aCamera.toString());
+
 		
 	}
 
@@ -501,9 +510,20 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		System.out.println("Resolucion: (" + width + ", " + height + ")");
-		System.out.println("Antialiasing: (" + aa_min + ", " + aa_max + ")");
-		System.out.println("Samples: " + samples);
+//		System.out.println("Resolucion: (" + width + ", " + height + ")");
+//		System.out.println("Antialiasing: (" + aa_min + ", " + aa_max + ")");
+//		System.out.println("Samples: " + samples);
+//		
+		
+		Image anImage;
+		if(bucket_type == null){
+			anImage = new Image(width, height, aa_min, aa_max, samples);
+		} else {
+			anImage = new Image(width, height, aa_min, aa_max, samples, bucket_size, bucket_type);
+		}
+		
+		System.out.println(anImage.toString());
+		
 		
 	}
 	
