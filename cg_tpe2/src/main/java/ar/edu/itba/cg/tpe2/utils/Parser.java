@@ -481,7 +481,9 @@ public class Parser {
 			aCamera = new Thinlens(type, eye, target, up, fov.doubleValue(), aspect.doubleValue(), tl_fdist.doubleValue(), tl_lensr.doubleValue());
 		}
 		
-		System.out.println(aCamera.toString());
+		scene.setaCamera(aCamera);
+		
+//		System.out.println(aCamera.toString());
 
 		
 	}
@@ -510,19 +512,15 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-//		System.out.println("Resolucion: (" + width + ", " + height + ")");
-//		System.out.println("Antialiasing: (" + aa_min + ", " + aa_max + ")");
-//		System.out.println("Samples: " + samples);
-//		
-		
+
 		Image anImage;
 		if(bucket_type == null){
 			anImage = new Image(width, height, aa_min, aa_max, samples);
 		} else {
 			anImage = new Image(width, height, aa_min, aa_max, samples, bucket_size, bucket_type);
 		}
-		
-		System.out.println(anImage.toString());
+		scene.setAnImage(anImage);
+//		System.out.println(anImage.toString());
 		
 		
 	}
