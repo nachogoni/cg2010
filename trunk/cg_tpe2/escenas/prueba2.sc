@@ -4,25 +4,12 @@ shader {
    refl { "sRGB nonlinear" 0.800 0.800 0.800 }
 }
 
-object { 
+object {
    shader Mirror
-   type generic-mesh 
-   name meshName
-   points 4 
-      0 0 0
-      2 0 0 
-      0 2 0
-      0 0 2
-   triangles 2 
-      1 2 3
-      2 3 4
-   normals vertex
-	  1 1 1
-	  2 2 2
-	  3 3 3
-	  4 4 4
-	uvs facevarying
-	  1 2 3 4 5 6 7 8   
+   type sphere
+   name mirror1
+   c -5 0 0
+   r 3
 }
 
 object { 
@@ -37,39 +24,19 @@ object {
    triangles 2 
       1 2 3
       2 3 4
-   normals vertex
-	  1 1 1
-	  2 2 2
-	  3 3 3
-	  4 4 4  
 }
 
-object { 
+object {
    shader Mirror
-   type generic-mesh 
-   name meshName
-   points 4 
-      0 0 0
-      2 0 0 
-      0 2 0
-      0 0 2
-   triangles 2 
-      1 2 3
-      2 3 4
-	uvs facevarying
-	  1 2 3 4 5 6 7 8   
+   type plane
+   p -7 0 0
+   n 1 0 1
 }
 
-object { 
+object {
    shader Mirror
-   type generic-mesh 
-   name meshName
-   points 4 
-      0 0 0
-      2 0 0 
-      0 2 0
-      0 0 2
-   triangles 2 
-      1 2 3
-      2 3 4
+   type plane
+   p -7 0 0
+   p 1 0 1
+   p 2 2 2
 }
