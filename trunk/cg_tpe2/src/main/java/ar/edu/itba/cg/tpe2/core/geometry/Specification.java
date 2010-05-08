@@ -1,24 +1,24 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import javax.vecmath.Point3d;
+import java.awt.Color;
 
 public class Specification {
 
 	private String color_type;
-	private Point3d aPoint;
+	private Color color;
 	private Integer specularity;
 	
 	public Specification(){
 		
 	}
 	
-	public Specification(String color_type, Point3d aPoint){
+	public Specification(String color_type, Color color){
 		this.color_type = color_type;
-		this.aPoint = aPoint;
+		this.color = color;
 	}
 	
-	public Specification(String color_type, Double a, Double b, Double c){
-		this(color_type,new Point3d(a, b, c));
+	public Specification(String color_type, float a, float b, float c){
+		this(color_type,new Color(a, b, c));
 	}
 
 	public String getColorType() {
@@ -29,12 +29,12 @@ public class Specification {
 		color_type = colorType;
 	}
 
-	public Point3d getValue() {
-		return aPoint;
+	public Color getColor() {
+		return color;
 	}
 
-	public void setValue(Point3d aPoint) {
-		this.aPoint = aPoint;
+	public void setColor(Color c) {
+		this.color = c;
 	}
 
 	public void setSpecularity(Integer specularity) {
@@ -47,7 +47,7 @@ public class Specification {
 
 	@Override
 	public String toString() {
-		return "Specification [aPoint=" + aPoint + ", color_type=" + color_type
+		return "Specification [aPoint=" + color + ", color_type=" + color_type
 				+ ", specularity=" + specularity + "]";
 	}
 	

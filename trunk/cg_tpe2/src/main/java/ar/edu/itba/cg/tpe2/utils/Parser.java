@@ -1,5 +1,6 @@
 package ar.edu.itba.cg.tpe2.utils;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -253,7 +254,7 @@ public class Parser {
 	private Specification parseSpec( String type ) throws IOException{
 		String current, color = null;
 		Specification aSpec = new Specification();
-		Double __a, __b, __c;
+		float __a, __b, __c;
 		int flag = 0;
 		// We discard the first {
 		if(aParser.peekNextToken().equals("{")){
@@ -263,9 +264,9 @@ public class Parser {
 			color = current.substring(1, length-1);
 		} else flag = 1;
 
-		__a = new Double(aParser.getNextToken());
-		__b = new Double(aParser.getNextToken());
-		__c = new Double(aParser.getNextToken());
+		__a = new Float(aParser.getNextToken());
+		__b = new Float(aParser.getNextToken());
+		__c = new Float(aParser.getNextToken());
 		// Now we discard the last }
 		if(aParser.peekNextToken().equals("}") && flag == 0)
 			current = aParser.getNextToken();
@@ -274,7 +275,7 @@ public class Parser {
 			aSpec.setSpecularity(new Integer(aParser.getNextToken()));
 		}
 		
-		aSpec.setValue(new Point3d(__a, __b, __c));
+		aSpec.setColor(new Color(__a, __b, __c));
 		aSpec.setColorType(color);
 		
 		System.out.println(aSpec.toString());
@@ -322,7 +323,7 @@ public class Parser {
 
 	private void parseLightSettings() throws IOException {
 		String current, type = null, light_color;
-		Double __a, __b, __c, power = -1d;
+		Float __a, __b, __c, power = -1f;
 		Point3d light_pos = null;
 		Specification aSpec = null;
 		do{
@@ -332,7 +333,7 @@ public class Parser {
 			} else if (current.equals("color")){
 				aSpec = this.parseSpec(current);
 			}else if (current.equals("power")){
-				power = new Double(aParser.getNextToken());
+				power = new Float(aParser.getNextToken());
 			}else if (current.equals("p")){
 				light_pos = new Point3d(new Double(aParser.getNextToken()),
 						new Double(aParser.getNextToken()),
@@ -345,7 +346,7 @@ public class Parser {
 		}
 		
 		System.out.println("Type of Light: " + type);
-		System.out.println("Color: " + aSpec.getColorType() + " " + aSpec.getValue());
+		System.out.println("Color: " + aSpec.getColorType() + " " + aSpec.getColor());
 		System.out.println("Power: " + power);
 		System.out.println("Light Position: " + light_pos.toString());
 		// Build Object Light
