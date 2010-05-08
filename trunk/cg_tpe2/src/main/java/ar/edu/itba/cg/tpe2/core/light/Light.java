@@ -22,5 +22,10 @@ public abstract class Light {
 		this.type = type;
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nLight [name=" + name + ", type=" + type + "]";
+	}
 	
 }

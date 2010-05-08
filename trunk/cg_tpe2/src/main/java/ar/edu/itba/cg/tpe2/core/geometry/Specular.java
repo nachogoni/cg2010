@@ -2,22 +2,22 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
 
-public class Specification {
+public class Specular {
 
 	private String color_type;
 	private Color color;
 	private Integer specularity;
 	
-	public Specification(){
+	public Specular(){
 		
 	}
 	
-	public Specification(String color_type, Color color){
+	public Specular(String color_type, Color color){
 		this.color_type = color_type;
 		this.color = color;
 	}
 	
-	public Specification(String color_type, float a, float b, float c){
+	public Specular(String color_type, float a, float b, float c){
 		this(color_type,new Color(a, b, c));
 	}
 
