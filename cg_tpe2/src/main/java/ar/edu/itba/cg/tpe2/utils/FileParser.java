@@ -80,13 +80,12 @@ public class FileParser {
 		this.index++;
 		if(aRet.equals("/*")){
 			do {
-                token = this.aList.get(this.index);
-                this.index++;
+				token = this.getNextToken();
+					
                 if (token == null)
                     return null;
             } while (!token.equals("*/"));
-			aRet = this.aList.get(this.index);
-			this.index++;
+			aRet = this.getNextToken();
 		}
 		
 		return aRet;

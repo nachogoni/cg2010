@@ -207,24 +207,24 @@ public class Parser {
 				if(normals.size()>0){
 					if(uvs.size()>0){
 						//Tengo Normals y UVs
-						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
-								points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), normals.get(triangles.get(i).x-1),
-								normals.get(triangles.get(i).y-1), normals.get(triangles.get(i).z-1), uvs.get(triangles.get(i).x-1), uvs.get(triangles.get(i).y-1), uvs.get(triangles.get(i).z-1)));
+						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
+								points.get(triangles.get(i).y), points.get(triangles.get(i).z), normals.get(triangles.get(i).x),
+								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z), uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z)));
 					} else {
 						//Tengo solo Normals
-						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
-								points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), normals.get(triangles.get(i).x-1),
-								normals.get(triangles.get(i).y-1), normals.get(triangles.get(i).z-1)));
+						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
+								points.get(triangles.get(i).y), points.get(triangles.get(i).z), normals.get(triangles.get(i).x),
+								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z)));
 					}
 				} else if(uvs.size()>0){
 					//Tengo solo UVs
-					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
-							points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1), 
-							uvs.get(triangles.get(i).x-1), uvs.get(triangles.get(i).y-1), uvs.get(triangles.get(i).z-1)));
+					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
+							points.get(triangles.get(i).y), points.get(triangles.get(i).z), 
+							uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z)));
 				} else {
 					//No tengo ninguno de los dos
-					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x-1),
-							points.get(triangles.get(i).y-1), points.get(triangles.get(i).z-1)));
+					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
+							points.get(triangles.get(i).y), points.get(triangles.get(i).z)));
 				}
 			}
 			scene.add(triangleList);
