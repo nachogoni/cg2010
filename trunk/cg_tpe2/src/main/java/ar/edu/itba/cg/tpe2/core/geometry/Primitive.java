@@ -2,6 +2,7 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.util.List;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -63,44 +64,91 @@ public abstract class Primitive {
 	 * Rotate object in X axis 
 	 * 
 	 */
-	public abstract void rotatex(double angle);
+	public void rotatex(double angle){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m11 = Math.cos(angle);
+		m.m12 = -Math.sin(angle);
+		m.m21 = Math.sin(angle);
+		m.m22 = Math.cos(angle);
+		transformWith(m);
+	}
 	
 	/**
 	 * Rotate object in Y axis 
 	 * 
 	 */
-	public abstract void rotatey(double angle); 
+	public void rotatey(double angle){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m00 = Math.cos(angle);
+		m.m02 = Math.sin(angle);
+		m.m20 = -Math.sin(angle);
+		m.m22 = Math.cos(angle);
+		transformWith(m);
+	}
 	
 	/**
 	 * Rotate object in Z axis 
 	 * 
 	 */
-	public abstract void rotatez(double angle); 
+	public void rotatez(double angle){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m00 = Math.cos(angle);
+		m.m01 = -Math.sin(angle);
+		m.m10 = Math.sin(angle);
+		m.m11 = Math.cos(angle);
+		transformWith(m);
+	}
 	
 	/**
 	 * Scale primitive in X axis
 	 * 
 	 * 
 	 */
-	public abstract void scalex(double scale); 
+	public void scalex(double scale){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m00 = scale;
+		transformWith(m);
+	}
 	
 	/**
 	 * Scale primitive in Y axis
 	 * 
 	 */
-	public abstract void scaley(double scale); 
+	public void scaley(double scale){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m11 = scale;
+		transformWith(m);
+	}
 	
 	/**
 	 * Scale primitive in Z axis
 	 * 
 	 */
-	public abstract void scalez(double scale); 
+	public void scalez(double scale){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m22 = scale;
+		transformWith(m);
+	}
 	
 	/**
 	 * Scale primitive in U
 	 * 
 	 */
-	public abstract void scaleu(double scale); 
+	public void scaleu(double scale){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m00 = scale;
+		m.m11 = scale;
+		m.m22 = scale;
+		// TODO Verificar que esto es asi
+		transformWith(m);
+	}
 	
 	/**
 	 * Get the intersection between the figure and a ray
@@ -117,4 +165,6 @@ public abstract class Primitive {
 	public abstract double [] getUV(Point3d p);
 	
 	public abstract Vector3 getNormalAt(Point3d p);
+	
+	public abstract void transformWith(Matrix4d m);
 }
