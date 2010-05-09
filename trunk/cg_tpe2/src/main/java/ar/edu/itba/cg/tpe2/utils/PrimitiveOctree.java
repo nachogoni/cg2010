@@ -44,13 +44,13 @@ public class PrimitiveOctree {
 		this.zMin = zMinimun-EPSILON;
 		
 		Point3d xPoint = new Point3d((xMinimun+xMaximun)/2,0,0);
-		this.xPlane = new Plane(null, null, xPoint, new Vector3d(1.0, 0.0, 0.0) );
+		this.xPlane = new Plane(null, null, xPoint, new Vector3d(1.0, 0.0, 0.0), null );
 
 		Point3d yPoint = new Point3d((yMinimun+yMaximun)/2,0,0);
-		this.yPlane = new Plane(null, null, yPoint, new Vector3d(0.0, 1.0, 0.0) );
+		this.yPlane = new Plane(null, null, yPoint, new Vector3d(0.0, 1.0, 0.0), null );
 
 		Point3d zPoint = new Point3d((zMinimun+zMaximun)/2,0,0);
-		this.zPlane = new Plane(null, null, zPoint, new Vector3d(0.0, 0.0, 1.0) );
+		this.zPlane = new Plane(null, null, zPoint, new Vector3d(0.0, 0.0, 1.0), null );
 
 	}
 	

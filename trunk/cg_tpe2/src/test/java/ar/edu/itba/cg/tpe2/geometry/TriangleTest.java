@@ -13,7 +13,7 @@ public class TriangleTest extends TestCase {
 	public void testTriangleExceptionAsPoint() {
 		try {
 			Point3d p = new Point3d(2,3,4);
-			new Triangle("",null,p,p,p);
+			new Triangle("",null,p,p,p, null);
             fail("This should've thrown an exception!");
         } catch (IllegalArgumentException expected) {}
 	}
@@ -23,7 +23,7 @@ public class TriangleTest extends TestCase {
 			Point3d p = new Point3d(0,0,0);
 			Point3d p1 = new Point3d(1,1,1);
 			Point3d p2 = new Point3d(2,2,2);
-			new Triangle("",null,p,p1,p2);
+			new Triangle("",null,p,p1,p2, null);
             fail("This should've thrown an exception!");
         } catch (IllegalArgumentException expected) {}
 	}
@@ -33,8 +33,8 @@ public class TriangleTest extends TestCase {
 		double a = 0.5;
 		
 		while ( a < 17 ){
-			Triangle tPositive = new Triangle("",null,new Point3d(a,0,0), new Point3d(0,a,0), new Point3d(0,0,a));
-			Triangle tNegative = new Triangle("",null,new Point3d(-a,0,0), new Point3d(0,-a,0), new Point3d(0,0,-a));
+			Triangle tPositive = new Triangle("",null,new Point3d(a,0,0), new Point3d(0,a,0), new Point3d(0,0,a), null);
+			Triangle tNegative = new Triangle("",null,new Point3d(-a,0,0), new Point3d(0,-a,0), new Point3d(0,0,-a), null);
 
 			Ray r = new Ray(new Point3d(), new Point3d(a/10,a/10,a/10));
 			assertNotNull(tPositive.intersect(r));
@@ -54,13 +54,13 @@ public class TriangleTest extends TestCase {
 			a = a * 2;
 		}
 		// FIXME Add a default shader in order fgor this not to break! :P
-		Triangle tOverXY = new Triangle("",null,new Point3d(a/2,a,0), new Point3d(0,0,0), new Point3d(a,0,0));
+		Triangle tOverXY = new Triangle("",null,new Point3d(a/2,a,0), new Point3d(0,0,0), new Point3d(a,0,0), null);
 		Ray rToNegative = new Ray(new Point3d(a/2,0,a), new Point3d(0,0,-1));
 		Ray rToPositive = new Ray(new Point3d(a/2,0,-a), new Point3d(0,0,1));
 		assertEquals(tOverXY.intersect(rToPositive), new Point3d(a/2,0,0));
 		assertEquals(tOverXY.intersect(rToNegative), new Point3d(a/2,0,0));
 		
-		Triangle tOverXYOrigin = new Triangle("",null,new Point3d(0,a,0), new Point3d(-a/2,0,0), new Point3d(a/2,0,0));
+		Triangle tOverXYOrigin = new Triangle("",null,new Point3d(0,a,0), new Point3d(-a/2,0,0), new Point3d(a/2,0,0), null);
 		Ray rToNegativeZ = new Ray(new Point3d(0,0,a), new Point3d(0,0,-1));
 		Ray rToPositiveZ = new Ray(new Point3d(0,0,-a), new Point3d(0,0,1));
 		assertEquals(tOverXYOrigin.intersect(rToPositiveZ), new Point3d(0,0,0));
