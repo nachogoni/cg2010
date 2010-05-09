@@ -244,5 +244,8 @@ public class Triangle extends Primitive {
 		return new ArrayList<Point3d>();
 	}
 	
-	
+	@Override
+	public double[] getUV(Point3d p) {
+		return new double[]{0,0};
+	}
 }
