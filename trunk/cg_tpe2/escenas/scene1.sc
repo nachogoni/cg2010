@@ -7,7 +7,7 @@ image {
 
 camera {
    type pinhole
-   eye 5.0 0.0 20.0
+   eye 0.0 0.0 20.0
    target 0.0 0.0 0.0
    up 0.0 10.0 0.0
    fov 60 
@@ -38,6 +38,14 @@ shader {
    samples 4
 }
 
+shader {
+   name phong7
+   type phong
+   diff { "sRGB nonlinear" 1 1 0 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
 object { 
    shader phong1 
    type generic-mesh 
@@ -51,8 +59,8 @@ object {
       0 0 -3.535
       3.525 0 0     
    triangles 2 
-      2 1 3
-      6 1 7    
+      1 0 2
+      5 0 6    
 }
 
 object { 
@@ -68,8 +76,8 @@ object {
       0 0 -3.535
       3.525 0 0     
    triangles 2 
-      5 1 6
-      3 1 4   
+      4 0 5
+      1 0 3   
 }
 
 object {
@@ -110,4 +118,11 @@ object {
    name sphere5
    c 0 0 -7
    r 0.5
+}
+
+object {
+   shader phong7
+   type plane
+   p 0 0 0
+   n 0 0 1
 }
