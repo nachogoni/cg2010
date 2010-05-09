@@ -35,7 +35,8 @@ public class Diffuse {
 			return c;
 		
 		double[] uv = primitive.getUV(aPoint);
-		return new Color(img.getRGB((int)uv[0]*img.getWidth(), (int)uv[1]*img.getHeight()));
+
+		return new Color(img.getRGB((int)(uv[0]*img.getWidth()), (int)(uv[1]*img.getHeight())));
 	}
 
 	@Override
