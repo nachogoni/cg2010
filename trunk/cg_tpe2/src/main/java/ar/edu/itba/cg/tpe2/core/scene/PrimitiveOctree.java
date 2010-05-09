@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.vecmath.Point3d;
 
@@ -68,7 +67,7 @@ public class PrimitiveOctree {
 			rayDir.set(EPSILON, rayDir.y, rayDir.z);
 			b |= 4;
 		} else */if (rayDir.x < 0) {
-			rayOrig.set( - rayOrig.x, rayOrig.y, rayDir.z);
+			rayOrig.set(root.xMax + root.xMin - rayOrig.x, rayOrig.y, rayDir.z);
 			rayDir.set(-rayDir.x, rayDir.y, rayDir.z);
 			a |= 4;
 		}
@@ -76,7 +75,7 @@ public class PrimitiveOctree {
 			rayDir.set(rayDir.x, EPSILON, rayDir.z);
 			b |= 2;			
 		} else */if (rayDir.y < 0) {
-			rayOrig.set(rayOrig.x, - rayOrig.y, rayOrig.z);
+			rayOrig.set(rayOrig.x, root.xMax + root.xMin -rayOrig.y, rayOrig.z);
 			rayDir.set(rayDir.x, -rayDir.y, rayDir.z);
 			a |= 2;
 		}
@@ -84,7 +83,7 @@ public class PrimitiveOctree {
 			rayDir.set(rayDir.x, rayDir.y, EPSILON);
 			b |= 1;					
 		} else */if (rayDir.z < 0) {
-			rayOrig.set(rayOrig.x, rayOrig.y, - rayOrig.z);
+			rayOrig.set(rayOrig.x, rayOrig.y, root.xMax + root.xMin - rayOrig.z);
 			rayDir.set(rayDir.x, rayDir.y, -rayDir.z);
 			a |= 1;
 		}
@@ -203,7 +202,7 @@ public class PrimitiveOctree {
 	    // as well as comparing the tM's of the other axes against that largest t0.
 	    // Hence, the function should only require the 3 t0-values and the 3 tM-values.
 	    byte currNode = findFirstNode(tx0,ty0,tz0,txM,tyM,tzM, (byte)0x0); 		
-		//System.out.println("crrnode="+currNode);
+		System.out.println("crrnode="+currNode);
 	    do {
 	    	// next_Node() takes the t1 values for a child (which may or may not have tM's of the parent)
 	    	// and determines the next node.  Rather than passing in the currNode value, we pass in possible values
@@ -306,8 +305,8 @@ public class PrimitiveOctree {
 					ret |= 2;
 			}
 		} else {
-				if(ty0 > tz0) {
-					// max(tx0, ty0, tz0) is ty0. Entry plane is XZ.
+			if(ty0 > tz0) {
+				// max(tx0, ty0, tz0) is ty0. Entry plane is XZ.
 				if(txM < ty0) 
 					ret |= 4;
 				if(tzM < ty0) 
@@ -423,15 +422,15 @@ public class PrimitiveOctree {
 		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, zMed, node.zMax));
 		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,node.zMin, zMed));*/		
 		
-		node.childs.add(0, new OctreeNode(node.xMin, xMed,node.yMin,yMed, node.zMin, zMed));
-		node.childs.add(1, new OctreeNode(node.xMin, xMed,node.yMin,yMed, zMed, node.zMax));
-		node.childs.add(2, new OctreeNode(node.xMin, xMed,yMed,node.yMax, node.zMin, zMed));
-		node.childs.add(3, new OctreeNode(node.xMin, xMed,yMed,node.yMax, zMed, node.zMax));
+		node.childs.add(0, new OctreeNode(node.xMin, xMed,node.yMin,yMed, node.zMin, zMed));//ok
+		node.childs.add(1, new OctreeNode(node.xMin, xMed,node.yMin,yMed, zMed, node.zMax));//ok
+		node.childs.add(2, new OctreeNode(node.xMin, xMed,yMed,node.yMax, node.zMin, zMed));//ok
+		node.childs.add(3, new OctreeNode(node.xMin, xMed,yMed,node.yMax, zMed, node.zMax));//ok
 		
 		node.childs.add(4, new OctreeNode(xMed, node.xMax,node.yMin,yMed, node.zMin, zMed));
 		node.childs.add(5, new OctreeNode(xMed, node.xMax,node.yMin,yMed, zMed, node.zMax));
 		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, node.zMin, zMed));
-		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,zMed, node.zMax));
+		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,zMed, node.zMax));//ok
 
 		// Por cada primitiva, me fijo en cada nodo si alguno de los puntos de ella esta contendido en el
 		for (Primitive p : node.primitives) {
