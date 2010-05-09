@@ -3,6 +3,7 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -18,48 +19,7 @@ public class Box extends Primitive {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void rotatex(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotatey(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotatez(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scaleu(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scalex(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scaley(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scalez(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public Point3d intersect(Ray ray) {
 		// TODO Auto-generated method stub
@@ -81,6 +41,13 @@ public class Box extends Primitive {
 	public Vector3 getNormalAt(Point3d p) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void transformWith(Matrix4d m) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

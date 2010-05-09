@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
@@ -21,8 +22,8 @@ public class Plane extends Primitive {
 	// Point
 	// Point
 
-	Point3d p1, p2, p3;
-	Vector3d u, v, n;
+	Point3d p1;
+	Vector3d n;
 	private static final double DISTANCE_TOLE  = 0.00000000000001;
 	
 	public Plane(String name, Shader shader, Point3d p1, Vector3d n) throws IllegalArgumentException{
@@ -80,55 +81,6 @@ public class Plane extends Primitive {
 	}
 		
 	@Override
-	public String toString() {
-		return "Plane [n=" + n + ", p1=" + p1 + ", p2="
-				+ p2 + ", p3=" + p3 + ", u=" + u + ", v=" + v + ", getName()="
-				+ getName() + ", getShader()=" + getShader() + "]";
-	}
-
-	@Override
-	public void rotatex(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotatey(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotatez(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scaleu(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scalex(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scaley(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scalez(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<Point3d> getBoundaryPoints() {
 		// TODO Auto-generated method stub
 		return new ArrayList<Point3d>();
@@ -142,6 +94,17 @@ public class Plane extends Primitive {
 	@Override
 	public Vector3 getNormalAt(Point3d p) {
 		return new Vector3(n);
+	}
+
+	@Override
+	public void transformWith(Matrix4d m) {
+		m.transform(p1);
+		m.transform(n);
+	}
+
+	@Override
+	public String toString() {
+		return "Plane [n=" + n + ", p1=" + p1 + "]";
 	}
 
 

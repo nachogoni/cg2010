@@ -3,7 +3,7 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -180,13 +180,12 @@ public class Triangle extends Primitive {
 				+ getShader() + "]";
 	}
 
-	private void applyMatrix(Matrix3d m){
+	public void transformWith(Matrix4d m) {
 		m.transform(p1);
 		m.transform(p2);
 		m.transform(p3);
 		recalculate();
 	}
-
 	
 	private void recalculate(){
 		u = new Vector3(p1,p2);
@@ -198,46 +197,6 @@ public class Triangle extends Primitive {
 	    vv = v.dot(v);
 	}
 	
-	@Override
-	public void rotatex(double angle) {
-		applyMatrix(new Matrix3d(1,0,0,0,Math.cos(angle),-Math.sin(angle),0,Math.sin(angle),Math.cos(angle)));
-	}
-
-	@Override
-	public void rotatey(double angle) {
-		applyMatrix(new Matrix3d(Math.cos(angle),0,Math.sin(angle),0,1,0,-Math.sin(angle),0,Math.cos(angle)));
-	}
-
-	@Override
-	public void rotatez(double angle) {
-		applyMatrix(new Matrix3d(Math.cos(angle),-Math.sin(angle),0,Math.sin(angle),Math.cos(angle),0,0,0,1));
-	}
-
-	
-	
-	@Override
-	public void scaleu(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scalex(double scale) {
-		applyMatrix(new Matrix3d(scale,0,0,0,1,0,0,0,1));
-		
-	}
-
-	@Override
-	public void scaley(double scale) {
-		applyMatrix(new Matrix3d(1,0,0,0,scale,0,0,0,1));
-		
-	}
-
-	@Override
-	public void scalez(double scale) {
-		applyMatrix(new Matrix3d(1,0,0,0,1,0,0,0,scale));		
-	}
-
 	@Override
 	public List<Point3d> getBoundaryPoints() {
 		// TODO Auto-generated method stub
@@ -253,4 +212,5 @@ public class Triangle extends Primitive {
 	public Vector3 getNormalAt(Point3d p) {
 		return new Vector3(n);
 	}
+
 }
