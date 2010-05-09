@@ -24,14 +24,17 @@ public class Sphere extends Primitive {
 
 	Point3d radiusCenter;
 	double radius;
+	Transform transform;
 	
-	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius) throws IllegalArgumentException {
+	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 
 		if (radius <= 0)
 			throw new IllegalArgumentException("Invalid radius");
 		this.radius = radius;
 		this.radiusCenter= radiusCenter;
+		
+		this.transform = trans;
 	}
 	
 	// A = Xd^2 + Yd^2 + Zd^2

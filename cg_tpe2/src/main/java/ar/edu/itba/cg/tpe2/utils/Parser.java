@@ -209,22 +209,22 @@ public class Parser {
 						//Tengo Normals y UVs
 						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
 								points.get(triangles.get(i).y), points.get(triangles.get(i).z), normals.get(triangles.get(i).x),
-								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z), uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z)));
+								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z), uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z), aTrans));
 					} else {
 						//Tengo solo Normals
 						triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
 								points.get(triangles.get(i).y), points.get(triangles.get(i).z), normals.get(triangles.get(i).x),
-								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z)));
+								normals.get(triangles.get(i).y), normals.get(triangles.get(i).z), aTrans));
 					}
 				} else if(uvs.size()>0){
 					//Tengo solo UVs
 					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
 							points.get(triangles.get(i).y), points.get(triangles.get(i).z), 
-							uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z)));
+							uvs.get(triangles.get(i).x), uvs.get(triangles.get(i).y), uvs.get(triangles.get(i).z), aTrans));
 				} else {
 					//No tengo ninguno de los dos
 					triangleList.add(new Triangle(object_name, shaders.get(shader_name), points.get(triangles.get(i).x),
-							points.get(triangles.get(i).y), points.get(triangles.get(i).z)));
+							points.get(triangles.get(i).y), points.get(triangles.get(i).z), aTrans));
 				}
 			}
 			scene.add(triangleList);
@@ -234,7 +234,7 @@ public class Parser {
 		} else if (type.equals("sphere")){
 			//Aca armamos la esfera
 			LinkedList<Primitive> sphereList = new LinkedList<Primitive>();
-			sphereList.add(new Sphere(object_name, shaders.get(shader_name), center, radious));
+			sphereList.add(new Sphere(object_name, shaders.get(shader_name), center, radious, aTrans));
 			scene.add(sphereList);
 //			for(int i = 0; i < sphereList.size(); i++){
 //				System.out.println(sphereList.get(i).toString());
@@ -243,9 +243,9 @@ public class Parser {
 			LinkedList<Primitive> planeList = new LinkedList<Primitive>();
 			if(points.size()>1){
 				//Es la sintaxis de 3 puntos
-				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), points.get(1), points.get(2)));
+				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), points.get(1), points.get(2), aTrans));
 			} else {
-				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), normal));
+				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), normal, aTrans));
 			}
 			scene.add(planeList);
 //			for(int i = 0; i < planeList.size(); i++)

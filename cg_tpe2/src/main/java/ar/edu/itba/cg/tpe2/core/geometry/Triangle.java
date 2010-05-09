@@ -29,7 +29,17 @@ public class Triangle extends Primitive {
 	//Mapeos para Texturas para cada punto
 	private Point2d uv1, uv2, uv3;
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Point2d uv1, Point2d uv2, Point2d uv3) throws IllegalArgumentException {
+	Transform transform;
+	
+	public Transform getTransform() {
+		return transform;
+	}
+
+	public void setTransform(Transform transform) {
+		this.transform = transform;
+	}
+
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
@@ -52,9 +62,11 @@ public class Triangle extends Primitive {
 		this.uv1 = uv1;
 		this.uv2 = uv2;
 		this.uv3 = uv3;
+		
+		this.transform = trans;
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
@@ -74,9 +86,10 @@ public class Triangle extends Primitive {
 		this.n2 = n2;
 		this.n3 = n3;
 
+		this.transform = trans;
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
@@ -95,9 +108,11 @@ public class Triangle extends Primitive {
 		this.uv1 = uv1;
 		this.uv2 = uv2;
 		this.uv3 = uv3;
+		
+		this.transform = trans;
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
@@ -112,6 +127,8 @@ public class Triangle extends Primitive {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
+		
+		this.transform = trans;
 	}
 	
 	public Point3d intersect(Ray ray) {

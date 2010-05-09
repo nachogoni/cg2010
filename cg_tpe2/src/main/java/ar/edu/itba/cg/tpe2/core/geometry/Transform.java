@@ -68,6 +68,36 @@ public class Transform {
 				+ ", translate=" + translate + "]";
 	}
 	
+	public void rotatex(Primitive aPrimitive){
+		aPrimitive.rotatex(this.rotatex*Math.PI/180);
+	}
 	
+	public void rotatey(Primitive aPrimitive){
+		aPrimitive.rotatey(this.rotatey*Math.PI/180);
+	}
+	
+	public void rotatez(Primitive aPrimitive){
+		aPrimitive.rotatey(this.rotatez*Math.PI/180);
+	}
+	
+	public void scalex(Primitive aPrimitive){
+		aPrimitive.scalex(this.scalex);
+	}
+	
+	public void scaley(Primitive aPrimitive){
+		aPrimitive.scaley(this.scaley);
+	}
+	
+	public void scalez(Primitive aPrimitive){
+		aPrimitive.scalez(this.scalez);
+	}
+	
+	public void scaleu(Primitive aPrimitive){
+		aPrimitive.scaleu(this.scaleu);
+	}
+	
+	public void translate(Primitive aPrimitive){
+		//aPrimitive.translate(this.translate);
+	}
 	
 }

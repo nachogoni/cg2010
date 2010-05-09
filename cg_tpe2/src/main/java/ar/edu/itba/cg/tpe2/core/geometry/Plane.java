@@ -24,18 +24,21 @@ public class Plane extends Primitive {
 
 	Point3d p1;
 	Vector3d n;
+	Transform transform;
 	private static final double DISTANCE_TOLE  = 0.00000000000001;
 	
-	public Plane(String name, Shader shader, Point3d p1, Vector3d n) throws IllegalArgumentException{
+	public Plane(String name, Shader shader, Point3d p1, Vector3d n, Transform trans) throws IllegalArgumentException{
 		super(name,shader);
 		if ( n.equals(new Vector3()) )
 			throw new IllegalArgumentException("Normal of a plane shouldn't be the 0 vector");
 		
 		this.n = n;
 		this.p1 = p1;
+		
+		this.transform = trans;
 	}
 	
-	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3) throws IllegalArgumentException {
+	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		Vector3 normal = new Vector3();	
 		normal.cross(new Vector3(p1,p2), new Vector3(p1,p3));
@@ -44,6 +47,9 @@ public class Plane extends Primitive {
 		
 		this.n = normal;
 		this.p1 = p1;
+		
+		this.transform = trans;
+		
 	}
 		
 	public Point3d intersect(Ray ray) {
