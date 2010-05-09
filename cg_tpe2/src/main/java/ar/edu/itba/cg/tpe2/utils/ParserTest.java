@@ -27,6 +27,19 @@ public class ParserTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		int i = 0;
+		double spheresPerFace=4.0;
+		double distance=0.5;
+		double radius=0.5;
+		double interval=spheresPerFace*radius + (spheresPerFace/2-1)*distance + distance/2 - radius; 
+		for (double x = -interval ; x <= interval; x += 2*radius + distance) {
+			for (double y = -interval; y <= interval; y += 2*radius + distance) {
+				for (double z = -interval; z <= interval; z += 2*radius + distance) {
+					System.out.println("object { \n\t shader phong1\n\t type sphere\n\t name sphere" + i + "\n\t c " + x + " "+ y + " "+ z + "\n\t r 1\n} ");
+					i++;
+				}
+			}
+		}
 
 	}
 

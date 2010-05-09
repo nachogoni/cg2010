@@ -79,7 +79,7 @@ public class App
     		// Create an scene
 //    		Scene scene = new Scene(sceneName);
     		String curr_dir = System.getProperty("user.dir");
-    		Parser aParser = new Parser(curr_dir + "/escenas/scene1.sc");
+    		Parser aParser = new Parser(curr_dir + "/escenas/" + sceneName);
     		Scene scene = aParser.parse();
     		System.out.println(scene.toString());
     		
