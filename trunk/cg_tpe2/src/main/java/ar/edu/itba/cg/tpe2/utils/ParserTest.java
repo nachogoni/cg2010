@@ -35,7 +35,7 @@ public class ParserTest {
 		for (double x = -interval ; x <= interval; x += 2*radius + distance) {
 			for (double y = -interval; y <= interval; y += 2*radius + distance) {
 				for (double z = -interval; z <= interval; z += 2*radius + distance) {
-					System.out.println("object { \n\t shader phong1\n\t type sphere\n\t name sphere" + i + "\n\t c " + x + " "+ y + " "+ z + "\n\t r 1\n} ");
+					System.out.println("object { \n\t shader phong"+ (i % 2) + "\n\t type sphere\n\t name sphere" + i + "\n\t c " + x + " "+ y + " "+ z + "\n\t r 0.7\n} ");
 					i++;
 				}
 			}
