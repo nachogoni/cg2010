@@ -229,8 +229,8 @@ class RayCasterThread extends Thread {
     	/*
     	 * Calcula los rayos de refleccion y refraccion (los que atraviesan y se reflejan)
     	 */
-		Ray refractRay = getRefractRay(ray, impactedFigure);
-		Ray reflectRay = getReflectRay(ray, impactedFigure);    	
+		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint);
+		Ray reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
 		
 		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
 		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
@@ -265,12 +265,12 @@ class RayCasterThread extends Thread {
 		return impactedFigure.getShader().getColorAt(intersectionPoint);
 	}
 
-	private Ray getReflectRay(Ray ray, Primitive p) {
+	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {
 		// TODO Auto-generated method stub
 		return ray;
 	}
 
-	private Ray getRefractRay(Ray ray, Primitive p) {
+	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint) {
 		// TODO Auto-generated method stub
 		return ray;
 	}

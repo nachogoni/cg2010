@@ -20,4 +20,8 @@ public class Vector3 extends Vector3d{
 	public Vector3(double x, double y, double z){
 		super(x,y,z);
 	}
+	
+	public Vector3(Vector3d v){
+		super(v);
+	}
 }

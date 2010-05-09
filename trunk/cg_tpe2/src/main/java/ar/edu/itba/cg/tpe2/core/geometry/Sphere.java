@@ -147,4 +147,10 @@ public class Sphere extends Primitive {
 
 		return new double[]{u,v};
 	}
+
+	@Override
+	public Vector3 getNormalAt(Point3d p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
