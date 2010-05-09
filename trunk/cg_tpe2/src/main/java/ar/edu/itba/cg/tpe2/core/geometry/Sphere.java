@@ -84,8 +84,14 @@ public class Sphere extends Primitive {
 
 	@Override
 	public List<Point3d> getBoundaryPoints() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Point3d>();
+		ArrayList<Point3d> ret =new ArrayList<Point3d>();
+		ret.add(new Point3d(radiusCenter.x+radius,radiusCenter.y,radiusCenter.z));
+		ret.add(new Point3d(radiusCenter.x,radiusCenter.y+radius,radiusCenter.z));
+		ret.add(new Point3d(radiusCenter.x,radiusCenter.y,radiusCenter.z+radius));
+		ret.add(new Point3d(radiusCenter.x-radius,radiusCenter.y,radiusCenter.z));
+		ret.add(new Point3d(radiusCenter.x,radiusCenter.y-radius,radiusCenter.z));
+		ret.add(new Point3d(radiusCenter.x,radiusCenter.y,radiusCenter.z-radius));
+		return ret;
 	}
 
 	@Override
