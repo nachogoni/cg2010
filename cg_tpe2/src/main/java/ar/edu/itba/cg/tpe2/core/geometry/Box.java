@@ -77,4 +77,10 @@ public class Box extends Primitive {
 		return new double[]{0,0};
 	}
 
+	@Override
+	public Vector3 getNormalAt(Point3d p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

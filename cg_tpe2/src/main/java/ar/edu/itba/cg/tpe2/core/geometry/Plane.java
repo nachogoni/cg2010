@@ -139,5 +139,10 @@ public class Plane extends Primitive {
 		return new double[]{0,0};
 	}
 
+	@Override
+	public Vector3 getNormalAt(Point3d p) {
+		return new Vector3(n);
+	}
+
 
 }

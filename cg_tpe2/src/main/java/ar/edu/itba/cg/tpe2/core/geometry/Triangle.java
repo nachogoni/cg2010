@@ -248,4 +248,9 @@ public class Triangle extends Primitive {
 	public double[] getUV(Point3d p) {
 		return new double[]{0,0};
 	}
+
+	@Override
+	public Vector3 getNormalAt(Point3d p) {
+		return new Vector3(n);
+	}
 }

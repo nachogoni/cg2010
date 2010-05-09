@@ -116,4 +116,5 @@ public abstract class Primitive {
 	
 	public abstract double [] getUV(Point3d p);
 	
+	public abstract Vector3 getNormalAt(Point3d p);
 }
