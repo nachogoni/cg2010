@@ -22,11 +22,27 @@ shader {
    samples 4
 }
 
+shader {
+   name phong0
+   type phong
+   texture "earth.jpg"
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+object {
+   shader phong0
+   type sphere
+   name sphere2
+   c -4 0 0
+   r 3
+}
+
 object {
    shader phong1
    type sphere
-   name sphere2
-   c 0 0 0
-   r 5
+   name sphere1
+   c 4 0 0
+   r 3
 }
 
