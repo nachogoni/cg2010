@@ -32,7 +32,6 @@ public class Scene {
 		this.octree = octree;
 		this.aCamera = aCamera;
 		this.anImage = anImage;
-		this.optimize();
 	}
 
 	public Camera getaCamera() {
@@ -103,7 +102,6 @@ public class Scene {
 		for (Primitive p : primitives) {
 			list.add(p);
 		}
-		this.optimize();
 	}
 	
 	public void optimize() {
@@ -143,7 +141,7 @@ public class Scene {
 		for (Primitive p : list) {
 			octree.add(p);
 		}
-		
+		System.out.flush();
 		octree.printOctree();
 		
 		return;
@@ -452,9 +450,10 @@ public static List<Primitive> read(String scene) {
 		Point3d currIntersection = null, nearestIntersection=null;
 		Point3d origin = ray.getOrigin();
 		
-		// Check if the octree is created
-		if (octree == null) {
-			this.optimize();
+		synchronized(this) {
+			if (octree == null) {
+				this.optimize();
+			}
 		}
 		
 		// Find intersection in scene with ray
