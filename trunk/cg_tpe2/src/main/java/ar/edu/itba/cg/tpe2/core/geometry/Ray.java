@@ -19,8 +19,15 @@ public class Ray {
 	 * @param direction Direction for the ray
 	 */
 	public Ray(Point3d origin, Point3d direction) {
+		
+		Point3d dirNormalized = new Point3d();
+		double module = Math.sqrt(direction.x*direction.x + direction.y*direction.y +direction.z*direction.z);
+		
+		
+		dirNormalized.set(direction.x/module, direction.y/module, direction.z/module);
+		//System.out.println("rayo x:"+dirNormalized.x+", y:"+dirNormalized.y+", z:"+dirNormalized.z);
 		this.origin = origin;
-		this.direction = direction;
+		this.direction = dirNormalized;
 	}
 	
 	/**
