@@ -10,11 +10,6 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 public class Sphere extends Primitive {
 
-	// Type: Sphere
-	// Center
-	// Radious
-	
-	
 	@Override
 	public String toString() {
 		return "Sphere [radius=" + radius
@@ -54,28 +49,27 @@ public class Sphere extends Primitive {
         double yc = radiusCenter.y;
         double zc = radiusCenter.z;
        
-        double a = Math.pow(xd,2) + Math.pow(yd,2) + Math.pow(zd,2);
+        double a = (xd*xd) +(yd*yd) + (zd*zd);
         double b = 2 * (xd * (x0-xc) + yd*(y0 - yc) + zd * (z0-zc)) ;
-        double c = Math.pow(x0-xc,2) + Math.pow(y0-yc,2) + Math.pow(z0-zc,2) - Math.pow(radius,2);
+        double c = ((x0-xc)*(x0-xc)) + ((y0-yc)*(y0-yc)) + ((z0-zc)*(z0-zc)) - (radius*radius);
        
-        double discriminant = Math.pow(b, 2) - 4*c*a;
-        //System.out.println("pos="+4*c*a+"sq="+Math.pow(b, 2));
-        //System.out.println("rayo"+a);
+        double discriminant = (b*b) - 4*c*a;
+
         if (discriminant < 0) {
             return null;
         }
+        
+        double rootResult = Math.sqrt(discriminant);
        
-        double rootResult = Math.sqrt( discriminant );
-       
-        double t0 = (-b + rootResult) / ( 2 *a );
-        double t1 = (-b - rootResult) / ( 2 *a );
+        double t0 = (-b + rootResult) / (2 * a);
+        double t1 = (-b - rootResult) / (2 * a);
        
         Point3d ret;
         
         if (t1 < 0) {
             ret = t0 < 0 ? null : new Point3d(x0 + xd * t0 ,  y0 + yd * t0,  z0 + zd * t0);
         } else if (t0 < 0) {
-            ret = new Point3d(x0 + xd * t1 ,  y0 + yd * t1,  z0 + zd * t1);
+            ret = new Point3d(x0 + xd * t1 , y0 + yd * t1, z0 + zd * t1);
         } else {
 
             double tret = Math.min(t0, t1);
@@ -105,7 +99,7 @@ public class Sphere extends Primitive {
 		// Get p into sphere coordinates
 		p.sub(radiusCenter);
 
-		double u = p.x / Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2) + Math.pow(p.z, 2));
+		double u = p.x / Math.sqrt((p.x*p.x) + (p.y*p.y) + (p.z*p.z));
 
 		double v = Math.acos(p.y/radius) / Math.PI;
 		
