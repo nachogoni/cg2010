@@ -13,8 +13,7 @@ public class Phong extends Shader {
 	private int samples;
 	private Specular spec;
 	
-	public Phong(String name, String type, Diffuse diffuse, int samples,
-			Specular spec) {
+	public Phong(String name, String type, Diffuse diffuse, int samples, Specular spec) {
 		super(name, type);
 		this.diffuse = diffuse;
 		this.samples = samples;
@@ -42,10 +41,7 @@ public class Phong extends Shader {
 
 	@Override
 	public Color getColorAt(Point3d aPoint) {
-		// TODO!!!
-		return diffuse.getColorAt(1, 1);
+		return diffuse.getColorAt(aPoint,primitive);
 	}
-	
-	
 	
 }

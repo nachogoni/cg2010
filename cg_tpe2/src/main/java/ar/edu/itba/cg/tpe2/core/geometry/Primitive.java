@@ -18,9 +18,10 @@ public abstract class Primitive {
 	Shader shader;
 	
 	public Primitive(String name, Shader shader) {
-		
 		this.name = name;
 		this.shader = shader;
+		if ( shader != null )
+			shader.setPrimitive(this);
 	}
 	
 	/**
@@ -112,5 +113,7 @@ public abstract class Primitive {
 	 * @return List of boundary points
 	 */
 	public abstract List<Point3d> getBoundaryPoints();
+	
+	public abstract double [] getUV(Point3d p);
 	
 }

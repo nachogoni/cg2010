@@ -381,7 +381,7 @@ public class Parser {
 						if(current.equals("texture")){
 							texture_path = aParser.getNextToken();
 							int length = texture_path.length();
-							texture_path = texture_path.substring(1, length);
+							texture_path = texture_path.substring(1, length-1);
 							aDiff = new Diffuse(texture_path);
 						} else if(current.equals("spec")){
 							aSpec = this.parseSpec(current);

@@ -6,10 +6,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.vecmath.Point3d;
+
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 
 public class Diffuse {
 
-	
+	private static String curr_dir = System.getProperty("user.dir");
 	private Color c;
 	private BufferedImage img = null;
 	
@@ -19,7 +22,7 @@ public class Diffuse {
 	}
 	
 	public Diffuse(String textureFilename){
-		File input = new File(textureFilename);
+		File input = new File(curr_dir+"/"+textureFilename);
 		try {
 			img = ImageIO.read(input);
 		} catch (IOException e) {
@@ -27,16 +30,22 @@ public class Diffuse {
 		}
 	}
 	
-	public Color getColorAt(int x, int y){
+	public Color getColorAt(Point3d aPoint, Primitive primitive){
 		if ( img == null )
 			return c;
 		
-		return new Color(img.getRGB(x, y));
+		double[] uv = primitive.getUV(aPoint);
+		return new Color(img.getRGB((int)uv[0]*img.getWidth(), (int)uv[1]*img.getHeight()));
 	}
 
 	@Override
 	public String toString() {
 		return "Diffuse [c=" + c + ", img=" + img + "]";
+	}
+
+	public Color getColorAt(Point3d aPoint) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

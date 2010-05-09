@@ -31,6 +31,7 @@ public class Sphere extends Primitive {
 	
 	public Sphere(String name, Shader shader, Point3d radiusCenter, double radius) throws IllegalArgumentException {
 		super(name,shader);
+
 		if (radius <= 0)
 			throw new IllegalArgumentException("Invalid radius");
 		this.radius = radius;
@@ -165,4 +166,22 @@ public class Sphere extends Primitive {
 		return new ArrayList<Point3d>();
 	}
 
+	@Override
+	public double[] getUV(Point3d p) {
+		Point3d point = new Point3d(p);
+		
+		// Get p into sphere coordinates
+		point.sub(radiusCenter);
+		
+		// Get uv coordinates
+		double u = point.x / Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2));
+		double v = point.y / Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2));
+		
+		if (u > 1 || u < -1)
+			System.out.println(u);
+		u++;
+		u/=2;
+		
+		return new double[]{u,v};
+	}
 }
