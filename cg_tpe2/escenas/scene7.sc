@@ -39,7 +39,7 @@ object {
 }
 
 object {
-   shader phong1
+   shader phong0
    type sphere
    name sphere1
    c 4 0 0

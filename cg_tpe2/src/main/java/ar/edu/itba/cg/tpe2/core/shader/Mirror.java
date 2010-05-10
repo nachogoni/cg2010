@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 
 public class Mirror extends Shader {
 
@@ -26,7 +27,7 @@ public class Mirror extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3d aPoint) {
+	public Color getColorAt(Point3d aPoint, Primitive primitive) {
 		// TODO Auto-generated method stub
 		return null;
 	}
