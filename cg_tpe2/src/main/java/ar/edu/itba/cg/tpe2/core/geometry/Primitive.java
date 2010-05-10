@@ -161,7 +161,7 @@ public abstract class Primitive {
 	 */
 	public abstract List<Point3d> getBoundaryPoints();
 	
-	public abstract double [] getUV(Point3d p);
+	public abstract double [] getUV(Point3d point);
 	
 	public abstract Vector3 getNormalAt(Point3d p);
 	

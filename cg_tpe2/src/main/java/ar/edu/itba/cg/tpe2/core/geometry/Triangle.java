@@ -23,6 +23,9 @@ public class Triangle extends Primitive {
 	
 	double uu, uv, vv;
 	
+	double minX, minY, maxX, maxY;
+	double uvMinX, uvMinY, uvMaxX, uvMaxY;
+	
 	//Vectores Normales a cada punto
 	private Vector3d n1, n2, n3;
 	
@@ -39,77 +42,40 @@ public class Triangle extends Primitive {
 		this.transform = transform;
 	}
 
+	public void setUVs(Point2d uv1, Point2d uv2, Point2d uv3) {
+		this.uv1 = uv1;
+		this.uv2 = uv2;
+		this.uv3 = uv3;
+		
+		uvMinX = Math.min(uv1.x, Math.min(uv2.x, uv3.x));
+		uvMinY = Math.min(uv1.y, Math.min(uv2.y, uv3.y));
+		uvMaxX = Math.max(uv1.x, Math.max(uv2.x, uv3.x));
+		uvMaxY = Math.max(uv1.y, Math.max(uv2.y, uv3.y));
+	}
+	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
-		super(name,shader);
-		u = new Vector3(p1,p2);
-		v = new Vector3(p1,p3);
-		n = new Vector3();
-		n.cross(u, v);
-		if ( n.equals(new Vector3()) )
-			// Triangle is either a segment or a point
-			throw new IllegalArgumentException("Triangle is either a segment or a point");
-	    uu = u.dot(u);
-	    uv = u.dot(v);
-	    vv = v.dot(v);
-		this.p1 = p1;
-		this.p2 = p2;
-		this.p3 = p3;
+		this(name,shader, p1, p2, p3, trans);
 		
 		this.n1 = n1;
 		this.n2 = n2;
 		this.n3 = n3;
 		
-		this.uv1 = uv1;
-		this.uv2 = uv2;
-		this.uv3 = uv3;
-		
-		this.transform = trans;
+		setUVs(uv1, uv2, uv3);
 	}
 	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Transform trans) throws IllegalArgumentException {
-		super(name,shader);
-		u = new Vector3(p1,p2);
-		v = new Vector3(p1,p3);
-		n = new Vector3();
-		n.cross(u, v);
-		if ( n.equals(new Vector3()) )
-			// Triangle is either a segment or a point
-			throw new IllegalArgumentException("Triangle is either a segment or a point");
-	    uu = u.dot(u);
-	    uv = u.dot(v);
-	    vv = v.dot(v);
-		this.p1 = p1;
-		this.p2 = p2;
-		this.p3 = p3;
+		this(name,shader, p1, p2, p3, trans);
 		
 		this.n1 = n1;
 		this.n2 = n2;
 		this.n3 = n3;
 
-		this.transform = trans;
 	}
 	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
-		super(name,shader);
-		u = new Vector3(p1,p2);
-		v = new Vector3(p1,p3);
-		n = new Vector3();
-		n.cross(u, v);
-		if ( n.equals(new Vector3()) )
-			// Triangle is either a segment or a point
-			throw new IllegalArgumentException("Triangle is either a segment or a point");
-	    uu = u.dot(u);
-	    uv = u.dot(v);
-	    vv = v.dot(v);
-		this.p1 = p1;
-		this.p2 = p2;
-		this.p3 = p3;
+		this(name, shader, p1, p2, p3, trans);
 
-		this.uv1 = uv1;
-		this.uv2 = uv2;
-		this.uv3 = uv3;
-		
-		this.transform = trans;
+		setUVs(uv1, uv2, uv3);
 	}
 	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
@@ -129,6 +95,11 @@ public class Triangle extends Primitive {
 		this.p3 = p3;
 		
 		this.transform = trans;
+		
+		minX = Math.min(p1.x, Math.min(p2.x, p3.x));
+		minY = Math.min(p1.y, Math.min(p2.y, p3.y));
+		maxX = Math.max(p1.x, Math.max(p2.x, p3.x));
+		maxY = Math.max(p1.y, Math.max(p2.y, p3.y));
 	}
 	
 	public Point3d intersect(Ray ray) {
@@ -221,8 +192,15 @@ public class Triangle extends Primitive {
 	}
 	
 	@Override
-	public double[] getUV(Point3d p) {
-		return new double[]{0,0};
+	public double[] getUV(Point3d point) {
+		
+		//double u = uvMinX + Math.abs((minX - point.x) / (maxX - minX)) * (uvMaxX - uvMinX);
+		double u = Math.abs((minX - point.x) / (maxX - minX));
+
+		//double v = uvMinY + Math.abs((maxY - point.y) / (maxY - minY)) * (uvMaxY - uvMinY);
+		double v = Math.abs((maxY - point.y) / (maxY - minY));
+		
+		return new double[]{u,v};
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class Box extends Primitive {
 	}
 
 	@Override
-	public double[] getUV(Point3d p) {
+	public double[] getUV(Point3d point) {
 		return new double[]{0,0};
 	}
 
