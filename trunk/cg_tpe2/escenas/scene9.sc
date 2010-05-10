@@ -27,7 +27,8 @@ object {
 	transform {
 		scaleu 2.0
 		rotatex 30
-	}
+		rotatez 45	
+		}
 	type box
 }
 	
