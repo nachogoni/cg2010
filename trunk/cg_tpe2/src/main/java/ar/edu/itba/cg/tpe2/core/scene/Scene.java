@@ -10,13 +10,17 @@ import javax.vecmath.Point3d;
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
+import ar.edu.itba.cg.tpe2.core.light.Light;
+import ar.edu.itba.cg.tpe2.core.light.PointLight;
 
 /**
  * Create a scene representation
  */
 public class Scene {
 
-	private List<Primitive> list = Collections.synchronizedList(new ArrayList<Primitive>());
+	private List<Primitive> primitives = Collections.synchronizedList(new ArrayList<Primitive>());
+	
+	private List<Light> lights = Collections.synchronizedList(new ArrayList<Light>());
 	
 	private PrimitiveOctree octree = null;
 	
@@ -25,35 +29,34 @@ public class Scene {
 	private Camera aCamera = null;
 	private Image anImage = null;
 	
-	public Scene(List<Primitive> list, PrimitiveOctree octree, Camera aCamera,
-			Image anImage) {
+	public Scene(List<Primitive> primitives, PrimitiveOctree octree, Camera aCamera, Image anImage) {
 		super();
-		this.list = list;
+		this.primitives = primitives;
 		this.octree = octree;
 		this.aCamera = aCamera;
 		this.anImage = anImage;
 	}
 
-	public Camera getaCamera() {
+	public Camera getCamera() {
 		return aCamera;
 	}
 
-	public void setaCamera(Camera aCamera) {
+	public void setCamera(Camera aCamera) {
 		this.aCamera = aCamera;
 	}
 
-	public Image getAnImage() {
+	public Image getImage() {
 		return anImage;
 	}
 
-	public void setAnImage(Image anImage) {
+	public void setImage(Image anImage) {
 		this.anImage = anImage;
 	}
 
 	@Override
 	public String toString() {
 		return "Scene [aCamera=" + aCamera + ", anImage=" + anImage + ", list="
-				+ list + ", octree=" + octree + "]";
+				+ primitives + ", octree=" + octree + "]";
 	}
 
 
@@ -74,7 +77,7 @@ public class Scene {
 	 * @param list List of primitives in the scene
 	 */
 	public Scene(List<Primitive> list) {
-		this.list = list;
+		this.primitives = list;
 	}
 	
 	/**
@@ -89,8 +92,8 @@ public class Scene {
 	 * 
 	 * @return List of primitives
 	 */
-	public List<Primitive> getList() {
-		return list;
+	public List<Primitive> getPrimitives() {
+		return primitives;
 	}
 	
 	/**
@@ -100,7 +103,7 @@ public class Scene {
 	 */
 	public void add(List<Primitive> primitives) {
 		for (Primitive p : primitives) {
-			list.add(p);
+			primitives.add(p);
 		}
 	}
 	
@@ -111,7 +114,7 @@ public class Scene {
 			   zMin = Double.MAX_VALUE, zMax = Double.MIN_VALUE;
 		
 		// Search for the maximun an minimun points for the scene
-		for (Primitive p : list) {
+		for (Primitive p : primitives) {
 			for (Point3d point : p.getBoundaryPoints()) {
 				if (point.x > xMax) {
 					xMax = point.x;
@@ -138,7 +141,7 @@ public class Scene {
 		octree = new PrimitiveOctree(xMin, xMax, yMin, xMax, zMin, zMax);
 
 		// Add primitives to the octree
-		for (Primitive p : list) {
+		for (Primitive p : primitives) {
 			octree.add(p);
 		}
 		System.out.flush();
@@ -457,7 +460,7 @@ public static List<Primitive> read(String scene) {
 		}
 		
 		// Find intersection in scene with ray
-		for (Primitive p : this.list) {
+		for (Primitive p : this.primitives) {
 		
 			currIntersection = p.intersect(ray);
 			if (currIntersection != null && (nearestIntersection == null || (nearestIntersection != null &&
@@ -517,5 +520,13 @@ public static List<Primitive> read(String scene) {
 		
 		return nearestPrimitive;
 	}
+
+	public void addLight(Light light) {
+		if ( light != null )
+			lights.add(light);
+	}
 	
+	public List<Light> getLights(){
+		return lights;
+	}
 }
