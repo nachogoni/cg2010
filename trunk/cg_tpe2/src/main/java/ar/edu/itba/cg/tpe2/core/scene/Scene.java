@@ -103,7 +103,7 @@ public class Scene {
 	 */
 	public void add(List<Primitive> primitives) {
 		for (Primitive p : primitives) {
-			primitives.add(p);
+			this.primitives.add(p);
 		}
 	}
 	
