@@ -225,11 +225,14 @@ class RayCasterThread extends Thread {
 		if (impactedFigure == null) {
 			return new Color(0.0f, 0.0f, 0.0f);
 		}
+
+    	float refleccion=0.0f;
+    	float refraccion=0.0f;
 		
     	/*
     	 * Calcula los rayos de refleccion y refraccion (los que atraviesan y se reflejan)
     	 */
-		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint);
+		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint, refraccion);
 		Ray reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
 		
 		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
@@ -249,8 +252,7 @@ class RayCasterThread extends Thread {
     	float [] resultingRGBArray = new float [3];
     	
     	//TODO cambiar esto por los valores posta
-    	float refleccion=0.0f;
-    	float refraccion=0.0f;
+
     	
     	resultingRGBArray[0] = ilumRGBArray[0] + refraccion*reflactRGBArray[0] + refleccion*reflectRGBArray[0];
     	resultingRGBArray[1] = ilumRGBArray[1] + refraccion*reflactRGBArray[1] + refleccion*reflectRGBArray[1];
@@ -266,13 +268,11 @@ class RayCasterThread extends Thread {
 	}
 
 	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {
-		// TODO Auto-generated method stub
-		return ray;
+		return ray.reflectFrom(p.getNormalAt(intersectionPoint), intersectionPoint);
 	}
 
-	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint) {
-		// TODO Auto-generated method stub
-		return ray;
+	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint, double refraction) {
+		return ray.refractFrom(p.getNormalAt(intersectionPoint), intersectionPoint, refraction);
 	}
 
 	
