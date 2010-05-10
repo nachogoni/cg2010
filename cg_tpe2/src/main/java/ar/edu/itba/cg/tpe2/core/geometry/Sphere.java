@@ -30,6 +30,11 @@ public class Sphere extends Primitive {
 		this.radiusCenter= radiusCenter;
 		
 		this.transform = trans;
+		
+		if(this.transform != null){
+			// Debo correr la transformacion
+			this.transform.applyTransform(this);
+		}
 	}
 	
 	// A = Xd^2 + Yd^2 + Zd^2
