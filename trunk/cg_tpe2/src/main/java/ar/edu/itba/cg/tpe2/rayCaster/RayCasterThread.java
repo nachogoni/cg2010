@@ -240,10 +240,14 @@ class RayCasterThread extends Thread {
 		
 		// Stopping recursive calls and gets only ilumination color
 		if (maxRebounds-- != 0) {
-			refractColor = getColor(refractRay, maxRebounds);
-			reflectColor = getColor(reflectRay, maxRebounds);
-			reflactRGBArray = refractColor.getRGBColorComponents(null);
-			reflectRGBArray = reflectColor.getRGBColorComponents(null);
+			if ( refractRay != null ){
+				refractColor = getColor(refractRay, maxRebounds);
+				reflactRGBArray = refractColor.getRGBColorComponents(null);
+			}
+			if ( reflectRay != null ){
+				reflectColor = getColor(reflectRay, maxRebounds);
+				reflectRGBArray = reflectColor.getRGBColorComponents(null);
+			}
 		}
     	
     	ilumColor = ilumination(ray, impactedFigure, intersectionPoint);
