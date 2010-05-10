@@ -69,35 +69,53 @@ public class Transform {
 	}
 	
 	public void rotatex(Primitive aPrimitive){
-		aPrimitive.rotatex(this.rotatex*Math.PI/180);
+		if(this.rotatex != null)
+			aPrimitive.rotatex(this.rotatex*Math.PI/180);
 	}
 	
 	public void rotatey(Primitive aPrimitive){
-		aPrimitive.rotatey(this.rotatey*Math.PI/180);
+		if(this.rotatey != null)
+			aPrimitive.rotatey(this.rotatey*Math.PI/180);
 	}
 	
 	public void rotatez(Primitive aPrimitive){
-		aPrimitive.rotatey(this.rotatez*Math.PI/180);
+		if(this.rotatez != null)
+			aPrimitive.rotatez(this.rotatez*Math.PI/180);
 	}
 	
 	public void scalex(Primitive aPrimitive){
-		aPrimitive.scalex(this.scalex);
+		if(this.scalex != null)
+			aPrimitive.scalex(this.scalex);
 	}
 	
 	public void scaley(Primitive aPrimitive){
-		aPrimitive.scaley(this.scaley);
+		if(this.scaley != null)
+			aPrimitive.scaley(this.scaley);
 	}
 	
 	public void scalez(Primitive aPrimitive){
-		aPrimitive.scalez(this.scalez);
+		if(this.scalez != null)
+			aPrimitive.scalez(this.scalez);
 	}
 	
 	public void scaleu(Primitive aPrimitive){
-		aPrimitive.scaleu(this.scaleu);
+		if(this.scaleu != null)
+			aPrimitive.scaleu(this.scaleu);
 	}
 	
 	public void translate(Primitive aPrimitive){
 		//aPrimitive.translate(this.translate);
+	}
+	
+	public void applyTransform(Primitive aPrimitive){
+		this.scalex(aPrimitive);
+		this.scaley(aPrimitive);
+		this.scalez(aPrimitive);
+		this.scaleu(aPrimitive);
+		
+		this.rotatex(aPrimitive);
+		this.rotatey(aPrimitive);
+		this.rotatez(aPrimitive);
 	}
 	
 }
