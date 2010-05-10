@@ -264,7 +264,7 @@ class RayCasterThread extends Thread {
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint) {
 		// the color of the impacted figure
 		//TODO hacer bien, deberia usar el rayo!!!
-		return impactedFigure.getShader().getColorAt(intersectionPoint);
+		return impactedFigure.getColorAt(intersectionPoint);
 	}
 
 	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {

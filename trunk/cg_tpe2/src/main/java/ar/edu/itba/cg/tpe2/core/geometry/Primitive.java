@@ -1,5 +1,6 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.vecmath.Matrix4d;
@@ -21,8 +22,6 @@ public abstract class Primitive {
 	public Primitive(String name, Shader shader) {
 		this.name = name;
 		this.shader = shader;
-		if ( shader != null )
-			shader.setPrimitive(this);
 	}
 	
 	/**
@@ -167,4 +166,8 @@ public abstract class Primitive {
 	public abstract Vector3 getNormalAt(Point3d p);
 	
 	public abstract void transformWith(Matrix4d m);
+	
+	public Color getColorAt(Point3d aPoint) {
+		return this.shader.getColorAt(aPoint, this);
+	}
 }

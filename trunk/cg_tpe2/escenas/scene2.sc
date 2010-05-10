@@ -17,7 +17,7 @@ camera {
 shader {
    name phong1
    type phong
-   diff { "sRGB nonlinear" 0 0 1 }
+   texture "earth.jpg"
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
 }
@@ -25,7 +25,7 @@ shader {
 shader {
    name phong0
    type phong
-   diff { "sRGB nonlinear" 1 0 0 }
+   texture "earth.jpg"
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
 }

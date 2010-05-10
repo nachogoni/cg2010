@@ -12,7 +12,6 @@ public abstract class Shader {
 	// Type
 	private String name;
 	private String type;
-	protected Primitive primitive;
 	
 	public Shader(String name, String type) {
 		super();
@@ -33,11 +32,7 @@ public abstract class Shader {
 		return type;
 	}
 	
-	abstract public Color getColorAt(Point3d aPoint);
-	
-	public void setPrimitive(Primitive p){
-		primitive = p;
-	}
+	abstract public Color getColorAt(Point3d aPoint, Primitive primitive);
 	
 	// Implementations
 	

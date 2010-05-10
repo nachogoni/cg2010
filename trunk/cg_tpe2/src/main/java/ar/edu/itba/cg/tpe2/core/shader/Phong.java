@@ -6,6 +6,7 @@ import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
+import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 
 public class Phong extends Shader {
 
@@ -40,7 +41,7 @@ public class Phong extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3d aPoint) {
+	public Color getColorAt(Point3d aPoint, Primitive primitive) {
 		return diffuse.getColorAt(aPoint,primitive);
 	}
 	
