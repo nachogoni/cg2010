@@ -4,13 +4,13 @@ import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 
-public class Point extends Light {
+public class PointLight extends Light {
 
 	private Specular aSpec;
 	private double power;
 	private Point3d p;
 
-	public Point(String name, Specular aSpec, double power, Point3d p) {
+	public PointLight(String name, Specular aSpec, double power, Point3d p) {
 		super(ELightType.point, name);
 		this.aSpec = aSpec;
 		this.power = power;

@@ -85,8 +85,8 @@ public class App
     		// Create a camera
 //    		Camera camera = new Camera(new Point3d(0d, 0d, 6d), new Point3d(0d, 0d ,0d), 
 //    				new Point3d(0d, 10d ,6d), fov, imageResolution[0], imageResolution[1]);
-    		Camera camera = scene.getaCamera();
-    		camera.setWidth(scene.getAnImage().getWidth());
+    		Camera camera = scene.getCamera();
+    		camera.setWidth(scene.getImage().getWidth());
     		
     		// Create rayCaster
     		RayCaster raycaster = null;

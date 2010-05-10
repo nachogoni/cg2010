@@ -21,6 +21,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
+import ar.edu.itba.cg.tpe2.core.light.PointLight;
 import ar.edu.itba.cg.tpe2.core.scene.Image;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.Glass;
@@ -355,6 +356,7 @@ public class Parser {
 		System.out.println("Power: " + power);
 		System.out.println("Light Position: " + light_pos.toString());
 		// Build Object Light
+		scene.addLight(new PointLight(type,aSpec,power,light_pos));
 	}
 
 
@@ -510,7 +512,7 @@ public class Parser {
 			aCamera = new Thinlens(type, eye, target, up, fov.doubleValue(), aspect.doubleValue(), tl_fdist.doubleValue(), tl_lensr.doubleValue());
 		}
 		
-		scene.setaCamera(aCamera);
+		scene.setCamera(aCamera);
 		
 //		System.out.println(aCamera.toString());
 
@@ -548,7 +550,7 @@ public class Parser {
 		} else {
 			anImage = new Image(width, height, aa_min, aa_max, samples, bucket_size, bucket_type);
 		}
-		scene.setAnImage(anImage);
+		scene.setImage(anImage);
 //		System.out.println(anImage.toString());
 		
 		

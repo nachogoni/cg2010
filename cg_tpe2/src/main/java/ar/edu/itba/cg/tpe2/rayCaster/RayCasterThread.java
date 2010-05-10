@@ -8,8 +8,10 @@ import java.util.List;
 
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
+import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 /**
@@ -18,7 +20,8 @@ import ar.edu.itba.cg.tpe2.core.scene.Scene;
 class RayCasterThread extends Thread {
 
 	private Scene scene;
-	private ar.edu.itba.cg.tpe2.core.camera.Camera camera;
+	private List<Light> lights;
+	private Camera camera;
 	private int fromX;
 	private int toX;
 	private int fromY;
@@ -29,7 +32,7 @@ class RayCasterThread extends Thread {
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private double farthestDistance = 20.0;
-	private static final int MAX_REBOUNDS=3;
+	private static final int MAX_REBOUNDS=1;
 
 	private static List<Rectangle> tasks = null;
 	private static Iterator<Rectangle> taskIterator;
@@ -46,8 +49,9 @@ class RayCasterThread extends Thread {
 	 * @param rayCaster RayCaster class parent
 	 * @param cb CyclicBarrier for the threads
 	 */
-	public RayCasterThread(Scene scene, ar.edu.itba.cg.tpe2.core.camera.Camera camera, RayCaster rayCaster) {
+	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster) {
 		this.scene = scene;
+		this.lights = scene.getLights();
 		this.camera = camera;
 		this.rayCaster = rayCaster;
 		id = i;
