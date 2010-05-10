@@ -96,6 +96,11 @@ public class Triangle extends Primitive {
 		
 		this.transform = trans;
 		
+		if(this.transform != null){
+			// Debo correr la transformacion
+			this.transform.applyTransform(this);
+		}
+		
 		minX = Math.min(p1.x, Math.min(p2.x, p3.x));
 		minY = Math.min(p1.y, Math.min(p2.y, p3.y));
 		maxX = Math.max(p1.x, Math.max(p2.x, p3.x));
