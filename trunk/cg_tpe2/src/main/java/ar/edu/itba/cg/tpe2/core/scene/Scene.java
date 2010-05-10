@@ -480,10 +480,11 @@ public static List<Primitive> read(String scene) {
 		Point3d currIntersection = null, nearestIntersection=null;
 		final Point3d origin = ray.getOrigin();
 		// Check if the octree is created
-		if (octree == null) {
-			this.optimize();
-		}		
-		
+		synchronized(this) {
+			if (octree == null) {
+				this.optimize();
+			}		
+		}
 		
 		// Find intersection in scene with ray
 		// Los nodos del octree me vienen ordenados por cercania.
