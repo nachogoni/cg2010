@@ -51,13 +51,20 @@ object {
    type generic-mesh 
    name mesh1
    points 3
-      -0 -0 -0
+      +0 +0 +5
+      +0 +5 +5
       +5 +5 +5
-      +5 -5 +5
    triangles 1 
-      1 0 2
+      0 1 2
 	uvs vertex
-	  0.5 0.0
-	  0.1 1.0
-	  1.0 1.0
+	  0.0 1.0
+	  0.0 0.0
+	  1.0 0.0
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 10.0
+   p 0.0 20.0 10.0
 }
