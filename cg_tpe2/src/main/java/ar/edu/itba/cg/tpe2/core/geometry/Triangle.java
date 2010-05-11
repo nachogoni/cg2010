@@ -228,7 +228,9 @@ public class Triangle extends Primitive {
 
 	@Override
 	public Vector3 getNormalAt(Point3d p) {
-		return new Vector3(n);
+		Vector3 vector3 = new Vector3(n);
+		vector3.scale(-1);
+		return vector3;
 	}
 
 }
