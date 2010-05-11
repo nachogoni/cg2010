@@ -18,16 +18,27 @@ public class Ray {
 	 * @param origin Position where from the ray starts 
 	 * @param direction Direction for the ray
 	 */
-	public Ray(Point3d origin, Point3d direction) {
-		
-		Point3d dirNormalized = new Point3d();
-		double module = Math.sqrt(direction.x*direction.x + direction.y*direction.y +direction.z*direction.z);
-		
-		
-		dirNormalized.set(direction.x/module, direction.y/module, direction.z/module);
-		//System.out.println("rayo x:"+dirNormalized.x+", y:"+dirNormalized.y+", z:"+dirNormalized.z);
+	public Ray(Point3d origin, Point3d direction){
+		this(origin,direction,true);
+	}
+	
+	/**
+	 * Constructor for Ray class
+	 * 
+	 * @param origin Position where from the ray starts 
+	 * @param direction Direction for the ray
+	 */
+	public Ray(Point3d origin, Point3d direction, boolean normalize) {
 		this.origin = origin;
-		this.direction = dirNormalized;
+		if ( normalize ){
+			Point3d dirNormalized = new Point3d();
+			double module = Math.sqrt(direction.x*direction.x + direction.y*direction.y +direction.z*direction.z);
+			
+			dirNormalized.set(direction.x/module, direction.y/module, direction.z/module);
+			//System.out.println("rayo x:"+dirNormalized.x+", y:"+dirNormalized.y+", z:"+dirNormalized.z);
+			this.direction = dirNormalized;
+		}else
+			this.direction = direction;
 	}
 	
 	/**
@@ -77,6 +88,8 @@ public class Ray {
 		this.direction = direction;
 	}
 
+//	http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtreflec.htm
+	
 	public Ray reflectFrom(Vector3 primitiveNormal, Point3d primitivePoint){
 		Vector3 rNormal = new Vector3(primitiveNormal);
 		double dotProduct = rNormal.dot(this.getDirectionAsVector());
