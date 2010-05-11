@@ -7,9 +7,9 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 5.0 10.0
+   eye 0.0 0.0 20.0
    target 0.0 0.0 0.0
-   up 0.0 0.0 -10.0
+   up 0.0 10.0 0.0
    fov 60 
    aspect 1.333
 }
@@ -47,7 +47,7 @@ shader {
 }
 
 object { 
-   shader phong1 
+   shader phong3 
    type generic-mesh 
    name mesh1
    points 7 
@@ -64,7 +64,7 @@ object {
 }
 
 object { 
-   shader phong3 
+   shader phong1 
    type generic-mesh 
    name mesh2
    points 7 
@@ -125,5 +125,5 @@ object {
 	type plane
 	name plane1
 	p 0 0 0
-	n 0 1 0 
+	n 0 0 1 
 	}
