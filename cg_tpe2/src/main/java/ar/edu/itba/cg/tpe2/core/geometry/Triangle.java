@@ -3,6 +3,7 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -198,6 +199,23 @@ public class Triangle extends Primitive {
 	
 	@Override
 	public double[] getUV(Point3d point) {
+
+		/*Matrix3d md = new Matrix3d(p1.x, p2.x, p3.x, p1.y, p2.y, p3.y, p1.z, p2.z, p3.z);
+		Matrix3d ma1 = new Matrix3d(point.x, p2.x, p3.x, point.y, p2.y, p3.y, point.z, p2.z, p3.z);
+		Matrix3d ma2 = new Matrix3d(p1.x, point.x, p3.x, p1.y, point.y, p3.y, p1.z, point.z, p3.z);
+		Matrix3d ma3 = new Matrix3d(p1.x, p2.x, point.x, p1.y, p2.y, point.y, p1.z, p2.z, point.z);
+		
+		double d = md.determinant();
+		double a1 = ma1.determinant();
+		double a2 = ma2.determinant();
+		double a3 = ma3.determinant();
+
+		double u = a1 / d;
+		double v = a2 / d;
+
+		double w = a3 / d; 
+		
+		return new double[]{u,v};*/
 		
 		//double u = uvMinX + Math.abs((minX - point.x) / (maxX - minX)) * (uvMaxX - uvMinX);
 		double u = Math.abs((minX - point.x) / (maxX - minX));
