@@ -248,9 +248,9 @@ public class App
 			// Scene name
 			sceneName=cl.getOptionValue("i");
 			// Check sceneName
-			if (sceneName.matches("scene\\d.sc") == false) {
-				throw new IllegalArgumentException("'" + sceneName + "' is an invalid scene name");
-			}
+//			if (sceneName.matches("scene\\d.sc") == false) {
+//				throw new IllegalArgumentException("'" + sceneName + "' is an invalid scene name");
+//			}
 		}
 		return sceneName;
 	}
