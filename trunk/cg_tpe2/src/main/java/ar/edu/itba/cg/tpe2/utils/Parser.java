@@ -180,8 +180,40 @@ public class Parser {
 							}
 						}
 					}while(!current.equals("}"));
+				} else if (type.equals("mesh")){
+					// Es un MESH
+					do {
+						current = aParser.getNextToken();
+						if(current.equals("name")){
+							object_name = aParser.getNextToken();
+						} else if(!current.equals("}")){
+							pts_qty = new Integer(current);
+							tri_qty = new Integer(aParser.getNextToken());
+							for(int i = 0; i < pts_qty; i++){
+								if(aParser.getNextToken().equals("v")){
+									points.add(new Point3d(new Double(aParser.getNextToken()), 
+											new Double(aParser.getNextToken()), 
+											new Double(aParser.getNextToken())));
+									normals.add(new Vector3d(new Double(aParser.getNextToken()), 
+											new Double(aParser.getNextToken()), 
+											new Double(aParser.getNextToken())));
+									uvs.add(new Point2d(new Double(aParser.getNextToken()), 
+											new Double(aParser.getNextToken())));
+								}
+							}
+							for(int i = 0; i < tri_qty; i++){
+								// TODO Get point according to the index
+								if(aParser.getNextToken().equals("t")){
+									triangles.add(new Point3i(new Integer(aParser.getNextToken()),
+											new Integer(aParser.getNextToken()),
+											new Integer(aParser.getNextToken())));
+								}
+							}
+							
+						}
+					} while(!current.equals("}"));
 				} else if (type.equals("box")){
-					do{
+						do{
 						current = aParser.getNextToken();
 						if(current.equals("name")){
 							object_name = aParser.getNextToken();
@@ -210,7 +242,7 @@ public class Parser {
 		
 		//Aca armamos los objetos
 		
-		if(type.equals("generic-mesh")){
+		if(type.equals("generic-mesh")  || type.equals("mesh")){
 			//Armo el generic-mesh, un listado de triangulos.
 			LinkedList<Primitive> triangleList = new LinkedList<Primitive>();
 			for(int i = 0; i < triangles.size(); i++){

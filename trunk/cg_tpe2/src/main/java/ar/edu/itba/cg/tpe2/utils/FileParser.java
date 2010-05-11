@@ -88,6 +88,7 @@ public class FileParser {
 			aRet = this.getNextToken();
 		}
 		
+		//System.out.println(aRet);
 		return aRet;
 	}
 	

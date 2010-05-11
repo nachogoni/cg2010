@@ -15,31 +15,31 @@ public class ParserTest {
 		String curr_dir = System.getProperty("user.dir");
 		System.out.println(curr_dir);
 
-		Parser aParser = new Parser(curr_dir + "/escenas/scene1.sc");
+		Parser aParser = new Parser(curr_dir + "/escenas/scene10.sc");
 		try {
 			Scene aScene = aParser.parse();
-//			List<Primitive> aList = aScene.getList();
-//			for(int i = 0; i < aList.size(); i++){
-//				System.out.println(aList.get(i).toString());
-//			}
-			System.out.println(aScene);
+			List<Primitive> aList = aScene.getPrimitives();
+			for(int i = 0; i < aList.size(); i++){
+				System.out.println(aList.get(i).toString());
+			}
+//			System.out.println(aScene);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int i = 0;
-		double spheresPerFace=4.0;
-		double distance=0.5;
-		double radius=0.5;
-		double interval=spheresPerFace*radius + (spheresPerFace/2-1)*distance + distance/2 - radius; 
-		for (double x = -interval ; x <= interval; x += 2*radius + distance) {
-			for (double y = -interval; y <= interval; y += 2*radius + distance) {
-				for (double z = -interval; z <= interval; z += 2*radius + distance) {
-					System.out.println("object { \n\t shader phong"+ (i % 2) + "\n\t type sphere\n\t name sphere" + i + "\n\t c " + x + " "+ y + " "+ z + "\n\t r 0.7\n} ");
-					i++;
-				}
-			}
-		}
+//		int i = 0;
+//		double spheresPerFace=4.0;
+//		double distance=0.5;
+//		double radius=0.5;
+//		double interval=spheresPerFace*radius + (spheresPerFace/2-1)*distance + distance/2 - radius; 
+//		for (double x = -interval ; x <= interval; x += 2*radius + distance) {
+//			for (double y = -interval; y <= interval; y += 2*radius + distance) {
+//				for (double z = -interval; z <= interval; z += 2*radius + distance) {
+//					System.out.println("object { \n\t shader phong"+ (i % 2) + "\n\t type sphere\n\t name sphere" + i + "\n\t c " + x + " "+ y + " "+ z + "\n\t r 0.7\n} ");
+//					i++;
+//				}
+//			}
+//		}
 
 	}
 
