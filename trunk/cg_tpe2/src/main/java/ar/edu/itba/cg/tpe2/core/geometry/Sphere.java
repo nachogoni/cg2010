@@ -117,8 +117,14 @@ public class Sphere extends Primitive {
 
 	@Override
 	public Vector3 getNormalAt(Point3d p) {
-		// TODO 
-		return new Vector3();
+		
+		Vector3 v = new Vector3(p, radiusCenter);
+
+		v.scale(-1);
+		
+		v.normalize();
+		
+		return v;
 	}
 
 	@Override
