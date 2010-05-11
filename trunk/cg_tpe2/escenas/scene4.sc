@@ -5,6 +5,13 @@ image {
    samples 4
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 20.0
+   p 0.5 0.5 10.0
+}
+
 camera {
    type pinhole
    eye 5.0 5.0 5.0
@@ -61,7 +68,7 @@ object {
    p 0 0 0
    n 0 1 0
 }
-/*
+
 object {
    shader phong2
    type plane
@@ -75,4 +82,3 @@ object {
    p 0 0 0
    n 0 0 1
 }
-*/
