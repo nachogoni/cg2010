@@ -7,9 +7,9 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 15.0 0.0
+   eye 0.0 0.0 20.0
    target 0.0 0.0 0.0
-   up 0.0 0.0 -10.0
+   up 0.0 10.0 0.0
    fov 60 
    aspect 1.333
 }
@@ -80,6 +80,7 @@ object {
       1 0 2   
 }
 
+
 object {
    shader phong2
    type sphere
@@ -119,11 +120,3 @@ object {
    c 0 0 -7
    r 0.5
 }
-
-object {
-	shader phong7
-	type plane
-	name plane1
-	p 0 0 0
-	n 0 1 0 
-	}

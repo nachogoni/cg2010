@@ -78,11 +78,12 @@ public class Parser {
 				System.out.println("Reading Object Settings...");
 				this.parseObjectSettings();
 			} else {
+				String back = current;
 				do{
 					current = aParser.getNextToken();
 					if(current.equals("transform")){
 						Transform aTrans = this.parseTransform();
-					} else if (current.equals("spec") || current.equals("diff") || current.equals("color")){
+					} else if (!back.equals("trace-depths") && (current.equals("spec") || current.equals("diff") || current.equals("color"))){
 						Specular aSpec = this.parseSpec(current);
 					}
 				} while (!current.equals("}"));
@@ -339,7 +340,7 @@ public class Parser {
 		aSpec.setColor(new Color(__a, __b, __c));
 		aSpec.setColorType(color);
 		
-		System.out.println(aSpec.toString());
+		//System.out.println(aSpec.toString());
 
 		
 		return aSpec;
@@ -375,7 +376,7 @@ public class Parser {
 			
 		}while(!current.equals("}"));
 		
-		System.out.println(aTrans.toString());
+		//System.out.println(aTrans.toString());
 		
 		return aTrans;
 		
@@ -405,12 +406,12 @@ public class Parser {
 		if(!type.equals("point")){
 			return;
 		}
-		
-		System.out.println("Type of Light: " + type);
-		System.out.println("Color: " + aSpec.getColorType() + " " + aSpec.getColor());
-		System.out.println("Power: " + power);
-		System.out.println("Light Position: " + light_pos.toString());
-		// Build Object Light
+//		
+//		System.out.println("Type of Light: " + type);
+//		System.out.println("Color: " + aSpec.getColorType() + " " + aSpec.getColor());
+//		System.out.println("Power: " + power);
+//		System.out.println("Light Position: " + light_pos.toString());
+//		// Build Object Light
 		scene.addLight(new PointLight(type,aSpec,power,light_pos));
 	}
 
