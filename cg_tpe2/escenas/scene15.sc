@@ -14,15 +14,19 @@ trace-depths {
 bucket 64 hilbert
 
 shader {
-	name def
-	type constant
-	color { "sRGB nonlinear" 1 1 1 }
+   name def
+   type phong
+   diff { "sRGB nonlinear" 0 0 1 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
 }
 
 shader {
-	name "Material.shader"
-	type constant
-	color { "sRGB nonlinear" 0 0 1 }
+   name "Material.shader"
+   type phong
+   diff { "sRGB nonlinear" 0 1 1 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
 }
 
 camera {
