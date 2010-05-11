@@ -7,7 +7,7 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 15.0 0.0
+   eye 0.0 5.0 10.0
    target 0.0 0.0 0.0
    up 0.0 0.0 -10.0
    fov 60 
