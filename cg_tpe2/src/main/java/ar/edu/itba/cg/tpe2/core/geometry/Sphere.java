@@ -35,6 +35,7 @@ public class Sphere extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
+		this.rx = 0.0f;
 	}
 	
 	// A = Xd^2 + Yd^2 + Zd^2

@@ -7,16 +7,16 @@ image {
 
 light {
    type point
-   color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 20.0
+   color { "sRGB nonlinear" 1 1 1 }
+   power 2.0
    p 0.5 0.5 10.0
 }
 
 camera {
    type pinhole
-   eye 5.0 5.0 5.0
+   eye 4.0 5.0 5.0
    target 0.0 0.0 0.0
-   up -5.0 5.0 -5.0
+   up -6.0 5.0 -5.0
    fov 60 
    aspect 1.333
 }
