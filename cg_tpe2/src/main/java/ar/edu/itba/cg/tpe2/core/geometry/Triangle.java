@@ -1,9 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -193,12 +189,6 @@ public class Triangle extends Primitive {
 	}
 	
 	@Override
-	public List<Point3d> getBoundaryPoints() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Point3d>();
-	}
-	
-	@Override
 	public double[] getUV(Point3d point) {
 
 		Vector3 p12 = new Vector3(p1, p2);
@@ -259,4 +249,12 @@ public class Triangle extends Primitive {
 
 	}
 
+	@Override
+	public double[] getBoundaryPoints() {
+		double [] extremes = {Math.min(Math.min(p1.x, p2.x),p2.x),  Math.max(Math.max(p1.x, p2.x),p2.x),
+				Math.min(Math.min(p1.y, p2.y),p2.y),  Math.max(Math.max(p1.y, p2.y),p2.y),
+				Math.min(Math.min(p1.z, p2.z),p2.z),  Math.max(Math.max(p1.z, p2.z),p2.z)};
+		return extremes;
+	}
+	
 }

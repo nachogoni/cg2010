@@ -1,8 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
@@ -86,18 +83,6 @@ public class Sphere extends Primitive {
 	}
 
 	@Override
-	public List<Point3d> getBoundaryPoints() {
-		ArrayList<Point3d> ret =new ArrayList<Point3d>();
-		ret.add(new Point3d(radiusCenter.x+radius,radiusCenter.y,radiusCenter.z));
-		ret.add(new Point3d(radiusCenter.x,radiusCenter.y+radius,radiusCenter.z));
-		ret.add(new Point3d(radiusCenter.x,radiusCenter.y,radiusCenter.z+radius));
-		ret.add(new Point3d(radiusCenter.x-radius,radiusCenter.y,radiusCenter.z));
-		ret.add(new Point3d(radiusCenter.x,radiusCenter.y-radius,radiusCenter.z));
-		ret.add(new Point3d(radiusCenter.x,radiusCenter.y,radiusCenter.z-radius));
-		return ret;
-	}
-
-	@Override
 	public double[] getUV(Point3d point) {
 		
 		Point3d p = new Point3d(point);
@@ -140,6 +125,13 @@ public class Sphere extends Primitive {
 	
 	public void scalex(double scale){
 		this.radius *= scale;
+	}
+	@Override
+	public double[] getBoundaryPoints() {
+		double [] extremes = {radiusCenter.x-radius, radiusCenter.x+radius,
+				radiusCenter.y-radius, radiusCenter.y+radius,
+				radiusCenter.z-radius, radiusCenter.z+radius}; 
+		return extremes;
 	}
 	
 	public void scaley(double scale){

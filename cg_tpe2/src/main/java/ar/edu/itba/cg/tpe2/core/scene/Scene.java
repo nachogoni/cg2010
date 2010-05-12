@@ -114,28 +114,26 @@ public class Scene {
 		
 		// Search for the maximun an minimun points for the scene
 		for (Primitive p : primitives) {
-			for (Point3d point : p.getBoundaryPoints()) {
-				if (point.x > xMax) {
-					xMax = point.x;
-				} else if (point.x < xMin) {
-					xMin = point.x;
-				}
-				if (point.y > yMax) {
-					yMax = point.y;
-				} else if (point.y < yMin) {
-					yMin = point.y;
-				}
-				if (point.z > zMax) {
-					zMax = point.z;
-				} else if (point.z < zMin) {
-					zMin = point.z;
-				}
+			double[] extremes= p.getBoundaryPoints();
+			if (extremes[0] < xMin) {
+				xMin = extremes[0];
 			}
-			
+			if ( extremes[1]> xMax) {
+				xMax = extremes[1];
+			} 
+			if (extremes[2] < yMin) {
+				yMin = extremes[2];
+			}
+			if (extremes[3] > yMax) {
+				yMax = extremes[3];
+			} 
+			if (extremes[4] < zMin) {
+				zMin = extremes[4];
+			}
+			if (extremes[5] > zMax) {
+				zMax = extremes[5];
+			} 
 		}
-		System.out.println("xmin " + xMin + " xmax " + xMax);
-		System.out.println("ymin " + yMin + " ymax " + yMax);
-		System.out.println("zmin " + zMin + " zmax " + zMax);
 		// Create the octree
 		octree = new PrimitiveOctree(xMin, xMax, yMin, xMax, zMin, zMax);
 
@@ -172,12 +170,6 @@ public class Scene {
 		Primitive nearestPrimitive = null;
 		Point3d currIntersection = null, nearestIntersection=null;
 		Point3d origin = ray.getOrigin();
-		
-		synchronized(this) {
-			if (octree == null) {
-				this.optimize();
-			}
-		}
 		
 		// Find intersection in scene with ray
 		for (Primitive p : this.primitives) {

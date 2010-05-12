@@ -294,13 +294,13 @@ class RayCasterThread extends Thread {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
-
-		for(Light l:lights){
+return impactedFigure.getColorAt(intersectionPoint);
+/*		for(Light l:lights){
 			if ( l instanceof PointLight ){
 				PointLight pl = (PointLight) l;
 				Primitive p = null;
 				Point3d intersectionP = new Point3d(intersectionPoint);
-				Ray rayFromLight = new Ray(intersectionP,pl.getP(),true);
+				Ray rayFromLight = new Ray(intersectionP,pl.getP());
 				
 				p = scene.getFirstIntersection(rayFromLight, new Point3d());
 				
@@ -328,7 +328,7 @@ class RayCasterThread extends Thread {
 			}
 		}
 		
-		return clamp(rgbs);
+		return clamp(rgbs);*/
 	}
 
 	private Color clamp(float [] rgbs){
