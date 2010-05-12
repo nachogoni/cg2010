@@ -8,17 +8,6 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 public class Plane extends Primitive {
 
-	// Type: Plane
-	// Point
-	// Normal
-	
-	// y
-	
-	// Type: Plane
-	// Point
-	// Point
-	// Point
-
 	Point3d p1;
 	Vector3d n;
 	Transform transform;
@@ -38,7 +27,6 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
-		this.rx = 0f;
 	}
 	
 	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
@@ -57,7 +45,6 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
-		this.rx = 0f;
 	}
 		
 	public Point3d intersect(Ray ray) {

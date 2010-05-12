@@ -32,8 +32,8 @@ public class Mirror extends Shader {
 		return null;
 	}
 
-	public float getRefractionK(){
-		return 0.0f;
+	public float getReflectionK(){
+		return 1.0f;
 	}
 	
 }
