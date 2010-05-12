@@ -5,18 +5,19 @@ image {
    samples 4
 }
 
+
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 2.0
-   p 0.5 0.5 10.0
+   power 20.0
+   p 0.5 4 5.0
 }
 
 camera {
    type pinhole
-   eye 0.0 0.0 20.0
-   target 0.0 0.0 0.0
-   up 0.0 5.0 0.0
+   eye 0.0 1.0 10.0
+   target 0.0 1.0 0.0
+   up 0.0 10.0 0.0
    fov 60 
    aspect 1.333
 }
@@ -24,66 +25,74 @@ camera {
 shader {
    name phong1
    type phong
-   diff { "sRGB nonlinear" 0 0 1 }
-   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
-   samples 4
-}
-
-shader {
-   name phong2
-   type phong
    diff { "sRGB nonlinear" 1 0 0 }
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
 }
 
 shader {
-   name phong3
+   name mirror0
+   type mirror
+   refl { "sRGB nonlinear" 0.800 0.800 0.800 }
+}
+
+shader {
+   name mirror1
+   type mirror
+   refl { "sRGB nonlinear" 0.400 0.400 0.400 }
+}
+
+shader {
+   name phong0
    type phong
-   diff { "sRGB nonlinear" 0 1 0 }
+   diff { "sRGB nonlinear" 1.0 1.0 1.0 }
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
 }
 
 shader {
-   name phong4
+   name blue_sh
    type phong
-   diff { "sRGB nonlinear" 1 1 0 }
+   diff { "sRGB nonlinear" 0.0 0.0 1.0 }
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
 }
 
-object { 
-	 shader phong4
-	 type sphere
-	 transform {
-	 	translate 0 0 3.3
-	 	scalex 0.5
-	 	rotatex 30
-	 }
-	 name sphere0
-	 c 0 0 0
-	 r 2
-} 
-
-object { 
-	 shader phong4
-	 type sphere
-	 transform {
-	 	scalex 2
-	 }
-	 name sphere0
-	 c 0 0 0
-	 r 2
+object {
+   shader phong1
+   type sphere
+   name sphere2
+   c 0 0 0
+   r 3
 }
 
-object { 
-	 shader phong3
-	 type box
-	 transform {
-	 	scaleu 2
-	 	translate 2 2 2
-	 	rotatey 45
-	 }
-	 name box0
+object {
+   shader blue_sh
+   type sphere
+   name sphere3
+   c 0 1 4
+   r 0.5
 }
+
+object {
+   shader mirror1
+   type plane
+   p 2 0 0
+   n -1 0 0
+}
+
+
+object {
+   shader mirror0
+   type plane
+   p -2 0 0
+   n 1 0 0
+}
+
+object {
+   shader phong0
+   type plane
+   p 0 0 0
+   n 0 1 0
+}
+
