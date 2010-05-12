@@ -8,7 +8,7 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 2.0
+   power 6.0
    p 0.5 0.5 10.0
 }
 

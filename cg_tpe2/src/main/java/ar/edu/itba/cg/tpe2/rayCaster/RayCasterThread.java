@@ -246,7 +246,7 @@ class RayCasterThread extends Thread {
 		}
 
     	float reflectK = impactedFigure.getReflectionK();
-    	float refractK = 0.0f;
+    	float refractK = impactedFigure.getRefractionK();
 		
     	/*
     	 * Calcula los rayos de refleccion y refraccion (los que atraviesan y se reflejan)

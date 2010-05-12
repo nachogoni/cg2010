@@ -5,16 +5,6 @@ image {
    samples 4
 }
 
-camera {
-   type pinhole
-   eye 0.0 0.0 20.0
-   target 0.0 0.0 0.0
-   up 0.0 10.0 0.0
-   fov 60 
-   aspect 1.333
-}
-
-
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
@@ -39,8 +29,17 @@ light {
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 4
+   power 2
    p 10.0 10.0 10.0
+}
+
+camera {
+   type pinhole
+   eye 0.0 0.0 20.0
+   target 0.0 0.0 0.0
+   up 0.0 10.0 0.0
+   fov 60 
+   aspect 1.333
 }
 
 shader {
@@ -138,11 +137,3 @@ object {
    c 0 0 -7
    r 0.5
 }
-
-object {
-	shader phong7
-	type plane
-	name plane1
-	p 0 0 0
-	n 0 0 1 
-	}
