@@ -9,13 +9,13 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 10.0
-   p -5.0 0 10.0
+   power 4.0
+   p 10.0 0 5.0
 }
 
 camera {
    type pinhole
-   eye 0.0 0.0 20.0
+   eye 3.0 0.0 3.0
    target 0.0 0.0 0.0
    up 0.0 10.0 0.0
    fov 60 
@@ -42,8 +42,8 @@ object {
    shader phong1
    type sphere
    name sphere2
-   c -8 0 0
-   r 3
+   c -1 0 1
+   r 0.5
 }
 /*
 object {
@@ -58,6 +58,6 @@ object {
 object {
    shader phong0
    type plane
-   p 2 0 2
-   n -2 0 2
+   p 0 0 0
+   n 0 0 1
 }
