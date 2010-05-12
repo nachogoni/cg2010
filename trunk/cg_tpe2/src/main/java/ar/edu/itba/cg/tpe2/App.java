@@ -95,9 +95,9 @@ public class App
 
     		// Set colors for primitives
     		if ( colorProvider instanceof CyclicColorProvider) {
-    			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar);
     		} else {
-    			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar);
     		}
     		
     		// Take start time

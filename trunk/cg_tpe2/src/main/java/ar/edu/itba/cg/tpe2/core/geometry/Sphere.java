@@ -116,7 +116,7 @@ public class Sphere extends Primitive {
 	}
 
 	@Override
-	public Vector3 getNormalAt(Point3d p) {
+	public Vector3 getNormalAt(Point3d p, Point3d from) {
 		
 		Vector3 v = new Vector3(p, radiusCenter);
 

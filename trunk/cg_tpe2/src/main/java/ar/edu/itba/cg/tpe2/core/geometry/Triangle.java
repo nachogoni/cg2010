@@ -7,6 +7,7 @@ import javax.vecmath.Matrix3d;
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -200,37 +201,62 @@ public class Triangle extends Primitive {
 	@Override
 	public double[] getUV(Point3d point) {
 
-		/*Matrix3d md = new Matrix3d(p1.x, p2.x, p3.x, p1.y, p2.y, p3.y, p1.z, p2.z, p3.z);
-		Matrix3d ma1 = new Matrix3d(point.x, p2.x, p3.x, point.y, p2.y, p3.y, point.z, p2.z, p3.z);
-		Matrix3d ma2 = new Matrix3d(p1.x, point.x, p3.x, p1.y, point.y, p3.y, p1.z, point.z, p3.z);
-		Matrix3d ma3 = new Matrix3d(p1.x, p2.x, point.x, p1.y, p2.y, point.y, p1.z, p2.z, point.z);
+		Vector3 p12 = new Vector3(p1, p2);
+		Vector3 p13 = new Vector3(p1, p3);
 		
-		double d = md.determinant();
-		double a1 = ma1.determinant();
-		double a2 = ma2.determinant();
-		double a3 = ma3.determinant();
+		Vector3 w = new Vector3(p1,point);
+    
+		double wp12 = w.dot(p12);
+		double wp13 = w.dot(p13);
+		
+	    double p12p12 = u.dot(u);
+	    double p12p13 = u.dot(v);
+	    double p13p13 = v.dot(v);
+		
+	    double D = p12p13 * p12p13 - p12p12 * p13p13;
+		
+		double alpha = (p12p13 * wp13 - p13p13 * wp12) / D;
+		double beta  = (p12p13 * wp12 - p12p12 * wp13) / D;
+    
+        Vector2d v12 = new Vector2d(uv2.x - uv1.x, uv2.y - uv1.y);
+        Vector2d v13 = new Vector2d(uv3.x - uv1.x, uv3.y - uv1.y);         
 
-		double u = a1 / d;
-		double v = a2 / d;
+        v12.scale(alpha);
+        v13.scale(beta);
+        
+        v12.add(v13);
+                
+        double u = v12.x;
+        double v = v12.y;
 
-		double w = a3 / d; 
-		
-		return new double[]{u,v};*/
-		
-		//double u = uvMinX + Math.abs((minX - point.x) / (maxX - minX)) * (uvMaxX - uvMinX);
-		double u = Math.abs((minX - point.x) / (maxX - minX));
+        if (v < 0) {
+	        v = 1-Math.abs(v);
+        }
+        
+        u = Math.abs(u);
+        
+        return new double[]{u,v};
+}
 
-		//double v = uvMinY + Math.abs((maxY - point.y) / (maxY - minY)) * (uvMaxY - uvMinY);
-		double v = Math.abs((maxY - point.y) / (maxY - minY));
-		
-		return new double[]{u,v};
-	}
+
 
 	@Override
-	public Vector3 getNormalAt(Point3d p) {
-		Vector3 vector3 = new Vector3(n);
-		vector3.scale(-1);
-		return vector3;
+	public Vector3 getNormalAt(Point3d p, Point3d from) {
+        Vector3 vector3 = new Vector3(n);
+        Vector3 back = new Vector3(n);
+        Vector3 v = new Vector3(p, from);
+        back.scale(-1);
+
+        double cross_AB = v.dot(vector3), cross_AC = v.dot(back);
+        double length_A = v.length(), length_B = vector3.length(), length_C = back.length();
+
+        double angleA = Math.acos(cross_AB/(length_A*length_B));
+        double angleB = Math.acos(cross_AC/(length_A*length_C));
+
+        if(angleA < angleB){
+                return vector3;
+        } else return back;
+
 	}
 
 }

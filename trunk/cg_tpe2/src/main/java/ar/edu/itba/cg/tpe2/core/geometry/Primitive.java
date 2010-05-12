@@ -163,7 +163,7 @@ public abstract class Primitive {
 	
 	public abstract double [] getUV(Point3d point);
 	
-	public abstract Vector3 getNormalAt(Point3d p);
+	public abstract Vector3 getNormalAt(Point3d p, Point3d from);
 	
 	public abstract void transformWith(Matrix4d m);
 	

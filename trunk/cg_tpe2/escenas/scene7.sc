@@ -52,7 +52,7 @@ object {
    name mesh1
    points 3
       +0 +0 +5
-      +0 +5 +5
+      +5 +0 +5
       +5 +5 +5
    triangles 1 
       0 1 2
