@@ -108,7 +108,7 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public Vector3 getNormalAt(Point3d p) {
+	public Vector3 getNormalAt(Point3d p, Point3d from) {
 		return new Vector3(n);
 	}
 

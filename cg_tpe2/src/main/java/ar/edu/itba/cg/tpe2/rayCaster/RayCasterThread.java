@@ -212,8 +212,6 @@ class RayCasterThread extends Thread {
 					// Create a new Ray from camera, i, j
 					ray = new Ray(origin, po);
 					
-					if ( i == 512 && j == 200)
-						System.out.println("");
 					// Get pixel color
 					color = getColor(ray, MAX_REBOUNDS);
 					
@@ -287,13 +285,10 @@ class RayCasterThread extends Thread {
 	}
 
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint) {
-		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint);
+		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
 		float [] rgbs = {0,0,0};
 
-		if ( impactedFigure.getClass().equals(Triangle.class) )
-			System.out.println("LALA");
-		
 		for(Light l:lights){
 			if ( l instanceof PointLight ){
 				PointLight pl = (PointLight) l;
@@ -349,11 +344,11 @@ class RayCasterThread extends Thread {
 	}
 	
 	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {
-		return ray.reflectFrom(p.getNormalAt(intersectionPoint), intersectionPoint);
+		return ray.reflectFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint);
 	}
 
 	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint, double refraction) {
-		return ray.refractFrom(p.getNormalAt(intersectionPoint), intersectionPoint, refraction);
+		return ray.refractFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint, refraction);
 	}
 
 	

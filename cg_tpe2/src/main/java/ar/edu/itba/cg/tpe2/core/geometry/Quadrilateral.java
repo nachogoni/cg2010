@@ -102,7 +102,7 @@ public class Quadrilateral extends Primitive {
 	}
 
 	@Override
-	public Vector3 getNormalAt(Point3d p) {
+	public Vector3 getNormalAt(Point3d p, Point3d from) {
 		// TODO 
 		return new Vector3();
 	}

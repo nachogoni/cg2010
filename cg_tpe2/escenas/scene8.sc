@@ -22,6 +22,13 @@ camera {
 	aspect 1.33333333333 
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 20.0
+   p 0.0 -15.0 0.0
+}
+
 object {
 	shader def
 	type generic-mesh
