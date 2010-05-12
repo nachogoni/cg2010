@@ -1,7 +1,6 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
-import java.util.Random;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
@@ -19,13 +18,9 @@ public abstract class Primitive {
 	// Shader
 	Shader shader;
 
-	protected float rx;
-	
 	public Primitive(String name, Shader shader) {
 		this.name = name;
 		this.shader = shader;
-		Random r = new Random();
-		this.rx = 0;
 	}
 	
 	/**
@@ -185,8 +180,7 @@ public abstract class Primitive {
 	}
 	
 	public float getReflectionK(){
-//		return this.shader.getReflectionK();
-		return rx;
+		return this.shader.getReflectionK();
 	}
 	
 	public float getRefractionK(){
