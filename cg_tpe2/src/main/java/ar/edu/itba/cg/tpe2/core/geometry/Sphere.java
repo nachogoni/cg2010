@@ -131,6 +131,24 @@ public class Sphere extends Primitive {
 	@Override
 	public void transformWith(Matrix4d m) {
 		// TODO Auto-generated method stub
-		
+		m.transform(radiusCenter);	
 	}
+	
+	public void scaleu(double scale){
+		this.radius *= scale;
+	}
+	
+	public void scalex(double scale){
+		this.radius *= scale;
+	}
+	
+	public void scaley(double scale){
+		this.radius *= scale;
+	}
+	
+	public void scalez(double scale){
+		this.radius *= scale;
+	}
+	
+	
 }

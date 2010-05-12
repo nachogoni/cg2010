@@ -154,6 +154,16 @@ public abstract class Primitive {
 		transformWith(m);
 	}
 	
+	public void translate(Point3d trans){
+		Matrix4d m = new Matrix4d();
+		m.setIdentity();
+		m.m03 = trans.x;
+		m.m13 = trans.y;
+		m.m23 = trans.z;
+		
+		transformWith(m);
+	}
+	
 	/**
 	 * Get the intersection between the figure and a ray
 	 */

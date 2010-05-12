@@ -104,7 +104,8 @@ public class Transform {
 	}
 	
 	public void translate(Primitive aPrimitive){
-		//aPrimitive.translate(this.translate);
+		if(this.translate != null)
+			aPrimitive.translate(this.translate);
 	}
 	
 	public void applyTransform(Primitive aPrimitive){
@@ -116,6 +117,8 @@ public class Transform {
 		this.rotatex(aPrimitive);
 		this.rotatey(aPrimitive);
 		this.rotatez(aPrimitive);
+		
+		this.translate(aPrimitive);
 	}
 	
 }
