@@ -1,10 +1,10 @@
 package ar.edu.itba.cg.tpe2.core.scene;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
@@ -439,29 +439,46 @@ public class PrimitiveOctree {
 		return ret;
 	}
 	
+	/**
+	 * Funcion add: Inserta recursivamente una primitiva a un nodo. 
+	 * Si es hoja, lo agrega. Si supera la cantidad se expande(pasa a ser padre).
+	 * Si es padre, verifica si en que hijos esta la primitiva y vuelve a llamarse recursivamente.
+	 * 
+	 * @param node Nodo a intertar la primitiva
+	 * @param p primitiva
+	 */
+	
 	private void add(OctreeNode node, Primitive p) {
 		if (node.isLeaf()) {
 			node.primitives.add(p);
 			if (node.primitives.size() > MAX_PRIMITIVES) {
+				//throw new RuntimeException("Se entro en una recursion infinita :S");
 				System.out.println("Se expande el nodo, tamanio del octree " + node.primitives.size());System.out.flush();
 				expand(node);
 			}
-			
 		} else {
-			for (OctreeNode currNode : node.childs) {
-				if (currNode.contains(p)){
-					add(currNode, p);
-				}
+			List<Integer> intersectedOctants = getIntersectedOctants(node, p);
+			for ( Integer octant : intersectedOctants ) {
+				add(node.childs.get(octant.intValue()),p);
 			}
 		}
-		
 	}
 	
+	/**
+	 * Funcion add: Inserta una primitiva al nodo raiz
+	 * @param p Primitiva
+	 */
 	public void add(Primitive p) {
 		add(root, p);
 		return;
 	}
 	
+	/**
+	 * Funcion que transforma un nodo de hoja a padre
+	 * Creando sus hijos como octantes predefinidos contenidos en el padre
+	 * 
+	 * @param node Nodo a expandir
+	 */
 	private void expand(OctreeNode node) {
 		
 		double xMed = (node.xMin + node.xMax)*0.5;
@@ -486,27 +503,135 @@ public class PrimitiveOctree {
 		node.childs.add(5, new OctreeNode(xMed, node.xMax,node.yMin,yMed, zMed, node.zMax));
 		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, node.zMin, zMed));
 		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,zMed, node.zMax));//ok
-
-		// Por cada primitiva, me fijo en cada nodo si alguno de los puntos de ella esta contendido en el
+		
 		for (Primitive p : node.primitives) {
-			
-			List<Point3d> boundaryPoints = p.getBoundaryPoints();
-			
-			for ( OctreeNode currNode : node.childs ) {
-				boolean inserted = false;
-				for (Iterator<Point3d> iterator =  boundaryPoints.iterator(); iterator.hasNext() && !inserted;) {
-					Point3d point = iterator.next();
-						if (currNode.contains(point)) {
-							add(currNode, p);
-							inserted=true;
-						}
-				}
-			}
+			add(node, p);
 		}
 		
 		// This is not a leaf anymore
 		node.primitives.clear();
 		return;
+	}
+	
+	/**
+	 * Funcion getOctants: Funcion que recibe un nodo padre y una primitiva 
+	 * y se fija en que octantes esta la primitiva pasada como parametro.
+	 * 
+	 * @param parent Nodo padre
+	 * @param p Primitiva a insertar
+	 * @return Lista numera de octantes
+	 */
+	private List<Integer> getIntersectedOctants(OctreeNode parent, Primitive p) {
+		
+		boolean posOctants[] = {true, true, true, true, true, true, true, true};
+		
+		//Coordenadas del punto comun a todos los planos
+		double xvalue = (parent.xMax+parent.xMin)*0.5;
+		double yvalue = (parent.yMax+parent.yMin)*0.5;
+		double zvalue = (parent.zMax+parent.zMin)*0.5;
+		
+		Point3d commonP = new Point3d(xvalue,yvalue,zvalue);
+		
+		Vector3d nyz = new Vector3d( 1.0, 0.0, 0.0);
+		Vector3d nxz = new Vector3d( 0.0, 1.0, 0.0);
+		Vector3d nxy = new Vector3d( 0.0, 0.0, 1.0);
+		
+		Ray rayyz = new Ray(commonP, nyz);
+		Ray rayxz = new Ray(commonP, nxz);
+		Ray rayxy = new Ray(commonP, nxy);
+		System.out.println("calculando donde va");
+		//TODO refactoring con operaciones bitwise
+		//Plano YZ
+		if (p.intersect(rayyz) == null) {
+			System.out.println("se apago 0,1,2,3");
+			posOctants[0]=false;
+			posOctants[1]=false;
+			posOctants[2]=false;
+			posOctants[3]=false;
+		}
+		nyz.set(-1.0, 0, 0);
+		if (p.intersect(rayyz) == null) {
+			System.out.println("se apago 4,5,6,7");
+			posOctants[4]=false;
+			posOctants[5]=false;
+			posOctants[6]=false;
+			posOctants[7]=false;
+		}		
+		//Plano XZ
+		if (p.intersect(rayxz) == null) {
+			System.out.println("se apago 0,1,4,5");
+			posOctants[0]=false;
+			posOctants[1]=false;
+			posOctants[4]=false;
+			posOctants[5]=false;
+		}
+		nxz.set(0.0, -1.0, 0);
+		if (p.intersect(rayxz) == null) {
+			System.out.println("se apago 2,3,6,7");
+			posOctants[2]=false;
+			posOctants[3]=false;
+			posOctants[6]=false;
+			posOctants[7]=false;
+		}
+		//Plano XY
+		if (p.intersect(rayxy) == null) {
+			System.out.println("se apago 0,2,4,6");
+			posOctants[0]=false;
+			posOctants[2]=false;
+			posOctants[4]=false;
+			posOctants[6]=false;
+		}
+		nyz.set(0.0, 0, -1.0);
+		if (p.intersect(rayxy) == null) {
+			System.out.println("se apago 1,3,5,7");
+			posOctants[1]=false;
+			posOctants[3]=false;
+			posOctants[5]=false;
+			posOctants[7]=false;
+		}		
+		
+		List<Integer> ret = new ArrayList<Integer>();
+		
+		double [] extremes = p.getBoundaryPoints();
+		Point3d point = new Point3d((extremes[1]-extremes[0])*0.5, (extremes[3]-extremes[2])*0.5, (extremes[5]-extremes[4])*0.5);
+		if (point.x < xvalue ) {
+			if (point.y < yvalue) {
+				if (point.z < zvalue) {
+					posOctants[0]=true;
+				} else {
+					posOctants[1]=true;
+				}
+			} else {
+				if (point.z < zvalue) {
+					posOctants[2]=true;
+				} else {
+					posOctants[3]=true;
+				}				
+			}
+		} else {
+			if (point.y < yvalue) {
+				if (point.z < zvalue) {
+					posOctants[4]=true;
+				} else {
+					posOctants[5]=true;
+				}
+			} else {
+				if (point.z < zvalue) {
+					posOctants[6]=true;
+				} else {
+					posOctants[7]=true;
+				}				
+			}			
+		}
+		
+		for (int i=0; i< posOctants.length; i++) {
+			if (posOctants[i]) {
+				ret.add(i);
+				System.out.println("se agrego:D");
+			}
+		}
+		
+		return ret;
 	}
 	
 	public void printOctree() {
