@@ -1,8 +1,5 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
@@ -38,7 +35,7 @@ public class Quadrilateral extends Primitive {
 		//System.out.println("Ax + By + Cz + D = " + this.A + "x + " + this.B + "y + " + this.C + "z + " + this.D);
 		//Now, we calculate if the Ray (R(t) = R_0 + t*R_d) intersects the given plane
 		R_0 = ray.getOrigin();
-		R_d = ray.getDirection();
+		R_d = new Point3d( ray.getDirection());
 		
 		double t = -(this.A*R_0.x + this.B*R_0.y + this.C*R_0.z + D) / 
 					(this.A*R_d.x + this.B*R_d.y + this.C*R_d.z);
@@ -89,12 +86,6 @@ public class Quadrilateral extends Primitive {
 			return null;
 		}else return insidePoint;
 	}
-
-	@Override
-	public List<Point3d> getBoundaryPoints() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Point3d>();
-	}
 	
 	@Override
 	public double[] getUV(Point3d point) {
@@ -111,5 +102,11 @@ public class Quadrilateral extends Primitive {
 	public void transformWith(Matrix4d m) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public double[] getBoundaryPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

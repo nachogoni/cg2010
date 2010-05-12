@@ -1,7 +1,6 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
-import java.util.List;
 import java.util.Random;
 
 import javax.vecmath.Matrix4d;
@@ -26,7 +25,7 @@ public abstract class Primitive {
 		this.name = name;
 		this.shader = shader;
 		Random r = new Random();
-		this.rx = r.nextFloat();
+		this.rx = 0;
 	}
 	
 	/**
@@ -165,16 +164,15 @@ public abstract class Primitive {
 	}
 	
 	/**
+	 * Funcion que retorna las cotas para los ejes 
+	 * @return cotas en el orden: xmin, xmax, ymin, ymax, zmin, zmax
+	 */
+	public abstract double[] getBoundaryPoints();
+	
+	/**
 	 * Get the intersection between the figure and a ray
 	 */
 	public abstract Point3d intersect(Ray ray);
-
-	/**
-	 * Get the list of boundary points of the primitive
-	 * 
-	 * @return List of boundary points
-	 */
-	public abstract List<Point3d> getBoundaryPoints();
 	
 	public abstract double [] getUV(Point3d point);
 	
@@ -194,4 +192,6 @@ public abstract class Primitive {
 	public float getRefractionK(){
 		return this.shader.getRefractionK();
 	}
+	
+	
 }

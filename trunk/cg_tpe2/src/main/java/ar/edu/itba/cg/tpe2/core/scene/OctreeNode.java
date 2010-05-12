@@ -1,7 +1,6 @@
 package ar.edu.itba.cg.tpe2.core.scene;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
@@ -44,20 +43,6 @@ public class OctreeNode {
 			return true;
 		}
 		return false;
-	}
-	
-	public boolean contains(Primitive p) {
-		List<Point3d> boundaryPoints = p.getBoundaryPoints();
-		boolean ret=false;
-		
-		for (Iterator<Point3d> iterator =  boundaryPoints.iterator(); iterator.hasNext() && !ret;) {
-			Point3d point = iterator.next();
-				if (this.contains(point)) {
-					ret=true;
-				}
-		}
-		
-		return ret;
 	}
 
 }

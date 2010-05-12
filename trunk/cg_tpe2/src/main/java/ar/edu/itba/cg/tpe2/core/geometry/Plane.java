@@ -1,8 +1,5 @@
  package ar.edu.itba.cg.tpe2.core.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -41,7 +38,7 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
-		this.rx = 1.0f;
+		this.rx = 0f;
 	}
 	
 	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
@@ -60,7 +57,7 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
-		this.rx = 1.0f;
+		this.rx = 0f;
 	}
 		
 	public Point3d intersect(Ray ray) {
@@ -98,12 +95,6 @@ public class Plane extends Primitive {
 	}
 		
 	@Override
-	public List<Point3d> getBoundaryPoints() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Point3d>();
-	}
-
-	@Override
 	public double[] getUV(Point3d point) {
 		return new double[]{0,0};
 	}
@@ -122,6 +113,12 @@ public class Plane extends Primitive {
 	@Override
 	public String toString() {
 		return "Plane [n=" + n + ", p1=" + p1 + "]";
+	}
+
+	@Override
+	public double[] getBoundaryPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
