@@ -41,6 +41,7 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
+		this.rx = 1.0f;
 	}
 	
 	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
@@ -59,7 +60,7 @@ public class Plane extends Primitive {
 			// Debo correr la transformacion
 			this.transform.applyTransform(this);
 		}
-		
+		this.rx = 1.0f;
 	}
 		
 	public Point3d intersect(Ray ray) {

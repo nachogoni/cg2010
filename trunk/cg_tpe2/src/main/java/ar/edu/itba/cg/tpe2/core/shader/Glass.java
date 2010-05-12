@@ -42,6 +42,8 @@ public class Glass extends Shader {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+	public float getRefractionK(){
+		return (float) eta;
+	}
 }

@@ -14,6 +14,35 @@ camera {
    aspect 1.333
 }
 
+
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 2
+   p 20.0 0.0 0.0
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 2
+   p -20.0 0.0 0.0
+}
+/*
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 1
+   p 0.0 0.0 20.0
+}
+*/
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 2
+   p 10.0 10.0 10.0
+}
+
 shader {
    name phong1
    type phong
@@ -47,37 +76,27 @@ shader {
 }
 
 object { 
-   shader phong3 
+   shader phong1
    type generic-mesh 
    name mesh1
-   points 7 
+   points 3
       0 5 0
-      -3.535 0 0
-      0 0 3.535
-      3.535 0 0
-      -3.525 0 0
-      0 0 -3.535
-      3.525 0 0     
-   triangles 2 
-      3 0 2
-      5 0 1    
+      0 0 1
+      -7 0 0
+   triangles 1
+   	  0 1 2
 }
 
 object { 
-   shader phong1 
+   shader phong1
    type generic-mesh 
    name mesh2
-   points 7 
+   points 3
       0 5 0
-      -3.535 0 0
-      0 0 3.535
-      3.535 0 0
-      -3.525 0 0
-      0 0 -3.535
-      3.525 0 0     
-   triangles 2 
-      5 0 3
-      1 0 2   
+	  7 0 0
+      0 0 1
+   triangles 1
+   	  0 1 2
 }
 
 object {

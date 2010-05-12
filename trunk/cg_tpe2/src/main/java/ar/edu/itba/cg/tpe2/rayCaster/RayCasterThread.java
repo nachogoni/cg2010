@@ -7,12 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
-import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
 import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.light.PointLight;
@@ -36,7 +34,8 @@ class RayCasterThread extends Thread {
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private double farthestDistance = 20.0;
-	private static final int MAX_REBOUNDS=1;
+	private static final int MAX_REBOUNDS = 8;
+	private static final Color INITIAL_COLOR = Color.BLACK;
 
 	private static List<Rectangle> tasks = null;
 	private static Iterator<Rectangle> taskIterator;
@@ -196,7 +195,7 @@ class RayCasterThread extends Thread {
 			while ( task == null ){
 				task = getTask();
 			}
-//			System.out.println("Thread "+id+" processing ( "+task.x+" , "+task.y+" ) ( "+task.width+" , "+task.height+" ) ");
+
 			setPortion(task, width, height);
 			Point3d origin = camera.getEye();
 
@@ -231,8 +230,11 @@ class RayCasterThread extends Thread {
 		}
 	}
 
+//	private Color getColor(Ray ray, int maxRebounds) {
+//		return getColor(ray, maxRebounds,INITIAL_COLOR,1.0f);
+//	}
+	
     private Color getColor(Ray ray, int maxRebounds) {
-    	
     	Point3d intersectionPoint = new Point3d();
     	Primitive impactedFigure;
 		Color refractColor, reflectColor, ilumColor;
@@ -240,54 +242,58 @@ class RayCasterThread extends Thread {
 		impactedFigure = scene.getFirstIntersection(ray, intersectionPoint);
 		
 		if (impactedFigure == null ) {
-			return new Color(0.0f, 0.0f, 0.0f);
+			return INITIAL_COLOR;
 		}
 
-    	float refleccion=0.0f;
-    	float refraccion=0.0f;
+    	float reflectK = impactedFigure.getReflectionK();
+    	float refractK = 0.0f;
 		
     	/*
     	 * Calcula los rayos de refleccion y refraccion (los que atraviesan y se reflejan)
     	 */
-//		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint, refraccion);
-//		Ray reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
-    	Ray refractRay = null;
-		Ray reflectRay = null;
+		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint, refractK);
+		Ray reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
+//    	Ray refractRay = null;
+//		Ray reflectRay = null;
     	
 		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
 		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
 		
 		// Stopping recursive calls and gets only ilumination color
 		if (maxRebounds-- != 0) {
-			if ( refractRay != null ){
-				refractColor = getColor(refractRay, maxRebounds);
-				reflactRGBArray = refractColor.getRGBColorComponents(null);
-			}
 			if ( reflectRay != null ){
 				reflectColor = getColor(reflectRay, maxRebounds);
 				reflectRGBArray = reflectColor.getRGBColorComponents(null);
 			}
+			if ( refractRay != null ){
+				refractColor = getColor(refractRay, maxRebounds);
+				reflactRGBArray = refractColor.getRGBColorComponents(null);
+			}
+
 		}
     	
-    	ilumColor = ilumination(ray, impactedFigure, intersectionPoint);
+		ilumColor = ilumination(ray, impactedFigure, intersectionPoint, INITIAL_COLOR);
     	float [] ilumRGBArray = ilumColor.getRGBColorComponents(null);
     	
     	float [] resultingRGBArray = new float [3];
     	
-    	//TODO cambiar esto por los valores posta
-
-    	
-    	resultingRGBArray[0] = ilumRGBArray[0]; //+ refraccion*reflactRGBArray[0] + refleccion*reflectRGBArray[0];
-    	resultingRGBArray[1] = ilumRGBArray[1]; //+ refraccion*reflactRGBArray[1] + refleccion*reflectRGBArray[1];
-    	resultingRGBArray[2] = ilumRGBArray[2]; //+ refraccion*reflactRGBArray[2] + refleccion*reflectRGBArray[2];
-    	
-    	return new Color(resultingRGBArray[0],resultingRGBArray[1], resultingRGBArray[2]);
+    	float sumKs = 1 + reflectK + refractK;
+    	resultingRGBArray[0] = (ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
+    	resultingRGBArray[1] = (ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
+    	resultingRGBArray[2] = (ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
+//    	
+//		float[] rgbColorComponents = initialColor.getRGBColorComponents(null);
+//		float[] lala = aux.getRGBColorComponents(null);
+//		rgbColorComponents[0] = rgbColorComponents[0] * k;
+//		rgbColorComponents[1] = rgbColorComponents[1] * k;
+//		rgbColorComponents[2] = rgbColorComponents[2] * k;
+    	return clamp(resultingRGBArray);
 	}
 
-	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint) {
+	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
-		float [] rgbs = {0,0,0};
+		float [] rgbs = initialColor.getRGBColorComponents(null);
 
 		for(Light l:lights){
 			if ( l instanceof PointLight ){
@@ -314,20 +320,14 @@ class RayCasterThread extends Thread {
 						lightContribution[1] = angleToLight * lightRGBComponents[1] * figureRGBComponents[1] * fallOff;
 						lightContribution[2] = angleToLight * lightRGBComponents[2] * figureRGBComponents[2] * fallOff;
 						
-	//					if ( lightContribution[0] > 0 && lightContribution[0] < 1 )
 						rgbs[0] += lightContribution[0];
-						
-	//					if ( lightContribution[1] > 0 && lightContribution[1] < 1 ) 
 						rgbs[1] += lightContribution[1];
-						
-	//					if ( lightContribution[2] > 0 && lightContribution[2] < 1 )
 						rgbs[2] += lightContribution[2];
 					}
 				}
 			}
 		}
-		//TODO hacer bien, deberia usar el rayo!!!
-//		return impactedFigure.getColorAt(intersectionPoint);
+		
 		return clamp(rgbs);
 	}
 

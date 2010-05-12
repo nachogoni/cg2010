@@ -34,6 +34,13 @@ public abstract class Shader {
 	
 	abstract public Color getColorAt(Point3d aPoint, Primitive primitive);
 	
+	public float getReflectionK(){
+		return 0.0f;
+	}
+	
+	public float getRefractionK(){
+		return 0.0f;
+	}
 	// Implementations
 	
 	// Type: Glass
