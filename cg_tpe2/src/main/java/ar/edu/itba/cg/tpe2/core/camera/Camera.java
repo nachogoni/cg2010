@@ -9,13 +9,6 @@ import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 
 public abstract class Camera {
 
-	// Type
-	// Eye
-	// Target
-	// Up
-	// FOV
-	// Aspect
-
 	private String type;
 	private Point3d eye, target;
 	private Vector3d up;
@@ -129,17 +122,5 @@ public abstract class Camera {
 		return "Camera [aspect=" + aspect + ", eye=" + eye + ", fov=" + fov
 				+ ", target=" + target + ", type=" + type + ", up=" + up + "]";
 	}
-	
-	
-	
-	
-	// Implementations
-	
-	// Type: Thinlens
-		// fdist
-		// lensr
-	
-	// Type: Pinhole
-		// Shift
 	
 }

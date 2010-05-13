@@ -179,7 +179,7 @@ public abstract class Primitive {
 		if (shader != null)
 			return this.shader.getColorAt(aPoint, this);
 		else
-			return Color.WHITE;
+			return Color.WHITE;//FIXME
 	}
 	
 	public float getReflectionK(){

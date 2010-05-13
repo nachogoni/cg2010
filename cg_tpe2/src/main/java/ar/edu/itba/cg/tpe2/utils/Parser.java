@@ -24,6 +24,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
 import ar.edu.itba.cg.tpe2.core.light.PointLight;
 import ar.edu.itba.cg.tpe2.core.scene.Image;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
+import ar.edu.itba.cg.tpe2.core.shader.Constant;
 import ar.edu.itba.cg.tpe2.core.shader.Glass;
 import ar.edu.itba.cg.tpe2.core.shader.Mirror;
 import ar.edu.itba.cg.tpe2.core.shader.Phong;
@@ -424,6 +425,7 @@ public class Parser {
 		Integer samples = 1;
 		Specular aSpec = null, absSpec = null;
 		Diffuse aDiff = null;
+		Color aColor = null;
 		
 		do{
 			current = aParser.getNextToken();
@@ -447,6 +449,13 @@ public class Parser {
 							samples = new Integer(aParser.getNextToken());
 						} else if (current.equals("diff")){
 							aDiff = this.parseDiff(current);
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("constant")){
+					do{
+						current = aParser.getNextToken();
+						if (current.equals("color")){
+							aColor = this.parseColor(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("glass")){
@@ -488,6 +497,9 @@ public class Parser {
 		} else if (type.equals("phong")){
 			Shader aPhong = new Phong(name, type, aDiff, samples, aSpec);
 			shaders.put(aPhong.getName(), aPhong);
+		} else if (type.equals("constant")){
+			Shader aConstant = new Constant(name, type, aColor);
+			shaders.put(aConstant.getName(), aConstant);
 		} else if (type.equals("glass")){
 			Shader aGlass = new Glass(name, type, eta.doubleValue(), abs_dst.doubleValue(), aSpec, absSpec);
 			shaders.put(aGlass.getName(), aGlass);
@@ -519,6 +531,30 @@ public class Parser {
 		return new Diffuse(__a, __b, __c);
 	}
 
+	
+	private Color parseColor(String type) throws IOException {
+		String current, color = null;
+		Diffuse aDiff = null;
+		float __a, __b, __c;
+		int flag = 0;
+		// We discard the first {
+		if(aParser.peekNextToken().equals("{")){
+			current = aParser.getNextToken();
+			current = aParser.getNextToken() + aParser.getNextToken();
+			int length = current.length();
+			color = current.substring(1, length-1);
+		} else flag = 1;
+		
+		__a = new Float(aParser.getNextToken());
+		__b = new Float(aParser.getNextToken());
+		__c = new Float(aParser.getNextToken());
+		// Now we discard the last }
+		if(aParser.peekNextToken().equals("}") && flag == 0)
+			current = aParser.getNextToken();
+		
+		return new Color(__a, __b, __c);
+	}
+	
 
 	private void parseCameraSettings() throws IOException {
 		Camera aCamera = null;

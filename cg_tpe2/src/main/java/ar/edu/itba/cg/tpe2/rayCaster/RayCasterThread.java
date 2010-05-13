@@ -317,7 +317,7 @@ class RayCasterThread extends Thread {
 					figureNormal.normalize();
 					float angleToLight = (float) figureNormal.dot(dirToLight);
 					if ( angleToLight >= 0 ){
-						float [] lightContribution = {0,0,0};
+						float [] lightContribution = {AMBIENT_LIGHT,AMBIENT_LIGHT,AMBIENT_LIGHT};
 						float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
 						float fallOff = pl.getFallOff(distanceToLight);
 						
