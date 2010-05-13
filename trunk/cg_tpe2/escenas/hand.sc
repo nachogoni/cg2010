@@ -1,5 +1,5 @@
 image {
-      resolution 800 600
+      resolution 200 150
 	aa 0 2
 	samples 1
 	filter box
@@ -10,7 +10,12 @@ trace-depths {
 	refl 4 
 	refr 4
 }
-
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 20
+   p -10.0 -10.0 -10.0
+}
 bucket 64 hilbert
 
 shader {
