@@ -1,7 +1,7 @@
 
 image {
    resolution 800 600
-   aa 0 2
+   aa 0 10
    samples 4
 }
 
@@ -9,8 +9,8 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 20.0
-   p 0.5 4 5.0
+   power 30.0
+   p 0 5.0 5.0
 }
 
 camera {
@@ -59,6 +59,14 @@ shader {
 }
 
 shader {
+   name yellow_sh
+   type phong
+   diff { "sRGB nonlinear" 1.0 1.0 0.0 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+shader {
    name glass0
    type glass
    eta 0.5
@@ -72,7 +80,7 @@ object {
    type sphere
    name sphere2
    c 0 0 0
-   r 3
+   r 1.5
 }
 
 object {
@@ -84,7 +92,7 @@ object {
 }
 
 object {
-   shader mirror1
+   shader yellow_sh
    type plane
    p 2 0 0
    n -1 0 0
@@ -92,14 +100,14 @@ object {
 
 
 object {
-   shader mirror0
+   shader blue_sh
    type plane
    p -2 0 0
    n 1 0 0
 }
 
 object {
-   shader phong0
+   shader mirror0
    type plane
    p 0 0 0
    n 0 1 0

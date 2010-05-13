@@ -28,7 +28,7 @@ public class Mirror extends Shader {
 
 	@Override
 	public Color getColorAt(Point3d aPoint, Primitive primitive) {
-		return this.spec.getColor();
+		return this.getSpec().getColor();
 	}
 
 	public float getReflectionK(){

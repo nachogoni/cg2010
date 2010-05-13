@@ -75,8 +75,20 @@ shader {
    samples 4
 }
 
+shader {
+   name mirror2
+   type mirror
+   refl { "sRGB nonlinear" 1.0 0.0 0.0 }
+}
+
+shader {
+   name mirror1
+   type mirror
+   refl { "sRGB nonlinear" 0.0 0.0 1.0 }
+}
+
 object { 
-   shader phong1
+   shader mirror1
    type generic-mesh 
    name mesh1
    points 3
@@ -88,7 +100,7 @@ object {
 }
 
 object { 
-   shader phong1
+   shader mirror1
    type generic-mesh 
    name mesh2
    points 3
@@ -100,7 +112,7 @@ object {
 }
 
 object {
-   shader phong2
+   shader mirror2
    type sphere
    name sphere1
    c 0 6 0
@@ -124,7 +136,7 @@ object {
 }
 
 object {
-   shader phong2
+   shader mirror2
    type sphere
    name sphere4
    c 0 0 7
@@ -140,9 +152,17 @@ object {
 }
 
 object {
+   shader phong2
+   type sphere
+   name sphere6
+   c -7 4 0
+   r 0.5
+}
+
+object {
 	shader phong7
 	type plane
 	name plane1
 	p 0 0 0
 	n 0 0 1 
-	}
+}
