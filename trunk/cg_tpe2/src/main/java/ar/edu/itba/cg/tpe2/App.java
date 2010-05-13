@@ -88,18 +88,26 @@ public class App
     		Camera camera = scene.getCamera();
     		camera.setWidth(scene.getImage().getWidth());
     		
+    		boolean pbar = false;
+    		
+    		// Take start time
+    		if (cl.hasOption("progress")) {
+    			System.out.println("************************");
+    			pbar = true;
+    		}
+    		
     		// Create rayCaster
     		RayCaster raycaster = null;
     		
-    		int numberOfBuckets = 128;
+    		int numberOfBuckets = 4;
 
     		// Set colors for primitives
     		if ( colorProvider instanceof CyclicColorProvider) {
-    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar, pbar);
     		} else {
-    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar);
+    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar, pbar);
     		}
-    		
+
     		// Take start time
     		if (cl.hasOption("time")) {
     			start = Calendar.getInstance().getTimeInMillis();
@@ -126,9 +134,9 @@ public class App
     		}
     		
     		if (cl.hasOption("time")) {
-    			System.out.println("Done in " + (stop - start) + " milliseconds!");
+    			System.out.println("\nDone in " + (stop - start) + " milliseconds!");
     		} else {
-    			System.out.println("Done!");
+    			System.out.println("\nDone!");
     		}
     		
     		raycaster.cleanup();

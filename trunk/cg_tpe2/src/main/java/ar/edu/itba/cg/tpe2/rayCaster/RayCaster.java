@@ -35,11 +35,11 @@ public class RayCaster {
 	 * @param colorProvider Color mode: Random or Ordered
 	 * @param colorVariation Color variation type: Linear or Log
 	 */
-	public RayCaster(Scene scene, ar.edu.itba.cg.tpe2.core.camera.Camera camera, int numberOfThreads, int numberOfBuckets, IColorProvider colorProvider, int colorVariation) {
+	public RayCaster(Scene scene, ar.edu.itba.cg.tpe2.core.camera.Camera camera, int numberOfThreads, int numberOfBuckets, IColorProvider colorProvider, int colorVariation, boolean progressBar) {
 		threads = new ArrayList<RayCasterThread>(numberOfThreads);
 		this.bucketsSize = numberOfBuckets;
 		for (int i=0; i < numberOfThreads; i++){
-			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this);
+			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this, progressBar);
 			rayCasterThread.setColorMode(colorProvider);
 			rayCasterThread.setColorVariation(colorVariation);
 			rayCasterThread.start();

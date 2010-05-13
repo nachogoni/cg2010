@@ -47,6 +47,9 @@ class RayCasterThread extends Thread {
 	private static BufferedImage image;
 	private int id;
 	private double totalLight;
+	
+	private boolean progressBar;
+	
 	/**
 	 * Constructor for RayCasterThread class
 	 * 
@@ -55,12 +58,13 @@ class RayCasterThread extends Thread {
 	 * @param rayCaster RayCaster class parent
 	 * @param cb CyclicBarrier for the threads
 	 */
-	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster) {
+	public RayCasterThread(Scene scene, Camera camera, RayCaster rayCaster, boolean progressBar) {
 		this.scene = scene;
 		this.lights = scene.getLights();
 		this.camera = camera;
 		this.rayCaster = rayCaster;
 		this.totalLight = calculateTotalLight();
+		this.progressBar = progressBar;
 		id = i;
 		i++;
 	}
@@ -187,6 +191,10 @@ class RayCasterThread extends Thread {
 		height = img.getHeight();
 	}
 	
+	public void setProgressBar(boolean progressBar) {
+		
+	}
+	
 	/**
 	 * Start the rayCaster
 	 * 
@@ -206,9 +214,13 @@ class RayCasterThread extends Thread {
 			int size = scene.getImage().getAa_max();
 			int aaCount = scene.getImage().getSamples();
 			
+			float progress = 0;
+			int progressCount = 0;
+			float progressInc = 100f/(toY - fromY);
+			
 			Ray ray;
-			for (int i = fromX; i < toX; i++) {
-				for (int j = fromY; j < toY; j++) {
+			for (int j = fromY; j < toY; j++) {
+				for (int i = fromX; i < toX; i++) {
 					// Set infinite color
 					color = Color.BLACK;
 
@@ -234,6 +246,17 @@ class RayCasterThread extends Thread {
 						image.setRGB(i, j, color.getRGB());
 					}
 				}
+
+				// Show progress bar =)
+				if (this.progressBar == true) {
+					progress += progressInc;
+					progressCount++;
+					if (progressCount == 20) {
+						progressCount = 0;
+						System.out.print('*');
+					}
+				}
+				
 			}
 			synchronized( this.getClass() ){
 				finishedTasks++;
@@ -299,38 +322,50 @@ class RayCasterThread extends Thread {
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
 		
-		for(Light l:lights){
-			if ( l instanceof PointLight ){
-				PointLight pl = (PointLight) l;
-				Primitive p = null;
-				Point3d intersectionP = new Point3d(intersectionPoint);
-				Point3d newIntersectionP = new Point3d();
-				Ray rayFromLight = new Ray(intersectionP,pl.getP());
-				double distanceToLight = intersectionP.distance(pl.getP());
-				
-				p = scene.getFirstIntersection(rayFromLight, newIntersectionP);
-				double distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
-				// No object between light and impactedFigure :D
-				if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
-					Vector3 dirToLight = new Vector3(intersectionP,pl.getP());
-					dirToLight.normalize();
-					figureNormal.normalize();
-					float angleToLight = (float) figureNormal.dot(dirToLight);
-					if ( angleToLight >= 0 ){
-						float [] lightContribution = {AMBIENT_LIGHT,AMBIENT_LIGHT,AMBIENT_LIGHT};
-						float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
-						float fallOff = pl.getFallOff(distanceToLight);
-						
-						lightContribution[0] = angleToLight * lightRGBComponents[0] * figureRGBComponents[0] * fallOff;
-						lightContribution[1] = angleToLight * lightRGBComponents[1] * figureRGBComponents[1] * fallOff;
-						lightContribution[2] = angleToLight * lightRGBComponents[2] * figureRGBComponents[2] * fallOff;
-						
-						rgbs[0] += lightContribution[0];
-						rgbs[1] += lightContribution[1];
-						rgbs[2] += lightContribution[2];
+		if (lights.isEmpty() != true) {
+			for(Light l:lights){
+				if ( l instanceof PointLight ){
+					PointLight pl = (PointLight) l;
+					Primitive p = null;
+					Point3d intersectionP = new Point3d(intersectionPoint);
+					Point3d newIntersectionP = new Point3d();
+					Ray rayFromLight = new Ray(intersectionP,pl.getP());
+					double distanceToLight = intersectionP.distance(pl.getP());
+					
+					p = scene.getFirstIntersection(rayFromLight, newIntersectionP);
+					double distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
+					// No object between light and impactedFigure :D
+					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
+						Vector3 dirToLight = new Vector3(intersectionP,pl.getP());
+						dirToLight.normalize();
+						figureNormal.normalize();
+						float angleToLight = (float) figureNormal.dot(dirToLight);
+						if ( angleToLight >= 0 ){
+							float [] lightContribution = {0,0,0};
+							float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
+							float fallOff = pl.getFallOff(distanceToLight);
+							
+							lightContribution[0] = angleToLight * lightRGBComponents[0] * figureRGBComponents[0] * fallOff;
+							lightContribution[1] = angleToLight * lightRGBComponents[1] * figureRGBComponents[1] * fallOff;
+							lightContribution[2] = angleToLight * lightRGBComponents[2] * figureRGBComponents[2] * fallOff;
+							
+							rgbs[0] += lightContribution[0];
+							rgbs[1] += lightContribution[1];
+							rgbs[2] += lightContribution[2];
+						}
+					} else {
+						rgbs = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
+						rgbs[0] *= AMBIENT_LIGHT;
+						rgbs[1] *= AMBIENT_LIGHT;
+						rgbs[2] *= AMBIENT_LIGHT;
 					}
 				}
 			}
+		} else {
+			rgbs = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
+			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
+			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
+			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
 		}
 		
 		return clamp(rgbs);
