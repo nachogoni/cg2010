@@ -359,11 +359,11 @@ public class Parser {
 						new Double(aParser.getNextToken()));
 				aTrans.setTranslate(translate);
 			} else if (current.equals("rotatex")){
-				aTrans.setRotatex(new Integer(aParser.getNextToken()));
+				aTrans.setRotatex(new Float(aParser.getNextToken()));
 			} else if (current.equals("rotatey")){
-				aTrans.setRotatey(new Integer(aParser.getNextToken()));
+				aTrans.setRotatey(new Float(aParser.getNextToken()));
 			} else if (current.equals("rotatez")){
-				aTrans.setRotatez(new Integer(aParser.getNextToken()));
+				aTrans.setRotatez(new Float(aParser.getNextToken()));
 			} else if (current.equals("scalex")) {
 				aTrans.setScalex(new Double(aParser.getNextToken()));
 			} else if (current.equals("scaley")) {
@@ -421,7 +421,7 @@ public class Parser {
 		String name = null, type = null, texture_path = null;
 		String shader_color = null, abs_color = null;
 		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
-		Integer samples = -1;
+		Integer samples = 1;
 		Specular aSpec = null, absSpec = null;
 		Diffuse aDiff = null;
 		
@@ -580,7 +580,7 @@ public class Parser {
 		String current;
 		Integer width = -1, height = -1;
 		Integer aa_min = -1, aa_max = -1;
-		Integer samples = -1;
+		Integer samples = 1;
 		Integer bucket_size = -1;
 		String bucket_type = null;
 		do{

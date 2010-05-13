@@ -5,7 +5,7 @@ import javax.vecmath.Point3d;
 public class Transform {
 	Point3d translate;
 	Double scaleu, scalex, scaley, scalez;
-	Integer	rotatex, rotatey, rotatez;
+	Float	rotatex, rotatey, rotatez;
 	
 	public Transform(){
 		
@@ -41,22 +41,22 @@ public class Transform {
 	public void setScalez(Double scalez) {
 		this.scalez = scalez;
 	}
-	public Integer getRotatex() {
+	public Float getRotatex() {
 		return rotatex;
 	}
-	public void setRotatex(Integer rotatex) {
+	public void setRotatex(Float rotatex) {
 		this.rotatex = rotatex;
 	}
-	public Integer getRotatey() {
+	public Float getRotatey() {
 		return rotatey;
 	}
-	public void setRotatey(Integer rotatey) {
+	public void setRotatey(Float rotatey) {
 		this.rotatey = rotatey;
 	}
-	public Integer getRotatez() {
+	public Float getRotatez() {
 		return rotatez;
 	}
-	public void setRotatez(Integer rotatez) {
+	public void setRotatez(Float rotatez) {
 		this.rotatez = rotatez;
 	}
 
