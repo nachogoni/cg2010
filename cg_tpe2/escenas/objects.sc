@@ -1,6 +1,7 @@
 image {
-   resolution 800 600
+   resolution 200 150
    aa 0 2
+   samples 1
 }
 
 accel bih
