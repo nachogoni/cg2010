@@ -56,6 +56,7 @@ shader {
    type phong
    diff { "sRGB nonlinear" 1 0 0 }
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   
    samples 4
 }
 
