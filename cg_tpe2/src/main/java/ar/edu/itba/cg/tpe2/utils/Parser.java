@@ -58,11 +58,12 @@ public class Parser {
 		aParser = new FileParser(this.filename);
 		while(true){
 			current = aParser.getNextToken();
+			String back = current;
 			if(current == null){
 				// se termino el archivo
 				return scene;
 			}
-			System.out.println(current);
+			//System.out.println(current);
 			if(current.equalsIgnoreCase("image")){
 				System.out.println("Reading the image settings...");
 				this.parseImageSettings();
@@ -78,16 +79,14 @@ public class Parser {
 			} else if (current.equalsIgnoreCase("object")){
 				System.out.println("Reading Object Settings...");
 				this.parseObjectSettings();
-			} else {
-				String back = current;
-				do{
+			} else if(current.equals("transform")){
+				Transform aTrans = this.parseTransform();
+			} else if(current.equals("trace-depths")){
+				do {
 					current = aParser.getNextToken();
-					if(current.equals("transform")){
-						Transform aTrans = this.parseTransform();
-					} else if (!back.equals("trace-depths") && (current.equals("spec") || current.equals("diff") || current.equals("color"))){
-						Specular aSpec = this.parseSpec(current);
-					}
-				} while (!current.equals("}"));
+				}while (!current.equals("}"));
+			} else if (!back.equals("trace-depths") && (current.equals("spec") || current.equals("diff") || current.equals("color"))){
+				Specular aSpec = this.parseSpec(current);
 			}
 		}
 	}
