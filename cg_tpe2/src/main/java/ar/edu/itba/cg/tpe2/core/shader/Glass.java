@@ -39,8 +39,7 @@ public class Glass extends Shader {
 	}
 	@Override
 	public Color getColorAt(Point3d aPoint, Primitive primitive) {
-		// TODO Auto-generated method stub
-		return null;
+		return color.getColor();
 	}
 
 	public float getRefractionK(){

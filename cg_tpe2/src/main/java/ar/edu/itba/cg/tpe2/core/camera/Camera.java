@@ -1,5 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.camera;
 
+import java.util.Random;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
@@ -99,6 +101,25 @@ public abstract class Camera {
 		v.scaleAdd(j - height /2, this.dv, v);
 		
 		return new Point3d(v.x, v.y, v.z);
+	}
+
+	public Point3d[] getPointFromXY(int width, int height, int i, int j, int aaCount) {
+
+		Point3d[] points = new Point3d[aaCount];
+
+		Random rand = new Random(0);
+		float rnd;
+		
+		for (int idx = 0; idx < aaCount; idx++) {
+			Vector3d v = new Vector3d(this.FieldCenter);
+			rnd = (rand.nextFloat() - 1) / 0.5f;
+			v.scaleAdd((i - width / 2) + rnd, this.du, v);
+			rnd = (rand.nextFloat() - 1) / 0.5f;
+			v.scaleAdd((j - height /2) + rnd, this.dv, v);
+			points[idx] = new Point3d(v.x, v.y, v.z);
+		}
+		
+		return points;
 	}
 
 

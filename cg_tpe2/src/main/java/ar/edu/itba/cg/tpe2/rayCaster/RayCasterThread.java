@@ -13,7 +13,6 @@ import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 import ar.edu.itba.cg.tpe2.core.light.Light;
-import ar.edu.itba.cg.tpe2.core.light.PointLight;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 /**
@@ -200,19 +199,32 @@ class RayCasterThread extends Thread {
 			Point3d origin = camera.getEye();
 
 			Color color;
+			float[] tmp = new float[3];
+			int aaCount = scene.getImage().getAa_max();
+			
 			Ray ray;
 			for (int i = fromX; i < toX; i++) {
 				for (int j = fromY; j < toY; j++) {
 					// Set infinite color
 					color = Color.BLACK;
 					
-					Point3d po = camera.getPointFromXY(width, height, i, j);
+					Point3d[] po = camera.getPointFromXY(width, height, i, j, aaCount);
+
+					float[] colorAA = new float[]{0,0,0};
+
+					for (int aa = 0; aa < aaCount; aa++) {
+						// Create a new Ray from camera, i, j
+						ray = new Ray(origin, po[aa]);
 					
-					// Create a new Ray from camera, i, j
-					ray = new Ray(origin, po);
-					
-					// Get pixel color
-					color = getColor(ray, MAX_REBOUNDS);
+						// Get pixel color
+						tmp = getColor(ray, MAX_REBOUNDS).getRGBColorComponents(null);
+						
+						colorAA[0] += (tmp[0] / aaCount);
+						colorAA[1] += (tmp[1] / aaCount);
+						colorAA[2] += (tmp[2] / aaCount);
+					}
+
+					color = clamp(colorAA);
 					
 					// Set color to image(i, j)
 					synchronized (image) {
@@ -292,10 +304,13 @@ class RayCasterThread extends Thread {
 
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
+		if ( impactedFigure == null || impactedFigure.getColorAt(intersectionPoint) == null )
+			System.out.println("LL");
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
 return impactedFigure.getColorAt(intersectionPoint);
-/*		for(Light l:lights){
+/*		
+		for(Light l:lights){
 			if ( l instanceof PointLight ){
 				PointLight pl = (PointLight) l;
 				Primitive p = null;
@@ -328,7 +343,8 @@ return impactedFigure.getColorAt(intersectionPoint);
 			}
 		}
 		
-		return clamp(rgbs);*/
+		return clamp(rgbs);
+*/		
 	}
 
 	private Color clamp(float [] rgbs){
