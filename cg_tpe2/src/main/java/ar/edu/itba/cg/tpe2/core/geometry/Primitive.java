@@ -176,15 +176,24 @@ public abstract class Primitive {
 	public abstract void transformWith(Matrix4d m);
 	
 	public Color getColorAt(Point3d aPoint) {
-		return this.shader.getColorAt(aPoint, this);
+		if (shader != null)
+			return this.shader.getColorAt(aPoint, this);
+		else
+			return Color.WHITE;
 	}
 	
 	public float getReflectionK(){
-		return this.shader.getReflectionK();
+		if (shader != null)
+			return this.shader.getReflectionK();
+		else
+			return 0.0f;
 	}
 	
 	public float getRefractionK(){
-		return this.shader.getRefractionK();
+		if (shader != null)
+			return this.shader.getRefractionK();
+		else
+			return 0.0f;
 	}
 	
 	

@@ -37,6 +37,8 @@ class RayCasterThread extends Thread {
 	private static final int MAX_REBOUNDS = 1;
 	private static final Color INITIAL_COLOR = Color.BLACK;
 
+	private static final float AMBIENT_LIGHT = 0.075f;
+
 	private static List<Rectangle> tasks = null;
 	private static Iterator<Rectangle> taskIterator;
 	private static int finishedTasks;
@@ -201,7 +203,8 @@ class RayCasterThread extends Thread {
 
 			Color color;
 			float[] tmp = new float[3];
-			int aaCount = scene.getImage().getAa_max();
+			int size = scene.getImage().getAa_max();
+			int aaCount = scene.getImage().getSamples();
 			
 			Ray ray;
 			for (int i = fromX; i < toX; i++) {
@@ -209,7 +212,7 @@ class RayCasterThread extends Thread {
 					// Set infinite color
 					color = Color.BLACK;
 
-					Point3d[] po = camera.getPointFromXY(width, height, i, j, aaCount);
+					Point3d[] po = camera.getPointFromXY(width, height, i, j, aaCount, size);
 
 					float[] colorAA = new float[]{0,0,0};
 
@@ -284,9 +287,9 @@ class RayCasterThread extends Thread {
     	float [] resultingRGBArray = new float [3];
     	
     	float sumKs = 1 + reflectK + refractK;
-    	resultingRGBArray[0] = (ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
-    	resultingRGBArray[1] = (ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
-    	resultingRGBArray[2] = (ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
+    	resultingRGBArray[0] = (AMBIENT_LIGHT + ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
+    	resultingRGBArray[1] = (AMBIENT_LIGHT + ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
+    	resultingRGBArray[2] = (AMBIENT_LIGHT + ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
 
     	return clamp(resultingRGBArray);
 	}

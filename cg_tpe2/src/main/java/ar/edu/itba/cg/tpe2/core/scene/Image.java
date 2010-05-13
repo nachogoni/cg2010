@@ -13,8 +13,8 @@ public class Image {
 		// Type
 	
 	private int width, height;
-	private int aa_min, aa_max;
-	private int samples;
+	private int aa_min = 1, aa_max = 1;
+	private int samples = 1;
 	private int buckets;
 	private String bucketType;
 	

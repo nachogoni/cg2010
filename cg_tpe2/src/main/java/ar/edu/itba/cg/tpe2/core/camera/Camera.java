@@ -103,7 +103,7 @@ public abstract class Camera {
 		return new Point3d(v.x, v.y, v.z);
 	}
 
-	public Point3d[] getPointFromXY(int width, int height, int i, int j, int aaCount) {
+	public Point3d[] getPointFromXY(int width, int height, int i, int j, int aaCount, int size) {
 
 		Point3d[] points = new Point3d[aaCount];
 
@@ -112,9 +112,9 @@ public abstract class Camera {
 		
 		for (int idx = 0; idx < aaCount; idx++) {
 			Vector3d v = new Vector3d(this.FieldCenter);
-			rnd = (rand.nextFloat() - 1) / 0.5f;
+			rnd = (rand.nextFloat() - 1) * size;
 			v.scaleAdd((i - width / 2) + rnd, this.du, v);
-			rnd = (rand.nextFloat() - 1) / 0.5f;
+			rnd = (rand.nextFloat() - 1) * size;
 			v.scaleAdd((j - height /2) + rnd, this.dv, v);
 			points[idx] = new Point3d(v.x, v.y, v.z);
 		}
