@@ -251,7 +251,7 @@ class RayCasterThread extends Thread {
 				if (this.progressBar == true) {
 					progress += progressInc;
 					progressCount++;
-					if (progressCount == 10) {
+					if (progressCount == 20) {
 						progressCount = 0;
 						System.out.print('*');
 					}
