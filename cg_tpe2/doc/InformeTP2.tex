@@ -1,0 +1,69 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\spanishdecimal{.}
+\addto\captionsspanish{\def\tablename{Cuadro}}
+\usepackage{fancyhdr}
+\usepackage{graphics}
+\usepackage[dvips]{graphicx}
+\usepackage[normal]{caption2}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{moreverb}
+
+%% Declaracion de comandos %%
+
+\newtheorem{lema}{Lema}
+\newtheorem{teor}{Teorema}
+\newtheorem{propos}{Proposici\'on}
+\newtheorem{corol}{Corolario}
+
+\newcommand{\mivec}[1]{\mathbf{#1}}
+\newcommand{\vers}[1]{\mivec{\check{#1}}}
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\expo}[1]{~10^{#1}}
+\newcommand{\uni}[1]{\mathrm{#1}} 
+
+\newcommand{\prop}[1]{\begin{propos} #1 \end{propos}}
+\newcommand{\teo}[1]{\begin{teor} #1 \end{teor}}
+\newcommand{\cor}[1]{\begin{corol} #1 \end{corol}}
+\newcommand{\lem}[1]{\begin{lema} #1 \end{lema}}
+
+%% Encabezado y Pie de Pagina %%
+
+\pagestyle{plain}
+\lhead{}
+\chead{}
+\rhead{}
+\cfoot{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\makeindex
+
+%opening
+\title{Computaci\'on Gr\'afica \\Ray Tracer \\Grupo 2}
+\author{Guillermo Campelo\\Juan Ignacio Go\~ni\\Juan Tenaillon\\Santiago V\'azquez}
+
+\begin{document}
+\label{introduccion}
+
+\maketitle
+
+\begin{abstract}
+Se dise\~n\'o y desarroll\'o un motor de Ray Tracing, determinando intersecciones entre rayos y objetos, considerando luminosidad, reflexiones, refracciones, sombras, texturas y anti-aliasing. 
+\end{abstract}
+
+\section{Introducci\'on}
+
+A lo largo de este informe, se detallar\'a el dise\~no y desarrollo del motor de Ray Tracing.  Explicaremos en detalle c\'omo decidimos implementar las distintas partes que componen a la aplicaci\'on.
+
+Adem\'as de explicar los detalles del dise\~no y de la implementaci\'on, mostraremos imagenes generadas utilizando el motor, haciendo uso de las distintas opciones.
+
+Tambi\'en se desarrollaron m\'etodos de vol\'umenes envolventes y subdivisi\'on espacial para incrementar la eficiencia del motor.  En particular, se desarroll\'o la t\'ecnica de Octrees, que nos brinda tanto vol\'umenes envolventes como subdivisi\'on espacial.
+
+
+En la Secci\'on \ref{primitivas} explicamos las primitivas implementadas, y como fueron complementadas.  En la Secci\'on \ref{camara} explicamos los dos tipos de c\'amaras implementadas, pinhole y thinlens, luego en la Secci\'on \ref{luces} explicamos las luces implementadas
+
+\end{document}
