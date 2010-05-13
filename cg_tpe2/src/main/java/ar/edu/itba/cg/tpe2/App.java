@@ -38,7 +38,7 @@ public class App
 {
 
 	
-    public static void main( String[] args ) throws IOException
+    public static void main( String[] args )
     {
     	try {
     		
@@ -146,7 +146,10 @@ public class App
     		showUsage();
     		System.out.println(pe.getMessage());
     		return;
-    	}
+    	} catch (IOException e) {
+			System.out.println("El nombre de archivo es incorrecto\n");
+			return;
+		}
 		
     }
     
