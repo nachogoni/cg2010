@@ -80,7 +80,7 @@ public class App
     		String curr_dir = System.getProperty("user.dir");
     		Parser aParser = new Parser(curr_dir + "/escenas/" + sceneName);
     		Scene scene = aParser.parse();
-    		System.out.println(scene.toString());
+//    		System.out.println(scene.toString());
     		
     		// Create a camera
 //    		Camera camera = new Camera(new Point3d(0d, 0d, 6d), new Point3d(0d, 0d ,0d), 
