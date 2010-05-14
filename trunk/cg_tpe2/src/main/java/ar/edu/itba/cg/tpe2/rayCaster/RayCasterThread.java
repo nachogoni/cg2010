@@ -213,11 +213,7 @@ class RayCasterThread extends Thread {
 			float[] tmp = new float[3];
 			int side = (int)Math.pow(2,scene.getImage().getAa_max());
 			int samples = scene.getImage().getSamples();
-			
-			float progress = 0;
-			int progressCount = 0;
-			float progressInc = 100f/(toY - fromY);
-			
+
 			Ray ray;
 			for (int j = fromY; j < toY; j++) {
 				for (int i = fromX; i < toX; i++) {
@@ -246,17 +242,6 @@ class RayCasterThread extends Thread {
 						image.setRGB(i, j, color.getRGB());
 					}
 				}
-
-				// Show progress bar =)
-				if (this.progressBar == true) {
-					progress += progressInc;
-					progressCount++;
-					if (progressCount == 20) {
-						progressCount = 0;
-						System.out.print('*');
-					}
-				}
-				
 			}
 			synchronized( this.getClass() ){
 				finishedTasks++;
@@ -310,9 +295,9 @@ class RayCasterThread extends Thread {
     	float [] resultingRGBArray = new float [3];
     	
     	float sumKs = 1 + reflectK + refractK;
-    	resultingRGBArray[0] = (AMBIENT_LIGHT + ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
-    	resultingRGBArray[1] = (AMBIENT_LIGHT + ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
-    	resultingRGBArray[2] = (AMBIENT_LIGHT + ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
+    	resultingRGBArray[0] = (0.01f + ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
+    	resultingRGBArray[1] = (0.01f + ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
+    	resultingRGBArray[2] = (0.01f + ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
 
     	return clamp(resultingRGBArray);
 	}
@@ -322,7 +307,7 @@ class RayCasterThread extends Thread {
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
 		
-		if (lights.isEmpty() != true) {
+		if (!lights.isEmpty()) {
 			for(Light l:lights){
 				if ( l instanceof PointLight ){
 					PointLight pl = (PointLight) l;
