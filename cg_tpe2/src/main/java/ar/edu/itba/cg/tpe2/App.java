@@ -99,7 +99,7 @@ public class App
     		// Create rayCaster
     		RayCaster raycaster = null;
     		
-    		int numberOfBuckets = 4;
+    		int numberOfBuckets = 128;
 
     		// Set colors for primitives
     		if ( colorProvider instanceof CyclicColorProvider) {

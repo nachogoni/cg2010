@@ -1,8 +1,8 @@
 
 image {
    resolution 800 600
-   aa 0 2
-   samples 4
+   aa 0 0
+   samples 1
 }
 
 light {
