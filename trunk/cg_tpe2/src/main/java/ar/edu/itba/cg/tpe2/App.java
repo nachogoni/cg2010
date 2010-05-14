@@ -83,7 +83,6 @@ public class App
     		
     		// Take start time
     		if (cl.hasOption("progress")) {
-    			System.out.println("************************");
     			pbar = true;
     		}
     		
