@@ -1,7 +1,7 @@
 
 image {
    resolution 800 600
-   aa 0 10
+   aa 0 2
    samples 4
 }
 

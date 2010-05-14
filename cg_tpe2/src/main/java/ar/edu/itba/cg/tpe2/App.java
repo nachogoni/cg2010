@@ -1,12 +1,9 @@
 package ar.edu.itba.cg.tpe2;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,10 +21,7 @@ import org.apache.commons.cli.PosixParser;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
-import ar.edu.itba.cg.tpe2.rayCaster.IColorProvider;
-import ar.edu.itba.cg.tpe2.rayCaster.RayCaster;
-import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.CyclicColorProvider;
-import ar.edu.itba.cg.tpe2.rayCaster.ColorProviders.RandomColorProvider;
+import ar.edu.itba.cg.tpe2.rayTracer.RayCaster;
 import ar.edu.itba.cg.tpe2.utils.Parser;
 
 /**
@@ -66,9 +60,6 @@ public class App
     		// Validate and get fov
     		int fov = getFov(cl);
     		
-    		// Validate and get the color provider
-    		IColorProvider colorProvider = getColorProvider(cl);
-    		
     		// Validate and get Color variation
     		int colorVar = getColorVariation(cl);    		
     		
@@ -101,12 +92,7 @@ public class App
     		
     		int numberOfBuckets = 128;
 
-    		// Set colors for primitives
-    		if ( colorProvider instanceof CyclicColorProvider) {
-    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar, pbar);
-    		} else {
-    			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorProvider, colorVar, pbar);
-    		}
+   			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorVar, pbar);
 
     		// Take start time
     		if (cl.hasOption("time")) {
@@ -186,32 +172,6 @@ public class App
 			}
 		}
 		return colorVar;
-	}
-
-	private static IColorProvider getColorProvider(CommandLine cl) throws IllegalArgumentException{
-		List<Color> colors = new ArrayList<Color>();
-		colors.add(new Color(143, 0, 255));
-		colors.add(Color.BLUE);
-		colors.add(Color.GREEN);
-		colors.add(Color.YELLOW);
-		colors.add(new Color(255, 140, 0));
-		colors.add(Color.RED);		
-		
-		//Default value
-		IColorProvider colorProvider = new RandomColorProvider();
-		
-		if (cl.hasOption("cm")) {
-			String colorMode = cl.getOptionValue("cm");
-			if (colorMode.equals("ordered")) {
-				//Change the default value
-				colorProvider = new CyclicColorProvider(colors);
-			} else if ( ! colorMode.equals("random")) {
-				// Other case, error...
-				throw new IllegalArgumentException("Invalid color mode");
-			}
-		}  		
-		
-		return colorProvider;
 	}
 
 	private static int getFov(CommandLine cl) throws IllegalArgumentException{

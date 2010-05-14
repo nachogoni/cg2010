@@ -14,6 +14,13 @@ camera {
    aspect 1.333
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 3.0
+   p 0.0 0.0 0.0
+}
+
 shader {
    name phong1
    type phong
@@ -31,4 +38,3 @@ object {
 		}
 	type box
 }
-	

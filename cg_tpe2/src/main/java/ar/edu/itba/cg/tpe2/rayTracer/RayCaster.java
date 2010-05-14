@@ -1,25 +1,21 @@
-package ar.edu.itba.cg.tpe2.rayCaster;
+package ar.edu.itba.cg.tpe2.rayTracer;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
-import ar.edu.itba.cg.tpe2.rayCaster.ImagePartitioners.HorizontalImagePartitioner;
+import ar.edu.itba.cg.tpe2.rayTracer.ImagePartitioners.HorizontalImagePartitioner;
 
 /**
  * RayCaster creates an image form a scene viewed from a camera
  */
 public class RayCaster {
 
-	//TODO: pasarlo a los enums
-	public static final int COLOR_MODE_RANDOM = 0;
-	public static final int COLOR_MODE_ORDERED = 1;
-	//TODO: pasarlo a los enums
 	public static final int COLOR_VARIATION_LINEAR = 0;
-	public static final int COLOR_VARIATION_LOG = 1;
-	
+	public static final int COLOR_VARIATION_LOG = 0;
 	private List<RayCasterThread> threads;
 	protected BufferedImage image = null;
 	private IImagePartitioner imagePartitioner;
@@ -35,12 +31,11 @@ public class RayCaster {
 	 * @param colorProvider Color mode: Random or Ordered
 	 * @param colorVariation Color variation type: Linear or Log
 	 */
-	public RayCaster(Scene scene, ar.edu.itba.cg.tpe2.core.camera.Camera camera, int numberOfThreads, int numberOfBuckets, IColorProvider colorProvider, int colorVariation, boolean progressBar) {
+	public RayCaster(Scene scene, Camera camera, int numberOfThreads, int numberOfBuckets, int colorVariation, boolean progressBar) {
 		threads = new ArrayList<RayCasterThread>(numberOfThreads);
 		this.bucketsSize = numberOfBuckets;
 		for (int i=0; i < numberOfThreads; i++){
 			RayCasterThread rayCasterThread = new RayCasterThread(scene, camera, this, progressBar);
-			rayCasterThread.setColorMode(colorProvider);
 			rayCasterThread.setColorVariation(colorVariation);
 			rayCasterThread.start();
 			threads.add(rayCasterThread);
