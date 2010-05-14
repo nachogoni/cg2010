@@ -49,6 +49,7 @@ class RayCasterThread extends Thread {
 	private double totalLight;
 	
 	private boolean progressBar;
+	private int totalTasks;
 	
 	/**
 	 * Constructor for RayCasterThread class
@@ -181,6 +182,7 @@ class RayCasterThread extends Thread {
 			if ( tasks == null || !taskIterator.hasNext() )
 				return null;
 			r = taskIterator.next();
+			totalTasks = tasks.size();
 		}
 		return r;
 	}
@@ -245,6 +247,7 @@ class RayCasterThread extends Thread {
 			}
 			synchronized( this.getClass() ){
 				finishedTasks++;
+				System.out.println("Progress done: " + (int)((finishedTasks* 100f) / totalTasks) + '%');
 				if ( allTasksFinished() )
 					synchronized (rayCaster) {
 						rayCaster.notify();	
