@@ -211,8 +211,8 @@ class RayCasterThread extends Thread {
 
 			Color color;
 			float[] tmp = new float[3];
-			int size = scene.getImage().getAa_max();
-			int aaCount = scene.getImage().getSamples();
+			int side = (int)Math.pow(2,scene.getImage().getAa_max());
+			int samples = scene.getImage().getSamples();
 			
 			float progress = 0;
 			int progressCount = 0;
@@ -224,20 +224,20 @@ class RayCasterThread extends Thread {
 					// Set infinite color
 					color = Color.BLACK;
 
-					Point3d[] po = camera.getPointFromXY(width, height, i, j, aaCount, size);
+					Point3d[] po = camera.getPointFromXY(width, height, i, j, side, samples);
 
 					float[] colorAA = new float[]{0,0,0};
 
-					for (int aa = 0; aa < aaCount; aa++) {
+					for (int aa = 0; aa < po.length; aa++) {
 						// Create a new Ray from camera, i, j
 						ray = new Ray(origin, po[aa]);
 					
 						// Get pixel color
 						tmp = getColor(ray, MAX_REBOUNDS).getRGBColorComponents(null);
 						
-						colorAA[0] += (tmp[0] / aaCount);
-						colorAA[1] += (tmp[1] / aaCount);
-						colorAA[2] += (tmp[2] / aaCount);
+						colorAA[0] += (tmp[0] / po.length);
+						colorAA[1] += (tmp[1] / po.length);
+						colorAA[2] += (tmp[2] / po.length);
 					}
 
 					color = clamp(colorAA);
@@ -268,81 +268,6 @@ class RayCasterThread extends Thread {
 		}
 	}
 
-	
-//    public void run() {
-//		while (true) {
-//			Rectangle task = getTask();
-//			while (task == null) {
-//				task = getTask();
-//			}
-//
-//			setPortion(task, width, height);
-//			Point3d origin = camera.getEye();
-//
-//			Color color;
-//			float[] tmp = new float[3];
-//			int samples = scene.getImage().getSamples();
-//			int side = (int) (Math.pow(2, scene.getImage().getAa_max()));
-//
-//			float progress = 0;
-//			int progressCount = 0;
-//			float progressInc = 100f / (toY - fromY);
-//
-//			Ray ray;
-//			for (int j = fromY; j < toY; j++) {
-//				for (int i = fromX; i < toX; i++) {
-//					// Set infinite color
-//					color = Color.BLACK;
-//
-//					Point3d[] po = camera.getPointFromXY(width, height, i, j,
-//							side, samples);
-//
-//					float[] colorAA = new float[] { 0, 0, 0 };
-//
-//					for (int aa = 0; aa < po.length; aa++) {
-//						// Create a new Ray from camera, i, j
-//						ray = new Ray(origin, po[aa]);
-//
-//						// Get pixel color
-//						tmp = getColor(ray, MAX_REBOUNDS)
-//								.getRGBColorComponents(null);
-//
-//						colorAA[0] += (tmp[0] / po.length);
-//						colorAA[1] += (tmp[1] / po.length);
-//						colorAA[2] += (tmp[2] / po.length);
-//					}
-//
-//					color = clamp(colorAA);
-//
-//					synchronized (image) {
-//						image.setRGB(i, j, color.getRGB());
-//					}
-//				}
-//
-//				// Show progress bar =)
-//				if (this.progressBar == true) {
-//					progress += progressInc;
-//					progressCount++;
-//					if (progressCount == 20) {
-//						progressCount = 0;
-//						System.out.print('*');
-//					}
-//				}
-//
-//			}
-//			synchronized (this.getClass()) {
-//				finishedTasks++;
-//				if (allTasksFinished())
-//					synchronized (rayCaster) {
-//						rayCaster.notify();
-//					}
-//			}
-//		}
-//	}
-	
-	
-	
-	
     private Color getColor(Ray ray, int maxRebounds) {
     	Point3d intersectionPoint = new Point3d();
     	Primitive impactedFigure;

@@ -7,6 +7,13 @@ accel bih
 filter mitchell
 bucket 32 row
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 4
+   p 10.0 10.0 10.0
+}
+
 camera {
    type pinhole
    eye    3.27743673325 -9.07978439331 9.93055152893

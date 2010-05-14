@@ -18,6 +18,7 @@ public abstract class Camera {
 	private Vector3 dv;
 	private Vector3 du;
 	private int width;
+	private Random rand = new Random(0);
 	
 	public Camera(String type, Point3d eye, Point3d target2, Vector3d up,
 			double fov, double aspect) {
@@ -96,15 +97,42 @@ public abstract class Camera {
 		return new Point3d(v.x, v.y, v.z);
 	}
 
-	
-	public Point3d[] getPointFromXY(int width, int height, int i, int j, int aa, int samples) {
-	
-		Point3d[] points = new Point3d[aa];
+	public Point3d[] getPointFromXY(int width, int height, int i, int j, int side, int samples) {
+
+		float rnd;
+		int p = 0;
+		int aa = 1;
+		float portion = 1f / side /2;
+		Point3d[] points = new Point3d[side*side*samples];
+		
+		if ((side * samples) == 1)
+			aa = 0;
+		
+		for (int ii = 1; ii <= side; ii++) {
+			for (int jj = 1; jj <= side; jj++) {
+				for (int idx = 0; idx < samples; idx++) {
+					Vector3d v = new Vector3d(this.FieldCenter);
+					rnd = (rand.nextFloat() - 0.5f);
+					v.scaleAdd((i - width / 2) + portion * ii + rnd * aa, this.du, v);
+					rnd = (rand.nextFloat() - 0.5f);
+					v.scaleAdd((j - height /2) + portion * jj + rnd * aa, this.dv, v);
+					points[p++] = new Point3d(v.x, v.y, v.z);
+				}
+			}
+		}
+		
+		return points;
+	}
+
+	// BLUR
+	public Point3d[] getBlurPointFromXY(int width, int height, int i, int j, int side, int samples) {
+		
+		Point3d[] points = new Point3d[side];
 		
 		Random rand = new Random(0);
 		float rnd;
 		
-		for (int idx = 0; idx < aa; idx++) {
+		for (int idx = 0; idx < side; idx++) {
 			Vector3d v = new Vector3d(this.FieldCenter);
 			rnd = (rand.nextFloat() - 1) * samples;
 			v.scaleAdd((i - width / 2) + rnd, this.du, v);
@@ -115,63 +143,7 @@ public abstract class Camera {
 		
 		return points;
 	}
-	
-//	public Point3d[] getPointFromXY(int width, int height, int i, int j, int side, int samples) {
-//
-//		float portion = 1f / side /2;
-//		
-//		Point3d[] points = new Point3d[side*side*samples];
-//
-//		Random rand = new Random(0);
-//		float rnd;
-//		int p = 0;
-//		if (i == 0 && j == 1)
-//			System.out.println(i +" " + j);
-//		for (int ii = 0; ii < side; ii++) {
-//			for (int jj = 0; jj < side; jj++) {
-//				for (int idx = 0; idx < samples; idx++) {
-//					Vector3d v = new Vector3d(this.FieldCenter);
-//					rnd = (rand.nextFloat() - 1) * samples;
-//					if (i == 0 && j == 1)
-//						System.out.println(rnd);
-//					v.scaleAdd((i - width / 2) + (portion * (ii+1) * rnd), this.du, v);
-////					v.scaleAdd((i - width / 2), this.du, v);
-//					rnd = (rand.nextFloat() - 1) * samples;
-//					if (i == 0 && j == 1)
-//						System.out.println(rnd);
-//					v.scaleAdd((j - height /2) + (portion * (jj+1) * rnd), this.dv, v);
-////					v.scaleAdd((j - height /2), this.dv, v);
-//					points[p++] = new Point3d(v.x, v.y, v.z);
-//					if (i == 0 && j == 1)
-//						System.out.println(points[p-1].x+" "+points[p-1].y+" "+points[p-1].z) ;
-//				}
-//			}
-//		}
-//		
-//		return points;
-//	}
 
-//  BLUR
-//	
-//	public Point3d[] getPointFromXY(int width, int height, int i, int j, int aa, int samples) {
-//		
-//		Point3d[] points = new Point3d[aa];
-//		
-//		Random rand = new Random(0);
-//		float rnd;
-//		
-//		for (int idx = 0; idx < aa; idx++) {
-//			Vector3d v = new Vector3d(this.FieldCenter);
-//			rnd = (rand.nextFloat() - 1) * samples;
-//			v.scaleAdd((i - width / 2) + rnd, this.du, v);
-//			rnd = (rand.nextFloat() - 1) * samples;
-//			v.scaleAdd((j - height /2) + rnd, this.dv, v);
-//			points[idx] = new Point3d(v.x, v.y, v.z);
-//		}
-//		
-//		return points;
-//	}
-//	
 	@Override
 	public String toString() {
 		return "Camera [aspect=" + aspect + ", eye=" + eye + ", fov=" + fov
