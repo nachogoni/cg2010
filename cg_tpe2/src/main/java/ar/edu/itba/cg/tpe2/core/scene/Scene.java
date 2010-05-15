@@ -213,10 +213,8 @@ public class Scene {
 			
 			for (Primitive p : currNode.primitives ) {
 				currIntersection = p.intersect(ray);
-				if (currIntersection != null && (nearestIntersection == null || (nearestIntersection != null &&
-						currIntersection.distance(origin) < nearestIntersection.distance(origin)
-						//&& currIntersection.distance(origin) > 0.1
-						))) {
+				if (currIntersection != null && currIntersection.distance(origin) > 0.00001 && (nearestIntersection == null || (nearestIntersection != null &&
+						currIntersection.distance(origin) < nearestIntersection.distance(origin) ))) {
 					nearestIntersection = currIntersection;
 					nearestPrimitive = p;
 				}
