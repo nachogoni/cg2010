@@ -100,11 +100,11 @@ public class Ray {
 		return newRay;
 	}
 
+//	http://www.cse.ohio-state.edu/~kerwin/refraction.html
+//	http://www.yaldex.com/open-gl/ch14lev1sec1.html
 	public Ray refractFrom(Vector3 primitiveNormal, Point3d primitivePoint, double refractivity){
 		Vector3d normalToUse = new Vector3d(primitiveNormal);
-		Vector3d thisDir = this.direction;
-		double dotProduct = thisDir.dot(primitiveNormal);
-		
+		double dotProduct = normalToUse.dot(this.direction);
 		
 		if ( dotProduct < 0 ){
 			// Ray enters
@@ -113,9 +113,9 @@ public class Ray {
 			// Ray goes out
 			normalToUse.scale(-1.0);
 		}
-		Vector3d rDir = calculateRefractedDir(normalToUse,thisDir,refractivity);
+		Vector3d rDir = calculateRefractedDir(normalToUse,this.direction,dotProduct,refractivity);
 		
-		if ( rDir.equals(new Vector3()) ){
+		if ( rDir == null ){
 			// No ray is refracted
 			return null;
 		}
@@ -125,19 +125,22 @@ public class Ray {
 		return newRay;
 	}
 	
-	private Vector3d calculateRefractedDir(Vector3d normalToUse, Vector3d thisDir, double refractivity) {
+	private Vector3d calculateRefractedDir(Vector3d normalToUse, Vector3d thisDir, double angle, double refractivity) {
 		Vector3d direction = new Vector3d();
-		double dotProduct = -normalToUse.dot(thisDir);
+		
+		double dotProduct = -angle;
 		double squareProduct = 1 - ( 1 - dotProduct * dotProduct ) * refractivity * refractivity;
 		if ( squareProduct <= 0 )
 			// Not refracted
-			return direction;
+			return null;
+		
+		double scale = refractivity * dotProduct - Math.sqrt(squareProduct);
+		normalToUse.scale(scale);
 		
 		direction.add(thisDir);
 		direction.scale(refractivity);
-		double scale = refractivity * dotProduct - Math.sqrt(squareProduct);
-		normalToUse.scale(scale);
 		normalToUse.add(direction);
+		
 		normalToUse.normalize();
 		return normalToUse;
 	}

@@ -22,7 +22,7 @@ light {
 
 camera {
    type pinhole
-   eye 0.0 1.0 10.0
+   eye -10.0 1.0 0.0
    target 0.0 1.0 0.0
    up 0.0 10.0 0.0
    fov 60 

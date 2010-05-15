@@ -21,6 +21,22 @@ camera {
    aspect 1.333
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 2
+   p 2 1 2
+}
+
+shader {
+   name glass0
+   type glass
+   eta 1.333
+   color { "sRGB nonlinear" 0.5 0 0 }
+   absorbtion.distance 3
+   absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+}
+
 shader {
    name phong1
    type phong
@@ -60,7 +76,7 @@ shader {
 }
 
 object { 
-	 shader mirror0
+	 shader glass0
 	 type sphere
 	 name sphere0
 	 c 0 0 0

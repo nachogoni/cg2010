@@ -34,10 +34,10 @@ class RayCasterThread extends Thread {
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	static private double farthestDistance = 20.0;
-	private static final int MAX_REBOUNDS = 1;
+	private static final int MAX_REBOUNDS = 8;
 	private static final Color INITIAL_COLOR = Color.BLACK;
 
-	private static final float AMBIENT_LIGHT = 0.075f;
+	private static final float AMBIENT_LIGHT = 0.1f;
 
 	private static List<Rectangle> tasks = null;
 	private static Iterator<Rectangle> taskIterator;
@@ -342,15 +342,16 @@ class RayCasterThread extends Thread {
 							rgbs[2] += lightContribution[2];
 						}
 					} else {
-						rgbs = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
-						rgbs[0] *= AMBIENT_LIGHT;
-						rgbs[1] *= AMBIENT_LIGHT;
-						rgbs[2] *= AMBIENT_LIGHT;
+						// This light does not illuminate this object, let's put some ambient light
+						rgbs[0] += figureRGBComponents[0] * AMBIENT_LIGHT;
+						rgbs[1] += figureRGBComponents[1] * AMBIENT_LIGHT;
+						rgbs[2] += figureRGBComponents[2] * AMBIENT_LIGHT;
 					}
 				}
 			}
 		} else {
-			rgbs = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
+			// There is no light in the scene, put some ambient light
+			rgbs = figureRGBComponents;
 			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
 			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
 			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
