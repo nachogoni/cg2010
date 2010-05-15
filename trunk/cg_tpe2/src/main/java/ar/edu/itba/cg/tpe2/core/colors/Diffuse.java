@@ -22,7 +22,7 @@ public class Diffuse {
 	}
 	
 	public Diffuse(String textureFilename){
-		File input = new File(curr_dir+"/"+textureFilename);
+		File input = new File(curr_dir+"/textures/"+textureFilename);
 		try {
 			img = ImageIO.read(input);
 		} catch (IOException e) {
