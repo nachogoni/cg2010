@@ -1,10 +1,12 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 
+import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 /**
@@ -175,9 +177,9 @@ public abstract class Primitive {
 	
 	public abstract void transformWith(Matrix4d m);
 	
-	public Color getColorAt(Point3d aPoint) {
+	public Color getColorAt(Point3d aPoint, List<Light> lights) {
 		if (shader != null)
-			return this.shader.getColorAt(aPoint, this);
+			return this.shader.getColorAt(aPoint, this, lights);
 		else
 			return Color.WHITE;//FIXME
 	}

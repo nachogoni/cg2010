@@ -1,12 +1,14 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.light.Light;
 
 public class Phong extends Shader {
 
@@ -41,7 +43,11 @@ public class Phong extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3d aPoint, Primitive primitive) {
+	public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights) {
+		Color colorAt = diffuse.getColorAt(aPoint,primitive);
+		Color color = spec.getColor();
+		Integer specularity = spec.getSpecularity();
+		Integer diffusity = 1;
 		return diffuse.getColorAt(aPoint,primitive);
 	}
 	
