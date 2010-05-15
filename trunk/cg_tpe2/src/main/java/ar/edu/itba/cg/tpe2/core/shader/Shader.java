@@ -42,6 +42,10 @@ public abstract class Shader {
 		return 0.0f;
 	}
 	// Implementations
+
+	public double getEta() {
+		return 0;
+	}
 	
 	// Type: Glass
 		// Eta

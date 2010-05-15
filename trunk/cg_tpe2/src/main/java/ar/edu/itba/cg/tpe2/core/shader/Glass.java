@@ -19,9 +19,11 @@ public class Glass extends Shader {
 		this.color = color;
 		abs_color = absColor;
 	}
+	
 	public double getEta() {
 		return eta;
 	}
+	
 	public double getAbs_dist() {
 		return abs_dist;
 	}
@@ -43,6 +45,6 @@ public class Glass extends Shader {
 	}
 
 	public float getRefractionK(){
-		return (float) eta;
+		return 1.0f;
 	}
 }
