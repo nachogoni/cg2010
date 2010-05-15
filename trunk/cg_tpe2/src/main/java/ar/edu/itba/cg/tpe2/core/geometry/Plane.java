@@ -10,12 +10,15 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
 public class Plane extends Primitive {
 
 	Point3d p1;
-	Point3d p1Backup;
 	Vector3d n;
-	Transform transform;
-	private static final double DISTANCE_TOLE  = 0.00000000000001;
+	Vector3d vu = null;
+	Vector3d vv = null;
 
-	private static final double TEXTURE_BLOCK  = 20f;
+	Transform transform;
+
+    private static final double DISTANCE_TOLE  = 0.00000000000001;
+
+	private static final double TEXTURE_BLOCK  = 10f;
 	
 	public Plane(String name, Shader shader, Point3d p1, Vector3d n, Transform trans) throws IllegalArgumentException{
 		super(name,shader);
@@ -24,7 +27,6 @@ public class Plane extends Primitive {
 		
 		this.n = n;
 		this.p1 = p1;
-		this.p1Backup = p1;
 		
 		this.transform = trans;
 		
@@ -87,28 +89,34 @@ public class Plane extends Primitive {
 	@Override
 	public double[] getUV(Point3d point) {
 	
-	Point3d p = new Point3d(p1Backup);
-	
-	p.sub(point);
-	
-	double u = Math.abs(((p.x) % TEXTURE_BLOCK) / TEXTURE_BLOCK);
-	double v = Math.abs(((p.y) % TEXTURE_BLOCK) / TEXTURE_BLOCK);
-	
-	return new double[]{u,v};
-}
+    	Point3d p = new Point3d(point);
+    	
+    	p.sub(p1);
 
-//	public double[] getUV(Point3d point) {
-//		
-//		Point3d p = new Point3d(p1);
-//		
-//		p.sub(point);
-//		
-//		double u = Math.abs(((p.x) % TEXTURE_BLOCK) / TEXTURE_BLOCK);
-//		double v = Math.abs(((p.y) % TEXTURE_BLOCK) / TEXTURE_BLOCK);
-//		
-//		return new double[]{u,v};
-//	}
-//	
+    	if((vu == null) || (vv == null)) {
+    		vv = new Vector3d(p);
+            vu = new Vector3d();
+            vu.cross(vv, n);
+            vu.normalize();
+            vv.normalize();
+        }
+        
+        Vector3d p1p = new Vector3d(p);
+        
+        double u = (p1p.dot(vu));
+        double v = (p1p.dot(vv));
+        
+		u = ((u % TEXTURE_BLOCK) / TEXTURE_BLOCK);
+		v = ((v % TEXTURE_BLOCK) / TEXTURE_BLOCK);
+		
+		if (v < 0)
+			v *= -1;
+		if (u < 0)
+			u *= -1;
+		
+		return new double[]{u,v};
+	}
+
 	@Override
 	public Vector3 getNormalAt(Point3d p, Point3d from) {
 		return new Vector3(n);
