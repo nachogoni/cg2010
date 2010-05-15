@@ -25,6 +25,13 @@ shader {
 	color { "sRGB nonlinear" 0 0 1 }
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 2.0
+   p 10.0 -10.0 10.0
+}
+
 camera {
 	type   pinhole
 	eye    2.680235 -9.798761 3.683532
