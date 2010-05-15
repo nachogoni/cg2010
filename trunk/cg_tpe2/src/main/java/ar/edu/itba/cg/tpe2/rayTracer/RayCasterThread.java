@@ -310,7 +310,7 @@ class RayCasterThread extends Thread {
 
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
-		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint).getRGBColorComponents(null);
+		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint,lights).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
 		
 		if (!lights.isEmpty()) {

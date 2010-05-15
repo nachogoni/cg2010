@@ -1,10 +1,12 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.light.Light;
 
 public abstract class Shader {
 
@@ -32,7 +34,7 @@ public abstract class Shader {
 		return type;
 	}
 	
-	abstract public Color getColorAt(Point3d aPoint, Primitive primitive);
+	abstract public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights);
 	
 	public float getReflectionK(){
 		return 0.0f;
@@ -46,21 +48,5 @@ public abstract class Shader {
 	public double getEta() {
 		return 0;
 	}
-	
-	// Type: Glass
-		// Eta
-		// Color
-		// Absortion
-			// Distance
-			// Color
-	
-	// Type: Phong
-		// Spec
-		// Samples
-		// Texture
-		// Diff
-	
-	// Type: Mirror
-		// Refl
-	
+
 }

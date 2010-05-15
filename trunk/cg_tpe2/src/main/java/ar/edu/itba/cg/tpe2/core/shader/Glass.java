@@ -1,11 +1,13 @@
 package ar.edu.itba.cg.tpe2.core.shader;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.light.Light;
 
 public class Glass extends Shader {
 
@@ -40,7 +42,7 @@ public class Glass extends Shader {
 				+ getName() + ", getType()=" + getType() + "]";
 	}
 	@Override
-	public Color getColorAt(Point3d aPoint, Primitive primitive) {
+	public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights) {
 		return color.getColor();
 	}
 
