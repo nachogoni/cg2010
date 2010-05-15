@@ -23,7 +23,7 @@ public class Scene {
 	
 	private PrimitiveOctree octree = null;
 	
-	final static boolean USE_NOT_WORKING_OCTREE=false;
+	final static boolean USE_NOT_WORKING_OCTREE=true;
 	
 	private Camera aCamera = null;
 	private Image anImage = null;
@@ -208,13 +208,18 @@ public class Scene {
 		//&& !found
 		for (Iterator<OctreeNode> iter = octree.intersectedNodes(ray).iterator(); iter.hasNext() ;) {
 			OctreeNode currNode = iter.next();
-			
-			//System.out.println("intersected node!" + currNode.primitives.size());
+			/*System.out.println("Rayo: "+ ray.getDirection().toString());
+			System.out.println("Intersecto con nodo: " + currNode.xMin + ", " + currNode.xMax + ", " 
+					+ currNode.yMin + ", " + currNode.yMax + ", " + currNode.zMin + ", " + currNode.zMax );*/
+			//System.out.println("intersected node!" + currNode.primitives.size());*/
 			
 			for (Primitive p : currNode.primitives ) {
 				currIntersection = p.intersect(ray);
-				if (currIntersection != null && currIntersection.distance(origin) > 0.00001 && (nearestIntersection == null || (nearestIntersection != null &&
-						currIntersection.distance(origin) < nearestIntersection.distance(origin) ))) {
+				if (currIntersection != null  && currIntersection.distance(origin) > 0.00001 && 
+						(nearestIntersection == null || (nearestIntersection != null &&
+						currIntersection.distance(origin) < nearestIntersection.distance(origin)
+						//&& currIntersection.distance(origin) > 0.1
+						))) {
 					nearestIntersection = currIntersection;
 					nearestPrimitive = p;
 				}

@@ -1,6 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.scene;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
@@ -12,13 +13,15 @@ import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 public class PrimitiveOctree {
 
 	// Maxima cantidad de primitivas en la hoja
-	public static final int MAX_PRIMITIVES = 16;
+	public static int maxPrimitives = 1;
 	
 	// Nodo raiz del octree
 	OctreeNode root;
 	
+	private double size=0;
+	
 	// Constante epsilon
-	private final static double EPSILON = 0.00000000000001;
+	private final static double EPSILON = 0.000000001;
 	
 	/**
 	 * Constructor default
@@ -33,9 +36,10 @@ public class PrimitiveOctree {
 		 
 		// We are giving the chance to the intersect functions in primitives to have a representation error
 		// and they still be in the correct octree node
-		double size = Math.max( Math.max( Math.max( Math.abs(xMinimun), Math.abs(xMaximun) ), 
-					Math.max( Math.abs(yMinimun), Math.abs(yMaximun) ) ),
-					Math.max(Math.abs(zMinimun), Math.abs(zMaximun) ) )*2 + EPSILON*2;
+		this.size = max( max(Math.abs(xMinimun), Math.abs(xMaximun), 
+					max( Math.abs(yMinimun), Math.abs(yMaximun) ) ),
+					max(Math.abs(zMinimun), Math.abs(zMaximun) ) )*2 + EPSILON*2;
+		System.out.println(this.size);
 		this.root = new OctreeNode(-size*0.5, size*0.5, 
 				-size*0.5, size*0.5, 
 				-size*0.5, size*0.5);
@@ -54,9 +58,10 @@ public class PrimitiveOctree {
 		// Lista con los nodos intersectados
 		List<OctreeNode> ret = new ArrayList<OctreeNode>(); 
 		byte a = 0, b = 0;
+		//TODO ver que onda si el origen esta metido dentro del octree
 		
 		Point3d rayOrig = new Point3d(ray.getOrigin().x, ray.getOrigin().y, ray.getOrigin().z);
-		Point3d rayDir = new Point3d(ray.getDirection().x, ray.getDirection().y,ray.getDirection().z);
+		Point3d rayDir = new Point3d(ray.getDirection().x, ray.getDirection().y, ray.getDirection().z);
 		
 		//double tx0 ,tx1, ty0, ty1, tz0, tz1;
 				
@@ -64,64 +69,106 @@ public class PrimitiveOctree {
 			rayDir.set(EPSILON, rayDir.y, rayDir.z);
 			b |= 4;
 		} else */
-		if (rayDir.x < 0) {
-			//rayOrig.set(root.xMax+root.xMin-rayOrig.x, rayOrig.y, rayDir.z);
-			//rayDir.set(-rayDir.x, rayDir.y, rayDir.z);
+		/*if (rayDir.x < 0) {
+			double dist=0;
+			/*if ( rayOrig.x < root.xMin ) {
+				dist=root.xMin-rayOrig.x;
+			} else if (rayOrig.x > root.xMax) {
+				dist=rayOrig.x-root.xMax;
+			}
+			if (rayOrig.x < 0) {
+				rayOrig.set(rayOrig.x+ dist*2+this.size, rayOrig.y , rayOrig.z);
+			} else {
+				rayOrig.set(rayOrig.x- (dist*2+this.size), rayOrig.y , rayOrig.z );
+			}
+			
+			rayOrig.set(this.size-rayOrig.x + rayOrig.x, rayOrig.y, rayOrig.z);
+			
+			rayDir.set(-rayDir.x, rayDir.y, rayDir.z);
 			a |= 0x4;
-		}
+		}*/
 		/*if (rayDir.y == 0) {
 			rayDir.set(rayDir.x, EPSILON, rayDir.z);
 			b |= 2;			
 		} else */
-		if (rayDir.y < 0) {
-			//rayOrig.set(rayOrig.x, root.yMax+root.yMin-rayOrig.y, rayOrig.z);
-			//rayDir.set(rayDir.x, -rayDir.y, rayDir.z);
+		/*if (rayDir.y < 0) {
+			/*double dist=0;
+			if ( rayOrig.y < root.yMin ) {
+				dist=root.yMin-rayOrig.y;
+			} else if (rayOrig.y > root.yMax) {
+				dist=rayOrig.y-root.yMax;
+			}			
+			if (rayOrig.y < 0) {
+				rayOrig.set(rayOrig.x, rayOrig.y+ dist*2+this.size, rayOrig.z);
+			} else {
+				rayOrig.set(rayOrig.x, rayOrig.y - (dist*2+this.size), rayOrig.z );
+			}
+			
+			rayOrig.set(rayOrig.x, this.size-rayOrig.y+rayOrig.y, rayOrig.z);
+			rayDir.set(rayDir.x, -rayDir.y, rayDir.z);
 			a |= 0x2;
-		}
+		}*/
 		/*if (rayDir.z == 0) {
 			rayDir.set(rayDir.x, rayDir.y, EPSILON);
-			b |= 1;					
+			b |= 1;			
+		}*//*			
 		} else */
-		if (rayDir.z < 0) { 
-			//rayOrig.set(rayOrig.x, rayOrig.y,  root.zMin+root.zMax- rayOrig.z);
-			//rayDir.set(rayDir.x, rayDir.y, -rayDir.z);
+		/*if (rayDir.z < 0) {
+			/*double dist=0;
+			if ( rayOrig.z < root.zMin ) {
+				dist=root.zMin-rayOrig.z;
+			} else if (rayOrig.z > root.zMax) {
+				dist=rayOrig.z-root.zMax;
+			}						
+			
+			if (rayOrig.z < 0) {
+				rayOrig.set(rayOrig.x, rayOrig.y, rayOrig.z+ dist*2+this.size );
+			} else {
+				rayOrig.set(rayOrig.x, rayOrig.y, rayOrig.z- (dist*2+this.size) );
+			}
+			rayOrig.set(rayOrig.x, rayOrig.y, this.size-rayOrig.z+rayOrig.z);
+			rayDir.set(rayDir.x, rayDir.y, -rayDir.z);
 			a |= 0x1;
-		}
+		}*/
+		
+		
 		//System.out.println("a:"+a);
 		//System.out.println("b:"+b);
-		double tx0=(root.xMin - rayOrig.x) / (rayDir.x+EPSILON);
-		double tx1=(root.xMax - rayOrig.x) / (rayDir.x+EPSILON);
+		double tx0, tx1;
+		tx0=(root.xMin - rayOrig.x) / rayDir.x;
+		tx1=(root.xMax - rayOrig.x) / rayDir.x;
 		
 		if (tx0 > tx1) {
-			double aux=tx0;
+			double aux = tx0;
 			tx0=tx1;
 			tx1=aux;
 		}
 		
-		double ty0=(root.yMin - rayOrig.y) / (rayDir.y+EPSILON);
-		double ty1=(root.yMax - rayOrig.y) / (rayDir.y+EPSILON);
+		double ty0, ty1;
+		ty0=(root.yMin - rayOrig.y) / rayDir.y;
+		ty1=(root.yMax - rayOrig.y) / rayDir.y;
 
 		if (ty0 > ty1) {
-			double aux=ty0;
+			double aux = ty0;
 			ty0=ty1;
 			ty1=aux;
 		}
-		
-		double tz0=(root.zMin - rayOrig.z) / (rayDir.z+EPSILON);
-		double tz1=(root.zMax - rayOrig.z) / (rayDir.z+EPSILON);
+		double tz0, tz1;
+		tz0=(root.zMin - rayOrig.z) / rayDir.z;
+		tz1=(root.zMax - rayOrig.z) / rayDir.z;
 		
 		if (tz0 > tz1) {
-			double aux=tz0;
+			double aux = tz0;
 			tz0=tz1;
 			tz1=aux;
-		}		
+		}
 		
-		double tmin = Math.max(tx0,Math.max(ty0,tz0));
-		double tmax = Math.min(tx1,Math.min(ty1,tz1));
+		double tmin = max(tx0,ty0,tz0);
+		double tmax = min(tx1,ty1,tz1);
 		
 		// Check if there is an instersection with the root node
-		if ( (tmin < tmax)  && ( tmax > 0.0 ) ) {
-			procSubtree(tx0,ty0,tz0,tx1,ty1,tz1, root, ret, a, b, rayOrig);
+		if ( (tmin <= tmax) && (tmax > 0)  ) {
+			procSubtree(tx0,ty0,tz0,tx1,ty1,tz1, root, ret, a, b, rayOrig, rayDir);
 		} else {
 			//System.out.println("no hay interseccion con root! :S");
 		}
@@ -130,19 +177,21 @@ public class PrimitiveOctree {
 	}
 	
 	void procSubtree( double tx0, double ty0, double tz0,
-			double tx1, double ty1, double tz1, OctreeNode node, List<OctreeNode> ret, byte a, byte b, Point3d orig) {
+			double tx1, double ty1, double tz1, OctreeNode node, List<OctreeNode> ret, byte a, byte b, Point3d orig, Point3d dir) {
 		
-		if ( (tx1 <= 0.0 ) || (ty1 <= 0.0) || (tz1 <= 0.0) ) {
-			//System.out.println("ERROR :S");
+		/*if ( max(tx0, ty0, tz0) <= min(tx1, ty1, tz1) ) {
 			return;
-		} 
+		}*/
 		
-		if (node.isLeaf() && node.primitives.size() > 0) {
-			double tmin = Math.max(tx0,Math.max(ty0,tz0));
-			node.tMin=tmin;
+		/*if ( (tx1 <= 0.0 ) || (ty1 <= 0.0) || (tz1 <= 0.0) ) {
+			return;
+		}*/
+		//if (node.isLeaf() && (node.primitives.size() > 0)) {
+			/*double tmin = max(tx0,ty0,tz0);
+			node.tMin=tmin;*/
 
 			//ListIterator<OctreeNode> iterator = ret.listIterator();
-			ret.add(node);
+			//ret.add(node);
 			/*if (ret.isEmpty()) {
 				ret.add(node);
 				System.out.println("Me inserto a la rta porque ta vacia :P");
@@ -159,14 +208,14 @@ public class PrimitiveOctree {
 				}
 			}*/
 			//System.out.println("soy hoja, me aniadi a la lista y termino la recursion");
-			return;
+			/*return;
 		} else if (node.isLeaf()) {
 			//System.out.println("soy hoja y termino la recursion");
 			return;
-		}
-		double txM = 0.5 * (tx0 + tx1);
+		}*/
+		/*double txM = 0.5 * (tx0 + tx1);
 		double tyM = 0.5 * (ty0 + ty1);
-		double tzM = 0.5 * (tz0 + tz1);		
+		double tzM = 0.5 * (tz0 + tz1);	*/	
 		
 		/*switch(b) {
 			case 0:
@@ -218,7 +267,7 @@ public class PrimitiveOctree {
 	    // Determining the first node requires knowing which of the t0's is the largest...
 	    // as well as comparing the tM's of the other axes against that largest t0.
 	    // Hence, the function should only require the 3 t0-values and the 3 tM-values.
-	    byte currNode = findFirstNode(tx0,ty0,tz0,txM,tyM,tzM, (byte)a); 		
+	   /* byte currNode = findFirstNode(tx0,ty0,tz0,txM,tyM,tzM); 		
 		//System.out.println("crrnode="+currNode);
 	    do {
 	    	// next_Node() takes the t1 values for a child (which may or may not have tM's of the parent)
@@ -229,7 +278,9 @@ public class PrimitiveOctree {
 	        // the same respective order as the t-values.  Hence if the first parameter is found as the greatest, the
 	        // fourth parameter will be the return value.  If the 2nd parameter is the greatest, the 5th will be returned, etc.
 	        switch(currNode) {
-		        case 0x0 : procSubtree(tx0,ty0,tz0,txM,tyM,tzM,node.childs.get(a), ret, a, b, orig);
+		        case 0x0 : 
+		        	//System.out.println("case0");
+		        	procSubtree(tx0,ty0,tz0,txM,tyM,tzM,node.childs.get(a), ret, a, b, orig);
 		                    currNode = nextNode(txM,tyM,tzM,(byte)0x4,(byte)0x2,(byte)0x1);
 		                    break;
 		        case 0x1 : 
@@ -262,35 +313,91 @@ public class PrimitiveOctree {
 		        	procSubtree(txM,tyM,tz0,tx1,ty1,tzM,node.childs.get(0x6^a), ret, a, b, orig);
 		                    currNode = nextNode(tx1,ty1,tzM,(byte)0x8,(byte)0x8,(byte)0x7);
 		                    break;
-		        case 0x7 : procSubtree(txM,txM,tzM,tx1,ty1,tz1,node.childs.get(0x7^a), ret, a, b, orig);
+		        case 0x7 : 
+		        	//System.out.println("case7");
+		        	procSubtree(txM,txM,tzM,tx1,ty1,tz1,node.childs.get(0x7^a), ret, a, b, orig);
 		                    currNode = (byte) 0x8;
 		                    break;
 		    }
-	    } while (currNode < 0x8);
-		 		
+	    } while (currNode < 0x8);*/
+		//double tx0, tx1;
+		tx0=(node.xMin - orig.x) / dir.x;
+		tx1=(node.xMax - orig.x) / dir.x;
 		
-	    /*procSubtree(tx0,ty0,tz0,txM,tyM,tzM,node.childs.get(0), ret, a, b, orig);
-	    procSubtree(tx0,ty0,tzM,txM,tyM,tz1,node.childs.get(1), ret, a, b, orig);
-	    procSubtree(tx0,tyM,tz0,txM,ty1,tzM,node.childs.get(2), ret, a, b, orig);
-	    procSubtree(tx0,tyM,tzM,txM,ty1,tz1,node.childs.get(3), ret, a, b, orig);
-	    procSubtree(txM,ty0,tz0,tx1,tyM,tzM,node.childs.get(4), ret, a, b, orig);
-	    procSubtree(txM,ty0,tzM,tx1,tyM,tz1,node.childs.get(5), ret, a, b, orig);
-	    procSubtree(txM,tyM,tz0,tx1,ty1,tzM,node.childs.get(6), ret, a, b, orig);
-	    procSubtree(txM,tyM,tzM,tx1,ty1,tz1,node.childs.get(7), ret, a, b, orig);*/
+		if (tx0 > tx1) {
+			double aux = tx0;
+			tx0=tx1;
+			tx1=aux;
+		}
+		
+		//double ty0, ty1;
+		ty0=(node.yMin - orig.y) / dir.y;
+		ty1=(node.yMax - orig.y) / dir.y;
 
-	    
-	    /*double xMed;
-		node.childs.add(0, new OctreeNode(node.xMin, xMed,node.yMin,yMed, node.zMin, zMed));//ok
-		node.childs.add(1, new OctreeNode(node.xMin, xMed,node.yMin,yMed, zMed, node.zMax));//ok
-		node.childs.add(2, new OctreeNode(node.xMin, xMed,yMed,node.yMax, node.zMin, zMed));//ok
-		node.childs.add(3, new OctreeNode(node.xMin, xMed,yMed,node.yMax, zMed, node.zMax));//ok
+		if (ty0 > ty1) {
+			double aux = ty0;
+			ty0=ty1;
+			ty1=aux;
+		}
+		//double tz0, tz1;
+		tz0=(node.zMin - orig.z) / dir.z;
+		tz1=(node.zMax - orig.z) / dir.z;
 		
-		node.childs.add(4, new OctreeNode(xMed, node.xMax,node.yMin,yMed, node.zMin, zMed));
-		node.childs.add(5, new OctreeNode(xMed, node.xMax,node.yMin,yMed, zMed, node.zMax));
-		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, node.zMin, zMed));
-		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,zMed, node.zMax));//ok
-	    */
+		if (tz0 > tz1) {
+			double aux = tz0;
+			tz0=tz1;
+			tz1=aux;
+		}
+		
+		double tmin = max(tx0,ty0,tz0);
+		double tmax = min(tx1,ty1,tz1);		 		
+		
+		
+		if ( (tmin <= tmax) && (tmax > 0)  ) {
+			
+		} else {
+			//System.out.println("no hay interseccion con este nodo");
+			return; //System.out.println("no hay interseccion con root! :S");
+		}
+		
+		if (node.isLeaf() && (node.primitives.size() > 0)) {
+			ret.add(node);
+			return;
+		} else if (node.isLeaf()) {
+			return;
+		}
+		
+		double txM = 0.5 * (tx0 + tx1);
+		double tyM = 0.5 * (ty0 + ty1);
+		double tzM = 0.5 * (tz0 + tz1);				
+		
+		if (tx0 > txM || tx1 < txM) {
+			return;
+			//throw new RuntimeException("se cago fiero");
+		}
+		if (ty0 > tyM || ty1 < tyM) {
+			return;
+			//throw new RuntimeException("se cago fiero");
+		}
+		if (tz0 > tzM || tz1 < tzM) {
+			return;
+			//throw new RuntimeException("se cago fiero");
+		}
+	    procSubtree(tx0,ty0,tz0,txM,tyM,tzM,node.childs.get(0), ret, a, b, orig, dir);
 	    
+	    procSubtree(tx0,ty0,tzM,txM,tyM,tz1,node.childs.get(1), ret, a, b, orig, dir);
+	    
+	    procSubtree(tx0,tyM,tz0,txM,ty1,tzM,node.childs.get(2), ret, a, b, orig, dir);
+	    
+	    procSubtree(tx0,tyM,tzM,txM,ty1,tz1,node.childs.get(3), ret, a, b, orig, dir);
+	    
+	    procSubtree(txM,ty0,tz0,tx1,tyM,tzM,node.childs.get(4), ret, a, b, orig, dir);
+	    
+	    procSubtree(txM,ty0,tzM,tx1,tyM,tz1,node.childs.get(5), ret, a, b, orig, dir);
+	    
+	    procSubtree(txM,tyM,tz0,tx1,ty1,tzM,node.childs.get(6), ret, a, b, orig, dir);
+	    
+	    procSubtree(txM,tyM,tzM,tx1,ty1,tz1,node.childs.get(7), ret, a, b, orig, dir);
 	    
 	} 	
 	
@@ -319,7 +426,7 @@ public class PrimitiveOctree {
 	}
 
 	private byte findFirstNode(double tx0, double ty0, double tz0,
-			double txM, double tyM, double tzM, byte a) {
+			double txM, double tyM, double tzM) {
 		byte ret=0;
 		if(tx0 > ty0) {
 			if(tx0 > tz0) {
@@ -376,14 +483,14 @@ public class PrimitiveOctree {
 		}
 		
 		
-			/*
+		/*	
 		byte ret=a;
 		if (tz0 > ty0 ) {
 			if (tz0 > tx0) {
 			//tz0 es el mayor
 				if (txM < tz0) {
-					//ret |= 4;
-					ret |= 1;
+					ret |= 4;
+					//ret |= 1;
 				} else {
 					//ret &= 0xE;
 				}
@@ -400,8 +507,8 @@ public class PrimitiveOctree {
 					//ret &= 0xD;
 				}
 				if(tzM < tx0) {
-					ret |= 4;
-					//ret |= 1;
+					//ret |= 4;
+					ret |= 1;
 				} else {
 					//ret &= 0xB;
 				}
@@ -410,14 +517,14 @@ public class PrimitiveOctree {
 			//ty0 es el maximo
 			if (ty0 > tx0) {
 				if (txM < ty0) {
-					//ret |= 4;
-					ret |= 1;
+					ret |= 4;
+					//ret |= 1;
 				} else {
 					//ret &= 0xE;
 				}
 				if(tzM < ty0) {
-					//ret |= 1;
-					ret |= 4;
+					ret |= 1;
+					//ret |= 4;
 				} else {
 					//ret &= 0xB;
 				}
@@ -434,8 +541,8 @@ public class PrimitiveOctree {
 					//ret &= 0xB;
 				}
 			}			
-		}*/
-		
+		}
+		*/
 		return ret;
 	}
 	
@@ -450,15 +557,22 @@ public class PrimitiveOctree {
 	
 	private void add(OctreeNode node, Primitive p) {
 		if (node.isLeaf()) {
-			node.primitives.add(p);
-			if (node.primitives.size() > MAX_PRIMITIVES) {
+			if (node.primitives.size() == PrimitiveOctree.maxPrimitives) {
 				//throw new RuntimeException("Se entro en una recursion infinita :S");
 				System.out.println("Se expande el nodo, tamanio del octree " + node.primitives.size());System.out.flush();
+				
+				// Crea hijos y les agrega mis primitivas.
 				expand(node);
+				node.primitives.clear();
+				add(node,p);
+			} else {
+				node.primitives.add(p);
 			}
+			//node.primitives.add(p);
 		} else {
 			List<Integer> intersectedOctants = getIntersectedOctants(node, p);
 			for ( Integer octant : intersectedOctants ) {
+				System.out.println("Se caga aca");System.out.flush();
 				add(node.childs.get(octant.intValue()),p);
 			}
 		}
@@ -481,19 +595,12 @@ public class PrimitiveOctree {
 	 */
 	private void expand(OctreeNode node) {
 		
+		
 		double xMed = (node.xMin + node.xMax)*0.5;
 		double yMed = (node.yMin + node.yMax)*0.5;
 		double zMed = (node.zMin + node.zMax)*0.5;
-		/*
-		node.childs.add(0, new OctreeNode(node.xMin, xMed,node.yMin,yMed, zMed, node.zMax));
-		node.childs.add(1, new OctreeNode(node.xMin, xMed,node.yMin,yMed, node.zMin, zMed));
-		node.childs.add(2, new OctreeNode(node.xMin, xMed,yMed,node.yMax, zMed, node.zMax));
-		node.childs.add(3, new OctreeNode(node.xMin, xMed,yMed,node.yMax, node.zMin, zMed));
-		node.childs.add(4, new OctreeNode(xMed, node.xMax,node.yMin,yMed, zMed, node.zMax));
-		node.childs.add(5, new OctreeNode(xMed, node.xMax,node.yMin,yMed, node.zMin, zMed));
-		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, zMed, node.zMax));
-		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,node.zMin, zMed));*/		
-		
+
+		//Armo sus hijos
 		node.childs.add(0, new OctreeNode(node.xMin, xMed,node.yMin,yMed, node.zMin, zMed));//ok
 		node.childs.add(1, new OctreeNode(node.xMin, xMed,node.yMin,yMed, zMed, node.zMax));//ok
 		node.childs.add(2, new OctreeNode(node.xMin, xMed,yMed,node.yMax, node.zMin, zMed));//ok
@@ -504,13 +611,26 @@ public class PrimitiveOctree {
 		node.childs.add(6, new OctreeNode(xMed, node.xMax,yMed,node.yMax, node.zMin, zMed));
 		node.childs.add(7, new OctreeNode(xMed, node.xMax,yMed,node.yMax,zMed, node.zMax));//ok
 		
-		for (Primitive p : node.primitives) {
-			add(node, p);
+		// Marca booleana para ver si todas las primitvas
+		
+		for (Primitive pr : node.primitives) {
+			//En que octantes del nodo esta la primitiva
+			List<Integer> intersectedOctants = getIntersectedOctants(node, pr);
+			
+			for ( Integer octant : intersectedOctants ) {
+				//Busco en los hijos si hay alguno que tiene mi misma cantidad de primitivas,
+				//Si es asi , agrando la capacidad maxima de un nodo.
+				if (node.childs.get(octant.intValue()).primitives.size() + 1 == node.primitives.size()) {
+					PrimitiveOctree.maxPrimitives+=node.primitives.size();	
+				}
+				
+				add(node.childs.get(octant.intValue()),pr);
+			}
+			//add(node, p);
 		}
 		
-		// This is not a leaf anymore
-		node.primitives.clear();
-		return;
+		return;				
+
 	}
 	
 	/**
@@ -522,115 +642,90 @@ public class PrimitiveOctree {
 	 * @return Lista numera de octantes
 	 */
 	private List<Integer> getIntersectedOctants(OctreeNode parent, Primitive p) {
+		/*double [] extremes = p.getBoundaryPoints();
+		Point3d pMin = new Point3d(extremes[0],extremes[2], extremes[4]);
+		Point3d pMax = new Point3d(extremes[1],extremes[3], extremes[5]);
+		Point3d pMid = new Point3d((parent.xMax+parent.xMin)*0.5,
+				(parent.yMax+parent.yMin)*0.5,
+				(parent.zMax+parent.zMin)*0.5);
+
+		boolean over[] = new boolean[8];
+		over[0] = over[1] = over[2] = over[3] = (pMin.x <= pMid.x);
+		over[4] = over[5] = over[6] = over[7] = (pMax.x > pMid.x);
+		over[0] = over[0] && (pMin.y <= pMid.y);
+		over[1] = over[1] && (pMin.y <= pMid.y);
+		over[4] = over[4] && (pMin.y <= pMid.y);
+		over[5] = over[5] && (pMin.y <= pMid.y);
+		over[2] = over[2] && (pMax.y > pMid.y);
+		over[3] = over[3] && (pMax.y > pMid.y);
+		over[6] = over[6] && (pMax.y > pMid.y);
+		over[7] = over[7] && (pMax.y > pMid.y);
+		over[0] = over[0] && (pMin.z <= pMid.z);
+		over[2] = over[2] && (pMin.z <= pMid.z);
+		over[4] = over[4] && (pMin.z <= pMid.z);
+		over[6] = over[6] && (pMin.z <= pMid.z);
+		over[1] = over[1] && (pMax.z > pMid.z);
+		over[3] = over[3] && (pMax.z > pMid.z);
+		over[5] = over[5] && (pMax.z > pMid.z);
+		over[7] = over[7] && (pMax.z > pMid.z);*/
+		
+		
 		
 		boolean posOctants[] = {true, true, true, true, true, true, true, true};
 		
-		//Coordenadas del punto comun a todos los planos
-		double xvalue = (parent.xMax+parent.xMin)*0.5;
-		double yvalue = (parent.yMax+parent.yMin)*0.5;
-		double zvalue = (parent.zMax+parent.zMin)*0.5;
-		
-		Point3d commonP = new Point3d(xvalue,yvalue,zvalue);
-		
-		Vector3d nyz = new Vector3d( 1.0, 0.0, 0.0);
-		Vector3d nxz = new Vector3d( 0.0, 1.0, 0.0);
-		Vector3d nxy = new Vector3d( 0.0, 0.0, 1.0);
-		
-		Ray rayyz = new Ray(commonP, nyz);
-		Ray rayxz = new Ray(commonP, nxz);
-		Ray rayxy = new Ray(commonP, nxy);
-		System.out.println("calculando donde va");
-		//TODO refactoring con operaciones bitwise
-		//Plano YZ
-		if (p.intersect(rayyz) == null) {
-			System.out.println("se apago 0,1,2,3");
-			posOctants[0]=false;
-			posOctants[1]=false;
-			posOctants[2]=false;
-			posOctants[3]=false;
-		}
-		nyz.set(-1.0, 0, 0);
-		if (p.intersect(rayyz) == null) {
-			System.out.println("se apago 4,5,6,7");
-			posOctants[4]=false;
-			posOctants[5]=false;
-			posOctants[6]=false;
-			posOctants[7]=false;
-		}		
-		//Plano XZ
-		if (p.intersect(rayxz) == null) {
-			System.out.println("se apago 0,1,4,5");
-			posOctants[0]=false;
-			posOctants[1]=false;
-			posOctants[4]=false;
-			posOctants[5]=false;
-		}
-		nxz.set(0.0, -1.0, 0);
-		if (p.intersect(rayxz) == null) {
-			System.out.println("se apago 2,3,6,7");
-			posOctants[2]=false;
-			posOctants[3]=false;
-			posOctants[6]=false;
-			posOctants[7]=false;
-		}
-		//Plano XY
-		if (p.intersect(rayxy) == null) {
-			System.out.println("se apago 0,2,4,6");
-			posOctants[0]=false;
-			posOctants[2]=false;
-			posOctants[4]=false;
-			posOctants[6]=false;
-		}
-		nyz.set(0.0, 0, -1.0);
-		if (p.intersect(rayxy) == null) {
-			System.out.println("se apago 1,3,5,7");
-			posOctants[1]=false;
-			posOctants[3]=false;
-			posOctants[5]=false;
-			posOctants[7]=false;
-		}		
-		
-		List<Integer> ret = new ArrayList<Integer>();
+		//Punto intermedio
+		double xMed = (parent.xMax+parent.xMin)*0.5;
+		double yMed = (parent.yMax+parent.yMin)*0.5;
+		double zMed = (parent.zMax+parent.zMin)*0.5;
 		
 		double [] extremes = p.getBoundaryPoints();
-		Point3d point = new Point3d((extremes[1]-extremes[0])*0.5, (extremes[3]-extremes[2])*0.5, (extremes[5]-extremes[4])*0.5);
-		if (point.x < xvalue ) {
-			if (point.y < yvalue) {
-				if (point.z < zvalue) {
-					posOctants[0]=true;
-				} else {
-					posOctants[1]=true;
-				}
-			} else {
-				if (point.z < zvalue) {
-					posOctants[2]=true;
-				} else {
-					posOctants[3]=true;
-				}				
-			}
-		} else {
-			if (point.y < yvalue) {
-				if (point.z < zvalue) {
-					posOctants[4]=true;
-				} else {
-					posOctants[5]=true;
-				}
-			} else {
-				if (point.z < zvalue) {
-					posOctants[6]=true;
-				} else {
-					posOctants[7]=true;
-				}				
-			}			
-		}
 		
+		if (extremes[0] > xMed){
+			posOctants[0]=false;
+			posOctants[1]=false;
+			posOctants[2]=false;
+			posOctants[3]=false;
+		}
+		if (extremes[1] < xMed) {
+			posOctants[4]=false;
+			posOctants[5]=false;
+			posOctants[6]=false;
+			posOctants[7]=false;				
+		}
+		if (extremes[2] > yMed) {
+			posOctants[0]=false;
+			posOctants[1]=false;
+			posOctants[4]=false;
+			posOctants[5]=false;			
+		}
+		if (extremes[3] < yMed) {
+			posOctants[2]=false;
+			posOctants[3]=false;
+			posOctants[6]=false;
+			posOctants[7]=false;			
+		}		
+
+		if (extremes[4] > zMed) {
+			posOctants[0]=false;
+			posOctants[2]=false;
+			posOctants[4]=false;
+			posOctants[6]=false;				
+		} 
+		if (extremes[5] < zMed){
+			posOctants[1]=false;
+			posOctants[3]=false;
+			posOctants[5]=false;
+			posOctants[7]=false;
+		}	
+		
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int i=0; i< posOctants.length; i++) {
 			if (posOctants[i]) {
 				ret.add(i);
-				System.out.println("se agrego:D");
+				
 			}
 		}
-		
+		System.out.println("octantes intersectados " + ret.size());
 		return ret;
 	}
 	
@@ -638,6 +733,7 @@ public class PrimitiveOctree {
 		printOctree(root);
 	}
 	
+	// Armado anda JOYA
 	private void printOctree(OctreeNode root) {
 		System.out.println("************************************");
 		System.out.println("Este nodo es hoja?:" + root.isLeaf());
@@ -646,10 +742,33 @@ public class PrimitiveOctree {
 		System.out.println("xMin:"+root.xMin + ", xMax:"+root.xMax);
 		System.out.println("yMin:"+root.yMin + ", yMax:"+root.yMax);
 		System.out.println("zMin:"+root.zMin + ", zMax:"+root.zMax);
+		
+		/*if (root.primitives.size()>1) {
+			double [] p1 = root.primitives.get(0).getBoundaryPoints();
+			double [] p2 = root.primitives.get(1).getBoundaryPoints();
+			
+		System.out.println("#primitiva1" + p1[0] + ", " + p1[1] + ", " + p1[2] + ", " + p1[3] + ", " + p1[4] + ", " + p1[5]);
+		System.out.println("#primitiva2" + p2[0] + ", " + p2[1] + ", " + p2[2] + ", " + p2[3] + ", " + p2[4] + ", " + p2[5]);
+		}*/
 		for (OctreeNode child : root.childs) {
 			printOctree(child);
 		}
 	}
 	
+	double max(double a, double b, double c) {
+		double aux = a > b ? a : b;
+		return aux > c ? aux : c;
+	}
+	double max(double a, double b) {
+		return a > b ? a : b;
+	}
 	
+	double min(double a, double b, double c) {
+		double aux = a < b ? a : b;
+		return aux < c ? aux : c;
+	}
+	double min(double a, double b) {
+		return a < b ? a : b;
+	}
+		
 }

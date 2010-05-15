@@ -19,7 +19,7 @@ public class OctreeNode {
 	
 	// Node's children
 	List<OctreeNode> childs = new ArrayList<OctreeNode>(8);
-	List<Primitive> primitives = new ArrayList<Primitive>(PrimitiveOctree.MAX_PRIMITIVES);
+	List<Primitive> primitives = new ArrayList<Primitive>();
 	
 	/**
 	 * Default Constructor
