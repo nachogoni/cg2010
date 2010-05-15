@@ -135,9 +135,8 @@ public class Plane extends Primitive {
 
 	@Override
 	public double[] getBoundaryPoints() {
-		// TODO Auto-generated method stub
+		//TODO
 		return null;
 	}
-
 
 }

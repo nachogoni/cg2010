@@ -127,9 +127,12 @@ public class Sphere extends Primitive {
 	}
 	@Override
 	public double[] getBoundaryPoints() {
-		double [] extremes = {radiusCenter.x-radius, radiusCenter.x+radius,
-				radiusCenter.y-radius, radiusCenter.y+radius,
-				radiusCenter.z-radius, radiusCenter.z+radius}; 
+		double [] extremes = {Math.min(radiusCenter.x-radius, radiusCenter.x+radius),
+				Math.max(radiusCenter.x-radius, radiusCenter.x+radius),
+				Math.min(radiusCenter.y-radius, radiusCenter.y+radius),
+				Math.max(radiusCenter.y-radius, radiusCenter.y+radius),
+				Math.min(radiusCenter.z-radius, radiusCenter.z+radius),
+				Math.max(radiusCenter.z-radius, radiusCenter.z+radius)}; 
 		return extremes;
 	}
 	
@@ -140,6 +143,5 @@ public class Sphere extends Primitive {
 	public void scalez(double scale){
 		this.radius *= scale;
 	}
-	
 	
 }

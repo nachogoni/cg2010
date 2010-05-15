@@ -22,9 +22,9 @@ public class Ray {
 	
 	public Ray(Point3d origin, Vector3d direction) {
 		this.origin = origin;
-		direction.normalize();
 		//System.out.println("rayo x:"+dirNormalized.x+", y:"+dirNormalized.y+", z:"+dirNormalized.z);
 		this.direction = direction;
+		this.direction.normalize();
 	}
 	
 	/**
@@ -36,6 +36,7 @@ public class Ray {
 	public Ray(Point3d origin, Point3d end) {
 		this.origin = origin;		
 		this.direction = new Vector3d(end.x-origin.x,end.y-origin.y,end.z-origin.z);
+		this.direction.normalize();
 	}
 	
 	/**
@@ -47,6 +48,7 @@ public class Ray {
 	public Ray(Vector3 direction){
 		this.origin = new Point3d();
 		this.direction = direction;
+		this.direction.normalize();
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class Ray {
 	 * @return Origin point
 	 */
 	public Point3d getOrigin() {
-		return origin;
+		return this.origin;
 	}
 
 	/**
@@ -73,7 +75,7 @@ public class Ray {
 	 * @return Ray direction
 	 */
 	public Vector3d getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	/**
@@ -83,6 +85,7 @@ public class Ray {
 	 */
 	public void setDirection(Vector3d direction) {
 		this.direction = direction;
+		this.direction.normalize();
 	}
 
 //	http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtreflec.htm
@@ -140,7 +143,6 @@ public class Ray {
 		direction.add(thisDir);
 		direction.scale(refractivity);
 		normalToUse.add(direction);
-		
 		normalToUse.normalize();
 		return normalToUse;
 	}

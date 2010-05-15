@@ -251,9 +251,9 @@ public class Triangle extends Primitive {
 
 	@Override
 	public double[] getBoundaryPoints() {
-		double [] extremes = {Math.min(Math.min(p1.x, p2.x),p2.x),  Math.max(Math.max(p1.x, p2.x),p2.x),
-				Math.min(Math.min(p1.y, p2.y),p2.y),  Math.max(Math.max(p1.y, p2.y),p2.y),
-				Math.min(Math.min(p1.z, p2.z),p2.z),  Math.max(Math.max(p1.z, p2.z),p2.z)};
+		double [] extremes = {Math.min(Math.min(p1.x, p2.x),p3.x),  Math.max(Math.max(p1.x, p2.x),p3.x),
+				Math.min(Math.min(p1.y, p2.y),p3.y),  Math.max(Math.max(p1.y, p2.y),p3.y),
+				Math.min(Math.min(p1.z, p2.z),p3.z),  Math.max(Math.max(p1.z, p2.z),p3.z)};
 		return extremes;
 	}
 	
