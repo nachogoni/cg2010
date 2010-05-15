@@ -33,7 +33,6 @@ class RayCasterThread extends Thread {
 	private RayCaster rayCaster;
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
-	static private double farthestDistance = 20.0;
 	private static final int MAX_REBOUNDS = 8;
 	private static final Color INITIAL_COLOR = Color.BLACK;
 
@@ -273,8 +272,12 @@ class RayCasterThread extends Thread {
     	/*
     	 * Calculate reflection & refraction rays
     	 */
-		Ray refractRay = getRefractRay(ray, impactedFigure, intersectionPoint, refractK);
-		Ray reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
+		Ray refractRay = null;
+		Ray reflectRay = null;
+		if ( refractK != 0 ) 
+			refractRay = getRefractRay(ray, impactedFigure, intersectionPoint);
+		if ( reflectK != 0 )
+			reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
     	
 		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
 		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
@@ -376,8 +379,8 @@ class RayCasterThread extends Thread {
 		return ray.reflectFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint);
 	}
 
-	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint, double refraction) {
-		return ray.refractFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint, refraction);
+	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint) {
+		return ray.refractFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint, p.getShader().getEta());
 	}
 
 	
