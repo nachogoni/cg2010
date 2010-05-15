@@ -175,7 +175,7 @@ public class Scene {
 		for (Primitive p : this.primitives) {
 		
 			currIntersection = p.intersect(ray);
-			if (currIntersection != null && currIntersection.distance(origin) > 0.0000001 && (nearestIntersection == null || (nearestIntersection != null &&
+			if (currIntersection != null && currIntersection.distance(origin) > 0.00001 && (nearestIntersection == null || (nearestIntersection != null &&
 				currIntersection.distance(origin) < nearestIntersection.distance(origin) ))) {
 				nearestIntersection = currIntersection;
 				nearestPrimitive = p;
