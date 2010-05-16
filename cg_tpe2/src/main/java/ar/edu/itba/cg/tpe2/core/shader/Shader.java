@@ -6,6 +6,7 @@ import java.util.List;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
+import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 
 public abstract class Shader {
@@ -34,7 +35,7 @@ public abstract class Shader {
 		return type;
 	}
 	
-	abstract public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights);
+	abstract public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights, Ray viewRay);
 	
 	public float getReflectionK(){
 		return 0.0f;
