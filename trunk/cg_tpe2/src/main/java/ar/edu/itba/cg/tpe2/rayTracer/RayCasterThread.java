@@ -279,7 +279,7 @@ class RayCasterThread extends Thread {
 		if ( reflectK != 0 )
 			reflectRay = getReflectRay(ray, impactedFigure, intersectionPoint);    	
     	
-		float [] reflactRGBArray = {0.0f, 0.0f, 0.0f};
+		float [] refractRGBArray = {0.0f, 0.0f, 0.0f};
 		float [] reflectRGBArray = {0.0f, 0.0f, 0.0f};
 		
 		// Stopping recursive calls and gets only ilumination color
@@ -290,7 +290,7 @@ class RayCasterThread extends Thread {
 			}
 			if ( refractRay != null ){
 				refractColor = getColor(refractRay, maxRebounds);
-				reflactRGBArray = refractColor.getRGBColorComponents(null);
+				refractRGBArray = refractColor.getRGBColorComponents(null);
 			}
 
 		}
@@ -301,9 +301,9 @@ class RayCasterThread extends Thread {
     	float [] resultingRGBArray = new float [3];
     	
     	float sumKs = 1 + reflectK + refractK;
-    	resultingRGBArray[0] = (0.01f + ilumRGBArray[0] + refractK*reflactRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
-    	resultingRGBArray[1] = (0.01f + ilumRGBArray[1] + refractK*reflactRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
-    	resultingRGBArray[2] = (0.01f + ilumRGBArray[2] + refractK*reflactRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
+    	resultingRGBArray[0] = (0.01f + ilumRGBArray[0] + refractK*refractRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
+    	resultingRGBArray[1] = (0.01f + ilumRGBArray[1] + refractK*refractRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
+    	resultingRGBArray[2] = (0.01f + ilumRGBArray[2] + refractK*refractRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
 
     	return clamp(resultingRGBArray);
 	}
