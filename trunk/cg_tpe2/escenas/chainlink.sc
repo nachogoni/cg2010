@@ -34,6 +34,13 @@ camera {
 	aspect 1.33333333333 
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 40
+   p 0.0 20.0 0.0
+}
+
 object {
 	shader material
 	type generic-mesh
