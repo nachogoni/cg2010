@@ -91,7 +91,7 @@ public class App
     		
     		int numberOfBuckets = 128;
 
-   			raycaster = new RayCaster(scene, camera, 1, numberOfBuckets, colorVar, pbar);
+   			raycaster = new RayCaster(scene, camera, 4, numberOfBuckets, colorVar, pbar);
 
     		// Take start time
     		if (cl.hasOption("time")) {
