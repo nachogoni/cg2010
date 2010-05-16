@@ -1,12 +1,11 @@
 package ar.edu.itba.cg.tpe2.core.scene;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
+import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 
@@ -15,13 +14,13 @@ public class PrimitiveOctree {
 	// Maxima cantidad de primitivas en la hoja
 	public static int maxPrimitives = 1;
 	
+	public final static double DEFAULT_OCTREE_SIZE= 50.0;
+	public final static double EPSILON= 0.00000001;
+	
 	// Nodo raiz del octree
 	OctreeNode root;
 	
 	private double size=0;
-	
-	// Constante epsilon
-	private final static double EPSILON = 0.000000001;
 	
 	/**
 	 * Constructor default
@@ -36,10 +35,11 @@ public class PrimitiveOctree {
 		 
 		// We are giving the chance to the intersect functions in primitives to have a representation error
 		// and they still be in the correct octree node
+		
 		this.size = max( max(Math.abs(xMinimun), Math.abs(xMaximun), 
-					max( Math.abs(yMinimun), Math.abs(yMaximun) ) ),
-					max(Math.abs(zMinimun), Math.abs(zMaximun) ) )*2 + EPSILON*2;
-		System.out.println(this.size);
+				max( Math.abs(yMinimun), Math.abs(yMaximun) ) ),
+				max(Math.abs(zMinimun), Math.abs(zMaximun) ) )*2 + EPSILON*2;
+	
 		this.root = new OctreeNode(-size*0.5, size*0.5, 
 				-size*0.5, size*0.5, 
 				-size*0.5, size*0.5);
@@ -58,82 +58,11 @@ public class PrimitiveOctree {
 		// Lista con los nodos intersectados
 		List<OctreeNode> ret = new ArrayList<OctreeNode>(); 
 		byte a = 0, b = 0;
-		//TODO ver que onda si el origen esta metido dentro del octree
 		
 		Point3d rayOrig = new Point3d(ray.getOrigin().x, ray.getOrigin().y, ray.getOrigin().z);
 		Point3d rayDir = new Point3d(ray.getDirection().x, ray.getDirection().y, ray.getDirection().z);
 		
 		//double tx0 ,tx1, ty0, ty1, tz0, tz1;
-				
-		/*if (rayDir.x == 0) {
-			rayDir.set(EPSILON, rayDir.y, rayDir.z);
-			b |= 4;
-		} else */
-		/*if (rayDir.x < 0) {
-			double dist=0;
-			/*if ( rayOrig.x < root.xMin ) {
-				dist=root.xMin-rayOrig.x;
-			} else if (rayOrig.x > root.xMax) {
-				dist=rayOrig.x-root.xMax;
-			}
-			if (rayOrig.x < 0) {
-				rayOrig.set(rayOrig.x+ dist*2+this.size, rayOrig.y , rayOrig.z);
-			} else {
-				rayOrig.set(rayOrig.x- (dist*2+this.size), rayOrig.y , rayOrig.z );
-			}
-			
-			rayOrig.set(this.size-rayOrig.x + rayOrig.x, rayOrig.y, rayOrig.z);
-			
-			rayDir.set(-rayDir.x, rayDir.y, rayDir.z);
-			a |= 0x4;
-		}*/
-		/*if (rayDir.y == 0) {
-			rayDir.set(rayDir.x, EPSILON, rayDir.z);
-			b |= 2;			
-		} else */
-		/*if (rayDir.y < 0) {
-			/*double dist=0;
-			if ( rayOrig.y < root.yMin ) {
-				dist=root.yMin-rayOrig.y;
-			} else if (rayOrig.y > root.yMax) {
-				dist=rayOrig.y-root.yMax;
-			}			
-			if (rayOrig.y < 0) {
-				rayOrig.set(rayOrig.x, rayOrig.y+ dist*2+this.size, rayOrig.z);
-			} else {
-				rayOrig.set(rayOrig.x, rayOrig.y - (dist*2+this.size), rayOrig.z );
-			}
-			
-			rayOrig.set(rayOrig.x, this.size-rayOrig.y+rayOrig.y, rayOrig.z);
-			rayDir.set(rayDir.x, -rayDir.y, rayDir.z);
-			a |= 0x2;
-		}*/
-		/*if (rayDir.z == 0) {
-			rayDir.set(rayDir.x, rayDir.y, EPSILON);
-			b |= 1;			
-		}*//*			
-		} else */
-		/*if (rayDir.z < 0) {
-			/*double dist=0;
-			if ( rayOrig.z < root.zMin ) {
-				dist=root.zMin-rayOrig.z;
-			} else if (rayOrig.z > root.zMax) {
-				dist=rayOrig.z-root.zMax;
-			}						
-			
-			if (rayOrig.z < 0) {
-				rayOrig.set(rayOrig.x, rayOrig.y, rayOrig.z+ dist*2+this.size );
-			} else {
-				rayOrig.set(rayOrig.x, rayOrig.y, rayOrig.z- (dist*2+this.size) );
-			}
-			rayOrig.set(rayOrig.x, rayOrig.y, this.size-rayOrig.z+rayOrig.z);
-			rayDir.set(rayDir.x, rayDir.y, -rayDir.z);
-			a |= 0x1;
-		}*/
-		
-		
-		//System.out.println("a:"+a);
-		//System.out.println("b:"+b);
 		double tx0, tx1;
 		tx0=(root.xMin - rayOrig.x) / rayDir.x;
 		tx1=(root.xMax - rayOrig.x) / rayDir.x;
@@ -373,15 +302,12 @@ public class PrimitiveOctree {
 		
 		if (tx0 > txM || tx1 < txM) {
 			return;
-			//throw new RuntimeException("se cago fiero");
 		}
 		if (ty0 > tyM || ty1 < tyM) {
 			return;
-			//throw new RuntimeException("se cago fiero");
 		}
 		if (tz0 > tzM || tz1 < tzM) {
 			return;
-			//throw new RuntimeException("se cago fiero");
 		}
 	    procSubtree(tx0,ty0,tz0,txM,tyM,tzM,node.childs.get(0), ret, a, b, orig, dir);
 	    
@@ -401,151 +327,6 @@ public class PrimitiveOctree {
 	    
 	} 	
 	
-	
-	private byte nextNode(double txM, double tyM, double tzM, byte i, byte j,
-			byte k) {
-		byte ret;
-		if (txM < tyM) {
-			//txM es el minimo
-			if (txM < tzM) {
-				ret= i;
-			//tzM es el minimo
-			} else {
-				ret= k;
-			}
-		} else {
-			//tyM es el minimo
-			if (tyM < tzM) {
-				ret= j;
-			//tzM es el minimo
-			} else {
-				ret= k;
-			}			
-		}
-		return ret;
-	}
-
-	private byte findFirstNode(double tx0, double ty0, double tz0,
-			double txM, double tyM, double tzM) {
-		byte ret=0;
-		if(tx0 > ty0) {
-			if(tx0 > tz0) {
-				// max(tx0, ty0, tz0) is tx0. Entry plane is YZ.
-				if(tyM < tx0) {
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-				if(tzM < tx0) {
-					ret |= 1;
-				} else {
-					//ret &= 0xE;
-				}
-			} else {
-				// max(tx0, ty0, tz0) is tz0. Entry plane is XY.
-				if(txM < tz0) { 
-					ret |= 4;
-				} else {
-					//ret &= 0xB;
-				}
-				if(tyM < tz0) { 
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-			}
-		} else {
-			if(ty0 > tz0) {
-				// max(tx0, ty0, tz0) is ty0. Entry plane is XZ.
-				if(txM < ty0) { 
-					ret |= 4;
-				} else {
-					//ret &= 0xB;
-				}
-				if(tzM < ty0) { 
-					ret |= 1;
-				} else {
-					//ret &= 0xE;
-				}
-			} else {
-				// max(tx0, ty0, tz0) is tz0. Entry plane is XY.
-				if(txM < tz0) { 
-					ret |= 4;
-				} else {
-					//ret &= 0xB;
-				}
-				if(tyM < tz0) {
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-			}
-		}
-		
-		
-		/*	
-		byte ret=a;
-		if (tz0 > ty0 ) {
-			if (tz0 > tx0) {
-			//tz0 es el mayor
-				if (txM < tz0) {
-					ret |= 4;
-					//ret |= 1;
-				} else {
-					//ret &= 0xE;
-				}
-				if(tyM < tz0) {
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-			//tx0 es el mayor
-			} else {
-				if (tyM < tx0) {
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-				if(tzM < tx0) {
-					//ret |= 4;
-					ret |= 1;
-				} else {
-					//ret &= 0xB;
-				}
-			}
-		} else {
-			//ty0 es el maximo
-			if (ty0 > tx0) {
-				if (txM < ty0) {
-					ret |= 4;
-					//ret |= 1;
-				} else {
-					//ret &= 0xE;
-				}
-				if(tzM < ty0) {
-					ret |= 1;
-					//ret |= 4;
-				} else {
-					//ret &= 0xB;
-				}
-			//tx0 es el maximo
-			} else {
-				if (tyM < tx0) {
-					ret |= 2;
-				} else {
-					//ret &= 0xD;
-				}
-				if(tzM < tx0) {
-					ret |= 1;
-				} else {
-					//ret &= 0xB;
-				}
-			}			
-		}
-		*/
-		return ret;
-	}
-	
 	/**
 	 * Funcion add: Inserta recursivamente una primitiva a un nodo. 
 	 * Si es hoja, lo agrega. Si supera la cantidad se expande(pasa a ser padre).
@@ -559,7 +340,7 @@ public class PrimitiveOctree {
 		if (node.isLeaf()) {
 			if (node.primitives.size() == PrimitiveOctree.maxPrimitives) {
 				//throw new RuntimeException("Se entro en una recursion infinita :S");
-				System.out.println("Se expande el nodo, tamanio del octree " + node.primitives.size());System.out.flush();
+				//System.out.println("Se expande el nodo, tamanio del octree " + node.primitives.size());System.out.flush();
 				
 				// Crea hijos y les agrega mis primitivas.
 				expand(node);
@@ -572,7 +353,7 @@ public class PrimitiveOctree {
 		} else {
 			List<Integer> intersectedOctants = getIntersectedOctants(node, p);
 			for ( Integer octant : intersectedOctants ) {
-				System.out.println("Se caga aca");System.out.flush();
+				//System.out.println("Se caga aca");System.out.flush();
 				add(node.childs.get(octant.intValue()),p);
 			}
 		}
@@ -642,34 +423,6 @@ public class PrimitiveOctree {
 	 * @return Lista numera de octantes
 	 */
 	private List<Integer> getIntersectedOctants(OctreeNode parent, Primitive p) {
-		/*double [] extremes = p.getBoundaryPoints();
-		Point3d pMin = new Point3d(extremes[0],extremes[2], extremes[4]);
-		Point3d pMax = new Point3d(extremes[1],extremes[3], extremes[5]);
-		Point3d pMid = new Point3d((parent.xMax+parent.xMin)*0.5,
-				(parent.yMax+parent.yMin)*0.5,
-				(parent.zMax+parent.zMin)*0.5);
-
-		boolean over[] = new boolean[8];
-		over[0] = over[1] = over[2] = over[3] = (pMin.x <= pMid.x);
-		over[4] = over[5] = over[6] = over[7] = (pMax.x > pMid.x);
-		over[0] = over[0] && (pMin.y <= pMid.y);
-		over[1] = over[1] && (pMin.y <= pMid.y);
-		over[4] = over[4] && (pMin.y <= pMid.y);
-		over[5] = over[5] && (pMin.y <= pMid.y);
-		over[2] = over[2] && (pMax.y > pMid.y);
-		over[3] = over[3] && (pMax.y > pMid.y);
-		over[6] = over[6] && (pMax.y > pMid.y);
-		over[7] = over[7] && (pMax.y > pMid.y);
-		over[0] = over[0] && (pMin.z <= pMid.z);
-		over[2] = over[2] && (pMin.z <= pMid.z);
-		over[4] = over[4] && (pMin.z <= pMid.z);
-		over[6] = over[6] && (pMin.z <= pMid.z);
-		over[1] = over[1] && (pMax.z > pMid.z);
-		over[3] = over[3] && (pMax.z > pMid.z);
-		over[5] = over[5] && (pMax.z > pMid.z);
-		over[7] = over[7] && (pMax.z > pMid.z);*/
-		
-		
 		
 		boolean posOctants[] = {true, true, true, true, true, true, true, true};
 		
@@ -679,6 +432,17 @@ public class PrimitiveOctree {
 		double zMed = (parent.zMax+parent.zMin)*0.5;
 		
 		double [] extremes = p.getBoundaryPoints();
+		
+		if (p instanceof Plane) {
+			List<Integer> ret = new ArrayList<Integer>();
+			for (int i=0; i< posOctants.length; i++) {
+				if (posOctants[i]) {
+					ret.add(i);
+					
+				}
+			}			
+			return ret;
+		}
 		
 		if (extremes[0] > xMed){
 			posOctants[0]=false;
@@ -725,7 +489,6 @@ public class PrimitiveOctree {
 				
 			}
 		}
-		System.out.println("octantes intersectados " + ret.size());
 		return ret;
 	}
 	
@@ -743,13 +506,6 @@ public class PrimitiveOctree {
 		System.out.println("yMin:"+root.yMin + ", yMax:"+root.yMax);
 		System.out.println("zMin:"+root.zMin + ", zMax:"+root.zMax);
 		
-		/*if (root.primitives.size()>1) {
-			double [] p1 = root.primitives.get(0).getBoundaryPoints();
-			double [] p2 = root.primitives.get(1).getBoundaryPoints();
-			
-		System.out.println("#primitiva1" + p1[0] + ", " + p1[1] + ", " + p1[2] + ", " + p1[3] + ", " + p1[4] + ", " + p1[5]);
-		System.out.println("#primitiva2" + p2[0] + ", " + p2[1] + ", " + p2[2] + ", " + p2[3] + ", " + p2[4] + ", " + p2[5]);
-		}*/
 		for (OctreeNode child : root.childs) {
 			printOctree(child);
 		}

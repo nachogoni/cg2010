@@ -8,6 +8,7 @@ import java.util.List;
 import javax.vecmath.Point3d;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
+import ar.edu.itba.cg.tpe2.core.geometry.Plane;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
@@ -25,18 +26,8 @@ public class Scene {
 	
 	private PrimitiveOctree octree = null;
 	
-	final static boolean USE_NOT_WORKING_OCTREE = false;
-	
 	private Camera aCamera = null;
 	private Image anImage = null;
-	
-	public Scene(List<Primitive> primitives, PrimitiveOctree octree, Camera aCamera, Image anImage) {
-		super();
-		this.primitives = primitives;
-		this.octree = octree;
-		this.aCamera = aCamera;
-		this.anImage = anImage;
-	}
 
 	public Camera getCamera() {
 		return aCamera;
@@ -59,37 +50,6 @@ public class Scene {
 		return "Scene [aCamera=" + aCamera + ", anImage=" + anImage + ", list="
 				+ primitives + ", listPLanes="
 				+ planes + ", octree=" + octree + "]";
-	}
-
-
-	/**
-	 * Constructor for the scene from a file name
-	 * 
-	 * @param scene Scene file name
-	 */
-	/*
-	public Scene(String scene) {
-		this.list = Collections.synchronizedList(read(scene));
-		this.optimize();
-	}
-*/
-	/**
-	 * Constructor for the scene from a primitives list
-	 * 
-	 * @param list List of primitives in the scene
-	 */
-	public Scene(List<Primitive> list) {
-		this.primitives = list;
-	}
-	
-	/**
-	 * Constructor for the scene from a primitives list
-	 * 
-	 * @param list List of primitives in the scene
-	 * @param planes List of PLanes in the scene
-	 */
-	public Scene(List<Primitive> list, List<Primitive> planes) {
-		this.primitives = list;
 	}
 	
 	/**
@@ -136,31 +96,33 @@ public class Scene {
 	
 	public void optimize() {
 		
-		double xMin = Double.MAX_VALUE, xMax = Double.MIN_VALUE, 
-			   yMin = Double.MAX_VALUE, yMax = Double.MIN_VALUE, 
-			   zMin = Double.MAX_VALUE, zMax = Double.MIN_VALUE;
-
+		double xMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, xMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
+			   yMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, yMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
+			   zMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, zMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE;
+		
 		// Search for the maximun an minimun points for the scene
 		for (Primitive p : primitives) {
-			double[] extremes= p.getBoundaryPoints();
-			if (extremes[0] < xMin) {
-				xMin = extremes[0];
+			if (!(p instanceof Plane)) {
+				double[] extremes= p.getBoundaryPoints();
+				if (extremes[0] < xMin) {
+					xMin = extremes[0];
+				}
+				if ( extremes[1]> xMax) {
+					xMax = extremes[1];
+				} 
+				if (extremes[2] < yMin) {
+					yMin = extremes[2];
+				}
+				if (extremes[3] > yMax) {
+					yMax = extremes[3];
+				} 
+				if (extremes[4] < zMin) {
+					zMin = extremes[4];
+				}
+				if (extremes[5] > zMax) {
+					zMax = extremes[5];
+				} 
 			}
-			if ( extremes[1]> xMax) {
-				xMax = extremes[1];
-			} 
-			if (extremes[2] < yMin) {
-				yMin = extremes[2];
-			}
-			if (extremes[3] > yMax) {
-				yMax = extremes[3];
-			} 
-			if (extremes[4] < zMin) {
-				zMin = extremes[4];
-			}
-			if (extremes[5] > zMax) {
-				zMax = extremes[5];
-			} 
 		}
 		// Create the octree
 		octree = new PrimitiveOctree(xMin, xMax, yMin, xMax, zMin, zMax);
@@ -175,50 +137,7 @@ public class Scene {
 		return;
 	}
 	
-	/**
-	 * Return a list of primitives into a file
-	 * 
-	 * @param scene File name of the scene
-	 * 
-	 * @return List of primitives
-	 */
-	
-	public Primitive getFirstIntersection(Ray ray, Point3d intersectionPoint) {
-		Primitive ret=null;
-		if (!USE_NOT_WORKING_OCTREE) {
-			ret = getFirstIntersectionOld(ray, intersectionPoint);
-		} else {
-			ret = getFirstIntersectionNew(ray, intersectionPoint);
-		}
-		return ret;
-	}
-	
-	
-	public Primitive getFirstIntersectionOld(Ray ray, Point3d intersectionPoint) {
-		Primitive nearestPrimitive = null;
-		Point3d currIntersection = null, nearestIntersection=null;
-		Point3d origin = ray.getOrigin();
-		
-		// Find intersection in scene with ray
-		for (Primitive p : this.primitives) {
-		
-			currIntersection = p.intersect(ray);
-			if (currIntersection != null && currIntersection.distance(origin) > 0.00001 && (nearestIntersection == null || (nearestIntersection != null &&
-				currIntersection.distance(origin) < nearestIntersection.distance(origin) ))) {
-				nearestIntersection = currIntersection;
-				nearestPrimitive = p;
-			}
-		}
-		
-		if (nearestIntersection !=null) {
-			intersectionPoint.set(nearestIntersection);
-		}
-		
-		return nearestPrimitive;
-	}
-
-	
-	public Primitive getFirstIntersectionNew(final Ray ray, Point3d intersectionPoint) {
+	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint) {
 		Primitive nearestPrimitive = null;
 		Point3d currIntersection = null, nearestIntersection=null;
 		final Point3d origin = ray.getOrigin();
@@ -233,7 +152,6 @@ public class Scene {
 		// Los nodos del octree me vienen ordenados por cercania.
 		// Si intersecta con el primer nodo, no se sigue procesando
 		boolean found=false;
-		//&& !found
 		for (Iterator<OctreeNode> iter = octree.intersectedNodes(ray).iterator(); iter.hasNext() ;) {
 			OctreeNode currNode = iter.next();
 			/*System.out.println("Rayo: "+ ray.getDirection().toString());
@@ -252,11 +170,21 @@ public class Scene {
 					nearestPrimitive = p;
 				}
 			}
-			if (nearestIntersection!=null) {
-				found=true;
+		}
+		for (Primitive p : this.planes) {
+			currIntersection = p.intersect(ray);
+			if (currIntersection != null  && currIntersection.distance(origin) > 0.00001 && 
+					(nearestIntersection == null || (nearestIntersection != null &&
+					currIntersection.distance(origin) < nearestIntersection.distance(origin)
+					//&& currIntersection.distance(origin) > 0.1
+					))) {
+				nearestIntersection = currIntersection;
+				nearestPrimitive = p;
 			}
 		}
-		
+		if (nearestIntersection!=null) {
+			found=true;
+		}
 		
 		if (found) {
 			intersectionPoint.set(nearestIntersection);
