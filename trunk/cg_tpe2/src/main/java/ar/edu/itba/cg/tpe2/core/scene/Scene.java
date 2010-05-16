@@ -25,7 +25,7 @@ public class Scene {
 	
 	private PrimitiveOctree octree = null;
 	
-	final static boolean USE_NOT_WORKING_OCTREE=true;
+	final static boolean USE_NOT_WORKING_OCTREE = false;
 	
 	private Camera aCamera = null;
 	private Image anImage = null;
@@ -139,7 +139,7 @@ public class Scene {
 		double xMin = Double.MAX_VALUE, xMax = Double.MIN_VALUE, 
 			   yMin = Double.MAX_VALUE, yMax = Double.MIN_VALUE, 
 			   zMin = Double.MAX_VALUE, zMax = Double.MIN_VALUE;
-		
+
 		// Search for the maximun an minimun points for the scene
 		for (Primitive p : primitives) {
 			double[] extremes= p.getBoundaryPoints();

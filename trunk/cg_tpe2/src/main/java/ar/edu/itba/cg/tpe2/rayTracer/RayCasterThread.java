@@ -33,8 +33,9 @@ class RayCasterThread extends Thread {
 	private RayCaster rayCaster;
 	private IColorProvider colorMode;
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
-	private static final int MAX_REBOUNDS = 8;
+	private static final int MAX_REBOUNDS = 4;
 	private static final Color INITIAL_COLOR = Color.BLACK;
+	private static boolean LIGHTS_ON = false;
 
 	private static final float AMBIENT_LIGHT = 0.1f;
 
@@ -310,10 +311,10 @@ class RayCasterThread extends Thread {
 
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
-		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint,lights).getRGBColorComponents(null);
+		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint,lights,ray).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
-		
-		if (!lights.isEmpty()) {
+
+		if ( LIGHTS_ON && !lights.isEmpty()) {
 			for(Light l:lights){
 				if ( l instanceof PointLight ){
 					PointLight pl = (PointLight) l;
@@ -355,12 +356,12 @@ class RayCasterThread extends Thread {
 		} else {
 			// There is no light in the scene, put some ambient light
 			rgbs = figureRGBComponents;
-			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
-			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
-			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
+//			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
+//			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
+//			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
 		}
-		
 		return clamp(rgbs);
+		
 	}
 
 	private Color clamp(float [] rgbs){

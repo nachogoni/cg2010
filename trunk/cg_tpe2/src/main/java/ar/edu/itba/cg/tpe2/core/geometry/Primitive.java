@@ -177,9 +177,9 @@ public abstract class Primitive {
 	
 	public abstract void transformWith(Matrix4d m);
 	
-	public Color getColorAt(Point3d aPoint, List<Light> lights) {
+	public Color getColorAt(Point3d aPoint, List<Light> lights, Ray viewRay) {
 		if (shader != null)
-			return this.shader.getColorAt(aPoint, this, lights);
+			return this.shader.getColorAt(aPoint, this, lights, viewRay);
 		else
 			return Color.WHITE;//FIXME
 	}
