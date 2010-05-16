@@ -19,6 +19,8 @@ public class Scene {
 
 	private List<Primitive> primitives = Collections.synchronizedList(new ArrayList<Primitive>());
 	
+	private List<Primitive> planes = Collections.synchronizedList(new ArrayList<Primitive>());
+	
 	private List<Light> lights = Collections.synchronizedList(new ArrayList<Light>());
 	
 	private PrimitiveOctree octree = null;
@@ -55,7 +57,8 @@ public class Scene {
 	@Override
 	public String toString() {
 		return "Scene [aCamera=" + aCamera + ", anImage=" + anImage + ", list="
-				+ primitives + ", octree=" + octree + "]";
+				+ primitives + ", listPLanes="
+				+ planes + ", octree=" + octree + "]";
 	}
 
 
@@ -80,6 +83,16 @@ public class Scene {
 	}
 	
 	/**
+	 * Constructor for the scene from a primitives list
+	 * 
+	 * @param list List of primitives in the scene
+	 * @param planes List of PLanes in the scene
+	 */
+	public Scene(List<Primitive> list, List<Primitive> planes) {
+		this.primitives = list;
+	}
+	
+	/**
 	 * Constructor for the scene
 	 * 
 	 */
@@ -96,6 +109,15 @@ public class Scene {
 	}
 	
 	/**
+	 * Get the list of planes in the scene
+	 * 
+	 * @return List of planes
+	 */
+	public List<Primitive> getPlanes() {
+		return planes;
+	}
+	
+	/**
 	 * Add a list of primitives in the scene
 	 * 
 	 * @param primitives List of primitives to be added
@@ -103,6 +125,12 @@ public class Scene {
 	public void add(List<Primitive> primitives) {
 		for (Primitive p : primitives) {
 			this.primitives.add(p);
+		}
+	}
+	
+	public void addPlanes(List<Primitive> planes) {
+		for (Primitive p : planes) {
+			this.planes.add(p);
 		}
 	}
 	

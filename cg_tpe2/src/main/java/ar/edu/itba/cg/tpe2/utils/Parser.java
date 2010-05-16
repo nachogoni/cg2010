@@ -290,7 +290,7 @@ public class Parser {
 			} else {
 				planeList.add(new Plane(object_name, shaders.get(shader_name), points.get(0), normal, aTrans));
 			}
-			scene.add(planeList);
+			scene.addPlanes(planeList);
 //			for(int i = 0; i < planeList.size(); i++)
 //				System.out.println(planeList.get(i).toString());
 		} else if (type.equals("box")){
