@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.itba.cg.tpe2.rayTracer.IImagePartitioner;
+import ar.edu.itba.cg.tpe2.rayTracer.Task;
 
 /**
  * Splits the image in horizontal stripes ( along the height )
@@ -13,22 +14,24 @@ import ar.edu.itba.cg.tpe2.rayTracer.IImagePartitioner;
 public class HorizontalImagePartitioner implements IImagePartitioner {
 
 	@Override
-	public List<Rectangle> getPortions(int size, int width, int height) {
+	public List<Task> getPortions(int size, int width, int height, int imgType) {
 		if ( width < 1 || height < 1 || size < 1 )
 			return null;
 		
 		int portionHeight = height/size;
 		int remainder = height%size;
 		
-		List<Rectangle> out = new ArrayList<Rectangle>();
+		List<Task> out = new ArrayList<Task>();
 		int currentHeight = 0;
 		
 		if ( remainder != 0 ){
-			out.add(new Rectangle(0, 0, width, portionHeight+remainder));
+			Rectangle rectangle = new Rectangle(0, 0, width, portionHeight+remainder);
+			out.add(new Task(rectangle, imgType));
 			currentHeight += portionHeight+remainder;
 		}
 		while( currentHeight < height){
-			out.add(new Rectangle(0, currentHeight, width, portionHeight));
+			Rectangle rectangle = new Rectangle(0, currentHeight, width, portionHeight);
+			out.add(new Task(rectangle, imgType));
 			currentHeight += portionHeight;
 		}
 		

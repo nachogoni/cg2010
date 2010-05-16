@@ -60,14 +60,13 @@ public class RayCaster {
 
 		image = new BufferedImage(width, height, imageType);
 
-		List<Rectangle> tasks = imagePartitioner.getPortions(bucketsSize,width,height);
+		List<Task> tasks = imagePartitioner.getPortions(bucketsSize,width,height,imageType);
 //		cb = new CyclicBarrier(2);
 		synchronized (RayCasterThread.class) {
 			RayCasterThread.setImage(image);
 			RayCasterThread.setTasks(tasks);
 		}
 		
-//		while ( ! RayCasterThread.allTasksFinished() );
 		try {
 			synchronized (this) {
 				this.wait();	
@@ -76,8 +75,26 @@ public class RayCaster {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		fillImageFromTasks(tasks);
 		return image;
+	}
+
+	private void fillImageFromTasks(List<Task> tasks) {
+		if ( ! tasks.isEmpty() ){
+			for(Task t:tasks){
+				Rectangle region = t.getRegion();
+				BufferedImage taskImage = t.getImage();
+				int fromX = (int) region.getX();
+				int fromY = (int) region.getY();
+				double width = region.getWidth();
+				double height = region.getHeight();
+				for(int i = 0; i < width; i++){
+					for(int j = 0; j < height; j++){
+						image.setRGB(i+fromX, j+fromY, taskImage.getRGB(i, j));
+					}
+				}
+			}
+		}
 	}
 
 	private boolean thereAreDeadThreads() {

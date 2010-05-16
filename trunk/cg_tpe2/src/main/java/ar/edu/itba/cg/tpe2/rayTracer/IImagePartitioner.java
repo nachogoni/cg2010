@@ -14,8 +14,9 @@ public interface IImagePartitioner {
 	 * @param size Number of pieces or portions in which the image should be divided
 	 * @param width Width of image
 	 * @param height Height of image
+	 * @param imageType 
 	 * @return List of @size number of portions
 	 */
-	List<Rectangle> getPortions(int size, int width, int height);
+	List<Task> getPortions(int size, int width, int height, int imageType);
 
 }
