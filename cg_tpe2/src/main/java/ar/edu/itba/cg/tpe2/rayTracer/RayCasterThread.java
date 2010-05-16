@@ -35,12 +35,12 @@ class RayCasterThread extends Thread {
 	private int colorVariation = RayCaster.COLOR_VARIATION_LINEAR;
 	private static final int MAX_REBOUNDS = 4;
 	private static final Color INITIAL_COLOR = Color.BLACK;
-	private static boolean LIGHTS_ON = false;
+	private static boolean LIGHTS_ON = true;
 
 	private static final float AMBIENT_LIGHT = 0.1f;
 
-	private static List<Rectangle> tasks = null;
-	private static Iterator<Rectangle> taskIterator;
+	private static List<Task> tasks = null;
+	private static Iterator<Task> taskIterator;
 	private static int finishedTasks;
 	
 	private static int i=0;
@@ -166,7 +166,7 @@ class RayCasterThread extends Thread {
 		return toY;
 	}
 	
-	synchronized public static void setTasks(List<Rectangle> tasks) {
+	synchronized public static void setTasks(List<Task> tasks) {
 		RayCasterThread.tasks = tasks;
 		RayCasterThread.taskIterator = tasks.iterator();
 		finishedTasks = 0;
@@ -176,8 +176,8 @@ class RayCasterThread extends Thread {
 		return tasks.size() == finishedTasks;
 	}
 	
-	private Rectangle getTask() {
-		Rectangle r;
+	private Task getTask() {
+		Task r;
 		synchronized (this.getClass()) {
 			if ( tasks == null || !taskIterator.hasNext() )
 				return null;
@@ -203,12 +203,13 @@ class RayCasterThread extends Thread {
 	 */
 	public void run() {
 		while ( true ){
-			Rectangle task = getTask();
+			Task task = getTask();
 			while ( task == null ){
 				task = getTask();
 			}
 
-			setPortion(task, width, height);
+			setPortion(task.getRegion(), width, height);
+			BufferedImage img = task.getImage();
 			Point3d origin = camera.getEye();
 
 			Color color;
@@ -240,9 +241,7 @@ class RayCasterThread extends Thread {
 
 					color = clamp(colorAA);
 					
-					synchronized (image) {
-						image.setRGB(i, j, color.getRGB());
-					}
+					img.setRGB(i-fromX, j-fromY, color.getRGB());
 				}
 			}
 			synchronized( this.getClass() ){
@@ -329,22 +328,10 @@ class RayCasterThread extends Thread {
 					// No object between light and impactedFigure :D
 					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
 						Vector3 dirToLight = new Vector3(intersectionP,pl.getP());
-						dirToLight.normalize();
-						figureNormal.normalize();
-						float angleToLight = (float) figureNormal.dot(dirToLight);
-						if ( angleToLight >= 0 ){
-							float [] lightContribution = {0,0,0};
-							float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
-							float fallOff = pl.getFallOff(distanceToLight);
-							
-							lightContribution[0] = angleToLight * lightRGBComponents[0] * figureRGBComponents[0] * fallOff;
-							lightContribution[1] = angleToLight * lightRGBComponents[1] * figureRGBComponents[1] * fallOff;
-							lightContribution[2] = angleToLight * lightRGBComponents[2] * figureRGBComponents[2] * fallOff;
-							
-							rgbs[0] += lightContribution[0];
-							rgbs[1] += lightContribution[1];
-							rgbs[2] += lightContribution[2];
-						}
+						float [] lightContribution = getLightContribution(dirToLight,figureNormal,pl,figureRGBComponents,distanceToLight);
+						rgbs[0] += lightContribution[0];
+						rgbs[1] += lightContribution[1];
+						rgbs[2] += lightContribution[2];
 					} else {
 						// This light does not illuminate this object, let's put some ambient light
 						rgbs[0] += figureRGBComponents[0] * AMBIENT_LIGHT;
@@ -374,6 +361,21 @@ class RayCasterThread extends Thread {
 		if ( channel < 0 )
 			return 0;
 		return channel;
+	}
+	
+	private float[] getLightContribution(Vector3 dirToLight, Vector3 figureNormal, PointLight pl, float[] figureColor, double distanceToLight){
+		float [] lightContribution = {0,0,0};
+		float angleToLight = (float) figureNormal.dot(dirToLight);
+		if ( angleToLight >= 0 ){
+			float[] lightColor = pl.getASpec().getColor().getRGBColorComponents(null);
+			float fallOff = pl.getFallOff(distanceToLight);
+			
+			lightContribution[0] = angleToLight * lightColor[0] * figureColor[0] * fallOff;
+			lightContribution[1] = angleToLight * lightColor[1] * figureColor[1] * fallOff;
+			lightContribution[2] = angleToLight * lightColor[2] * figureColor[2] * fallOff;
+			
+		}
+		return lightContribution;
 	}
 	
 	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {
