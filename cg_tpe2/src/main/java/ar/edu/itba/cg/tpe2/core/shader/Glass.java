@@ -33,8 +33,8 @@ public class Glass extends Shader {
 	public Specular getColor() {
 		return color;
 	}
-	public Specular getAbs_color() {
-		return abs_color;
+	public Color getAbsColor() {
+		return abs_color.getColor();
 	}
 	@Override
 	public String toString() {

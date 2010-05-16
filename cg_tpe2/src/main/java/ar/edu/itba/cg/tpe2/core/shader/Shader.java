@@ -50,4 +50,8 @@ public abstract class Shader {
 		return 0;
 	}
 
+	public Color getAbsColor() {
+		return Color.BLACK;
+	}
+
 }

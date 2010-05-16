@@ -137,7 +137,11 @@ public class Scene {
 		return;
 	}
 	
-	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint) {
+	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint){
+		return getFirstIntersection(ray, intersectionPoint, null);
+	}
+	
+	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint, Primitive primitiveToIgnore) {
 		Primitive nearestPrimitive = null;
 		Point3d currIntersection = null, nearestIntersection=null;
 		final Point3d origin = ray.getOrigin();
@@ -160,6 +164,21 @@ public class Scene {
 			//System.out.println("intersected node!" + currNode.primitives.size());*/
 			
 			for (Primitive p : currNode.primitives ) {
+				if ( !p.equals(primitiveToIgnore) ){
+					currIntersection = p.intersect(ray);
+					if (currIntersection != null  && currIntersection.distance(origin) > 0.00001 && 
+							(nearestIntersection == null || (nearestIntersection != null &&
+							currIntersection.distance(origin) < nearestIntersection.distance(origin)
+							//&& currIntersection.distance(origin) > 0.1
+							))) {
+						nearestIntersection = currIntersection;
+						nearestPrimitive = p;
+					}
+				}
+			}
+		}
+		for (Primitive p : this.planes) {
+			if ( !p.equals(primitiveToIgnore) ){
 				currIntersection = p.intersect(ray);
 				if (currIntersection != null  && currIntersection.distance(origin) > 0.00001 && 
 						(nearestIntersection == null || (nearestIntersection != null &&
@@ -169,17 +188,6 @@ public class Scene {
 					nearestIntersection = currIntersection;
 					nearestPrimitive = p;
 				}
-			}
-		}
-		for (Primitive p : this.planes) {
-			currIntersection = p.intersect(ray);
-			if (currIntersection != null  && currIntersection.distance(origin) > 0.00001 && 
-					(nearestIntersection == null || (nearestIntersection != null &&
-					currIntersection.distance(origin) < nearestIntersection.distance(origin)
-					//&& currIntersection.distance(origin) > 0.1
-					))) {
-				nearestIntersection = currIntersection;
-				nearestPrimitive = p;
 			}
 		}
 		if (nearestIntersection!=null) {
