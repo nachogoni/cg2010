@@ -296,18 +296,25 @@ public class Parser {
 		} else if (type.equals("box")){
 			//Creo los 12 triangulos
 			LinkedList<Primitive> triangleList = new LinkedList<Primitive>();
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, 0.5), new Point3d(0.5, 0.5, 0.5), new Point3d(-0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(0.5, 0.5, 0.5), new Point3d(0.5, -0.5, 0.5), new Point3d(-0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(0.5, 0.5, 0.5), new Point3d(0.5, 0.5, -0.5), new Point3d(0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(0.5, 0.5, -0.5), new Point3d(0.5, -0.5, -0.5), new Point3d(0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, -0.5), new Point3d(0.5, 0.5, -0.5), new Point3d(-0.5, -0.5, -0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(0.5, 0.5, -0.5), new Point3d(0.5, -0.5, -0.5), new Point3d(-0.5, -0.5, -0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, 0.5), new Point3d(-0.5, 0.5, -0.5), new Point3d(-0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, -0.5), new Point3d(-0.5, -0.5, -0.5), new Point3d(-0.5, -0.5, 0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, 0.5), new Point3d(-0.5, 0.5, -0.5), new Point3d(0.5, 0.5, -0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, 0.5), new Point3d(0.5, 0.5, 0.5), new Point3d(0.5, 0.5, -0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, -0.5, 0.5), new Point3d(-0.5, -0.5, -0.5), new Point3d(0.5, -0.5, -0.5), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5, 0.5, 0.5), new Point3d(0.5, -0.5, 0.5), new Point3d(0.5, -0.5, -0.5), aTrans));
+			
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,+0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point3d(+0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,-0.5,-0.5), new Point3d(+0.5,-0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			
 			scene.add(triangleList);
 		}
 		

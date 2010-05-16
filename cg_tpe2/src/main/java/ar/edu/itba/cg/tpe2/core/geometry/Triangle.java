@@ -68,6 +68,8 @@ public class Triangle extends Primitive {
 		this.n2 = n2;
 		this.n3 = n3;
 
+		setUVs(uv1, uv2, uv3);
+
 	}
 	
 	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
@@ -103,6 +105,8 @@ public class Triangle extends Primitive {
 		minY = Math.min(p1.y, Math.min(p2.y, p3.y));
 		maxX = Math.max(p1.x, Math.max(p2.x, p3.x));
 		maxY = Math.max(p1.y, Math.max(p2.y, p3.y));
+		
+		setUVs(new Point2d(0.1,0.1), new Point2d(0.5,0.1), new Point2d(0.1,0.5));
 	}
 	
 	public Point3d intersect(Ray ray) {
@@ -219,9 +223,22 @@ public class Triangle extends Primitive {
         double u = v12.x;
         double v = v12.y;
 
-        if (v < 0) {
-	        v = 1-Math.abs(v);
+        if (u >= 1) {
+        	u = 1 - DISTANCE_TOLE;
         }
+        if (v >= 1) {
+        	v = 1 - DISTANCE_TOLE;
+        }
+        if (v < 0) {
+        	v = 0 + DISTANCE_TOLE;
+        }
+        if (u < 0) {
+        	u = 0 + DISTANCE_TOLE;
+        }
+        
+//        if (v < 0) {
+//	        v = (1 - Math.abs(v)) % 1;
+//        }
         
         u = Math.abs(u);
         
