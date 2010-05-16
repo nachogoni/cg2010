@@ -226,7 +226,8 @@ class RayCasterThread extends Thread {
 					Point3d[] po = camera.getPointFromXY(width, height, i, j, side, samples);
 
 					float[] colorAA = new float[]{0,0,0};
-
+					if ( i == 673 && j == 321 )
+						System.out.println("");
 					for (int aa = 0; aa < po.length; aa++) {
 						// Create a new Ray from camera, i, j
 						ray = new Ray(origin, po[aa]);
@@ -255,12 +256,16 @@ class RayCasterThread extends Thread {
 		}
 	}
 
-    private Color getColor(Ray ray, int maxRebounds) {
+	private Color getColor(Ray ray, int maxRebounds){
+		return getColor(ray, maxRebounds, null);
+	}
+	
+    private Color getColor(Ray ray, int maxRebounds, Primitive primitiveToIgnore) {
     	Point3d intersectionPoint = new Point3d();
     	Primitive impactedFigure;
 		Color refractColor, reflectColor, ilumColor;
     	
-		impactedFigure = scene.getFirstIntersection(ray, intersectionPoint);
+		impactedFigure = scene.getFirstIntersection(ray, intersectionPoint,primitiveToIgnore);
 		
 		if (impactedFigure == null ) {
 			return INITIAL_COLOR;
@@ -285,11 +290,11 @@ class RayCasterThread extends Thread {
 		// Stopping recursive calls and gets only ilumination color
 		if (maxRebounds-- != 0) {
 			if ( reflectRay != null ){
-				reflectColor = getColor(reflectRay, maxRebounds);
+				reflectColor = getColor(reflectRay, maxRebounds, impactedFigure);
 				reflectRGBArray = reflectColor.getRGBColorComponents(null);
 			}
 			if ( refractRay != null ){
-				refractColor = getColor(refractRay, maxRebounds);
+				refractColor = getColor(refractRay, maxRebounds, impactedFigure);
 				refractRGBArray = refractColor.getRGBColorComponents(null);
 			}
 
@@ -301,6 +306,10 @@ class RayCasterThread extends Thread {
     	float [] resultingRGBArray = new float [3];
     	
     	float sumKs = 1 + reflectK + refractK;
+
+//    	float [] absorbance = impactedFigure.getShader().getAbsColor().getRGBColorComponents(null);
+//    	Color transparency = new Color((float)Math.exp(absorbance[0]),(float)Math.exp(absorbance[1]),(float)Math.exp(absorbance[2]));
+//		a_Acc += rcol * transparency;
     	resultingRGBArray[0] = (0.01f + ilumRGBArray[0] + refractK*refractRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
     	resultingRGBArray[1] = (0.01f + ilumRGBArray[1] + refractK*refractRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
     	resultingRGBArray[2] = (0.01f + ilumRGBArray[2] + refractK*refractRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
@@ -323,7 +332,7 @@ class RayCasterThread extends Thread {
 					Ray rayFromLight = new Ray(intersectionP,pl.getP());
 					double distanceToLight = intersectionP.distance(pl.getP());
 					
-					p = scene.getFirstIntersection(rayFromLight, newIntersectionP);
+					p = scene.getFirstIntersection(rayFromLight, newIntersectionP, impactedFigure);
 					double distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
 					// No object between light and impactedFigure :D
 					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
@@ -343,10 +352,11 @@ class RayCasterThread extends Thread {
 		} else {
 			// There is no light in the scene, put some ambient light
 			rgbs = figureRGBComponents;
-//			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
-//			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
-//			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
+			rgbs[0] *= AMBIENT_LIGHT * 0.5f;
+			rgbs[1] *= AMBIENT_LIGHT * 0.5f;
+			rgbs[2] *= AMBIENT_LIGHT * 0.5f;
 		}
+
 		return clamp(rgbs);
 		
 	}

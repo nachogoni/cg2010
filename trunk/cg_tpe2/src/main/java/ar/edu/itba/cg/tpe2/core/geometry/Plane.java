@@ -1,7 +1,6 @@
  package ar.edu.itba.cg.tpe2.core.geometry;
 
 import javax.vecmath.Matrix4d;
-import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 

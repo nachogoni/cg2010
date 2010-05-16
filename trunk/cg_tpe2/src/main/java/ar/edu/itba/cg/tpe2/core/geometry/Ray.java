@@ -95,7 +95,7 @@ public class Ray {
 		double dotProduct = rNormal.dot(this.direction);
 		rNormal.scale(-2*dotProduct);
 		rNormal.add(this.direction);
-		rNormal.normalize();
+//		rNormal.normalize();
 		
 		Point3d rEnd = new Point3d(primitivePoint);
 		rEnd.add(rNormal);
@@ -105,18 +105,18 @@ public class Ray {
 
 //	http://www.cse.ohio-state.edu/~kerwin/refraction.html
 //	http://www.yaldex.com/open-gl/ch14lev1sec1.html
-	public Ray refractFrom(Vector3 primitiveNormal, Point3d primitivePoint, double refractivity){
+	public Ray refractFrom(Vector3 primitiveNormal, Point3d primitivePoint, double eta){
 		Vector3d normalToUse = new Vector3d(primitiveNormal);
 		double dotProduct = normalToUse.dot(this.direction);
 		
 		if ( dotProduct < 0 ){
 			// Ray enters
-			refractivity = 1 / refractivity;
+			eta = 1 / eta;
 		}else{
 			// Ray goes out
 			normalToUse.scale(-1.0);
 		}
-		Vector3d rDir = calculateRefractedDir(normalToUse,this.direction,dotProduct,refractivity);
+		Vector3d rDir = calculateRefractedDir(normalToUse,this.direction,dotProduct,eta);
 		
 		if ( rDir == null ){
 			// No ray is refracted
@@ -129,22 +129,19 @@ public class Ray {
 	}
 	
 	private Vector3d calculateRefractedDir(Vector3d normalToUse, Vector3d thisDir, double angle, double refractivity) {
-		Vector3d direction = new Vector3d();
+		Vector3d direction = new Vector3d(thisDir);
 		
-		double dotProduct = -angle;
-		double squareProduct = 1 - ( 1 - dotProduct * dotProduct ) * refractivity * refractivity;
-		if ( squareProduct <= 0 )
+		double sinT2 = ( 1 - angle * angle ) * refractivity * refractivity;
+		if ( sinT2 > 1.0 )
 			// Not refracted
 			return null;
 		
-		double scale = refractivity * dotProduct - Math.sqrt(squareProduct);
-		normalToUse.scale(scale);
+		double scale = refractivity + Math.sqrt(1 - sinT2);
+		normalToUse.scale(-scale);
 		
-		direction.add(thisDir);
 		direction.scale(refractivity);
-		normalToUse.add(direction);
-		normalToUse.normalize();
-		return normalToUse;
+		direction.add(normalToUse);
+		return direction;
 	}
 
 }
