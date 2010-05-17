@@ -1,25 +1,25 @@
 package ar.edu.itba.cg.tpe2.core.camera;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 public class Pinhole extends Camera {
 
-	private Point2d shift;
+	private Point2f shift;
 
-	public Pinhole(String type, Point3d eye, Point3d target, Vector3d up,
-			double fov, double aspect, Point2d shift) {
+	public Pinhole(String type, Point3f eye, Point3f target, Vector3f up,
+			float fov, float aspect, Point2f shift) {
 		super(type, eye, target, up, fov, aspect);
 		this.shift = shift;
 	}
 
-	public Pinhole(String type, Point3d eye, Point3d target2, Vector3d up,
-			double fov, double aspect) {
+	public Pinhole(String type, Point3f eye, Point3f target2, Vector3f up,
+			float fov, float aspect) {
 		super(type, eye, target2, up, fov, aspect);
 	}
 
-	public Point2d getShift() {
+	public Point2f getShift() {
 		return shift;
 	}
 

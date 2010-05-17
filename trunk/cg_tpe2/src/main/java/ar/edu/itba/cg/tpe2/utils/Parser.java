@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
 import javax.vecmath.Point3i;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.camera.Pinhole;
@@ -98,13 +98,13 @@ public class Parser {
 		String shader_name = "";
 		String type = "";
 		String object_name = "";
-		List<Point3d> points = new LinkedList<Point3d>();
+		List<Point3f> points = new LinkedList<Point3f>();
 		List<Point3i> triangles = new LinkedList<Point3i>();
-		List<Vector3d> normals = new LinkedList<Vector3d>();
-		List<Point2d> uvs = new LinkedList<Point2d>();
-		Point3d center = null;
-		Vector3d normal = null;
-		Double radious = null;
+		List<Vector3f> normals = new LinkedList<Vector3f>();
+		List<Point2f> uvs = new LinkedList<Point2f>();
+		Point3f center = null;
+		Vector3f normal = null;
+		Float radious = null;
 		Integer pts_qty = 0, tri_qty = 0;
 		Transform aTrans = null;
 		do{
@@ -117,13 +117,13 @@ public class Parser {
 					do{
 						current = aParser.getNextToken();
 						if(current.equals("p")){
-							points.add(new Point3d(new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken())));
+							points.add(new Point3f(new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken())));
 						} else if(current.equals("n")){
-							normal = new Vector3d(new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken()));
+							normal = new Vector3f(new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken()));
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
 						}
@@ -134,11 +134,11 @@ public class Parser {
 						if(current.equals("name")){
 							object_name = aParser.getNextToken();
 						} else if(current.equals("c")){
-							center = new Point3d(new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken()), 
-									new Double(aParser.getNextToken()));
+							center = new Point3f(new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken()), 
+									new Float(aParser.getNextToken()));
 						} else if(current.equals("r")){
-							radious = new Double(aParser.getNextToken());
+							radious = new Float(aParser.getNextToken());
 						} else if (current.equals("transform")){
 							aTrans = this.parseTransform();
 						}
@@ -151,9 +151,9 @@ public class Parser {
 						} else if(current.equals("points")){
 							pts_qty = new Integer(aParser.getNextToken());
 							for(int i = 0; i < pts_qty; i++){
-								points.add(new Point3d(new Double(aParser.getNextToken()), 
-										new Double(aParser.getNextToken()), 
-										new Double(aParser.getNextToken())));
+								points.add(new Point3f(new Float(aParser.getNextToken()), 
+										new Float(aParser.getNextToken()), 
+										new Float(aParser.getNextToken())));
 							}
 						} else if(current.equals("triangles")){
 							tri_qty = new Integer(aParser.getNextToken());
@@ -169,15 +169,15 @@ public class Parser {
 						} else if (current.equals("normals") && !aParser.peekNextToken().equals("none")){
 							String normals_type = aParser.getNextToken();
 							for(int i = 0; i < pts_qty; i++){
-								normals.add(new Vector3d(new Double(aParser.getNextToken()), 
-										new Double(aParser.getNextToken()), 
-										new Double(aParser.getNextToken())));
+								normals.add(new Vector3f(new Float(aParser.getNextToken()), 
+										new Float(aParser.getNextToken()), 
+										new Float(aParser.getNextToken())));
 							}
 						} else if (current.equals("uvs") && !aParser.peekNextToken().equals("none")){
 							String uvs_type = aParser.getNextToken();
 							for(int i = 0; i < pts_qty; i++){
-								uvs.add(new Point2d(new Double(aParser.getNextToken()), 
-										new Double(aParser.getNextToken())));
+								uvs.add(new Point2f(new Float(aParser.getNextToken()), 
+										new Float(aParser.getNextToken())));
 							}
 						}
 					}while(!current.equals("}"));
@@ -192,14 +192,14 @@ public class Parser {
 							tri_qty = new Integer(aParser.getNextToken());
 							for(int i = 0; i < pts_qty; i++){
 								if(aParser.getNextToken().equals("v")){
-									points.add(new Point3d(new Double(aParser.getNextToken()), 
-											new Double(aParser.getNextToken()), 
-											new Double(aParser.getNextToken())));
-									normals.add(new Vector3d(new Double(aParser.getNextToken()), 
-											new Double(aParser.getNextToken()), 
-											new Double(aParser.getNextToken())));
-									uvs.add(new Point2d(new Double(aParser.getNextToken()), 
-											new Double(aParser.getNextToken())));
+									points.add(new Point3f(new Float(aParser.getNextToken()), 
+											new Float(aParser.getNextToken()), 
+											new Float(aParser.getNextToken())));
+									normals.add(new Vector3f(new Float(aParser.getNextToken()), 
+											new Float(aParser.getNextToken()), 
+											new Float(aParser.getNextToken())));
+									uvs.add(new Point2f(new Float(aParser.getNextToken()), 
+											new Float(aParser.getNextToken())));
 								}
 							}
 							for(int i = 0; i < tri_qty; i++){
@@ -297,23 +297,23 @@ public class Parser {
 			//Creo los 12 triangulos
 			LinkedList<Primitive> triangleList = new LinkedList<Primitive>();
 			
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,+0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,-0.5f), new Point3f(+0.5f,+0.5f,-0.5f), new Point3f(+0.5f,+0.5f,+0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,-0.5f), new Point3f(-0.5f,+0.5f,+0.5f), new Point3f(+0.5f,+0.5f,+0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point3d(+0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,+0.5f,+0.5f), new Point3f(+0.5f,+0.5f,-0.5f), new Point3f(+0.5f,-0.5f,-0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,+0.5f,+0.5f), new Point3f(+0.5f,-0.5f,+0.5f), new Point3f(+0.5f,-0.5f,-0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 			
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,+0.5), new Point3d(+0.5,+0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point3d(+0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,+0.5f), new Point3f(+0.5f,+0.5f,+0.5f), new Point3f(+0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,+0.5f), new Point3f(-0.5f,-0.5f,+0.5f), new Point3f(+0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 			
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,-0.5f), new Point3f(-0.5f,+0.5f,+0.5f), new Point3f(-0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(-0.5f,+0.5f,-0.5f), new Point3f(-0.5f,-0.5f,-0.5f), new Point3f(-0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 			
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,-0.5,-0.5), new Point3d(+0.5,-0.5,+0.5), new Point3d(-0.5,-0.5,+0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,-0.5f,-0.5f), new Point3f(-0.5f,-0.5f,-0.5f), new Point3f(-0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,-0.5f,-0.5f), new Point3f(+0.5f,-0.5f,+0.5f), new Point3f(-0.5f,-0.5f,+0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 			
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,-0.5), new Point3d(-0.5,+0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(0,1), new Point2d(1,1), aTrans));
-			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3d(+0.5,+0.5,-0.5), new Point3d(+0.5,-0.5,-0.5), new Point3d(-0.5,-0.5,-0.5), new Point2d(0,0), new Point2d(1,0), new Point2d(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,+0.5f,-0.5f), new Point3f(-0.5f,+0.5f,-0.5f), new Point3f(-0.5f,-0.5f,-0.5f), new Point2f(0,0), new Point2f(0,1), new Point2f(1,1), aTrans));
+			triangleList.add(new Triangle(object_name, shaders.get(shader_name), new Point3f(+0.5f,+0.5f,-0.5f), new Point3f(+0.5f,-0.5f,-0.5f), new Point3f(-0.5f,-0.5f,-0.5f), new Point2f(0,0), new Point2f(1,0), new Point2f(1,1), aTrans));
 			
 			scene.add(triangleList);
 		}
@@ -356,14 +356,14 @@ public class Parser {
 	private Transform parseTransform() throws IOException{
 		String current;
 		Transform aTrans = new Transform();
-		Point3d translate;
+		Point3f translate;
 		do{
 			current = aParser.getNextToken();
 			
 			if(current.equals("translate")){
-				translate = new Point3d(new Double(aParser.getNextToken()),
-						new Double(aParser.getNextToken()),
-						new Double(aParser.getNextToken()));
+				translate = new Point3f(new Float(aParser.getNextToken()),
+						new Float(aParser.getNextToken()),
+						new Float(aParser.getNextToken()));
 				aTrans.setTranslate(translate);
 			} else if (current.equals("rotatex")){
 				aTrans.setRotatex(new Float(aParser.getNextToken()));
@@ -372,13 +372,13 @@ public class Parser {
 			} else if (current.equals("rotatez")){
 				aTrans.setRotatez(new Float(aParser.getNextToken()));
 			} else if (current.equals("scalex")) {
-				aTrans.setScalex(new Double(aParser.getNextToken()));
+				aTrans.setScalex(new Float(aParser.getNextToken()));
 			} else if (current.equals("scaley")) {
-				aTrans.setScaley(new Double(aParser.getNextToken()));
+				aTrans.setScaley(new Float(aParser.getNextToken()));
 			} else if (current.equals("scalez")) {
-				aTrans.setScalez(new Double(aParser.getNextToken()));
+				aTrans.setScalez(new Float(aParser.getNextToken()));
 			} else if (current.equals("scaleu")) {
-				aTrans.setScaleu(new Double(aParser.getNextToken()));
+				aTrans.setScaleu(new Float(aParser.getNextToken()));
 			}
 			
 		}while(!current.equals("}"));
@@ -393,7 +393,7 @@ public class Parser {
 	private void parseLightSettings() throws IOException {
 		String current, type = null, light_color;
 		Float __a, __b, __c, power = -1f;
-		Point3d light_pos = null;
+		Point3f light_pos = null;
 		Specular aSpec = null;
 		do{
 			current = aParser.getNextToken();
@@ -404,9 +404,9 @@ public class Parser {
 			}else if (current.equals("power")){
 				power = new Float(aParser.getNextToken());
 			}else if (current.equals("p")){
-				light_pos = new Point3d(new Double(aParser.getNextToken()),
-						new Double(aParser.getNextToken()),
-						new Double(aParser.getNextToken()));
+				light_pos = new Point3f(new Float(aParser.getNextToken()),
+						new Float(aParser.getNextToken()),
+						new Float(aParser.getNextToken()));
 			}
 		}while(!current.equals("}"));
 		
@@ -427,7 +427,7 @@ public class Parser {
 		String current;
 		String name = null, type = null, texture_path = null;
 		String shader_color = null, abs_color = null;
-		Double __a = -1d, __b = -1d, __c = -1d, eta = -1d, abs_dst = -1d, abs__a = -1d, abs__b = -1d, abs__c = -1d;
+		Float __a = -1f, __b = -1f, __c = -1f, eta = -1f, abs_dst = -1f, abs__a = -1f, abs__b = -1f, abs__c = -1f;
 		Integer samples = 1;
 		Specular aSpec = null, absSpec = null;
 		Diffuse aDiff = null;
@@ -468,11 +468,11 @@ public class Parser {
 					do{
 						current = aParser.getNextToken();
 						if(current.equals("eta")){
-							eta = new Double(aParser.getNextToken());
+							eta = new Float(aParser.getNextToken());
 						} else if(current.equals("color")){
 							aSpec = this.parseSpec(current);
 						} else if (current.equals("absorbtion.distance")){
-							abs_dst = new Double(aParser.getNextToken());
+							abs_dst = new Float(aParser.getNextToken());
 						} else if (current.equals("absorbtion.color")){
 							absSpec = this.parseSpec(current);
 						}
@@ -507,7 +507,7 @@ public class Parser {
 			Shader aConstant = new Constant(name, type, aColor);
 			shaders.put(aConstant.getName(), aConstant);
 		} else if (type.equals("glass")){
-			Shader aGlass = new Glass(name, type, eta.doubleValue(), abs_dst.doubleValue(), aSpec, absSpec);
+			Shader aGlass = new Glass(name, type, eta.floatValue(), abs_dst.floatValue(), aSpec, absSpec);
 			shaders.put(aGlass.getName(), aGlass);
 		}
 		
@@ -566,38 +566,38 @@ public class Parser {
 		Camera aCamera = null;
 		String current;
 		String type = null;
-		Point3d eye = null, target = null;
-		Vector3d up = null;
-		Double fov = -1d, aspect = -1d;
-		Double tl_fdist = null, tl_lensr = null;
-		Point2d shift = null;
+		Point3f eye = null, target = null;
+		Vector3f up = null;
+		Float fov = -1f, aspect = -1f;
+		Float tl_fdist = null, tl_lensr = null;
+		Point2f shift = null;
 		do {
 			current = aParser.getNextToken();
 			if(current.equals("type")){
 				type = aParser.getNextToken();
 			} else if (current.equals("eye")){
-				eye = new Point3d(new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()));
+				eye = new Point3f(new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()));
 			} else if (current.equals("target")){
-				target = new Point3d(new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()));
+				target = new Point3f(new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()));
 			} else if (current.equals("up")){
-				up = new Vector3d(new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()), 
-						new Double(aParser.getNextToken()));
+				up = new Vector3f(new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()), 
+						new Float(aParser.getNextToken()));
 			} else if (current.equals("fov")){
-				fov = new Double(aParser.getNextToken());
+				fov = new Float(aParser.getNextToken());
 			} else if (current.equals("aspect")){
-				aspect = new Double(aParser.getNextToken());
+				aspect = new Float(aParser.getNextToken());
 			} else if (current.equals("fdist")){
-				tl_fdist = new Double(aParser.getNextToken());
+				tl_fdist = new Float(aParser.getNextToken());
 			} else if (current.equals("lensr")){
-				tl_lensr = new Double(aParser.getNextToken());
+				tl_lensr = new Float(aParser.getNextToken());
 			} else if (current.equals("shift")){
-				shift = new Point2d(new Double(aParser.getNextToken()),
-						new Double(aParser.getNextToken()));
+				shift = new Point2f(new Float(aParser.getNextToken()),
+						new Float(aParser.getNextToken()));
 			}
 		}while(!current.equals("}"));
 		
@@ -607,7 +607,7 @@ public class Parser {
 				aCamera = new Pinhole(type, eye, target, up, fov, aspect, shift);
 			else aCamera = new Pinhole(type, eye, target, up, fov, aspect);
 		} else if(type.equals("thinlens")){
-			aCamera = new Thinlens(type, eye, target, up, fov.doubleValue(), aspect.doubleValue(), tl_fdist.doubleValue(), tl_lensr.doubleValue());
+			aCamera = new Thinlens(type, eye, target, up, fov.floatValue(), aspect.floatValue(), tl_fdist.floatValue(), tl_lensr.floatValue());
 		}
 		
 		scene.setCamera(aCamera);

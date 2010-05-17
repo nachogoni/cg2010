@@ -6,15 +6,15 @@ public abstract class Light {
 
 	private ELightType type;
 	private String name;
-	private double power;
+	private float power;
 	
-	public Light(ELightType type, String name, double power) {
+	public Light(ELightType type, String name, float power) {
 		this.type = type;
 		this.name = name;
 		this.power = power;
 	}
 
-	public double getPower() {
+	public float getPower() {
 		return power;
 	}
 	

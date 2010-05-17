@@ -1,25 +1,25 @@
  package ar.edu.itba.cg.tpe2.core.geometry;
 
-import javax.vecmath.Matrix4d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 public class Plane extends Primitive {
 
-	Point3d p1;
-	Vector3d n;
-	Vector3d vu = null;
-	Vector3d vv = null;
+	Point3f p1;
+	Vector3f n;
+	Vector3f vu = null;
+	Vector3f vv = null;
 
 	Transform transform;
 
-    private static final double DISTANCE_TOLE  = 0.00000000000001;
+    private static final float DISTANCE_TOLE  = 0.00000000000001f;
 
-	private static final double TEXTURE_BLOCK  = 10f;
+	private static final float TEXTURE_BLOCK  = 10f;
 	
-	public Plane(String name, Shader shader, Point3d p1, Vector3d n, Transform trans) throws IllegalArgumentException{
+	public Plane(String name, Shader shader, Point3f p1, Vector3f n, Transform trans) throws IllegalArgumentException{
 		super(name,shader);
 		if ( n.equals(new Vector3()) )
 			throw new IllegalArgumentException("Normal of a plane shouldn't be the 0 vector");
@@ -35,7 +35,7 @@ public class Plane extends Primitive {
 		}
 	}
 	
-	public Plane(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
+	public Plane(String name, Shader shader, Point3f p1, Point3f p2, Point3f p3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		Vector3 normal = new Vector3();	
 		normal.cross(new Vector3(p1,p2), new Vector3(p1,p3));
@@ -53,15 +53,15 @@ public class Plane extends Primitive {
 		}
 	}
 		
-	public Point3d intersect(Ray ray) {
+	public Point3f intersect(Ray ray) {
 
 		// ray direction vector
 		Vector3 dir = new Vector3(ray.getDirection());
 	    
 		Vector3 w0 = new Vector3(p1,ray.getOrigin());
 		
-		double a = -n.dot(w0);
-		double b = n.dot(dir);
+		float a = -n.dot(w0);
+		float b = n.dot(dir);
 		
         // Check if ray is parallel to triangle plane
 	    if ( Math.abs(b) < DISTANCE_TOLE ) {
@@ -73,37 +73,37 @@ public class Plane extends Primitive {
 	        	return null;
 	    }
 	    
-	    double r = a/b;
+	    float r = a/b;
 	    
 	    // Check if ray goes away from triangle
 	    if ( r < 0.0 )
 	    	return null;
 	    
-	    Point3d intersectionPoint = new Point3d ( ray.getOrigin() );
+	    Point3f intersectionPoint = new Point3f ( ray.getOrigin() );
 	    dir.scale(r);
 	    intersectionPoint.add(dir);
 	    return intersectionPoint;
 	}
 		
 	@Override
-	public double[] getUV(Point3d point) {
+	public float[] getUV(Point3f point) {
 	
-    	Point3d p = new Point3d(point);
+    	Point3f p = new Point3f(point);
     	
     	p.sub(p1);
 
     	if((vu == null) || (vv == null)) {
-    		vv = new Vector3d(p);
-            vu = new Vector3d();
+    		vv = new Vector3f(p);
+            vu = new Vector3f();
             vu.cross(vv, n);
             vu.normalize();
             vv.normalize();
         }
         
-        Vector3d p1p = new Vector3d(p);
+        Vector3f p1p = new Vector3f(p);
         
-        double u = (p1p.dot(vu));
-        double v = (p1p.dot(vv));
+        float u = (p1p.dot(vu));
+        float v = (p1p.dot(vv));
         
 		u = ((u % TEXTURE_BLOCK) / TEXTURE_BLOCK);
 		v = ((v % TEXTURE_BLOCK) / TEXTURE_BLOCK);
@@ -113,16 +113,16 @@ public class Plane extends Primitive {
 		if (u < 0)
 			u *= -1;
 		
-		return new double[]{u,v};
+		return new float[]{u,v};
 	}
 
 	@Override
-	public Vector3 getNormalAt(Point3d p, Point3d from) {
+	public Vector3 getNormalAt(Point3f p, Point3f from) {
 		return new Vector3(n);
 	}
 
 	@Override
-	public void transformWith(Matrix4d m) {
+	public void transformWith(Matrix4f m) {
 		m.transform(p1);
 		m.transform(n);
 	}
@@ -133,7 +133,7 @@ public class Plane extends Primitive {
 	}
 
 	@Override
-	public double[] getBoundaryPoints() {
+	public float[] getBoundaryPoints() {
 		//TODO
 		return null;
 	}

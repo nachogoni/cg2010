@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Plane;
@@ -96,14 +96,14 @@ public class Scene {
 	
 	public void optimize() {
 		
-		double xMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, xMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
+		float xMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, xMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
 			   yMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, yMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
 			   zMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, zMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE;
 		
 		// Search for the maximun an minimun points for the scene
 		for (Primitive p : primitives) {
 			if (!(p instanceof Plane)) {
-				double[] extremes= p.getBoundaryPoints();
+				float[] extremes= p.getBoundaryPoints();
 				if (extremes[0] < xMin) {
 					xMin = extremes[0];
 				}
@@ -137,14 +137,14 @@ public class Scene {
 		return;
 	}
 	
-	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint){
+	public Primitive getFirstIntersection(final Ray ray, Point3f intersectionPoint){
 		return getFirstIntersection(ray, intersectionPoint, null);
 	}
 	
-	public Primitive getFirstIntersection(final Ray ray, Point3d intersectionPoint, Primitive primitiveToIgnore) {
+	public Primitive getFirstIntersection(final Ray ray, Point3f intersectionPoint, Primitive primitiveToIgnore) {
 		Primitive nearestPrimitive = null;
-		Point3d currIntersection = null, nearestIntersection=null;
-		final Point3d origin = ray.getOrigin();
+		Point3f currIntersection = null, nearestIntersection=null;
+		final Point3f origin = ray.getOrigin();
 		// Check if the octree is created
 		synchronized(this) {
 			if (octree == null) {

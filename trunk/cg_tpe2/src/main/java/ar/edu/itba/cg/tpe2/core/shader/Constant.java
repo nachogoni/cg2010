@@ -3,7 +3,7 @@ package ar.edu.itba.cg.tpe2.core.shader;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
@@ -23,7 +23,7 @@ public class Constant extends Shader {
 		this.color = color;
 	}
 
-	public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
 		return color;
 	}
 

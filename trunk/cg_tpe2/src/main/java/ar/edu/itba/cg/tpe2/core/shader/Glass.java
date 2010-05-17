@@ -3,7 +3,7 @@ package ar.edu.itba.cg.tpe2.core.shader;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -12,9 +12,9 @@ import ar.edu.itba.cg.tpe2.core.light.Light;
 
 public class Glass extends Shader {
 
-	private double eta, abs_dist;
+	private float eta, abs_dist;
 	private Specular color, abs_color;
-	public Glass(String name, String type, double eta, double absDist,
+	public Glass(String name, String type, float eta, float absDist,
 			Specular color, Specular absColor) {
 		super(name, type);
 		this.eta = eta;
@@ -23,11 +23,11 @@ public class Glass extends Shader {
 		abs_color = absColor;
 	}
 	
-	public double getEta() {
+	public float getEta() {
 		return eta;
 	}
 	
-	public double getAbs_dist() {
+	public float getAbs_dist() {
 		return abs_dist;
 	}
 	public Specular getColor() {
@@ -43,7 +43,7 @@ public class Glass extends Shader {
 				+ getName() + ", getType()=" + getType() + "]";
 	}
 	@Override
-	public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
 		return color.getColor();
 	}
 

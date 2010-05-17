@@ -1,7 +1,7 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 /**
  * Ray representation
@@ -9,9 +9,9 @@ import javax.vecmath.Vector3d;
  */
 public class Ray {
 	
-	private Point3d origin;
+	private Point3f origin;
 	
-	private Vector3d direction;
+	private Vector3f direction;
 	
 	/**
 	 * Constructor for Ray class
@@ -20,7 +20,7 @@ public class Ray {
 	 * @param direction Direction vector for the ray
 	 */
 	
-	public Ray(Point3d origin, Vector3d direction) {
+	public Ray(Point3f origin, Vector3f direction) {
 		this.origin = origin;
 		//System.out.println("rayo x:"+dirNormalized.x+", y:"+dirNormalized.y+", z:"+dirNormalized.z);
 		this.direction = direction;
@@ -33,9 +33,9 @@ public class Ray {
 	 * @param origin Position where from the ray starts 
 	 * @param direction Position where from the ray ends
 	 */	
-	public Ray(Point3d origin, Point3d end) {
+	public Ray(Point3f origin, Point3f end) {
 		this.origin = origin;		
-		this.direction = new Vector3d(end.x-origin.x,end.y-origin.y,end.z-origin.z);
+		this.direction = new Vector3f(end.x-origin.x,end.y-origin.y,end.z-origin.z);
 		this.direction.normalize();
 	}
 	
@@ -46,7 +46,7 @@ public class Ray {
 	 * @param direction Direction for the ray
 	 */
 	public Ray(Vector3 direction){
-		this.origin = new Point3d();
+		this.origin = new Point3f();
 		this.direction = direction;
 		this.direction.normalize();
 	}
@@ -56,7 +56,7 @@ public class Ray {
 	 * 
 	 * @return Origin point
 	 */
-	public Point3d getOrigin() {
+	public Point3f getOrigin() {
 		return this.origin;
 	}
 
@@ -65,7 +65,7 @@ public class Ray {
 	 * 
 	 * @param origin New position
 	 */
-	public void setOrigin(Point3d origin) {
+	public void setOrigin(Point3f origin) {
 		this.origin = origin;
 	}
 
@@ -74,7 +74,7 @@ public class Ray {
 	 * 
 	 * @return Ray direction
 	 */
-	public Vector3d getDirection() {
+	public Vector3f getDirection() {
 		return this.direction;
 	}
 
@@ -83,21 +83,21 @@ public class Ray {
 	 * 
 	 * @param direction New ray direction
 	 */
-	public void setDirection(Vector3d direction) {
+	public void setDirection(Vector3f direction) {
 		this.direction = direction;
 		this.direction.normalize();
 	}
 
 //	http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtreflec.htm
 	
-	public Ray reflectFrom(Vector3 primitiveNormal, Point3d primitivePoint){
+	public Ray reflectFrom(Vector3 primitiveNormal, Point3f primitivePoint){
 		Vector3 rNormal = new Vector3(primitiveNormal);
-		double dotProduct = rNormal.dot(this.direction);
+		float dotProduct = rNormal.dot(this.direction);
 		rNormal.scale(-2*dotProduct);
 		rNormal.add(this.direction);
 //		rNormal.normalize();
 		
-		Point3d rEnd = new Point3d(primitivePoint);
+		Point3f rEnd = new Point3f(primitivePoint);
 		rEnd.add(rNormal);
 		Ray newRay = new Ray(primitivePoint,rEnd);
 		return newRay;
@@ -105,38 +105,38 @@ public class Ray {
 
 //	http://www.cse.ohio-state.edu/~kerwin/refraction.html
 //	http://www.yaldex.com/open-gl/ch14lev1sec1.html
-	public Ray refractFrom(Vector3 primitiveNormal, Point3d primitivePoint, double eta){
-		Vector3d normalToUse = new Vector3d(primitiveNormal);
-		double dotProduct = normalToUse.dot(this.direction);
+	public Ray refractFrom(Vector3 primitiveNormal, Point3f primitivePoint, float eta){
+		Vector3f normalToUse = new Vector3f(primitiveNormal);
+		float dotProduct = normalToUse.dot(this.direction);
 		
 		if ( dotProduct < 0 ){
 			// Ray enters
 			eta = 1 / eta;
 		}else{
 			// Ray goes out
-			normalToUse.scale(-1.0);
+			normalToUse.scale(-1.0f);
 		}
-		Vector3d rDir = calculateRefractedDir(normalToUse,this.direction,dotProduct,eta);
+		Vector3f rDir = calculateRefractedDir(normalToUse,this.direction,dotProduct,eta);
 		
 		if ( rDir == null ){
 			// No ray is refracted
 			return null;
 		}
-		Point3d rEnd = new Point3d(primitivePoint);
+		Point3f rEnd = new Point3f(primitivePoint);
 		rEnd.add(rDir);
 		Ray newRay = new Ray(primitivePoint,rEnd);
 		return newRay;
 	}
 	
-	private Vector3d calculateRefractedDir(Vector3d normalToUse, Vector3d thisDir, double angle, double refractivity) {
-		Vector3d direction = new Vector3d(thisDir);
+	private Vector3f calculateRefractedDir(Vector3f normalToUse, Vector3f thisDir, float angle, float refractivity) {
+		Vector3f direction = new Vector3f(thisDir);
 		
-		double sinT2 = ( 1 - angle * angle ) * refractivity * refractivity;
+		float sinT2 = ( 1 - angle * angle ) * refractivity * refractivity;
 		if ( sinT2 > 1.0 )
 			// Not refracted
 			return null;
 		
-		double scale = refractivity + Math.sqrt(1 - sinT2);
+		float scale = refractivity + (float)Math.sqrt(1 - sinT2);
 		normalToUse.scale(-scale);
 		
 		direction.scale(refractivity);

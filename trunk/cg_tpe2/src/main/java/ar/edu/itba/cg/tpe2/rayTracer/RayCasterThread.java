@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -46,7 +46,7 @@ class RayCasterThread extends Thread {
 	private static int i=0;
 	private static BufferedImage image;
 	private int id;
-	private double totalLight;
+	private float totalLight;
 	
 	private boolean progressBar;
 	private int totalTasks;
@@ -70,8 +70,8 @@ class RayCasterThread extends Thread {
 		i++;
 	}
 
-	private double calculateTotalLight() {
-		double t = 0;
+	private float calculateTotalLight() {
+		float t = 0;
 		for(Light l:lights)
 			t += l.getPower();
 		return t;
@@ -210,7 +210,7 @@ class RayCasterThread extends Thread {
 
 			setPortion(task.getRegion(), width, height);
 			BufferedImage img = task.getImage();
-			Point3d origin = camera.getEye();
+			Point3f origin = camera.getEye();
 
 			Color color;
 			float[] tmp = new float[3];
@@ -223,7 +223,7 @@ class RayCasterThread extends Thread {
 					// Set infinite color
 					color = Color.BLACK;
 
-					Point3d[] po = camera.getPointFromXY(width, height, i, j, side, samples);
+					Point3f[] po = camera.getPointFromXY(width, height, i, j, side, samples);
 
 					float[] colorAA = new float[]{0,0,0};
 					if ( i == 673 && j == 321 )
@@ -261,7 +261,7 @@ class RayCasterThread extends Thread {
 	}
 	
     private Color getColor(Ray ray, int maxRebounds, Primitive primitiveToIgnore) {
-    	Point3d intersectionPoint = new Point3d();
+    	Point3f intersectionPoint = new Point3f();
     	Primitive impactedFigure;
 		Color refractColor, reflectColor, ilumColor;
     	
@@ -317,7 +317,7 @@ class RayCasterThread extends Thread {
     	return clamp(resultingRGBArray);
 	}
 
-	private Color ilumination(Ray ray, Primitive impactedFigure, Point3d intersectionPoint, Color initialColor) {
+	private Color ilumination(Ray ray, Primitive impactedFigure, Point3f intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
 		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint,lights,ray).getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
@@ -327,13 +327,13 @@ class RayCasterThread extends Thread {
 				if ( l instanceof PointLight ){
 					PointLight pl = (PointLight) l;
 					Primitive p = null;
-					Point3d intersectionP = new Point3d(intersectionPoint);
-					Point3d newIntersectionP = new Point3d();
+					Point3f intersectionP = new Point3f(intersectionPoint);
+					Point3f newIntersectionP = new Point3f();
 					Ray rayFromLight = new Ray(intersectionP,pl.getP());
-					double distanceToLight = intersectionP.distance(pl.getP());
+					float distanceToLight = intersectionP.distance(pl.getP());
 					
 					p = scene.getFirstIntersection(rayFromLight, newIntersectionP, impactedFigure);
-					double distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
+					float distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
 					// No object between light and impactedFigure :D
 					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
 						Vector3 dirToLight = new Vector3(intersectionP,pl.getP());
@@ -373,7 +373,7 @@ class RayCasterThread extends Thread {
 		return channel;
 	}
 	
-	private float[] getLightContribution(Vector3 dirToLight, Vector3 figureNormal, PointLight pl, float[] figureColor, double distanceToLight){
+	private float[] getLightContribution(Vector3 dirToLight, Vector3 figureNormal, PointLight pl, float[] figureColor, float distanceToLight){
 		float [] lightContribution = {0,0,0};
 		float angleToLight = (float) figureNormal.dot(dirToLight);
 		if ( angleToLight >= 0 ){
@@ -388,11 +388,11 @@ class RayCasterThread extends Thread {
 		return lightContribution;
 	}
 	
-	private Ray getReflectRay(Ray ray, Primitive p, Point3d intersectionPoint) {
+	private Ray getReflectRay(Ray ray, Primitive p, Point3f intersectionPoint) {
 		return ray.reflectFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint);
 	}
 
-	private Ray getRefractRay(Ray ray, Primitive p, Point3d intersectionPoint) {
+	private Ray getRefractRay(Ray ray, Primitive p, Point3f intersectionPoint) {
 		return ray.refractFrom(p.getNormalAt(intersectionPoint, ray.getOrigin()), intersectionPoint, p.getShader().getEta());
 	}
 

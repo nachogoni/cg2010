@@ -2,26 +2,26 @@ package ar.edu.itba.cg.tpe2.core.camera;
 
 import java.util.Random;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 
 public abstract class Camera {
 
 	private String type;
-	private Point3d eye, target;
-	private Vector3d up;
-	double fov;
-	double aspect;
-	private Vector3d FieldCenter;
+	private Point3f eye, target;
+	private Vector3f up;
+	float fov;
+	float aspect;
+	private Vector3f FieldCenter;
 	private Vector3 dv;
 	private Vector3 du;
 	private int width;
 	private Random rand = new Random(0);
 	
-	public Camera(String type, Point3d eye, Point3d target2, Vector3d up,
-			double fov, double aspect) {
+	public Camera(String type, Point3f eye, Point3f target2, Vector3f up,
+			float fov, float aspect) {
 		super();
 		this.type = type;
 		this.eye = eye;
@@ -29,7 +29,7 @@ public abstract class Camera {
 		this.up = up;
 		this.fov = fov;
 		this.aspect = aspect;
-		this.FieldCenter = new Vector3d();
+		this.FieldCenter = new Vector3f();
 		this.FieldCenter.sub(this.target, this.eye);
 		this.FieldCenter.normalize();
 //		this.FieldCenter.scale((width / 2) / Math.tan(Math.toRadians((this.fov / 2))));
@@ -46,30 +46,30 @@ public abstract class Camera {
 	
 	public void setWidth(int width){
 		this.width = width;
-		this.FieldCenter.scale((width / 2) / Math.tan(Math.toRadians((this.fov / 2))));
+		this.FieldCenter.scale((width / 2) / (float)Math.tan(Math.toRadians((this.fov / 2))));
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public Point3d getEye() {
+	public Point3f getEye() {
 		return eye;
 	}
 
-	public Point3d getTarget() {
+	public Point3f getTarget() {
 		return target;
 	}
 
-	public Vector3d getUp() {
+	public Vector3f getUp() {
 		return up;
 	}
 
-	public double getFov() {
+	public float getFov() {
 		return fov;
 	}
 
-	public double getAspect() {
+	public float getAspect() {
 		return aspect;
 	}
 
@@ -83,10 +83,10 @@ public abstract class Camera {
 	 * 
 	 * @return Point at certain distance
 	 */
-	public Point3d getPointFromXY(int width, int height, int i, int j) {
+	public Point3f getPointFromXY(int width, int height, int i, int j) {
 		
 		// Get the center for the image
-		Vector3d v = new Vector3d(this.FieldCenter);
+		Vector3f v = new Vector3f(this.FieldCenter);
 		
 		// v1 = i * this.du + v
 		v.scaleAdd(i - width / 2, this.du, v);
@@ -94,16 +94,16 @@ public abstract class Camera {
 		// v = j * this.dv + v
 		v.scaleAdd(j - height /2, this.dv, v);
 		
-		return new Point3d(v.x, v.y, v.z);
+		return new Point3f(v.x, v.y, v.z);
 	}
 
-	public Point3d[] getPointFromXY(int width, int height, int i, int j, int side, int samples) {
+	public Point3f[] getPointFromXY(int width, int height, int i, int j, int side, int samples) {
 
 		float rnd;
 		int p = 0;
 		int aa = 1;
 		float portion = 1f / side /2;
-		Point3d[] points = new Point3d[side*side*samples];
+		Point3f[] points = new Point3f[side*side*samples];
 		
 		if ((side * samples) == 1)
 			aa = 0;
@@ -111,12 +111,12 @@ public abstract class Camera {
 		for (int ii = 1; ii <= side; ii++) {
 			for (int jj = 1; jj <= side; jj++) {
 				for (int idx = 0; idx < samples; idx++) {
-					Vector3d v = new Vector3d(this.FieldCenter);
+					Vector3f v = new Vector3f(this.FieldCenter);
 					rnd = (rand.nextFloat() - 0.5f);
 					v.scaleAdd((i - width / 2) + portion * ii + rnd * aa, this.du, v);
 					rnd = (rand.nextFloat() - 0.5f);
 					v.scaleAdd((j - height /2) + portion * jj + rnd * aa, this.dv, v);
-					points[p++] = new Point3d(v.x, v.y, v.z);
+					points[p++] = new Point3f(v.x, v.y, v.z);
 				}
 			}
 		}
@@ -125,20 +125,20 @@ public abstract class Camera {
 	}
 
 	// BLUR
-	public Point3d[] getBlurPointFromXY(int width, int height, int i, int j, int side, int samples) {
+	public Point3f[] getBlurPointFromXY(int width, int height, int i, int j, int side, int samples) {
 		
-		Point3d[] points = new Point3d[side];
+		Point3f[] points = new Point3f[side];
 		
 		Random rand = new Random(0);
 		float rnd;
 		
 		for (int idx = 0; idx < side; idx++) {
-			Vector3d v = new Vector3d(this.FieldCenter);
+			Vector3f v = new Vector3f(this.FieldCenter);
 			rnd = (rand.nextFloat() - 1) * samples;
 			v.scaleAdd((i - width / 2) + rnd, this.du, v);
 			rnd = (rand.nextFloat() - 1) * samples;
 			v.scaleAdd((j - height /2) + rnd, this.dv, v);
-			points[idx] = new Point3d(v.x, v.y, v.z);
+			points[idx] = new Point3f(v.x, v.y, v.z);
 		}
 		
 		return points;

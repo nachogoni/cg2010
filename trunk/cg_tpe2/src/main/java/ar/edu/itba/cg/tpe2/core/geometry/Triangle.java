@@ -1,10 +1,10 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import javax.vecmath.Matrix4d;
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector2d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector2f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
@@ -14,21 +14,21 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
  */
 public class Triangle extends Primitive {
 
-	private static final double DISTANCE_TOLE  = 0.00000000000001;
-	Point3d p1, p2, p3;
+	private static final float DISTANCE_TOLE  = 0.00000000000001f;
+	Point3f p1, p2, p3;
 	
 	Vector3 u, v, n;
 	
-	double uu, uv, vv;
+	float uu, uv, vv;
 	
-	double minX, minY, maxX, maxY;
-	double uvMinX, uvMinY, uvMaxX, uvMaxY;
+	float minX, minY, maxX, maxY;
+	float uvMinX, uvMinY, uvMaxX, uvMaxY;
 	
 	//Vectores Normales a cada punto
-	private Vector3d n1, n2, n3;
+	private Vector3f n1, n2, n3;
 	
 	//Mapeos para Texturas para cada punto
-	private Point2d uv1, uv2, uv3;
+	private Point2f uv1, uv2, uv3;
 	
 	Transform transform;
 	
@@ -40,18 +40,18 @@ public class Triangle extends Primitive {
 		this.transform = transform;
 	}
 
-	public void setUVs(Point2d uv1, Point2d uv2, Point2d uv3) {
+	public void setUVs(Point2f uv1, Point2f uv2, Point2f uv3) {
 		this.uv1 = uv1;
 		this.uv2 = uv2;
 		this.uv3 = uv3;
 		
-		uvMinX = Math.min(uv1.x, Math.min(uv2.x, uv3.x));
-		uvMinY = Math.min(uv1.y, Math.min(uv2.y, uv3.y));
-		uvMaxX = Math.max(uv1.x, Math.max(uv2.x, uv3.x));
-		uvMaxY = Math.max(uv1.y, Math.max(uv2.y, uv3.y));
+		uvMinX = (float)Math.min(uv1.x, Math.min(uv2.x, uv3.x));
+		uvMinY = (float)Math.min(uv1.y, Math.min(uv2.y, uv3.y));
+		uvMaxX = (float)Math.max(uv1.x, Math.max(uv2.x, uv3.x));
+		uvMaxY = (float)Math.max(uv1.y, Math.max(uv2.y, uv3.y));
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3f p1, Point3f p2, Point3f p3, Vector3f n1, Vector3f n2, Vector3f n3, Point2f uv1, Point2f uv2, Point2f uv3, Transform trans) throws IllegalArgumentException {
 		this(name,shader, p1, p2, p3, trans);
 		
 		this.n1 = n1;
@@ -61,7 +61,7 @@ public class Triangle extends Primitive {
 		setUVs(uv1, uv2, uv3);
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Vector3d n1, Vector3d n2, Vector3d n3, Transform trans) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3f p1, Point3f p2, Point3f p3, Vector3f n1, Vector3f n2, Vector3f n3, Transform trans) throws IllegalArgumentException {
 		this(name,shader, p1, p2, p3, trans);
 		
 		this.n1 = n1;
@@ -72,13 +72,13 @@ public class Triangle extends Primitive {
 
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Point2d uv1, Point2d uv2, Point2d uv3, Transform trans) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3f p1, Point3f p2, Point3f p3, Point2f uv1, Point2f uv2, Point2f uv3, Transform trans) throws IllegalArgumentException {
 		this(name, shader, p1, p2, p3, trans);
 
 		setUVs(uv1, uv2, uv3);
 	}
 	
-	public Triangle(String name, Shader shader, Point3d p1, Point3d p2, Point3d p3, Transform trans) throws IllegalArgumentException {
+	public Triangle(String name, Shader shader, Point3f p1, Point3f p2, Point3f p3, Transform trans) throws IllegalArgumentException {
 		super(name,shader);
 		u = new Vector3(p1,p2);
 		v = new Vector3(p1,p3);
@@ -106,11 +106,11 @@ public class Triangle extends Primitive {
 		maxX = Math.max(p1.x, Math.max(p2.x, p3.x));
 		maxY = Math.max(p1.y, Math.max(p2.y, p3.y));
 		
-		setUVs(new Point2d(0.1,0.1), new Point2d(0.5,0.1), new Point2d(0.1,0.5));
+		setUVs(new Point2f(0.1f,0.1f), new Point2f(0.5f,0.1f), new Point2f(0.1f,0.5f));
 	}
 	
-	public Point3d intersect(Ray ray) {
-		Point3d destiny = (Point3d) ray.getOrigin().clone();
+	public Point3f intersect(Ray ray) {
+		Point3f destiny = (Point3f) ray.getOrigin().clone();
 		destiny.add(ray.getDirection());
 
 		// ray direction vector
@@ -118,8 +118,8 @@ public class Triangle extends Primitive {
 	    
 		Vector3 w0 = new Vector3(p1,ray.getOrigin());
 		
-		double a = -n.dot(w0);
-		double b = n.dot(dir);
+		float a = -n.dot(w0);
+		float b = n.dot(dir);
 		
         // Check if ray is parallel to triangle plane
 	    if ( Math.abs(b) < DISTANCE_TOLE ) {
@@ -131,13 +131,13 @@ public class Triangle extends Primitive {
 	        	return null;
 	    }
 	    
-	    double r = a/b;
+	    float r = a/b;
 	    
 	    // Check if ray goes away from triangle
 	    if ( r < 0.0 )
 	    	return null;
 	    
-	    Point3d intersectionPoint = new Point3d ( ray.getOrigin() );
+	    Point3f intersectionPoint = new Point3f ( ray.getOrigin() );
 	    dir.scale(r);
 	    intersectionPoint.add(dir);
 	    
@@ -148,12 +148,12 @@ public class Triangle extends Primitive {
 	    return intersectionPoint;
 	}
 	
-	private boolean containsPoint(double wu, double wv) {
-		double D;
+	private boolean containsPoint(float wu, float wv) {
+		float D;
 	    D = uv * uv - uu * vv;
 
 	    // Get and test parametric coordinates
-	    double s, t;
+	    float s, t;
 	    s = (uv * wv - vv * wu) / D;
 	    t = (uv * wu - uu * wv) / D;
 	    if(Math.abs(s) < 0.00001) s = 0;
@@ -175,7 +175,7 @@ public class Triangle extends Primitive {
 				+ getShader() + "]";
 	}
 
-	public void transformWith(Matrix4d m) {
+	public void transformWith(Matrix4f m) {
 		m.transform(p1);
 		m.transform(p2);
 		m.transform(p3);
@@ -193,35 +193,35 @@ public class Triangle extends Primitive {
 	}
 	
 	@Override
-	public double[] getUV(Point3d point) {
+	public float[] getUV(Point3f point) {
 
 		Vector3 p12 = new Vector3(p1, p2);
 		Vector3 p13 = new Vector3(p1, p3);
 		
 		Vector3 w = new Vector3(p1,point);
     
-		double wp12 = w.dot(p12);
-		double wp13 = w.dot(p13);
+		float wp12 = w.dot(p12);
+		float wp13 = w.dot(p13);
 		
-	    double p12p12 = u.dot(u);
-	    double p12p13 = u.dot(v);
-	    double p13p13 = v.dot(v);
+	    float p12p12 = u.dot(u);
+	    float p12p13 = u.dot(v);
+	    float p13p13 = v.dot(v);
 		
-	    double D = p12p13 * p12p13 - p12p12 * p13p13;
+	    float D = p12p13 * p12p13 - p12p12 * p13p13;
 		
-		double alpha = (p12p13 * wp13 - p13p13 * wp12) / D;
-		double beta  = (p12p13 * wp12 - p12p12 * wp13) / D;
+		float alpha = (p12p13 * wp13 - p13p13 * wp12) / D;
+		float beta  = (p12p13 * wp12 - p12p12 * wp13) / D;
     
-        Vector2d v12 = new Vector2d(uv2.x - uv1.x, uv2.y - uv1.y);
-        Vector2d v13 = new Vector2d(uv3.x - uv1.x, uv3.y - uv1.y);         
+        Vector2f v12 = new Vector2f(uv2.x - uv1.x, uv2.y - uv1.y);
+        Vector2f v13 = new Vector2f(uv3.x - uv1.x, uv3.y - uv1.y);         
 
         v12.scale(alpha);
         v13.scale(beta);
         
         v12.add(v13);
                 
-        double u = v12.x;
-        double v = v12.y;
+        float u = v12.x;
+        float v = v12.y;
 
         if (u >= 1) {
         	u = 1 - DISTANCE_TOLE;
@@ -242,23 +242,23 @@ public class Triangle extends Primitive {
         
         u = Math.abs(u);
         
-        return new double[]{u,v};
+        return new float[]{u,v};
 }
 
 
 
 	@Override
-	public Vector3 getNormalAt(Point3d p, Point3d from) {
+	public Vector3 getNormalAt(Point3f p, Point3f from) {
         Vector3 vector3 = new Vector3(n);
         Vector3 back = new Vector3(n);
         Vector3 v = new Vector3(p, from);
         back.scale(-1);
 
-        double cross_AB = v.dot(vector3), cross_AC = v.dot(back);
-        double length_A = v.length(), length_B = vector3.length(), length_C = back.length();
+        float cross_AB = v.dot(vector3), cross_AC = v.dot(back);
+        float length_A = v.length(), length_B = vector3.length(), length_C = back.length();
 
-        double angleA = Math.acos(cross_AB/(length_A*length_B));
-        double angleB = Math.acos(cross_AC/(length_A*length_C));
+        float angleA = (float)Math.acos(cross_AB/(length_A*length_B));
+        float angleB = (float)Math.acos(cross_AC/(length_A*length_C));
 
         if(angleA < angleB){
                 return vector3;
@@ -267,8 +267,8 @@ public class Triangle extends Primitive {
 	}
 
 	@Override
-	public double[] getBoundaryPoints() {
-		double [] extremes = {Math.min(Math.min(p1.x, p2.x),p3.x),  Math.max(Math.max(p1.x, p2.x),p3.x),
+	public float[] getBoundaryPoints() {
+		float [] extremes = {Math.min(Math.min(p1.x, p2.x),p3.x),  Math.max(Math.max(p1.x, p2.x),p3.x),
 				Math.min(Math.min(p1.y, p2.y),p3.y),  Math.max(Math.max(p1.y, p2.y),p3.y),
 				Math.min(Math.min(p1.z, p2.z),p3.z),  Math.max(Math.max(p1.z, p2.z),p3.z)};
 		return extremes;
