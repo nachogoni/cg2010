@@ -3,8 +3,8 @@ package ar.edu.itba.cg.tpe2.core.shader;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
@@ -47,7 +47,7 @@ public class Phong extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3d primitivePoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f primitivePoint, Primitive primitive, List<Light> lights, Ray viewRay) {
 		float [] diffuseColor = diffuse.getColorAt(primitivePoint,primitive).getRGBColorComponents(null);
 		float [] specularColor = spec.getColor().getRGBColorComponents(null);
 		float [] out = Color.BLACK.getRGBColorComponents(null);
@@ -65,7 +65,7 @@ public class Phong extends Shader {
 			for(Light l:lights){
 				if ( l instanceof PointLight ){
 					PointLight pl = (PointLight) l;
-					Point3d intersectionP = new Point3d(primitivePoint);
+					Point3f intersectionP = new Point3f(primitivePoint);
 					float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
 
 					// Lm
@@ -73,8 +73,8 @@ public class Phong extends Shader {
 					// Rm
 					Ray reflectedLightRay = lightRay.reflectFrom(objectNormal, primitivePoint);
 					
-					Vector3d dirToLight = lightRay.getDirection();
-					Vector3d dirReflectedLight = reflectedLightRay.getDirection();
+					Vector3f dirToLight = lightRay.getDirection();
+					Vector3f dirReflectedLight = reflectedLightRay.getDirection();
 					
 					dirToLight.normalize();
 					float angleToLight = (float) dirToLight.dot(objectNormal);

@@ -86,8 +86,8 @@ public class RayCaster {
 				BufferedImage taskImage = t.getImage();
 				int fromX = (int) region.getX();
 				int fromY = (int) region.getY();
-				double width = region.getWidth();
-				double height = region.getHeight();
+				float width = (float)region.getWidth();
+				float height = (float)region.getHeight();
 				for(int i = 0; i < width; i++){
 					for(int j = 0; j < height; j++){
 						image.setRGB(i+fromX, j+fromY, taskImage.getRGB(i, j));

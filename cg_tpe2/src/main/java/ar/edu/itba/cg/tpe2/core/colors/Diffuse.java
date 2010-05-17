@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 
@@ -30,11 +30,11 @@ public class Diffuse {
 		}
 	}
 	
-	public Color getColorAt(Point3d aPoint, Primitive primitive){
+	public Color getColorAt(Point3f aPoint, Primitive primitive){
 		if ( img == null )
 			return c;
 		
-		double[] uv = primitive.getUV(aPoint);
+		float[] uv = primitive.getUV(aPoint);
 
 		return new Color(img.getRGB((int)(uv[0]*img.getWidth()), (int)(uv[1]*img.getHeight())));
 	}
@@ -44,7 +44,7 @@ public class Diffuse {
 		return "Diffuse [c=" + c + ", img=" + img + "]";
 	}
 
-	public Color getColorAt(Point3d aPoint) {
+	public Color getColorAt(Point3f aPoint) {
 		// TODO Auto-generated method stub
 		return null;
 	}

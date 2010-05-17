@@ -3,8 +3,8 @@ package ar.edu.itba.cg.tpe2.core.geometry;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Matrix4d;
-import javax.vecmath.Point3d;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
@@ -64,13 +64,13 @@ public abstract class Primitive {
 	 * Rotate object in X axis 
 	 * 
 	 */
-	public void rotatex(double angle){
-		Matrix4d m = new Matrix4d();
+	public void rotatex(float angle){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
-		m.m11 = Math.cos(angle);
-		m.m12 = -Math.sin(angle);
-		m.m21 = Math.sin(angle);
-		m.m22 = Math.cos(angle);
+		m.m11 = (float)Math.cos(angle);
+		m.m12 = (float)-Math.sin(angle);
+		m.m21 = (float)Math.sin(angle);
+		m.m22 = (float)Math.cos(angle);
 		transformWith(m);
 	}
 	
@@ -78,13 +78,13 @@ public abstract class Primitive {
 	 * Rotate object in Y axis 
 	 * 
 	 */
-	public void rotatey(double angle){
-		Matrix4d m = new Matrix4d();
+	public void rotatey(float angle){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
-		m.m00 = Math.cos(angle);
-		m.m02 = Math.sin(angle);
-		m.m20 = -Math.sin(angle);
-		m.m22 = Math.cos(angle);
+		m.m00 = (float)Math.cos(angle);
+		m.m02 = (float)Math.sin(angle);
+		m.m20 = (float)-Math.sin(angle);
+		m.m22 = (float)Math.cos(angle);
 		transformWith(m);
 	}
 	
@@ -92,13 +92,13 @@ public abstract class Primitive {
 	 * Rotate object in Z axis 
 	 * 
 	 */
-	public void rotatez(double angle){
-		Matrix4d m = new Matrix4d();
+	public void rotatez(float angle){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
-		m.m00 = Math.cos(angle);
-		m.m01 = -Math.sin(angle);
-		m.m10 = Math.sin(angle);
-		m.m11 = Math.cos(angle);
+		m.m00 = (float)Math.cos(angle);
+		m.m01 = (float)-Math.sin(angle);
+		m.m10 = (float)Math.sin(angle);
+		m.m11 = (float)Math.cos(angle);
 		transformWith(m);
 	}
 	
@@ -107,8 +107,8 @@ public abstract class Primitive {
 	 * 
 	 * 
 	 */
-	public void scalex(double scale){
-		Matrix4d m = new Matrix4d();
+	public void scalex(float scale){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
 		m.m00 = scale;
 		transformWith(m);
@@ -118,8 +118,8 @@ public abstract class Primitive {
 	 * Scale primitive in Y axis
 	 * 
 	 */
-	public void scaley(double scale){
-		Matrix4d m = new Matrix4d();
+	public void scaley(float scale){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
 		m.m11 = scale;
 		transformWith(m);
@@ -129,8 +129,8 @@ public abstract class Primitive {
 	 * Scale primitive in Z axis
 	 * 
 	 */
-	public void scalez(double scale){
-		Matrix4d m = new Matrix4d();
+	public void scalez(float scale){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
 		m.m22 = scale;
 		transformWith(m);
@@ -140,8 +140,8 @@ public abstract class Primitive {
 	 * Scale primitive in U
 	 * 
 	 */
-	public void scaleu(double scale){
-		Matrix4d m = new Matrix4d();
+	public void scaleu(float scale){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
 		m.m00 = scale;
 		m.m11 = scale;
@@ -150,8 +150,8 @@ public abstract class Primitive {
 		transformWith(m);
 	}
 	
-	public void translate(Point3d trans){
-		Matrix4d m = new Matrix4d();
+	public void translate(Point3f trans){
+		Matrix4f m = new Matrix4f();
 		m.setIdentity();
 		m.m03 = trans.x;
 		m.m13 = trans.y;
@@ -164,20 +164,20 @@ public abstract class Primitive {
 	 * Funcion que retorna las cotas para los ejes 
 	 * @return cotas en el orden: xmin, xmax, ymin, ymax, zmin, zmax
 	 */
-	public abstract double[] getBoundaryPoints();
+	public abstract float[] getBoundaryPoints();
 	
 	/**
 	 * Get the intersection between the figure and a ray
 	 */
-	public abstract Point3d intersect(Ray ray);
+	public abstract Point3f intersect(Ray ray);
 	
-	public abstract double [] getUV(Point3d point);
+	public abstract float [] getUV(Point3f point);
 	
-	public abstract Vector3 getNormalAt(Point3d p, Point3d from);
+	public abstract Vector3 getNormalAt(Point3f p, Point3f from);
 	
-	public abstract void transformWith(Matrix4d m);
+	public abstract void transformWith(Matrix4f m);
 	
-	public Color getColorAt(Point3d aPoint, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, List<Light> lights, Ray viewRay) {
 		if (shader != null)
 			return this.shader.getColorAt(aPoint, this, lights, viewRay);
 		else

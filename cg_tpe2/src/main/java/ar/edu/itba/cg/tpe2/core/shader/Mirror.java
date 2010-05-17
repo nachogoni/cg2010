@@ -3,7 +3,7 @@ package ar.edu.itba.cg.tpe2.core.shader;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -30,7 +30,7 @@ public class Mirror extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3d aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
 		return this.getSpec().getColor();
 	}
 

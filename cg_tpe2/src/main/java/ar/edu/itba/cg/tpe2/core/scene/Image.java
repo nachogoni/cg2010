@@ -2,16 +2,6 @@ package ar.edu.itba.cg.tpe2.core.scene;
 
 public class Image {
 
-	// Width
-	// Height
-	// Antialiasing: 
-		// Min 
-		// Max
-	// Sampĺes
-	// Bucket
-		// Size
-		// Type
-	
 	private int width, height;
 	private int aa_min = 1, aa_max = 1;
 	private int samples = 1;

@@ -1,44 +1,44 @@
 package ar.edu.itba.cg.tpe2.core.geometry;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
 
 public class Transform {
-	Point3d translate;
-	Double scaleu, scalex, scaley, scalez;
+	Point3f translate;
+	Float scaleu, scalex, scaley, scalez;
 	Float	rotatex, rotatey, rotatez;
 	
 	public Transform(){
 		
 	}
 	
-	public Point3d getTranslate() {
+	public Point3f getTranslate() {
 		return translate;
 	}
-	public void setTranslate(Point3d translate) {
+	public void setTranslate(Point3f translate) {
 		this.translate = translate;
 	}
-	public Double getScaleu() {
+	public Float getScaleu() {
 		return scaleu;
 	}
-	public void setScaleu(Double scaleu) {
+	public void setScaleu(Float scaleu) {
 		this.scaleu = scaleu;
 	}
-	public Double getScalex() {
+	public Float getScalex() {
 		return scalex;
 	}
-	public void setScalex(Double scalex) {
+	public void setScalex(Float scalex) {
 		this.scalex = scalex;
 	}
-	public Double getScaley() {
+	public Float getScaley() {
 		return scaley;
 	}
-	public void setScaley(Double scaley) {
+	public void setScaley(Float scaley) {
 		this.scaley = scaley;
 	}
-	public Double getScalez() {
+	public Float getScalez() {
 		return scalez;
 	}
-	public void setScalez(Double scalez) {
+	public void setScalez(Float scalez) {
 		this.scalez = scalez;
 	}
 	public Float getRotatex() {
@@ -70,17 +70,17 @@ public class Transform {
 	
 	public void rotatex(Primitive aPrimitive){
 		if(this.rotatex != null)
-			aPrimitive.rotatex(this.rotatex*Math.PI/180);
+			aPrimitive.rotatex(this.rotatex*(float)Math.PI/180);
 	}
 	
 	public void rotatey(Primitive aPrimitive){
 		if(this.rotatey != null)
-			aPrimitive.rotatey(this.rotatey*Math.PI/180);
+			aPrimitive.rotatey(this.rotatey*(float)Math.PI/180);
 	}
 	
 	public void rotatez(Primitive aPrimitive){
 		if(this.rotatez != null)
-			aPrimitive.rotatez(this.rotatez*Math.PI/180);
+			aPrimitive.rotatez(this.rotatez*(float)Math.PI/180);
 	}
 	
 	public void scalex(Primitive aPrimitive){

@@ -1,28 +1,24 @@
 package ar.edu.itba.cg.tpe2.core.camera;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 public class Thinlens extends Camera {
 
-	// Type: Thinlens
-	// fdist
-	// lensr
-	
-	double fdist, lensr;
+	float fdist, lensr;
 
-	public Thinlens(String type, Point3d eye, Point3d target, Vector3d up,
-			double fov, double aspect, double fdist, double lensr) {
+	public Thinlens(String type, Point3f eye, Point3f target, Vector3f up,
+			float fov, float aspect, float fdist, float lensr) {
 		super(type, eye, target, up, fov, aspect);
 		this.fdist = fdist;
 		this.lensr = lensr;
 	}
 
-	public double getFdist() {
+	public float getFdist() {
 		return fdist;
 	}
 
-	public double getLensr() {
+	public float getLensr() {
 		return lensr;
 	}
 
