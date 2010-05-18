@@ -8,8 +8,15 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 6.0
+   power 3.0
    p 4.0 10.0 10.0
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 2
+   p 2 5 2
 }
 
 camera {
@@ -21,20 +28,14 @@ camera {
    aspect 1.333
 }
 
-light {
-   type point
-   color { "sRGB nonlinear" 1 1 1 }
-   power 2
-   p 2 1 2
-}
 
 shader {
    name glass0
    type glass
-   eta 1.333
-   color { "sRGB nonlinear" 0.5 0 0 }
+   eta 1.33
+   color { "sRGB nonlinear" 0.00 0.00 0.00 }
    absorbtion.distance 3
-   absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 }
 }
 
 shader {
@@ -49,6 +50,12 @@ shader {
    name mirror0
    type mirror
    refl { "sRGB nonlinear" 0 0 0 }
+}
+
+shader {
+   name mirror1
+   type mirror
+   refl { "sRGB nonlinear" 1 1 1 }
 }
 
 shader {
@@ -73,6 +80,38 @@ shader {
    diff { "sRGB nonlinear" 1 1 0 }
    spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
    samples 4
+}
+
+shader {
+   name purple_sh
+   type phong
+   diff { "sRGB nonlinear" 1 0 1 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+object {
+   shader purple_sh
+   name "a"
+   type plane
+   p 7 7 7
+   n 0 1 0
+}
+
+object {
+   shader purple_sh
+   name "b"
+   type plane
+   p 7 7 7
+   n 1 0 0
+}
+
+object {
+   shader purple_sh
+   name "c"
+   type plane
+   p 7 7 7
+   n 0 0 1
 }
 
 object { 
@@ -111,12 +150,12 @@ object {
 	 name sphere2
 	 c 2 2 4
 	 r 0.5
-} 
+}
 
 object { 
-	 shader mirror0
+	 shader glass0
 	 type sphere
 	 name sphere3
-	 c 4 2 2
+	 c 3 3 2
 	 r 0.5
-} 
+}
