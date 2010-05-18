@@ -97,10 +97,10 @@ public class Ray {
 		rNormal.add(this.direction);
 //		rNormal.normalize();
 		
-		Point3f rEnd = new Point3f(primitivePoint);
-		rEnd.add(rNormal);
-		Ray newRay = new Ray(primitivePoint,rEnd);
-		return newRay;
+//		Point3f rEnd = new Point3f(primitivePoint);
+//		rEnd.add(rNormal);
+//		Ray newRay = ;
+		return new Ray(primitivePoint,rNormal);
 	}
 
 //	http://www.cse.ohio-state.edu/~kerwin/refraction.html
@@ -122,10 +122,7 @@ public class Ray {
 			// No ray is refracted
 			return null;
 		}
-		Point3f rEnd = new Point3f(primitivePoint);
-		rEnd.add(rDir);
-		Ray newRay = new Ray(primitivePoint,rEnd);
-		return newRay;
+		return new Ray(primitivePoint,rDir);
 	}
 	
 	private Vector3f calculateRefractedDir(Vector3f normalToUse, Vector3f thisDir, float angle, float refractivity) {
