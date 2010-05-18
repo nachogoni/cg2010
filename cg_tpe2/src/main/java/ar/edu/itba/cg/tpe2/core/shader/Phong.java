@@ -13,6 +13,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.light.PointLight;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 public class Phong extends Shader {
 
@@ -47,7 +48,7 @@ public class Phong extends Shader {
 	}
 
 	@Override
-	public Color getColorAt(Point3f primitivePoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f primitivePoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
 		float [] diffuseColor = diffuse.getColorAt(primitivePoint,primitive).getRGBColorComponents(null);
 		float [] specularColor = spec.getColor().getRGBColorComponents(null);
 		float [] out = Color.BLACK.getRGBColorComponents(null);
@@ -70,19 +71,28 @@ public class Phong extends Shader {
 
 					// Lm
 					Ray lightRay = new Ray(intersectionP,pl.getP());
-					// Rm
-					Ray reflectedLightRay = lightRay.reflectFrom(objectNormal, primitivePoint);
+					float distanceToLight = intersectionP.distance(pl.getP());
+					Point3f newIntersectionP = new Point3f();
+					Primitive p = scene.getFirstIntersection(lightRay, newIntersectionP, primitive);
 					
-					Vector3f dirToLight = lightRay.getDirection();
-					Vector3f dirReflectedLight = reflectedLightRay.getDirection();
-					
-					dirToLight.normalize();
-					float angleToLight = (float) dirToLight.dot(objectNormal);
-					float angleToView = (float) dirReflectedLight.dot(viewDir);
-					
-					out[0] += diffuseColor[0]*angleToLight * 0.5 + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
-					out[1] += diffuseColor[1]*angleToLight * 0.5 + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
-					out[2] += diffuseColor[2]*angleToLight * 0.5 + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
+					float distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
+					// No object between light and impactedFigure :P
+					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
+						// Rm
+						Ray reflectedLightRay = lightRay.reflectFrom(objectNormal, primitivePoint);
+						
+						Vector3f dirToLight = lightRay.getDirection();
+						Vector3f dirReflectedLight = reflectedLightRay.getDirection();
+						
+						dirReflectedLight.scale(-1);
+						
+						float angleToLight = (float) dirToLight.dot(objectNormal);
+						float angleToView = (float) dirReflectedLight.dot(viewDir);
+						
+						out[0] += diffuseColor[0]*angleToLight * 0.75 + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
+						out[1] += diffuseColor[1]*angleToLight * 0.75 + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
+						out[2] += diffuseColor[2]*angleToLight * 0.75 + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
+					}
 				}
 			}
 		}
@@ -101,4 +111,8 @@ public class Phong extends Shader {
 		return channel;
 	}
 
+	@Override
+	public boolean hasIlumination() {
+		return true;
+	}
 }

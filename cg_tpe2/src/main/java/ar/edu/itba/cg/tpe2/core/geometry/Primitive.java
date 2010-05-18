@@ -7,6 +7,7 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.light.Light;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 /**
@@ -177,9 +178,9 @@ public abstract class Primitive {
 	
 	public abstract void transformWith(Matrix4f m);
 	
-	public Color getColorAt(Point3f aPoint, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, List<Light> lights, Ray viewRay, Scene scene) {
 		if (shader != null)
-			return this.shader.getColorAt(aPoint, this, lights, viewRay);
+			return this.shader.getColorAt(aPoint, this, lights, viewRay, scene);
 		else
 			return Color.WHITE;//FIXME
 	}

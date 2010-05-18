@@ -9,6 +9,7 @@ import ar.edu.itba.cg.tpe2.core.colors.Specular;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 public class Glass extends Shader {
 
@@ -43,7 +44,7 @@ public class Glass extends Shader {
 				+ getName() + ", getType()=" + getType() + "]";
 	}
 	@Override
-	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay) {
+	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
 		return color.getColor();
 	}
 
