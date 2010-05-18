@@ -319,8 +319,12 @@ class RayCasterThread extends Thread {
 
 	private Color ilumination(Ray ray, Primitive impactedFigure, Point3f intersectionPoint, Color initialColor) {
 		Vector3 figureNormal = impactedFigure.getNormalAt(intersectionPoint, ray.getOrigin());
-		float [] figureRGBComponents = impactedFigure.getColorAt(intersectionPoint,lights,ray).getRGBColorComponents(null);
+		Color figureColor = impactedFigure.getColorAt(intersectionPoint,lights,ray, scene);
+		float [] figureRGBComponents = figureColor.getRGBColorComponents(null);
 		float [] rgbs = initialColor.getRGBColorComponents(null);
+
+		if ( impactedFigure.getShader().hasIlumination() )
+			return figureColor;
 
 		if ( LIGHTS_ON && !lights.isEmpty()) {
 			for(Light l:lights){
@@ -343,9 +347,9 @@ class RayCasterThread extends Thread {
 						rgbs[2] += lightContribution[2];
 					} else {
 						// This light does not illuminate this object, let's put some ambient light
-						rgbs[0] += figureRGBComponents[0] * AMBIENT_LIGHT;
-						rgbs[1] += figureRGBComponents[1] * AMBIENT_LIGHT;
-						rgbs[2] += figureRGBComponents[2] * AMBIENT_LIGHT;
+//						rgbs[0] += figureRGBComponents[0] * AMBIENT_LIGHT;
+//						rgbs[1] += figureRGBComponents[1] * AMBIENT_LIGHT;
+//						rgbs[2] += figureRGBComponents[2] * AMBIENT_LIGHT;
 					}
 				}
 			}

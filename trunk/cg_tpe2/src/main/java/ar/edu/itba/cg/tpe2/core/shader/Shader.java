@@ -8,6 +8,7 @@ import javax.vecmath.Point3f;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
+import ar.edu.itba.cg.tpe2.core.scene.Scene;
 
 public abstract class Shader {
 
@@ -33,8 +34,6 @@ public abstract class Shader {
 		return type;
 	}
 	
-	abstract public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay);
-	
 	public float getReflectionK(){
 		return 0.0f;
 	}
@@ -52,4 +51,9 @@ public abstract class Shader {
 		return Color.BLACK;
 	}
 
+	public boolean hasIlumination(){
+		return false;
+	}
+
+	abstract public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene);
 }
