@@ -222,23 +222,10 @@ public class Triangle extends Primitive {
                 
         float u = v12.x;
         float v = v12.y;
-
-        if (u >= 1) {
-        	u = 1 - DISTANCE_TOLE;
-        }
-        if (v >= 1) {
-        	v = 1 - DISTANCE_TOLE;
-        }
-        if (v < 0) {
-        	v = 0 + DISTANCE_TOLE;
-        }
-        if (u < 0) {
-        	u = 0 + DISTANCE_TOLE;
-        }
         
-//        if (v < 0) {
-//	        v = (1 - Math.abs(v)) % 1;
-//        }
+        if (v < 0) {
+	        v = (1 - Math.abs(v));
+        }
         
         u = Math.abs(u);
         
