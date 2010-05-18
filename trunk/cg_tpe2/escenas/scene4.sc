@@ -115,7 +115,7 @@ object {
 }
 
 object { 
-	 shader glass0
+	 shader mirror0
 	 type sphere
 	 name sphere0
 	 c 0 0 0
