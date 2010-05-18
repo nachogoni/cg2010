@@ -227,8 +227,6 @@ class RayCasterThread extends Thread {
 					Point3f[] po = camera.getPointFromXY(width, height, i, j, side, samples);
 
 					float[] colorAA = new float[]{0,0,0};
-					if ( i == 673 && j == 321 )
-						System.out.println("");
 					for (int aa = 0; aa < po.length; aa++) {
 						// Create a new Ray from camera, i, j
 						ray = new Ray(origin, po[aa]);
@@ -308,9 +306,6 @@ class RayCasterThread extends Thread {
     	
     	float sumKs = 1 + reflectK + refractK;
 
-//    	float [] absorbance = impactedFigure.getShader().getAbsColor().getRGBColorComponents(null);
-//    	Color transparency = new Color((float)Math.exp(absorbance[0]),(float)Math.exp(absorbance[1]),(float)Math.exp(absorbance[2]));
-//		a_Acc += rcol * transparency;
     	resultingRGBArray[0] = (0.01f + ilumRGBArray[0] + refractK*refractRGBArray[0] + reflectK*reflectRGBArray[0])/sumKs;
     	resultingRGBArray[1] = (0.01f + ilumRGBArray[1] + refractK*refractRGBArray[1] + reflectK*reflectRGBArray[1])/sumKs;
     	resultingRGBArray[2] = (0.01f + ilumRGBArray[2] + refractK*refractRGBArray[2] + reflectK*reflectRGBArray[2])/sumKs;
