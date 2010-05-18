@@ -70,7 +70,9 @@ public class Phong extends Shader {
 					float[] lightRGBComponents = pl.getASpec().getColor().getRGBColorComponents(null);
 
 					// Lm
-					Ray lightRay = new Ray(intersectionP,pl.getP());
+					Vector3f vectorToLight = new Vector3f(pl.getP());
+					vectorToLight.sub(intersectionP);
+					Ray lightRay = new Ray(intersectionP,vectorToLight);
 					float distanceToLight = intersectionP.distance(pl.getP());
 					Point3f newIntersectionP = new Point3f();
 					Primitive p = scene.getFirstIntersection(lightRay, newIntersectionP, primitive);
@@ -81,17 +83,16 @@ public class Phong extends Shader {
 						// Rm
 						Ray reflectedLightRay = lightRay.reflectFrom(objectNormal, primitivePoint);
 						
-						Vector3f dirToLight = lightRay.getDirection();
 						Vector3f dirReflectedLight = reflectedLightRay.getDirection();
 						
 						dirReflectedLight.scale(-1);
 						
-						float angleToLight = (float) dirToLight.dot(objectNormal);
+						float angleToLight = (float) vectorToLight.dot(objectNormal);
 						float angleToView = (float) dirReflectedLight.dot(viewDir);
 						
-						out[0] += diffuseColor[0]*angleToLight * 0.75 + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
-						out[1] += diffuseColor[1]*angleToLight * 0.75 + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
-						out[2] += diffuseColor[2]*angleToLight * 0.75 + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
+						out[0] += diffuseColor[0]*angleToLight * 0.5 + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
+						out[1] += diffuseColor[1]*angleToLight * 0.5 + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
+						out[2] += diffuseColor[2]*angleToLight * 0.5 + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
 					}
 				}
 			}
