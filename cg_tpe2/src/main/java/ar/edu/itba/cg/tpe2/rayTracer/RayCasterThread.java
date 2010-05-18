@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.camera.Camera;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -333,14 +334,18 @@ class RayCasterThread extends Thread {
 					Primitive p = null;
 					Point3f intersectionP = new Point3f(intersectionPoint);
 					Point3f newIntersectionP = new Point3f();
-					Ray rayFromLight = new Ray(intersectionP,pl.getP());
+					
+					Vector3f vectorToLight = new Vector3f(pl.getP());
+					vectorToLight.sub(intersectionP);
+					
+					Ray rayFromLight = new Ray(intersectionP,vectorToLight);
 					float distanceToLight = intersectionP.distance(pl.getP());
 					
 					p = scene.getFirstIntersection(rayFromLight, newIntersectionP, impactedFigure);
 					float distanceToNewPrimitive = intersectionP.distance(newIntersectionP);
 					// No object between light and impactedFigure :D
 					if ( p == null || ( p != null && distanceToLight < distanceToNewPrimitive ) ){
-						Vector3 dirToLight = new Vector3(intersectionP,pl.getP());
+						Vector3 dirToLight = new Vector3(vectorToLight);
 						float [] lightContribution = getLightContribution(dirToLight,figureNormal,pl,figureRGBComponents,distanceToLight);
 						rgbs[0] += lightContribution[0];
 						rgbs[1] += lightContribution[1];
