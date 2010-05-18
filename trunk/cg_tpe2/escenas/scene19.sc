@@ -76,7 +76,7 @@ shader {
 shader {
    name glass0
    type glass
-   eta 0.5
+   eta 1.5
    color { "sRGB nonlinear" 0 0 0 }
    absorbtion.distance 3
    absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
@@ -99,7 +99,7 @@ object {
 }
 
 object {
-   shader mirror0
+   shader glass0
    type sphere
    name sphere3
    c 0 1 4
