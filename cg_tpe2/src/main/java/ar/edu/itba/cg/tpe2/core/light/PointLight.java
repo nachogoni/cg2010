@@ -28,14 +28,10 @@ public class PointLight extends Light {
 		return "Point [aSpec=" + aSpec + ", p=" + p + ", power=" + getPower() + "]";
 	}
 
-	
-	
 	public float getFallOff(float distanceToLight) {
-//		(1./(     log(xs.+1).+1    )    ).*100;
 		if ( distanceToLight < 0 )
 			return 0;
 		return (float) ((1/ (Math.log(distanceToLight+1) +1))*getPower());
-//		return (float) ((1/ (Math.log(distanceToLight+1) +1)));
 	}
 
 }

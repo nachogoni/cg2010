@@ -44,10 +44,4 @@ public class Diffuse {
 		return "Diffuse [c=" + c + ", img=" + img + "]";
 	}
 
-	public Color getColorAt(Point3f aPoint) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 }
