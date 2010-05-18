@@ -9,14 +9,14 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 30.0
+   power 3.0
    p 0 5.0 5.0
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 10.0
+   power 3.0
    p -3 3 -0
 }
 
@@ -69,14 +69,14 @@ shader {
    name yellow_sh
    type phong
    diff { "sRGB nonlinear" 1.0 1.0 0.0 }
-   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   spec { "sRGB nonlinear" 0.0 0.0 0.0 } 50
    samples 4
 }
 
 shader {
    name glass0
    type glass
-   eta 0.3
+   eta 1.5
    color { "sRGB nonlinear" 0 0 0 }
    absorbtion.distance 3
    absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
