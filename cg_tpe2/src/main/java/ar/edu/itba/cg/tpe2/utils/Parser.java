@@ -2,6 +2,7 @@ package ar.edu.itba.cg.tpe2.utils;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Sphere;
 import ar.edu.itba.cg.tpe2.core.geometry.Transform;
 import ar.edu.itba.cg.tpe2.core.geometry.Triangle;
+import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.light.PointLight;
 import ar.edu.itba.cg.tpe2.core.scene.Image;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
@@ -32,6 +34,9 @@ import ar.edu.itba.cg.tpe2.core.shader.Shader;
 
 public class Parser {
 
+	private static final float LIGHT_SPACING = 0.1f;
+	public static final boolean SOFT_SHADOWS = true;
+	public static final float LIGHT_COUNT = 27;
 	private String filename = null;
 	private FileParser aParser;
 	private Scene scene;
@@ -419,10 +424,43 @@ public class Parser {
 //		System.out.println("Power: " + power);
 //		System.out.println("Light Position: " + light_pos.toString());
 //		// Build Object Light
-		scene.addLight(new PointLight(type,aSpec,power,light_pos));
+		PointLight pl = new PointLight(type,aSpec,power,light_pos);
+		if ( SOFT_SHADOWS ){
+			List<Light> softShadowLights = getSoftShadowLights(pl);
+			for (Light l:softShadowLights)
+				scene.addLight(l);
+		}else
+			scene.addLight(pl);
 	}
 
+	private List<Light> getSoftShadowLights(PointLight pl){
+		List<Light> lights = new ArrayList<Light>();
+		float totalPower = pl.getPower();
+		Point3f p = pl.getP();
+		p.sub(new Point3f(-LIGHT_SPACING,-LIGHT_SPACING,-LIGHT_SPACING));
+		Color color = divideColor(pl.getASpec().getColor(),LIGHT_COUNT);
+		Specular specular = new Specular("rgb",color);
+		for(int i = 0; i < 3 ; i++){
+			Point3f px = new Point3f(p);
+				px.add(new Point3f(i*LIGHT_SPACING,0,0));
+				for(int j = 0; j < 3 ; j++){
+					Point3f py = new Point3f(px);
+					py.add(new Point3f(0,j*LIGHT_SPACING,0));
+					for(int k = 0; k < 3 ; k++){
+						Point3f pz = new Point3f(py);
+						pz.add(new Point3f(0,0,k*LIGHT_SPACING));
+						lights.add(new PointLight("light "+i+" "+j+" "+k,specular,totalPower,pz));
+					}
+				}
+		}
+		return lights;
+	}
 
+	private Color divideColor(Color color,float n) {
+		float[] colorComponents = color.getRGBColorComponents(null);
+		return new Color(colorComponents[0]/n,colorComponents[1]/n,colorComponents[2]/n);
+	}
+	
 	private void parseShaderSettings() throws IOException {
 		String current;
 		String name = null, type = null, texture_path = null;
