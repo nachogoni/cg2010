@@ -8,10 +8,9 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 5
+   power 150
    p 0.0 -10.0 10.0
 }
-
 
 camera {
    type pinhole

@@ -16,7 +16,7 @@ light {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 10.0
+   power 30.0
    p -3 3 -0
 }
 
