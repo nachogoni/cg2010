@@ -9,7 +9,7 @@ image {
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
-   power 20.0
+   power 30.0
    p 0.5 4 5.0
 }
 
@@ -61,7 +61,7 @@ shader {
 shader {
    name glass0
    type glass
-   eta 0.5
+   eta 1.333
    color { "sRGB nonlinear" 0 0 0 }
    absorbtion.distance 3
    absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50

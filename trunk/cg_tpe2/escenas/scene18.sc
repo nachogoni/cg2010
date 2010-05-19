@@ -6,20 +6,6 @@ image {
 }
 
 
-light {
-   type point
-   color { "sRGB nonlinear" 1 1 1 }
-   power 3.0
-   p 0 5.0 5.0
-}
-
-light {
-   type point
-   color { "sRGB nonlinear" 1 1 1 }
-   power 3.0
-   p -3 3 -0
-}
-
 camera {
    type pinhole
    eye 0.0 1.0 10.0
@@ -27,6 +13,32 @@ camera {
    up 0.0 10.0 0.0
    fov 60 
    aspect 1.333
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 30.0
+   p -3 3 0
 }
 
 shader {

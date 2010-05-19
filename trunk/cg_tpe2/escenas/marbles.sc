@@ -1,6 +1,6 @@
 image {
    resolution 600 600
-   aa 0 2
+   aa 0 1
 }
 
 accel bih
@@ -10,7 +10,7 @@ bucket 32 row
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 4
+   power 60
    p 10.0 10.0 10.0
 }
 
@@ -83,8 +83,25 @@ shader {
   color { "sRGB nonlinear" 0 0 1 }
 }
 
+shader {
+   name "mirror"
+   type mirror
+   refl { "sRGB nonlinear" 0.02 0.02 0.02 }
+}
+
+shader {
+   name "glass"
+   type glass
+   eta 2.333
+   color { "sRGB nonlinear" 0 0 0 }
+   absorbtion.distance 3
+   absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+}
+
+
+
 object {
-   shader "ground"
+   shader "mirror"
    type generic-mesh
    name "Plane"
    points 8
@@ -151,7 +168,7 @@ object {
   r 0.7
 }
 object {
-  shader "shader05"
+  shader "glass"
   type sphere
   c 0 0 0.7
   r 0.7
@@ -184,3 +201,4 @@ object {
   c 2 -2 0.7
   r 0.7
 }
+
