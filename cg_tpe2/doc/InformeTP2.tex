@@ -82,7 +82,7 @@ tipo $thinlens$ es la utilizada para modelar la profundidad del campo.
 A los efectos de nuestro trabajo y el alcance del mismo, el tipo de c\'amara no
 influye.
 
-Una car\'acter\'istica intr\'inseca en la definici\'on de la c\'amara
+Una caracter\'istica intr\'inseca en la definici\'on de la c\'amara
 utilizando $Sunflow$ es que es posible tener una c\'amara movil.  Esto nos
 permite ver la misma escena desde difrentes perspectivas.  Esto lo apreciamos
 en la figura \ref{fig:figure1} y \ref{fig:figure2}.
@@ -188,6 +188,28 @@ qu\'e punto de la textura le pertenece.
 Para leer una explicaci\'on de la intersecci\'on entre un rayo y la esfera,
 leer el informe del Trabajo Pr\'actico \#1.
 
+\subsubsection{Tri\'angulo}
+La representaci\'on del triangulo y la intersecci\'on de un rayo con el mismo
+lo comentamos en el informe del Trabajo Pr\'actico \#1.  Cuando desarrollamos
+el motor de ray tracing, tuvimos que agregarle algunas cosas m\'as, como las
+normales en cada punto y el mapeo con los puntos $UV$ para el caso del mapeo
+con las texturas.
+
+Para mapear las texturas en los tri\'angulos, con los 3 puntos que definen al
+tri\'angulo, se crean 2 vectores, entre uno de los puntos y los otros dos, que
+forman una base para el plano sobre el cual est\'a el tri\'angulo.
+Con estos vectores, su punto inicial y el punto contra el que hizo
+intersecci\'on el rayo emitido, se toma el componente que multiplica a cada uno
+de los vectores de la base, que var\'ia entre $0$ y $1$ obteniendo as\'i, los
+valores de u y v contra los que se mapea en la textura el punto de
+intersecci\'on.
+
+Por otro lado, las transformaciones en los tri\'angulos son simples.  Al
+momento de aplicarle una traslaci\'on, una rotaci\'on o un escalamiento, se
+multiplican los tres puntos del tri\'angulo por una matriz determinada por la
+acci\'on a tomar, y luego se recalculan las dem\'as variables como las normales
+y los puntos de mapeo.
+
 \subsubsection{Cubos}
 
 Para implementar el cubo decidimos usar doce tri\'angulos.  De esta forma, el
@@ -203,29 +225,6 @@ En el caso de las texturas, considerando que los cubos en s\'i, est\'an
 formados por 12 tri\'angulos, 2 por cada cara del mismo. Al ser en s\'i
 tri\'angulos, la textura ya esta resuelta. El \'unico obst\'aculo a superar fue
 la correcta ubicaci\'on de los tri\'angulos para que conicidan las texturas.
-
-\subsubsection{Tri\'angulo}
-La representaci\'on del triangulo y la intersecci\'on de un rayo con el mismo
-lo comentamos en el informe del Trabajo Pr\'actico \#1.  Cuando desarrollamos
-el motor de ray tracing, tuvimos que agregarle algunas cosas m\'as, como las
-normales en cada punto y el mapeo con los puntos $UV$ para el caso del mapeo
-con las texturas.
-
-Para mapear las texturas en los tri\'angulos, con los 3 puntos que definen al
-tri\'angulo, se crean 2 vectores, entre uno de los puntos y los otros dos, que
-forman una base para el plano sobre el cual esta el tri\'angulo.
-Con estos vectores, su punto inicial y el punto contra el que hizo
-intersecci\'on el rayo emitido, se toma el componente que multiplica a cada uno
-de los vectores de la base, que varia entre $0$ y $1$ obteniendo as\'i, los
-valores de u y v contra los que se mapea en la textura el punto de
-intersecci\'on.
-
-Por otro lado, las transformaciones en los tri\'angulos son simples.  Al
-momento de aplicarle una traslaci\'on, una rotaci\'on o un escalamiento, se
-multiplican los tres puntos del tri\'angulo por una matriz determinada por la
-acci\'on a tomar, y luego se recalculan las dem\'as variables como las normales
-y los puntos de mapeo.
-
 
 \subsubsection{Planos}
 
@@ -323,7 +322,7 @@ Decidimos implementar \emph{soft shadows}, que suaviza un poco las sombras en
 los puntos cercanos a los expuestos a la luz. Para \'esto se crearon luces adicionales
 alrededor de cada luz de la escena, de forma tal que se generen varias sombras a
 partir de una luz y as\'i dar un efecto de una sombra m\'as suave. Claramente, 
-\'esto aumenta el tiempo de rendering, ya que aumenta la cantidad de luces en
+esto aumenta el tiempo de rendering, ya que aumenta la cantidad de luces en
 la escena.
 
 En las figuras \ref{fig:figure9} y \ref{fig:figure10} observamos un ejemplo
@@ -434,7 +433,7 @@ complejas en cantidad de primitivas o efectos sobre las mismas.
 \label{conc}
 
 Del desarrollo del motor concluimos que, de manera relativamente simple, es
-posible realizar renders de im\'agenes de altisima calidad en tiempos
+posible realizar renders de im\'agenes de muy alta calidad en tiempos
 razonables.  Los tiempos razonables son debido a las optimizaciones
 implementadas, dado que sin ellas los tiempos eran muy mayores.
 
