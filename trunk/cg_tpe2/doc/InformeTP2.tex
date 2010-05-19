@@ -119,13 +119,23 @@ valor oscurecido.
 El otro tipo de luz implementada, es una luz puntual.  Esta nos permite obtener
 escenas con sombras, refracciones y reflecciones en la imagen resultante.  La
 luz cuenta con una posici\'on y una potencia y a medida que nos alejamos de
-ella, la potencia disminuye.  Esta disminuci\'on est\'a dictada por la
-ecuaci\'on \ref{eqn:luz}.
+ella, la potencia disminuye.  Esta disminuci\'on fue inicialmente implementada
+usando la ecuaci\'on \ref{eqn:luz}.
 
 \begin{equation}
 \label{eqn:luz}
 Potencia de Luz (d_{punto-luz}) = \frac{P_{luz}}{ln( d_{punto-luz} + 1 ) + 1}
 \end{equation}
+
+Luego se decidi\'o usar una disminuci\'on lineal de la luz, ya que la f\'ormula
+\ref{eqn:luz} nos daba una luz muy fuerte a\'un con una muy poca potencia. \'Esta ecuaci\'on
+se puede ver en \ref{eqn:luzlineal}.
+
+\begin{equation}
+\label{eqn:luzlineal}
+Potencia de Luz (d_{punto-luz}) = 1 - \frac{d_{punto-luz}}{P_{luz}}
+\end{equation}
+
 
 Obviamente, al existir una luz puntual, tambi\'en existen sombras.  Un pixel se
 encuentra sombreado si hay alg\'un objeto opaco entre el punto y el centro de
@@ -310,9 +320,14 @@ la luz, ese pixel quedar\'a sombreado, en cambio, si no hay objetos entre la
 luz y el punto, el pixel no estar\'a sombreado.
 
 Decidimos implementar \emph{soft shadows}, que suaviza un poco las sombras en
-los puntos cercanos a los expuestos a la luz.  En las figuras \ref{fig:figure9}
-y \ref{fig:figure10} observamos un ejemplo de sombras suaves y sombras simples
-respectivamente.
+los puntos cercanos a los expuestos a la luz. Para \'esto se crearon luces adicionales
+alrededor de cada luz de la escena, de forma tal que se generen varias sombras a
+partir de una luz y as\'i dar un efecto de una sombra m\'as suave. Claramente, 
+\'esto aumenta el tiempo de rendering, ya que aumenta la cantidad de luces en
+la escena.
+
+En las figuras \ref{fig:figure9} y \ref{fig:figure10} observamos un ejemplo
+de sombras suaves y sombras simples respectivamente.
 
 \begin{figure}[ht]
 \begin{minipage}[b]{0.5\linewidth}
@@ -342,12 +357,14 @@ continuaci\'on explicamos cada uno de ellos.
 Se implement\'o el shader \emph{constant} para poder representar las escenas de
 prueba entregadas por la c\'atedra. Este shader simple consta de un color que
 esta distribuido de forma uniforme en la superficie de la primitiva.
+
 \subsubsection{Phong}
 En el caso de querer utilizar una textura sobre una figura, hay que utilizar
-\emph{phong}.  Este shader cuenta con una imagen que luego es utilizada para
-mapear a los distintos objetos.  Tambi\'en cuenta con un coeficiente de
-especularidad, que determina la reflexi\'on que tendr\'a el objeto dependiendo
-del valor asignado.
+\emph{phong}, aunque tambi\'en se le puede especificar un color difuso en 
+vez de una textura por si se requiere. Este shader cuenta con una imagen
+que luego es utilizada para mapear a los distintos objetos.
+Tambi\'en cuenta con un coeficiente de especularidad, que determina cu\'anto
+influye el valor especular de la superficie en el color de reflejo de la misma.
 
 En la figura \ref{fig:figure11} se puede observar una esfera con una textura,
 la tierra en este caso.  Adem\'as, podemos observar como tiene un cierto
@@ -363,7 +380,7 @@ reflejo, dado por el coeficiente de especularidad asignado en este caso.
 \subsubsection{Glass}
 
 Este tipo de shader lo utilizamos cuando queremos que la figura en cuesti\'on
-sea traslucida.  Para este tipo de shader hay que definir un indice de
+sea traslucida.  Para este tipo de shader hay que definir un \'indice de
 refracci\'on que ser\'a utilizado para calcular la direcci\'on en la que sale el
 nuevo rayo una vez que intersecta.
 
@@ -374,7 +391,7 @@ puede ver detr\'as de ellas.
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.50]{scene4.png}
-\caption{Esferas utilizando \emph{glass} y planos.}
+\caption{Esferas utilizando \emph{glass}, \emph{mirror} y planos.}
 \label{fig:figure12}
 \end{figure}
 
