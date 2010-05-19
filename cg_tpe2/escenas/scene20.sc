@@ -4,7 +4,7 @@ image {
    aa 0 0
    samples 1
 }
-
+/*
 light {
    type point
    color { "sRGB nonlinear" 1 1 1 }
@@ -25,7 +25,14 @@ light {
    power 1.0
    p 0 -3 2
 }
+*/
 
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 10.0
+   p 0 -15 20
+}
 
 camera {
    type pinhole
