@@ -14,6 +14,7 @@ import ar.edu.itba.cg.tpe2.core.geometry.Vector3;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.light.PointLight;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
+import ar.edu.itba.cg.tpe2.utils.Parser;
 
 public class Phong extends Shader {
 
@@ -54,6 +55,10 @@ public class Phong extends Shader {
 		float [] out = Color.BLACK.getRGBColorComponents(null);
 		float alpha = spec.getSpecularity();
 		
+		float coef = 1.0f;
+		if ( Parser.SOFT_SHADOWS )
+			coef /= Parser.LIGHT_COUNT;
+		
 		// Don't take into account the ambient light
 		
 		// V
@@ -90,9 +95,9 @@ public class Phong extends Shader {
 						float angleToLight = (float) vectorToLight.dot(objectNormal);
 						float angleToView = (float) dirReflectedLight.dot(viewDir);
 						
-						out[0] += diffuseColor[0]*angleToLight * 0.5 + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
-						out[1] += diffuseColor[1]*angleToLight * 0.5 + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
-						out[2] += diffuseColor[2]*angleToLight * 0.5 + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
+						out[0] += diffuseColor[0]*angleToLight * 0.5 * coef + specularColor[0]*Math.pow(angleToView,alpha)*lightRGBComponents[0];
+						out[1] += diffuseColor[1]*angleToLight * 0.5 * coef + specularColor[1]*Math.pow(angleToView,alpha)*lightRGBComponents[1];
+						out[2] += diffuseColor[2]*angleToLight * 0.5 * coef + specularColor[2]*Math.pow(angleToView,alpha)*lightRGBComponents[2];
 					}
 				}
 			}

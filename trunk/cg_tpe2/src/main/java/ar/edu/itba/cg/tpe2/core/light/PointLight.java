@@ -30,8 +30,10 @@ public class PointLight extends Light {
 
 	public float getFallOff(float distanceToLight) {
 		if ( distanceToLight < 0 )
+			distanceToLight = -distanceToLight;
+		if ( distanceToLight > getPower() )
 			return 0;
-		return (float) ((1/ (Math.log(distanceToLight+1) +1))*getPower());
+		return 1 - distanceToLight/getPower();
 	}
 
 }
