@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar cg-tpe1.jar $*
+java -jar cg-tpe2.jar $*

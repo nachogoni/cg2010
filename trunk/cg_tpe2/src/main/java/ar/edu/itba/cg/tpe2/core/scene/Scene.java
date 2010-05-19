@@ -100,6 +100,8 @@ public class Scene {
 			   yMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, yMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE, 
 			   zMin = PrimitiveOctree.DEFAULT_OCTREE_SIZE, zMax = -PrimitiveOctree.DEFAULT_OCTREE_SIZE;
 		
+		System.out.println("Creating Octree...");
+		
 		// Search for the maximun an minimun points for the scene
 		for (Primitive p : primitives) {
 			if (!(p instanceof Plane)) {
@@ -124,6 +126,7 @@ public class Scene {
 				} 
 			}
 		}
+
 		// Create the octree
 		octree = new PrimitiveOctree(xMin, xMax, yMin, xMax, zMin, zMax);
 
@@ -131,8 +134,6 @@ public class Scene {
 		for (Primitive p : primitives) {
 			octree.add(p);
 		}
-		System.out.flush();
-		octree.printOctree();
 		
 		return;
 	}

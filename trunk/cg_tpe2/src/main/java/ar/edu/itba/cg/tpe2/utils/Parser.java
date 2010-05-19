@@ -61,6 +61,9 @@ public class Parser {
 		this.shaders = new HashMap<String, Shader>();
 		String current;
 		aParser = new FileParser(this.filename);
+
+		System.out.println("Parsing...");
+		
 		while(true){
 			current = aParser.getNextToken();
 			String back = current;
@@ -70,19 +73,19 @@ public class Parser {
 			}
 			//System.out.println(current);
 			if(current.equalsIgnoreCase("image")){
-				System.out.println("Reading the image settings...");
+//				System.out.println("Reading the image settings...");
 				this.parseImageSettings();
 			} else if (current.equalsIgnoreCase("camera")){
-				System.out.println("Reading the camera settings...");
+//				System.out.println("Reading the camera settings...");
 				this.parseCameraSettings();
 			} else if (current.equalsIgnoreCase("shader")){
-				System.out.println("Reading Shader settings...");
+//				System.out.println("Reading Shader settings...");
 				this.parseShaderSettings();
 			} else if (current.equalsIgnoreCase("light")){
-				System.out.println("Reading Light Settings...");
+//				System.out.println("Reading Light Settings...");
 				this.parseLightSettings();
 			} else if (current.equalsIgnoreCase("object")){
-				System.out.println("Reading Object Settings...");
+//				System.out.println("Reading Object Settings...");
 				this.parseObjectSettings();
 			} else if(current.equals("transform")){
 				Transform aTrans = this.parseTransform();

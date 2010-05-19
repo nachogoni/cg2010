@@ -117,9 +117,10 @@ public class RayCaster {
 	/**
 	 * Cleanup for the RayCaster class
 	 */
+	@SuppressWarnings("deprecation")
 	public void cleanup() {
-		// Only need to interrupt one thread. Then the Barrier is broken and they all finish.
-		threads.get(0).interrupt();
+		for(RayCasterThread rct:threads )
+			rct.stop();
 	}
 	
 	/**
