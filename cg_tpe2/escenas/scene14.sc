@@ -5,6 +5,14 @@ image {
    samples 4
 }
 
+
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 40
+   p 20.0 0.0 0.0
+}
+
 camera {
    type pinhole
    eye 15.0 15.0 15.0
