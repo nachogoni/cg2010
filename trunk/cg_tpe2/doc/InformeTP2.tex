@@ -128,7 +128,8 @@ Potencia de Luz (d_{punto-luz}) = \frac{P_{luz}}{ln( d_{punto-luz} + 1 ) + 1}
 \end{equation}
 
 Luego se decidi\'o usar una disminuci\'on lineal de la luz, ya que la f\'ormula
-\ref{eqn:luz} nos daba una luz muy fuerte a\'un con una muy poca potencia. \'Esta ecuaci\'on
+\ref{eqn:luz} nos daba una luz muy fuerte a\'un con una muy poca potencia.
+\'Esta ecuaci\'on
 se puede ver en \ref{eqn:luzlineal}.
 
 \begin{equation}
@@ -319,7 +320,8 @@ la luz, ese pixel quedar\'a sombreado, en cambio, si no hay objetos entre la
 luz y el punto, el pixel no estar\'a sombreado.
 
 Decidimos implementar \emph{soft shadows}, que suaviza un poco las sombras en
-los puntos cercanos a los expuestos a la luz. Para \'esto se crearon luces adicionales
+los puntos cercanos a los expuestos a la luz. Para \'esto se crearon luces
+adicionales
 alrededor de cada luz de la escena, de forma tal que se generen varias sombras a
 partir de una luz y as\'i dar un efecto de una sombra m\'as suave. Claramente, 
 esto aumenta el tiempo de rendering, ya que aumenta la cantidad de luces en
@@ -410,6 +412,24 @@ vol\'umenes envolventes y fue por eso que elegimos \emph{octree}.
 \subsection{Subdivisi\'on Espacial y Vol\'umenes Envolventes}
 \label{octree}
 
+Como m\'etodo de subdivisi\'on espacial se utiliz\'o octree. Para ello se defini\'o su
+nodo y contenido. El nodo representa un cubo en el espacio (como parte de su
+subdivisi\'on espacial) y su contenido es una lista de primitivas contenidas por
+el mismo. Investigando como funciona el octree vimos que este m\'etodo de
+subdivisi\'on espacial en definitiva nuclea en vol\'umenes envolventes AABB (sus
+nodos) a un conjunto de primitivas. Es por ello que para determinar c\'omo
+recorrer el \'arbol en busca de intersecciones con primitivas, se debe chequear en
+cada paso intersecciones con un cubo AABB representado por un nodo.
+
+Existen algunas decisiones adoptadas que debemos mencionar. Primero existe el
+hecho de que nuestro octree respet\'o la estructura b\'asica de subdivisi\'on en cubos
+(ancho del lado igual para los tres ejes). En segundo lugar debe mencionarse que
+como paso previo al armado del octree se recorren las primitivas en busca de los
+extremos para los ejes y poder determinar la longitud inicial de los lados para
+la ra\'iz. Por \'ultimo, los planos por ser de longitud infinita, no se encuentran
+dentro de la estructura del octree y se analizan por separado (se tiene en
+cuenta que meterlos en el octree har\'ia que el \'arbol sea m\'as ineficiente y que en
+general las escenas tienen mucho menos planos que pol\'igonos).
 
 \subsection{Multi Threading}
 
@@ -429,6 +449,24 @@ complejas en cantidad de primitivas o efectos sobre las mismas.
 
 \section{Benchmarking}
 \label{bench}
+
+\begin{center}
+\begin{tabular}{ | l | c | r | }
+ \hline
+   Escena & Tiempo con Octree & Tiempo sin Octree \\
+ \hline
+   bunny.sc & 11 Seg. & Mayor a 20 Min. \\
+%    watertower.sc & 8 & > 20 Min. \\
+   chainlink.sc & Mayor a 20 Min. & Mayor a 20 Min. \\
+   hand.sc & 7 Min. & Mayor a 20 Min. \\
+   marbles.sc & 23 Seg. & Mayor a 20 Min. \\
+ \hline  
+ \end{tabular}
+
+ 
+\end{center}
+
+
 \section{Conclusiones}
 \label{conc}
 
