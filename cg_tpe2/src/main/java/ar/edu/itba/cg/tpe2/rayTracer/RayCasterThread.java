@@ -246,7 +246,8 @@ class RayCasterThread extends Thread {
 			}
 			synchronized( this.getClass() ){
 				finishedTasks++;
-				System.out.println("Progress done: " + (int)((finishedTasks* 100f) / totalTasks) + '%');
+				if (this.progressBar)
+					System.out.println("Progress done: " + (int)((finishedTasks* 100f) / totalTasks) + '%');
 				if ( allTasksFinished() )
 					synchronized (rayCaster) {
 						rayCaster.notify();	
