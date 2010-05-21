@@ -1,0 +1,30 @@
+HowTo para el final
+
+*Instalacion de JME2
+
+-Ir al home y adentro de workspace hacer:
+
+svn co -r HEAD http://jmonkeyengine.googlecode.com/svn/trunk jme
+
+-Una vez que bajo el src de JME, ir a ~/workspace/jme y correr el siguiente script:
+
+sh lib/mvn-lib-install.sh
+
+-Correr el build de JME2:
+
+mvn clean install
+
+-Si ya esta creado en el svn el proyecto con el pom.xml ir al siguiente punto, sino correr:
+
+mvn archetype:generate -DgroupId=ar.edu.itba.cg.final -DartifactId=cg_final
+
+y modificar el pom segun corresponda. Ver pom.xml de ejemplo o en la url: http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup
+
+-Ir al workspace y entrar en cg_final y correr:
+
+mvn clean install
+
+y deberia andar... (pero no! - si a alguien se le ocurre xq... fixme!)
+
+http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup
+
