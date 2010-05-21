@@ -1,4 +1,4 @@
-HowTo para el final
+HowTo para el final (http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup - http://www.jmonkeyengine.com/wiki/doku.php?id=no_lwjgl_in_java.library.path- http://www.jmonkeyengine.com/wiki/doku.php/setting_up_eclipse_to_build_jme)
 
 *Instalacion de JME2
 
@@ -14,17 +14,19 @@ sh lib/mvn-lib-install.sh
 
 mvn clean install
 
--Si ya esta creado en el svn el proyecto con el pom.xml ir al siguiente punto, sino correr:
+-En eclipse, poner nuevo proyecto (tipo: Project) y en el nombre poner jme (el mismo que usamos para hacer checkout antes)...
 
-mvn archetype:generate -DgroupId=ar.edu.itba.cg.final -DartifactId=cg_final
+-Bajar el proyecto de cg_final, habilitar maven, hacer update de las dependencias, de la configuracion del proyecto y abrir la configuracion del build path.
 
-y modificar el pom segun corresponda. Ver pom.xml de ejemplo o en la url: http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup
+-Elegir Add Library, User library, crear una nueva con nombre JME y agregarle los siguientes jar que estan dentro del workspace/jme/lib/
 
--Ir al workspace y entrar en cg_final y correr:
+lwjgl/jinput.jar
+lwjgl/lwjgl.jar
+lwjgl/lwjgl-util-applet.jar
+jogl/jogl.jar
+jorbis/jorbis.jar
+junit/junit-4.1.jar
 
-mvn clean install
+-Aceptar y editar el jar de lwjgl.jar, en Native library location poner jme/lib/lwjgl/native/linux
 
-y deberia andar... (pero no! - si a alguien se le ocurre xq... fixme!)
-
-http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup
-
+-Con esto deberia arrancar todo bien el ejemplo que deje...

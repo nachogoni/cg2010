@@ -11,6 +11,7 @@
 		<main.class>ar.edu.itba.cg.final.Rally</main.class>
 		<jme2.home>../jme</jme2.home>
 		<lwjgl.natives>${jme2.home}/lib/lwjgl/native</lwjgl.natives>
+		<lwjgl.version>2.1</lwjgl.version>
 	</properties>
 	<build>
 		<plugins>
@@ -99,6 +100,21 @@
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<version>${lwjgl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl_util_applet</artifactId>
+			<version>${lwjgl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl_util</artifactId>
+			<version>${lwjgl.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>
