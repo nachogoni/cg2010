@@ -1,0 +1,150 @@
+
+image {
+   resolution 800 600
+   aa 0 0
+   samples 1
+}
+
+
+camera {
+   type pinhole
+   eye 0.0 1.0 10.0
+   target 0.0 1.0 0.0
+   up 0.0 10.0 0.0
+   fov 60 
+   aspect 1.333
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 300.0
+   p 0 4.0 5.0
+}
+
+light {
+   type point
+   color { "sRGB nonlinear" 1 1 1 }
+   power 30.0
+   p -3 3 0
+}
+
+shader {
+   name phong1
+   type phong
+   diff { "sRGB nonlinear" 1 0 0 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+shader {
+   name mirror0
+   type mirror
+   refl { "sRGB nonlinear" 0.800 0.800 0.800 }
+}
+
+shader {
+   name mirror1
+   type mirror
+   refl { "sRGB nonlinear" 0.400 0.400 0.400 }
+}
+
+shader {
+   name phong0
+   type phong
+   diff { "sRGB nonlinear" 1.0 1.0 1.0 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+shader {
+   name blue_sh
+   type phong
+   diff { "sRGB nonlinear" 0.0 0.0 1.0 }
+   spec { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+   samples 4
+}
+
+shader {
+   name yellow_sh
+   type phong
+   diff { "sRGB nonlinear" 1.0 1.0 0.0 }
+   spec { "sRGB nonlinear" 0.0 0.0 0.0 } 50
+   samples 4
+}
+
+shader {
+   name glass0
+   type glass
+   eta 1.5
+   color { "sRGB nonlinear" 0 0 0 }
+   absorbtion.distance 3
+   absorbtion.color { "sRGB nonlinear" 1.0 1.0 1.0 } 50
+}
+
+object {
+   shader blue_sh
+   type sphere
+   name sphere5
+   c -4 3 -3
+   r 0.5
+}
+
+object {
+   shader phong1
+   type sphere
+   name sphere2
+   c 0 0 0
+   r 1.5
+}
+
+object {
+   shader glass0
+   type sphere
+   name sphere3
+   c 0 1 4
+   r 0.5
+}
+
+object {
+   shader yellow_sh
+   type plane
+   p 2 0 0
+   n -1 0 0
+}
+
+
+object {
+   shader glass0
+   type plane
+   p -2 0 0
+   n 1 0 0
+}
+
+object {
+   shader mirror0
+   type plane
+   p 0 0 0
+   n 0 1 0
+}
+/*
+object {
+   shader glass0
+   name "superglass"
+   type plane
+   p 0 0 8
+   n 0 0 1
+}
+*/
