@@ -532,7 +532,49 @@ public class Parser {
 						if(current.equals("refl")){
 							aSpec = this.parseSpec(current);
 						}
-					}while(current.equals("}"));
+					}while(!current.equals("}"));
+				} else if (type.equals("organic") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("water") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("wood") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("marble") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("fire") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
+				} else if (type.equals("stone") ){
+					do{
+						current = aParser.getNextToken();
+						if(current.equals("depth")){
+							depth = new Integer(aParser.getNextToken());
+						}
+					}while(!current.equals("}"));
 				} else {
 					// It's none of the accepted types of Shader
 					do{

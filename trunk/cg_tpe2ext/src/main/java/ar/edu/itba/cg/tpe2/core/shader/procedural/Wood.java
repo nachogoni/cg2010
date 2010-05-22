@@ -19,7 +19,7 @@ public class Wood extends ProduralShader {
 
 	@Override
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
-		return null;
+		return Color.WHITE;
 	}
 
 }
