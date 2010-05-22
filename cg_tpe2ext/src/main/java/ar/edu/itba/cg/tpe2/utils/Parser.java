@@ -480,7 +480,9 @@ public class Parser {
 		Specular aSpec = null, absSpec = null;
 		Diffuse aDiff = null;
 		Color aColor = null;
-		int depth = DEFAULT_RESOLUTION; 
+		int depth = DEFAULT_RESOLUTION;
+		Diffuse initDiff = new Diffuse(0, 0, 0);
+		Diffuse finalDiff = new Diffuse(1, 1, 1);
 		
 		do{
 			current = aParser.getNextToken();
@@ -538,6 +540,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("water") ){
@@ -545,6 +551,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("wood") ){
@@ -552,6 +562,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("marble") ){
@@ -559,6 +573,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("fire") ){
@@ -566,6 +584,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else if (type.equals("stone") ){
@@ -573,6 +595,10 @@ public class Parser {
 						current = aParser.getNextToken();
 						if(current.equals("depth")){
 							depth = new Integer(aParser.getNextToken());
+						} else if (current.equals("diffuse_initial")){
+							initDiff = this.parseDiff(current);
+						} else if (current.equals("diffuse_final")){
+							finalDiff = this.parseDiff(current);
 						}
 					}while(!current.equals("}"));
 				} else {
@@ -599,17 +625,17 @@ public class Parser {
 		} else if (type.equals("glass")){
 			sh = new Glass(name, type, eta.floatValue(), abs_dst.floatValue(), aSpec, absSpec);
 		} else if (type.equals("organic")){
-			sh = new Organic(name, type, depth);
+			sh = new Organic(name, type, depth, initDiff, finalDiff);
 		} else if (type.equals("stone")){
-			sh = new Stone(name, type, depth);
+			sh = new Stone(name, type, depth, initDiff, finalDiff);
 		} else if (type.equals("fire")){
-			sh = new Fire(name, type, depth);
+			sh = new Fire(name, type, depth, initDiff, finalDiff);
 		} else if (type.equals("water")){
-			sh = new Water(name, type, depth);
+			sh = new Water(name, type, depth, initDiff, finalDiff);
 		} else if (type.equals("wood")){
-			sh = new Wood(name, type, depth);
+			sh = new Wood(name, type, depth, initDiff, finalDiff);
 		} else if (type.equals("marble")){
-			sh = new Marble(name, type, depth);
+			sh = new Marble(name, type, depth, initDiff, finalDiff);
 		}
 
 		if ( sh != null )
