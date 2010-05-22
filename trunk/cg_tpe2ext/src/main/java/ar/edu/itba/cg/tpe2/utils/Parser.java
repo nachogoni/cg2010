@@ -31,12 +31,19 @@ import ar.edu.itba.cg.tpe2.core.shader.Glass;
 import ar.edu.itba.cg.tpe2.core.shader.Mirror;
 import ar.edu.itba.cg.tpe2.core.shader.Phong;
 import ar.edu.itba.cg.tpe2.core.shader.Shader;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Fire;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Marble;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Organic;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Stone;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Water;
+import ar.edu.itba.cg.tpe2.core.shader.procedural.Wood;
 
 public class Parser {
 
 	private static final float LIGHT_SPACING = 0.1f;
 	public static final boolean SOFT_SHADOWS = true;
 	public static final float LIGHT_COUNT = 27;
+	private static final int DEFAULT_RESOLUTION = 9;
 	private String filename = null;
 	private FileParser aParser;
 	private Scene scene;
@@ -473,6 +480,7 @@ public class Parser {
 		Specular aSpec = null, absSpec = null;
 		Diffuse aDiff = null;
 		Color aColor = null;
+		int depth = DEFAULT_RESOLUTION; 
 		
 		do{
 			current = aParser.getNextToken();
@@ -538,20 +546,32 @@ public class Parser {
 			}
 		}while(!current.equals("}"));
 		
-		if(type.equals("mirror")){
-			Shader aMirror = new Mirror(name, type, aSpec);
-			shaders.put(aMirror.getName(), aMirror);
-		} else if (type.equals("phong")){
-			Shader aPhong = new Phong(name, type, aDiff, samples, aSpec);
-			shaders.put(aPhong.getName(), aPhong);
-		} else if (type.equals("constant")){
-			Shader aConstant = new Constant(name, type, aColor);
-			shaders.put(aConstant.getName(), aConstant);
-		} else if (type.equals("glass")){
-			Shader aGlass = new Glass(name, type, eta.floatValue(), abs_dst.floatValue(), aSpec, absSpec);
-			shaders.put(aGlass.getName(), aGlass);
-		}
+		Shader sh = null; 
 		
+		if(type.equals("mirror")){
+			sh = new Mirror(name, type, aSpec);
+		} else if (type.equals("phong")){
+			sh = new Phong(name, type, aDiff, samples, aSpec);
+		} else if (type.equals("constant")){
+			sh = new Constant(name, type, aColor);
+		} else if (type.equals("glass")){
+			sh = new Glass(name, type, eta.floatValue(), abs_dst.floatValue(), aSpec, absSpec);
+		} else if (type.equals("organic")){
+			sh = new Organic(name, type, depth);
+		} else if (type.equals("stone")){
+			sh = new Stone(name, type, depth);
+		} else if (type.equals("fire")){
+			sh = new Fire(name, type, depth);
+		} else if (type.equals("water")){
+			sh = new Water(name, type, depth);
+		} else if (type.equals("wood")){
+			sh = new Wood(name, type, depth);
+		} else if (type.equals("marble")){
+			sh = new Marble(name, type, depth);
+		}
+
+		if ( sh != null )
+			shaders.put(sh.getName(), sh);
 	}
 
 
