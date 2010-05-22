@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.vecmath.Point3f;
 
+import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
@@ -13,8 +14,9 @@ import ar.edu.itba.cg.tpe2.core.shader.ProduralShader;
 
 public class Wood extends ProduralShader {
 
-	public Wood(String name, String type, int depth) {
-		super(name, type, depth);
+
+	public Wood(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
+		super(name, type, depth, initialColor, finalColor);
 	}
 
 	@Override

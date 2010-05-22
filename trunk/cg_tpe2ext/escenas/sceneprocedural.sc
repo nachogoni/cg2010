@@ -26,35 +26,47 @@ shader {
    name organic0
    type organic
    depth 3
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 shader {
    name wood0
    type wood
    depth 4
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 shader {
    name marble0
    type marble
    depth 5
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 shader {
    name water0
    type water
    depth 6
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 shader {
    name fire0
    type fire
    depth 7
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 shader {
    name stone0
    type stone
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 1.000 1.000 }
 }
 
 object {
