@@ -14,13 +14,21 @@ import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Organic extends ProceduralShader {
 
+	private static final int LEVELS = 10;
+
 	public Organic(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}
 
 	@Override
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
-		return Color.ORANGE;
+		Point3f relativePoint = new Point3f(aPoint);
+		if ( primitive != null )
+			relativePoint.sub(primitive.getReferencePoint());
+		float noiseCoef = computeTurbulence(relativePoint, LEVELS,0.1f);
+		noiseCoef = (float) Math.tan( relativePoint.y + relativePoint.x + noiseCoef);
+		
+		return getColor(noiseCoef);
 	}
 
 }
