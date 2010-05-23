@@ -13,7 +13,7 @@ import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Organic extends ProceduralShader {
-
+	// TODO 2d
 	public Organic(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}

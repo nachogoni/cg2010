@@ -13,7 +13,7 @@ import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Wood extends ProceduralShader {
-
+	// TODO 3d
 	public Wood(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}
