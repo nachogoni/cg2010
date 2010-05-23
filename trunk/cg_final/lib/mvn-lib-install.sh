@@ -9,6 +9,7 @@ mvn install:install-file -Dfile=lib/jorbis/jorbis-0.0.17.jar -DgroupId=jorbis -D
 mvn install:install-file -Dfile=lib/jogl/jogl.jar -DgroupId=net.java.dev.jogl -DartifactId=jogl -Dversion=1.1.1 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/jogl/gluegen-rt.jar -DgroupId=net.java.dev.gluegen -DartifactId=gluegen-rt -Dversion=1.0b06 -Dpackaging=jar
 
+#ELEGIR SEGUN SISTEMA OPERATIVO
 mvn install:install-file -Dfile=lib/swt/linux/swt.jar -DgroupId=org.eclipse.swt -DartifactId=swt -Dversion=3.448 -Dpackaging=jar
 
 mvn install:install-file -Dfile=lib/jme/jme.jar -DgroupId=com.jmonkeyengine -DartifactId=jme -Dversion=2.0.1 -Dpackaging=jar
