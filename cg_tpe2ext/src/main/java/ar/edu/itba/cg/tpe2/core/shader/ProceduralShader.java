@@ -6,12 +6,12 @@ import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
-import ar.edu.itba.cg.tpe2.utils.ImprovedNoise;
-import ar.edu.itba.cg.tpe2.utils.Noise;
+import ar.edu.itba.cg.tpe2.utils.noise.ImprovedNoise;
+import ar.edu.itba.cg.tpe2.utils.noise.Noise;
 
 public abstract class ProceduralShader extends Shader {
 
-	protected Noise noise;
+	protected Noise noise = new ImprovedNoise();
 	protected Diffuse finalColor;
 	protected Diffuse initialColor;
 	
@@ -49,7 +49,7 @@ public abstract class ProceduralShader extends Shader {
 		for(float level = 0 ; level < maxLevel ; level++){
 			float coef = (float) Math.pow(2,level);
 			noiseCoef +=  (1.0f / coef ) * Math.abs(
-            					ImprovedNoise.noise(coef * p.x, coef * p.y, 0));
+            					noise.noise(coef * p.x, coef * p.y, 0));
 		}
 		return noiseCoef;
 	}
@@ -61,7 +61,7 @@ public abstract class ProceduralShader extends Shader {
 			freq = (float) Math.pow(2,level);
 			amp = (float) Math.pow(persistance,level);
 			noiseCoef +=  amp * Math.abs(
-            					ImprovedNoise.noise(freq * p.x, freq * p.y, freq * p.z
+            					noise.noise(freq * p.x, freq * p.y, freq * p.z
                                 ));
 		}
 		return noiseCoef;

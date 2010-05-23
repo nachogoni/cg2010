@@ -1,14 +1,18 @@
-package ar.edu.itba.cg.tpe2.utils;
+package ar.edu.itba.cg.tpe2.utils.noise;
 
 import javax.vecmath.Point3f;
 
-public final class ImprovedNoise {
+public final class ImprovedNoise  implements Noise {
 	
-	static public float noise(Point3f p) {
+	public float noise(Point3f p) {
 		return noise(p.x, p.y, p.z);
 	}
+
+	public float noise(float x, float y) {
+		return noise(x,y,0f);
+	}
 	
-	static public float noise(float x, float y, float z) {
+	public float noise(float x, float y, float z) {
 		int X = (int) Math.floor(x) & 255, // FIND UNIT CUBE THAT
 		Y = (int) Math.floor(y) & 255, // CONTAINS POINT.
 		Z = (int) Math.floor(z) & 255;
@@ -71,4 +75,5 @@ public final class ImprovedNoise {
 		for (int i = 0; i < 256; i++)
 			p[256 + i] = p[i] = permutation[i];
 	}
+
 }
