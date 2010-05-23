@@ -10,9 +10,9 @@ import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
 import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
-import ar.edu.itba.cg.tpe2.core.shader.ProduralShader;
+import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
-public class Stone extends ProduralShader {
+public class Stone extends ProceduralShader {
 
 	public Stone(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);

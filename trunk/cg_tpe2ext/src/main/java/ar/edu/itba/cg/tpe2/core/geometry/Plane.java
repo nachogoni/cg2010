@@ -138,4 +138,9 @@ public class Plane extends Primitive {
 		return null;
 	}
 
+	@Override
+	public Point3f getReferencePoint() {
+		return new Point3f();
+	}
+
 }

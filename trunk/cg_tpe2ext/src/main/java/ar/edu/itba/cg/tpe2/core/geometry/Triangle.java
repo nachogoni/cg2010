@@ -261,4 +261,8 @@ public class Triangle extends Primitive {
 		return extremes;
 	}
 	
+	@Override
+	public Point3f getReferencePoint() {
+		return new Point3f(p1);
+	}
 }

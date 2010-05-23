@@ -1,0 +1,67 @@
+package ar.edu.itba.cg.tpe2.core.shader;
+
+import java.awt.Color;
+
+import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
+
+import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
+import ar.edu.itba.cg.tpe2.utils.ImprovedNoise;
+import ar.edu.itba.cg.tpe2.utils.Noise;
+
+public abstract class ProceduralShader extends Shader {
+
+	protected Noise noise;
+	protected Diffuse finalColor;
+	protected Diffuse initialColor;
+	
+	public ProceduralShader(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
+		super(name, type);
+		//noise = new Noise(depth);
+		this.initialColor = initialColor;
+		this.finalColor = finalColor;
+	}
+	
+	protected Color getColor(float noiseCoef) {
+		float[] initialComponents = initialColor.getColorAt(null, null).getRGBColorComponents(null);
+		float[] finalComponents = finalColor.getColorAt(null, null).getRGBColorComponents(null);
+		float[] resultComponents = {0,0,0};
+		
+		for(int i = 0; i < 3 ; i++)
+			resultComponents[i] = noiseCoef * initialComponents[i] + (1.0f - noiseCoef) * finalComponents[i];
+		return clamp(resultComponents);
+	}
+
+	protected Color clamp(float [] rgbs){
+		return new Color(clamp(rgbs[0]),clamp(rgbs[1]),clamp(rgbs[2]));
+	}
+	
+	protected float clamp(float channel){
+		if ( channel > 1.0 )
+			return 1;
+		if ( channel < 0 )
+			return 0;
+		return channel;
+	}
+
+	protected float computeTurbulence(Point2f p, int maxLevel){
+		float noiseCoef = 0;
+		for(float level = 0 ; level < maxLevel ; level++){
+			float coef = (float) Math.pow(2,level);
+			noiseCoef +=  (1.0f / coef ) * Math.abs(
+            					ImprovedNoise.noise(coef * p.x, coef * p.y, 0));
+		}
+		return noiseCoef;
+	}
+	
+	protected float computeTurbulence(Point3f p, int maxLevel){
+		float noiseCoef = 0;
+		for(float level = 0 ; level < maxLevel ; level++){
+			float coef = (float) Math.pow(2,level);
+			noiseCoef +=  (1.0f / coef ) * Math.abs(
+            					ImprovedNoise.noise(coef * p.x, coef * p.y, coef * p.z
+                                ));
+		}
+		return noiseCoef;
+	}
+}
