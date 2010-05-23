@@ -17,15 +17,24 @@ public class Noise {
 		
 		int size = (int)Math.pow(2, resolutionDeph);
 		this.texture = new float[size][size];
+
+		// Create the sample random matrix
+		int sampleSize = 16;
+		float[][] sample = new float[sampleSize][sampleSize];
+		for (int x = 0; x < sampleSize; x++) {
+			for (int y = 0; y < sampleSize; y++) {
+				sample[x][y] = rnd.nextFloat();
+			}
+		}
 		
 		// Create the noise matrix
-		for (int i = 0; i <= resolutionDeph; i++) {
+//		for (int i = resolutionDeph; i > 1; i--) {
 			// Number of pixels with the same value
-			int pow = (int)Math.pow(2, i);
-			int box = size / pow;
+			int pow = 16;//(int)Math.pow(2, 4);
+			int box = 16;//size / pow;
 			for (int xb = 0; xb < pow; xb++) {
 				for (int yb = 0; yb < pow; yb++) {
-					float value = rnd.nextFloat() * 2 - 1;
+					float value = sample[xb][yb];
 					// Fill that little matrix with value
 					for (int x = 0; x < box; x++) {
 						for (int y = 0; y < box; y++) {
@@ -34,12 +43,15 @@ public class Noise {
 					}
 				}
 			}
-			this.interpolate();
-		}
-	
+//			this.interpolate();
+//		}
+
+		resolutionDeph=0;
+		
 		// Change values from -1..1 to 0..1
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
+//				texture[x][y] = (float)Math.abs(texture[x][y]);
 				texture[x][y] += resolutionDeph + 1;
 				texture[x][y] /= (resolutionDeph + 1) * 2f;
 			}
@@ -53,7 +65,9 @@ public class Noise {
 		
 		for (int x = 1; x < size-1; x++) {
 			for (int y = 1; y < size-1; y++) {
-				ntexture[x][y] = (texture[x][y] + texture[x+1][y+1] + texture[x+1][y] + texture[x][y+1] + texture[x-1][y-1] + texture[x-1][y] + texture[x][y-1])/9f;
+				float corners = (texture[x+1][y+1] + texture[x-1][y-1] + texture[x-1][y+1] + texture[x+1][y-1])/16f;
+				float sides = (texture[x][y+1] + texture[x][y-1] + texture[x-1][y] + texture[x+1][y])/8f;
+				ntexture[x][y] = texture[x][y] / 4f + corners + sides;
 			}
 		}
 		
