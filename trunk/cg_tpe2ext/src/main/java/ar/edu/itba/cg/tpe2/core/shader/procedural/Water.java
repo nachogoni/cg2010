@@ -11,13 +11,9 @@ import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
-import ar.edu.itba.cg.tpe2.utils.noise.ImprovedNoise;
-import ar.edu.itba.cg.tpe2.utils.noise.Noise;
 
 public class Water extends ProceduralShader {
 
-	Noise noise = new ImprovedNoise();
-	
 	public Water(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}

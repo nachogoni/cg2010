@@ -7,17 +7,17 @@ import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.utils.noise.ImprovedNoise;
-import ar.edu.itba.cg.tpe2.utils.noise.Noise;
+import ar.edu.itba.cg.tpe2.utils.noise.INoise;
 
 public abstract class ProceduralShader extends Shader {
 
-	protected Noise noise = new ImprovedNoise();
+	protected INoise noise;
 	protected Diffuse finalColor;
 	protected Diffuse initialColor;
 	
 	public ProceduralShader(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type);
-		//noise = new Noise(depth);
+		noise = new ImprovedNoise(depth);
 		this.initialColor = initialColor;
 		this.finalColor = finalColor;
 	}

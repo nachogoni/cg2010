@@ -14,8 +14,6 @@ import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Stone extends ProceduralShader {
 
-	private static final int LEVELS = 10;
-
 	public Stone(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}
@@ -25,7 +23,7 @@ public class Stone extends ProceduralShader {
 		Point3f relativePoint = new Point3f(aPoint);
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
-		float noiseCoef = computeTurbulence(relativePoint, LEVELS, 0.9f);
+		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.9f);
 		
 		return getColor(noiseCoef);
 	}
