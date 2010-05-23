@@ -199,5 +199,5 @@ public abstract class Primitive {
 			return 0.0f;
 	}
 	
-	
+	abstract public Point3f getReferencePoint();
 }

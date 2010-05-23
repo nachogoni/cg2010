@@ -144,4 +144,8 @@ public class Sphere extends Primitive {
 		this.radius *= scale;
 	}
 	
+	@Override
+	public Point3f getReferencePoint() {
+		return new Point3f(this.radiusCenter);
+	}
 }
