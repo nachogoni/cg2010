@@ -2,8 +2,10 @@ package ar.edu.itba.cg.tpe2.utils.noise;
 
 import javax.vecmath.Point3f;
 
-public final class ImprovedNoise  implements Noise {
+public final class ImprovedNoise  implements INoise {
 	
+	private int depth;
+
 	public float noise(Point3f p) {
 		return noise(p.x, p.y, p.z);
 	}
@@ -76,4 +78,11 @@ public final class ImprovedNoise  implements Noise {
 			p[256 + i] = p[i] = permutation[i];
 	}
 
+	public ImprovedNoise(int depth) {
+		this.depth = depth;
+	}
+	
+	public int getDepth(){
+		return this.depth;
+	}
 }

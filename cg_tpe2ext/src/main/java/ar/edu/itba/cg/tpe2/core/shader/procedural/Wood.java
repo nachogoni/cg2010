@@ -14,9 +14,6 @@ import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Wood extends ProceduralShader {
 
-
-	private static final int LEVELS = 20;
-
 	public Wood(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
 	}
@@ -26,7 +23,7 @@ public class Wood extends ProceduralShader {
 		Point3f relativePoint = new Point3f(aPoint);
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
-		float noiseCoef = computeTurbulence(relativePoint, LEVELS, 0.25f);
+		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f);
 		noiseCoef = noiseCoef * 8;
 		noiseCoef = noiseCoef - (int) noiseCoef;
 		
