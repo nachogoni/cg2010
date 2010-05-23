@@ -41,7 +41,7 @@ import ar.edu.itba.cg.tpe2.core.shader.procedural.Wood;
 public class Parser {
 
 	private static final float LIGHT_SPACING = 0.1f;
-	public static final boolean SOFT_SHADOWS = true;
+	public static final boolean SOFT_SHADOWS = false;
 	public static final float LIGHT_COUNT = 27;
 	private static final int DEFAULT_RESOLUTION = 9;
 	private String filename = null;

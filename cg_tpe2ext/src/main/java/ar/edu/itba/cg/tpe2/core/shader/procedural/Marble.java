@@ -14,7 +14,7 @@ import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 
 public class Marble extends ProceduralShader {
 
-	private static final int LEVELS = 20;
+	private static final int LEVELS = 10;
 
 	public Marble(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
@@ -25,8 +25,9 @@ public class Marble extends ProceduralShader {
 		Point3f relativePoint = new Point3f(aPoint);
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
-		float noiseCoef = computeTurbulence(relativePoint, LEVELS);
-		noiseCoef = (float) Math.sin( relativePoint.y + noiseCoef + 1) * 0.5f;
+		float noiseCoef = computeTurbulence(relativePoint, LEVELS,0.25f);
+//		noiseCoef = (float) Math.sin( relativePoint.y + noiseCoef + 1) * 0.5f;
+		noiseCoef = (float) Math.sin( relativePoint.y + noiseCoef + 1);
 		
 		return getColor(noiseCoef);
 	}

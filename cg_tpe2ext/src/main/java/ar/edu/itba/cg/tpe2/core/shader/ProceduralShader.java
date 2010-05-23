@@ -54,12 +54,14 @@ public abstract class ProceduralShader extends Shader {
 		return noiseCoef;
 	}
 	
-	protected float computeTurbulence(Point3f p, int maxLevel){
+	protected float computeTurbulence(Point3f p, int maxLevel, float persistance){
 		float noiseCoef = 0;
+		float freq, amp;
 		for(float level = 0 ; level < maxLevel ; level++){
-			float coef = (float) Math.pow(2,level);
-			noiseCoef +=  (1.0f / coef ) * Math.abs(
-            					ImprovedNoise.noise(coef * p.x, coef * p.y, coef * p.z
+			freq = (float) Math.pow(2,level);
+			amp = (float) Math.pow(persistance,level);
+			noiseCoef +=  amp * Math.abs(
+            					ImprovedNoise.noise(freq * p.x, freq * p.y, freq * p.z
                                 ));
 		}
 		return noiseCoef;
