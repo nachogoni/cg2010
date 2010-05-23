@@ -1,4 +1,4 @@
-package ar.edu.itba.cg.cg_final;
+package ar.edu.itba.cg_final;
 
 import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;
