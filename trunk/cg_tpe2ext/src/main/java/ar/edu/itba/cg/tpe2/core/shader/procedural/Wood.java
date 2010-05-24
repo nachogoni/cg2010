@@ -31,4 +31,8 @@ public class Wood extends ProceduralShader {
 		
 	}
 
+	@Override
+	public float getReflectionK() {
+		return 0.1f;
+	}
 }
