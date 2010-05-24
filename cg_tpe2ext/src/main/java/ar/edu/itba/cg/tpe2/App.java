@@ -400,7 +400,7 @@ public class App
     		// Making the default value with the input filename, in case the option was not set
     		String sceneName = cl.getOptionValue("i");
     		
-			fileName = sceneName.substring(0, sceneName.length() - 2).concat("png");
+			fileName = "escenas/" + sceneName.substring(0, sceneName.length() - 2).concat("png");
 		}
     	
 		// Open output file

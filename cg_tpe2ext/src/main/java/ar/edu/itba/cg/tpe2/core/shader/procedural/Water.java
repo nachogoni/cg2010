@@ -24,7 +24,17 @@ public class Water extends ProceduralShader {
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
 		
-		return getColor(noise.noise(relativePoint.x,relativePoint.y));
+		float[] uv = primitive.getUV(aPoint);
+		return getColor(noise.noise(uv[0]*2-1,uv[1]*2-1));
 	}
 
+	@Override
+	public float getReflectionK() {
+		return 0.2f;
+	}
+	
+	@Override
+	public float getRefractionK() {
+		return 0.2f;
+	}
 }

@@ -3,6 +3,7 @@ package ar.edu.itba.cg.tpe2.core.shader.procedural;
 import java.awt.Color;
 import java.util.List;
 
+import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
@@ -23,8 +24,10 @@ public class Organic extends ProceduralShader {
 		Point3f relativePoint = new Point3f(aPoint);
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
-		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.1f);
-		noiseCoef = (float) Math.tan( relativePoint.y + relativePoint.x + noiseCoef);
+		float[] uv = primitive.getUV(aPoint);
+		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.1f);
+//		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.1f);
+		noiseCoef = (float) Math.tan( uv[0] * 2 - 2 + uv[1]*2  + noiseCoef);
 		
 		return getColor(noiseCoef);
 	}
