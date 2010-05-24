@@ -69,51 +69,75 @@ shader {
    diffuse_final { "sRGB nonlinear" 0.000 0.000 0.000 }
 }
 
-object {
+object { 
    shader organic0
-   type sphere
-   name sphere0
-   c 0 1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh0
+   points 3
+      0 3 0
+	  -1 1 0
+      1 1 0
+   triangles 1
+   	  0 1 2
 }
 
 object {
    shader stone0
-   type sphere
-   name sphere1
-   c 0 -1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh1
+   points 3
+      0 -3 0
+	  -1 -1 0
+      1 -1 0
+   triangles 1
+   	  0 1 2
 }
 
 object {
    shader water0
-   type sphere
-   name sphere2
-   c -3 1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh0
+   points 3
+      -2 3 0
+	  -4 3 0
+      -3 1 0
+   triangles 1
+   	  0 1 2
 }
 
 object {
    shader fire0
-   type sphere
-   name sphere3
-   c 3 1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh0
+   points 3
+      2 3 0
+	  4 3 0
+      3 1 0
+   triangles 1
+   	  0 1 2
 }
 
 object {
    shader marble0
-   type sphere
-   name sphere4
-   c -3 -1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh0
+   points 3
+      -2 -3 0
+	  -4 -3 0
+      -3 -1 0
+   triangles 1
+   	  0 1 2
 }
 
 object {
    shader wood0
-   type sphere
-   name sphere5
-   c 3 -1.5 0
-   r 1.5
+   type generic-mesh 
+   name mesh0
+   points 3
+      2 -3 0
+	  4 -3 0
+      3 -1 0
+   triangles 1
+   	  0 1 2
 }
 
