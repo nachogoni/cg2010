@@ -12,5 +12,17 @@ mvn install:install-file -Dfile=lib/jogl/gluegen-rt.jar -DgroupId=net.java.dev.g
 #ELEGIR SEGUN SISTEMA OPERATIVO
 mvn install:install-file -Dfile=lib/swt/linux/swt.jar -DgroupId=org.eclipse.swt -DartifactId=swt -Dversion=3.448 -Dpackaging=jar
 
+#JMONKEY JARS
 mvn install:install-file -Dfile=lib/jme/jme.jar -DgroupId=com.jmonkeyengine -DartifactId=jme -Dversion=2.0.1 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/jme/jme-audio.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-audio -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-awt.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-awt -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-collada.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-collada -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-editors.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-editors -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-effects.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-effects -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-font.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-font -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-gamestates.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-gamestates -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-model.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-model -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-ogrexml.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-ogrexml -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-scene.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-scene -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-swt.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-swt -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme-terrain.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-terrain -Dversion=2.0.1 -Dpackaging=jar
