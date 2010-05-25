@@ -1,32 +1,38 @@
-HowTo para el final (http://jmonkeyengine.com/wiki/doku.php/jme_maven_setup - http://www.jmonkeyengine.com/wiki/doku.php?id=no_lwjgl_in_java.library.path- http://www.jmonkeyengine.com/wiki/doku.php/setting_up_eclipse_to_build_jme)
+**HowTo para correr el Final desde eclipse
 
-*Instalacion de JME2
+* Checkout del proyecto cg_final desde eclipse o desde la consola con:
 
--Ir al home y adentro de workspace hacer:
+svn checkout https://cg2010.googlecode.com/svn/trunk/cg_final cg_final
 
-svn co -r HEAD http://jmonkeyengine.googlecode.com/svn/trunk jme
-
--Una vez que bajo el src de JME, ir a ~/workspace/jme y correr el siguiente script:
+* Desde la consola en el raiz del proyecto correr:
 
 sh lib/mvn-lib-install.sh
 
--Correr el build de JME2:
+* Correr despues la siguiente linea:
 
-mvn clean install
+mvn clean install exec:java
 
--En eclipse, poner nuevo proyecto (tipo: Project) y en el nombre poner jme (el mismo que usamos para hacer checkout antes)...
+* Si se quiere usar desde eclipse, correr:
 
--Bajar el proyecto de cg_final, habilitar maven, hacer update de las dependencias, de la configuracion del proyecto y abrir la configuracion del build path.
+mvn clean install eclipse:eclipse
 
--Elegir Add Library, User library, crear una nueva con nombre JME y agregarle los siguientes jar que estan dentro del workspace/jme/lib/
+* Si se quiere correr desde eclipse, ir a Run->External Tools->External Tools Configuration... y crear una nueva configuracion
+* En location path, poner: 
 
-lwjgl/jinput.jar
-lwjgl/lwjgl.jar
-lwjgl/lwjgl-util-applet.jar
-jogl/jogl.jar
-jorbis/jorbis.jar
-junit/junit-4.1.jar
+/usr/bin/mvn (o donde este el ejecutable de maven)
 
--Aceptar y editar el jar de lwjgl.jar, en Native library location poner jme/lib/lwjgl/native/linux
+* En working directory poner:
 
--Con esto deberia arrancar todo bien el ejemplo que deje...
+${workspace_loc:/cg_final} (con cg_final como nombre del proyecto)
+
+* En arguments poner:
+
+exec:java
+
+* Poner Apply y Run.
+
+------------------------------------------------------------------
+
+**Si se quiere tener el source de JME:
+
+svn co -r HEAD http://jmonkeyengine.googlecode.com/svn/trunk jme
