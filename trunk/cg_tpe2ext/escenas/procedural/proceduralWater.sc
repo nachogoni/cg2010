@@ -38,10 +38,10 @@ light {
 
 shader {
    name water0
-   type water
+   type fire
    depth 4
-   diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
-   diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
+   diffuse_initial { "sRGB nonlinear" 0.000 0.00 1.000 }
+   diffuse_final { "sRGB nonlinear" 0.000 0.80 0.40 }
 }
 
 object {

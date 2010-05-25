@@ -25,8 +25,8 @@ public class Water extends ProceduralShader {
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
 		float[] uv = primitive.getUV(aPoint);
+		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.75f, true);
 		
-		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.25f, false);
 		return getColor(noiseCoef);
 	}
 

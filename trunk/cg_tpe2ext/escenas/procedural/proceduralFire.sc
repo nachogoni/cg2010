@@ -39,9 +39,9 @@ light {
 shader {
    name fire0
    type fire
-   depth 4
-   diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
-   diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
+   depth 8
+   diffuse_initial { "sRGB nonlinear" 0.0 0.0 1.0 }
+   diffuse_final { "sRGB nonlinear" 0.0 0.0 0.0 }
 }
 
 object {

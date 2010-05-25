@@ -39,16 +39,16 @@ light {
 shader {
    name marble0
    type marble
-   depth 4
-   diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
-   diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
-}
+   depth 8
+   diffuse_initial { "sRGB nonlinear" 0.941176471 0.931372549 0.984313725 }
+   diffuse_final { "sRGB nonlinear" 0.031372549 0.019607843 0.000 }
+   }
 
 object {
    shader marble0
-   type plane
+   type sphere
    name marble
-   p 0 0 0
-   n 0 0 1
+   c 0 0 0
+   r 3
 }
 
