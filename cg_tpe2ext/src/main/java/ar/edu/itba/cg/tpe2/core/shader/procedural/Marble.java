@@ -23,7 +23,7 @@ public class Marble extends ProceduralShader {
 		Point3f relativePoint = new Point3f(aPoint);
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
-		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.25f);
+		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.85f,true);
 //		noiseCoef = (float) Math.sin( relativePoint.y + noiseCoef + 1) * 0.5f;
 		noiseCoef = (float) Math.sin( relativePoint.y + relativePoint.x + noiseCoef);
 		

@@ -25,7 +25,7 @@ public class Stone extends ProceduralShader {
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
 		float[] uv = primitive.getUV(aPoint);
-		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.9f);
+		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.9f, true);
 
 		
 		return getColor(noiseCoef);
