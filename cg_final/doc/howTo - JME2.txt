@@ -31,6 +31,10 @@ exec:java
 
 * Poner Apply y Run.
 
+** Otra forma es creando un nuevo Run configuration y en los argumentos de la VM poner:
+
+-Djava.library.path=${workspace_loc:/cg_final}/lib/lwjgl/native/linux
+
 ------------------------------------------------------------------
 
 **Si se quiere tener el source de JME:
