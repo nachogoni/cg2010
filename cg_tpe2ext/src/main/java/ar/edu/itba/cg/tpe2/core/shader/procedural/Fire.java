@@ -25,7 +25,7 @@ public class Fire extends ProceduralShader {
 		if ( primitive != null )
 			relativePoint.sub(primitive.getReferencePoint());
 		float[] uv = primitive.getUV(aPoint);
-		float noiseCoef = computeTurbulence(new Point2f(uv[0]*2-1,uv[1]*2-1), noise.getDepth(), 0.75f, true);
+		float noiseCoef = computeTurbulence(new Point2f(uv[0],uv[1]), noise.getDepth(), 0.75f, true);
 		
 		return getColor(noiseCoef);
 	}
