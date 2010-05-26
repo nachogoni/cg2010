@@ -14,7 +14,6 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyInputAction;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
-import com.jme.scene.Circle;
 import com.jme.scene.Controller;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
