@@ -148,7 +148,12 @@
 			<groupId>com.jmonkeyengine</groupId>
 			<artifactId>jme-terrain</artifactId>
 			<version>2.0.1</version>
-		</dependency>          		
+		</dependency>
+		<dependency>
+			<groupId>com.jmonkeyengine</groupId>
+			<artifactId>jmephysics</artifactId>
+			<version>2.1.0rc1-SNAPSHOT</version>
+		</dependency>   		          		
 		<dependency>
               <groupId>junit</groupId>
               <artifactId>junit</artifactId>
