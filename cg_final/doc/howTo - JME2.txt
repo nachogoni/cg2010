@@ -40,3 +40,5 @@ exec:java
 **Si se quiere tener el source de JME:
 
 svn co -r HEAD http://jmonkeyengine.googlecode.com/svn/trunk jme
+
+** Ver tambien... http://www.jmonkeyengine.com/wiki/doku.php?id=setting_up_eclipse_to_build_jme_2
