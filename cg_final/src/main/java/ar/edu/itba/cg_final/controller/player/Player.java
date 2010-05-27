@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final.controller.player;
 
 import com.jme.math.Vector3f;
 
+
 public abstract class Player {
 
 	private String name;
