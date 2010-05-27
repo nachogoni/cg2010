@@ -14,7 +14,6 @@ mvn install:install-file -Dfile=lib/swt/linux/swt.jar -DgroupId=org.eclipse.swt 
 
 mvn install:install-file -Dfile=lib/jmephysics.jar -DgroupId=com.jmonkeyengine -DartifactId=jmephysics -Dversion=2.1.0rc1-SNAPSHOT -Dpackaging=jar
 
-
 #JMONKEY JARS
 mvn install:install-file -Dfile=lib/jme/jme.jar -DgroupId=com.jmonkeyengine -DartifactId=jme -Dversion=2.0.1 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/jme/jme-audio.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-audio -Dversion=2.0.1 -Dpackaging=jar
