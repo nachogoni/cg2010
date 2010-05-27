@@ -18,7 +18,7 @@ public abstract class ProceduralShader extends Shader {
 	
 	public ProceduralShader(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type);
-		noise = new RandomNoise(depth);
+		noise = new ImprovedNoise(depth);
 		this.initialColor = initialColor;
 		this.finalColor = finalColor;
 	}
