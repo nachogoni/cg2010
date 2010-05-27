@@ -24,7 +24,7 @@ public class Wood extends ProceduralShader {
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
 		Point3f relativePoint = new Point3f(aPoint);
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
-		noiseCoef = noiseCoef * 3;
+		noiseCoef = noiseCoef * 2;
 		noiseCoef = noiseCoef - (int) noiseCoef;
 		
 		return getColor(noiseCoef);

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -20,12 +21,17 @@ public class Marble extends ProceduralShader {
 
 	@Override
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
-		Point3f relativePoint = new Point3f(aPoint);
-		if ( primitive != null )
-			relativePoint.sub(primitive.getReferencePoint());
+		Vector3f vector = new Vector3f(aPoint);
+		vector.sub(primitive.getReferencePoint());
+		vector.normalize();
+		vector.scale(8);
+		
+		Point3f relativePoint = new Point3f(vector);
+		
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.65f,true);
 //		noiseCoef = (float) Math.sin( relativePoint.y  + relativePoint.x + relativePoint.z + noiseCoef + 1);
-		noiseCoef = (float) Math.abs(Math.sin( relativePoint.y + relativePoint.x + + relativePoint.z + noiseCoef));
+//		noiseCoef = (float) Math.abs(Math.sin( relativePoint.y + relativePoint.x + + relativePoint.z + noiseCoef));
+		noiseCoef = (float) Math.sin(relativePoint.x + relativePoint.y + relativePoint.z + noiseCoef);
 		
 		return getColor(noiseCoef);
 	}

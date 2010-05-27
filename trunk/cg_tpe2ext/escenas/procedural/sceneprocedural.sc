@@ -18,14 +18,14 @@ camera {
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 20
+   power 11
    p 2.0 0.0 5.0
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 20
+   power 11
    p -2.0 0.0 5.0
 }
 
@@ -49,9 +49,9 @@ shader {
 shader {
    name marble0
    type marble
-   depth 8
-   diffuse_initial { "sRGB nonlinear" 0.841176471 0.831372549 0.884313725 }
-   diffuse_final { "sRGB nonlinear" 0.231372549 0.319607843 0.200 }
+   depth 5
+   diffuse_initial { "sRGB nonlinear" 0.841176471 0.0 0.0 }
+   diffuse_final { "sRGB nonlinear" 0.9 0.9 0.9 }
 }
 
 shader {
