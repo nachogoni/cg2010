@@ -12,6 +12,7 @@ import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
 import ar.edu.itba.cg.tpe2.utils.noise.ImprovedNoise;
+import ar.edu.itba.cg.tpe2.utils.noise.RandomNoise;
 
 public class Wood extends ProceduralShader {
 	// TODO 3d
@@ -23,9 +24,14 @@ public class Wood extends ProceduralShader {
 	@Override
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
 		Point3f relativePoint = new Point3f(aPoint);
-		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
+		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, false);
 		noiseCoef = noiseCoef * 2;
 		noiseCoef = noiseCoef - (int) noiseCoef;
+		
+		float bumps = computeTurbulence(new Point3f(relativePoint.x*50, relativePoint.y*50, relativePoint.z*20), noise.getDepth(), 0.25f, false);
+		if (bumps < 0.5f){
+			bumps = 0;
+		} else bumps = 1;
 		
 		return getColor(noiseCoef);
 		

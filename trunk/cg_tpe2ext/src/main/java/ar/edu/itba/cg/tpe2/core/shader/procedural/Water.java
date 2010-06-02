@@ -12,11 +12,13 @@ import ar.edu.itba.cg.tpe2.core.geometry.Ray;
 import ar.edu.itba.cg.tpe2.core.light.Light;
 import ar.edu.itba.cg.tpe2.core.scene.Scene;
 import ar.edu.itba.cg.tpe2.core.shader.ProceduralShader;
+import ar.edu.itba.cg.tpe2.utils.noise.RandomNoise;
 
 public class Water extends ProceduralShader {
 	// TODO 2d
 	public Water(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
+		noise = new RandomNoise(depth);
 	}
 
 	@Override

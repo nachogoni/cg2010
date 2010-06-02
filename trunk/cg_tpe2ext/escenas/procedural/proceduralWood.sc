@@ -18,37 +18,37 @@ camera {
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p 0.0 0.0 5.0
+   power 30
+   p 0.0 0.0 15.0
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p -4.0 0.0 2.5
+   power 30
+   p -14.0 0.0 12.5
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p 4.0 0.0 2.5
+   power 30
+   p 14.0 0.0 12.5
 }
 
 shader {
    name wood0
    type wood
-   depth 4
+   depth 5
    diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
    diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
 }
 
 object {
    shader wood0
-   type plane
+   type sphere
    name wood
-   p 0 0 0
-   n 0 0 1
+   c 0 0 0
+   r 5
 }
 
