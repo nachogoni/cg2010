@@ -7,7 +7,7 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 0.0 20.0
+   eye 0.0 0.0 25.0
    target 0.0 0.0 0.0
    up 0.0 10.0 0.0
    fov 60 
@@ -18,37 +18,37 @@ camera {
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p 0.0 0.0 5.0
+   power 28
+   p 0.0 0.0 15.0
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p -4.0 0.0 2.5
+   power 28
+   p -14.0 0.0 12.5
 }
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
-   p 4.0 0.0 2.5
+   power 28
+   p 14.0 0.0 12.5
 }
 
 shader {
    name organic0
    type organic
-   depth 4
-   diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
-   diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
+   depth 20
+   diffuse_initial { "sRGB nonlinear" 0.30 0.30 0.0 }
+   diffuse_final { "sRGB nonlinear" 01.0 01.0 01.0 }
 }
 
 object {
    shader organic0
-   type plane
+   type sphere
    name organic
-   p 0 0 0
-   n 0 0 1
+   c 0 0 0
+   r 5
 }
 

@@ -7,7 +7,7 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 0.0 40.0
+   eye 0.0 15.0 40.0
    target 0.0 0.0 0.0
    up 0.0 10.0 0.0
    fov 60 
@@ -54,15 +54,15 @@ shader {
    name marble0
    type marble
    depth 4
-   diffuse_initial { "sRGB nonlinear" 0.841176471 0.831372549 0.884313725 }
-   diffuse_final { "sRGB nonlinear" .550 0.28 0.08 }
+   diffuse_initial { "sRGB nonlinear" 0.741176471 0.731372549 0.784313725 }
+   diffuse_final { "sRGB nonlinear" 0.741176471 0.717647059 0.419607843 }
    }
 
 object {
    shader marble0
-   type plane
+   type sphere
    name marble
-   p 0 0 0
-   n 0 0 1
+   c 0 0 0
+   r 12
 }
 
