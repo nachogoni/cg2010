@@ -18,7 +18,7 @@ public class Fire extends ProceduralShader {
 	// TODO 2d
 	public Fire(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
-		noise = new RandomNoise(depth);
+		//noise = new RandomNoise(depth);
 	}
 
 	@Override
