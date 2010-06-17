@@ -11,7 +11,6 @@ import ar.edu.itba.cg_final.utils.ResourceLoader;
 import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
-import com.jme.image.Texture;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyInputAction;
@@ -24,9 +23,7 @@ import com.jme.scene.Text;
 import com.jme.scene.TriMesh;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
-import com.jme.scene.state.CullState;
 import com.jme.scene.state.MaterialState;
-import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
 import com.jmex.audio.AudioTrack;
  
@@ -160,42 +157,42 @@ public class Pruebas extends SimpleGame {
 		laserSound.setVolume(1.0f);
 	}
  
-	private void setupSky() {
-		sb = new Skybox("skybox", 200, 200, 200);
-  
-		try {		
-			sb.setTexture(Skybox.Face.North, TextureManager.loadTexture(ResourceLoader.getURL("texture/north.jpg"), 
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.setTexture(Skybox.Face.West, TextureManager.loadTexture(ResourceLoader.getURL("texture/west.jpg"),
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.setTexture(Skybox.Face.South, TextureManager.loadTexture(ResourceLoader.getURL("texture/south.jpg"), 
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.setTexture(Skybox.Face.East, TextureManager.loadTexture(ResourceLoader.getURL("texture/east.jpg"),
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.setTexture(Skybox.Face.Up, TextureManager.loadTexture(ResourceLoader.getURL("texture/top.jpg"),
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.setTexture(Skybox.Face.Down, TextureManager.loadTexture(ResourceLoader.getURL("texture/bottom.jpg"), 
-					Texture.MinificationFilter.BilinearNearestMipMap,
-					Texture.MagnificationFilter.Bilinear));
-			sb.preloadTextures();
-	 
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		
-		CullState cullState = display.getRenderer().createCullState();
-		cullState.setCullFace(CullState.Face.None);
-		cullState.setEnabled(true);
-		sb.setRenderState(cullState);
- 
-		sb.updateRenderState();
-	}
+//	private void setupSky() {
+//		sb = new Skybox("skybox", 200, 200, 200);
+//  
+//		try {		
+//			sb.setTexture(Skybox.Face.North, TextureManager.loadTexture(ResourceLoader.getURL("texture/north.jpg"), 
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.setTexture(Skybox.Face.West, TextureManager.loadTexture(ResourceLoader.getURL("texture/west.jpg"),
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.setTexture(Skybox.Face.South, TextureManager.loadTexture(ResourceLoader.getURL("texture/south.jpg"), 
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.setTexture(Skybox.Face.East, TextureManager.loadTexture(ResourceLoader.getURL("texture/east.jpg"),
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.setTexture(Skybox.Face.Up, TextureManager.loadTexture(ResourceLoader.getURL("texture/top.jpg"),
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.setTexture(Skybox.Face.Down, TextureManager.loadTexture(ResourceLoader.getURL("texture/bottom.jpg"), 
+//					Texture.MinificationFilter.BilinearNearestMipMap,
+//					Texture.MagnificationFilter.Bilinear));
+//			sb.preloadTextures();
+//	 
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}		
+//		
+//		CullState cullState = display.getRenderer().createCullState();
+//		cullState.setCullFace(CullState.Face.None);
+//		cullState.setEnabled(true);
+//		sb.setRenderState(cullState);
+// 
+//		sb.updateRenderState();
+//	}
  
 	class FireBullet extends KeyInputAction {
 		int numBullets;
