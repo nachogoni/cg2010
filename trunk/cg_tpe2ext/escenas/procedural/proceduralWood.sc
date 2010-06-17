@@ -39,7 +39,7 @@ light {
 shader {
    name wood0
    type wood
-   depth 5
+   depth 8
    diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
    diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
 }
