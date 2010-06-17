@@ -18,7 +18,6 @@ public class Water extends ProceduralShader {
 	// TODO 2d
 	public Water(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
-		noise = new RandomNoise(depth);
 	}
 
 	@Override

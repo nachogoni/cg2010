@@ -19,7 +19,6 @@ public class Stone extends ProceduralShader {
 	// TODO 2d
 	public Stone(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
-		noise = new ImprovedNoise(depth);
 	}
 
 	@Override

@@ -18,7 +18,6 @@ public class Marble extends ProceduralShader {
 	// TODO 3d
 	public Marble(String name, String type, int depth, Diffuse initialColor, Diffuse finalColor) {
 		super(name, type, depth, initialColor, finalColor);
-		noise = new ImprovedNoise(depth);
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class Marble extends ProceduralShader {
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(),0.65f,true);
 //		noiseCoef = (float) Math.sin( relativePoint.y  + relativePoint.x + relativePoint.z + noiseCoef + noiseCoef);
 //		noiseCoef = (float) Math.abs(Math.sin( relativePoint.y + relativePoint.x + + relativePoint.z + noiseCoef));
-		noiseCoef = (float) Math.sin(relativePoint.x + relativePoint.y/(relativePoint.z > 0.5 ? relativePoint.z:0.5) + relativePoint.z/(relativePoint.z > 0.5 ? relativePoint.z:0.5) + noiseCoef);
+		noiseCoef = (float) Math.cos(relativePoint.x + noiseCoef);
 		
 		return getColor(noiseCoef);
 	}
