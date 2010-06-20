@@ -41,7 +41,7 @@ shader {
 shader {
    name wood0
    type wood
-   depth 4
+   depth 5
    diffuse_initial { "sRGB nonlinear" 0.392156863 0.196078431 0.000 }
    diffuse_final { "sRGB nonlinear" 0.784313726 0.392156863 0.000 }
 }
@@ -57,24 +57,25 @@ shader {
 shader {
    name water0
    type water
-   depth 8
-   diffuse_initial { "sRGB nonlinear" 0.000 0.00 1.000 }
-   diffuse_final { "sRGB nonlinear" 0.000 0.80 0.40 }
+   depth 4
+   diffuse_initial { "sRGB nonlinear" 0.000 0.00 0.5000 }
+   diffuse_final { "sRGB nonlinear" 0.00 0.50 0.50 }
 }
 
 shader {
    name fire0
    type fire
-   depth 8
+   depth 5
    diffuse_initial { "sRGB nonlinear" 1.000 1.000 0.000 }
-   diffuse_final { "sRGB nonlinear" 1.000 0.2000 0.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 0.15000 0.000 }
 }
 
 shader {
    name stone0
    type stone
-   diffuse_initial { "sRGB nonlinear" 1.000 1.000 1.000 }
-   diffuse_final { "sRGB nonlinear" 0.000 0.000 0.000 }
+   depth 4
+   diffuse_initial { "sRGB nonlinear" 0.2000 0.2000 0.2000 }
+   diffuse_final { "sRGB nonlinear" 01.000 01.000 01.000 }
 }
 
 object {
