@@ -50,7 +50,7 @@ shader {
    name marble0
    type marble
    depth 5
-   diffuse_initial { "sRGB nonlinear" 1.0 0.60 0.09 }
+   diffuse_initial { "sRGB nonlinear" 0.1803 0.5450 0.3411 }
    diffuse_final { "sRGB nonlinear" 0.91372549 0.705882353 0.633333333 }
 }
 
