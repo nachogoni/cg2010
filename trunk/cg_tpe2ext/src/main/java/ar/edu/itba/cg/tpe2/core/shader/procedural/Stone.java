@@ -27,7 +27,7 @@ public class Stone extends ProceduralShader {
 		Vector3f vector = new Vector3f(aPoint);
 		vector.sub(primitive.getReferencePoint());
 		vector.normalize();
-		vector.scale(20);
+		vector.scale(50);
 		
 		Point3f relativePoint = new Point3f(vector);
 		
