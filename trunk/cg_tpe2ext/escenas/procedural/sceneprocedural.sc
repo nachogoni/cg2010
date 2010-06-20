@@ -33,9 +33,9 @@ light {
 shader {
    name organic0
    type organic
-   depth 8
-   diffuse_initial { "sRGB nonlinear" 0.80 0.60 1.0 }
-   diffuse_final { "sRGB nonlinear" 0.40 0.30 0.00 }
+   depth 20
+   diffuse_initial { "sRGB nonlinear" 0.30 0.30 0.0 }
+   diffuse_final { "sRGB nonlinear" 01.0 01.0 01.0 }
 }
 
 shader {
