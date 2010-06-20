@@ -39,9 +39,9 @@ light {
 shader {
    name stone0
    type stone
-   depth 20
-   diffuse_initial { "sRGB nonlinear" 0.30 0.30 0.0 }
-   diffuse_final { "sRGB nonlinear" 01.0 01.0 01.0 }
+   depth 4
+   diffuse_initial { "sRGB nonlinear" 0.2000 0.2000 0.2000 }
+   diffuse_final { "sRGB nonlinear" 01.000 01.000 01.000 }
 }
 
 object {

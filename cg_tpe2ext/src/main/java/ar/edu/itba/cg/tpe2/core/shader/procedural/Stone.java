@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 import ar.edu.itba.cg.tpe2.core.colors.Diffuse;
 import ar.edu.itba.cg.tpe2.core.geometry.Primitive;
@@ -23,10 +24,16 @@ public class Stone extends ProceduralShader {
 
 	@Override
 	public Color getColorAt(Point3f aPoint, Primitive primitive, List<Light> lights, Ray viewRay, Scene scene) {
-		Point3f relativePoint = new Point3f(aPoint);
+		Vector3f vector = new Vector3f(aPoint);
+		vector.sub(primitive.getReferencePoint());
+		vector.normalize();
+		vector.scale(20);
+		
+		Point3f relativePoint = new Point3f(vector);
+		
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
-		noiseCoef = noiseCoef * 20;
-		noiseCoef = noiseCoef - (int) noiseCoef;
+		
+		noiseCoef = (float) Math.tan(noiseCoef);
 		
 		return getColor(noiseCoef);
 	}
