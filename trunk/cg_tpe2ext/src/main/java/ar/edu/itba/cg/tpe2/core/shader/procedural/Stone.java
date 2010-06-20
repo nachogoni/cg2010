@@ -33,7 +33,6 @@ public class Stone extends ProceduralShader {
 		
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
 		
-		noiseCoef = (float) Math.tan(noiseCoef);
 		
 		return getColor(noiseCoef);
 	}
