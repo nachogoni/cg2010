@@ -25,9 +25,9 @@ light {
 shader {
    name organic0
    type organic
-   depth 8
-   diffuse_initial { "sRGB nonlinear" 0.80 0.60 1.0 }
-   diffuse_final { "sRGB nonlinear" 0.40 0.30 0.00 }
+   depth 20
+   diffuse_initial { "sRGB nonlinear" 0.30 0.30 0.0 }
+   diffuse_final { "sRGB nonlinear" 01.0 01.0 01.0 }
 }
 
 shader {
@@ -42,7 +42,7 @@ shader {
    name marble0
    type marble
    depth 5
-   diffuse_initial { "sRGB nonlinear" 0.1803 0.5450 0.3411 }
+   diffuse_initial { "sRGB nonlinear" 0.466667 0.34000 0.066666 }
    diffuse_final { "sRGB nonlinear" 0.91372549 0.705882353 0.633333333 }
 }
 
