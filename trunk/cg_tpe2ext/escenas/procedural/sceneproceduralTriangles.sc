@@ -18,14 +18,14 @@ camera {
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
-   power 60
+   power 10
    p 0.0 0.0 5.0
 }
 
 shader {
    name organic0
    type organic
-   depth 20
+   depth 8
    diffuse_initial { "sRGB nonlinear" 0.30 0.30 0.0 }
    diffuse_final { "sRGB nonlinear" 01.0 01.0 01.0 }
 }
