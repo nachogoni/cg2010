@@ -25,7 +25,7 @@ public class Marble extends ProceduralShader {
 		Vector3f vector = new Vector3f(aPoint);
 		vector.sub(primitive.getReferencePoint());
 		vector.normalize();
-		vector.scale(9);
+		vector.scale(10);
 		
 		Point3f relativePoint = new Point3f(vector);
 		

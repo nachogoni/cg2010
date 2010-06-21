@@ -31,6 +31,7 @@ public class Stone extends ProceduralShader {
 		
 		Point3f relativePoint = new Point3f(vector);
 		
+		
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
 		
 		
