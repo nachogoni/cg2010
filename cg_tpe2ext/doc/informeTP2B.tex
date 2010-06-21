@@ -228,6 +228,52 @@ Donde el resultado obtenido se observa en la figura \ref{fig:figure6}.
 \section{Representación}
 \label{representacion}
 
+Para representar los distintos tipos de shaders nuevos, nos basamos en la
+definición de $sunflow$. A continuación mostraremos un ejemplo de una
+definición y luego indicaremos las distintas opciones que pueden ser utilizadas.
+
+\begin{verbatim}
+shader {
+   name fire0
+   type fire
+   depth 5
+   diffuse_initial { "sRGB nonlinear" 1.000 1.000 0.000 }
+   diffuse_final { "sRGB nonlinear" 1.000 0.15000 0.000 }
+}                         
+\end{verbatim}
+
+Este ejemplo, corresponde a la definición de un shader que simula el fuego.
+Donde $name$ es el nombre que le daremos al shader, en este caso $fire0$, el
+típo de $shader$ está dado por $type$, donde las opciones son $fire$, $water$,
+$organic$, $wood$, $marble$ y $stone$.  Luego tenemos la profundidad con la que
+queremos que sume, esto es la cantidad de veces que va a sumar ruido, dado por
+el parámetro $depth$ que en este caso está con valor 5.  Por último, los
+valores de $diffuse_initial$ y $diffuse_final$ determinan el color de comienzo
+y de final para el shader.  En este caso, los colores iniciales y finales son
+amarillo y rojo como se puede observar en la figura \ref{fig:figure1}
+
+\begin{center}
+  \begin{tabular}{ | l || c | r | }
+    \hline                       
+    Tipo & Color RGB Inicial & Color RGB Final \\
+    \hline
+    \hline
+    fire & (1.0, 1.0, 0.0) & (1.0, 0.150, 0.0) \\
+    water & (0.0, 0.0, 0.50) & (0.0, 0.50, 0.50) \\
+    marble & (0.466, 0.340, 0.066) & (0.914, 0.706, 0.633) \\
+    wood & (0.392, 0.196, 0.0) & (0.784, 0.392, 0.0)
+\\
+    organic & (0.30, 0.30, 0.0) & (1.0, 1.0, 1.0) \\
+    stone & (0.20, 0.20, 0.20) & (1.0, 1.0, 1.0) \\
+    \hline  
+  \end{tabular}
+\end{center}
+
+Los valores presentados en la tabla que precede, son los valores recomendados
+para obtener los colores con los que se presentaron los resultados obtenidos
+con este desarrollo.
+
+
 \section{Conclusión}
 \label{conclusiones}
 
