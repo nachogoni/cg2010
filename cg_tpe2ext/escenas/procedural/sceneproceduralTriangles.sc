@@ -7,19 +7,25 @@ image {
 
 camera {
    type pinhole
-   eye 0.0 0.0 10.0
+   eye 0.0 0.0 5.0
    target 0.0 0.0 0.0
    up 0.0 10.0 0.0
    fov 60 
    aspect 1.333
 }
 
+light {
+   type point
+   color { "sRGB nonlinear" 1.000 1.000 1.000 }
+   power 10
+   p -1 0.0 2
+}
 
 light {
    type point
    color { "sRGB nonlinear" 1.000 1.000 1.000 }
    power 10
-   p 0.0 0.0 5.0
+   p 1 0.0 2
 }
 
 shader {
@@ -75,9 +81,9 @@ object {
    type generic-mesh 
    name mesh0
    points 3
-      0 3 0
-	  -1 1 0
-      1 1 0
+      0 1.5 0
+	  -0.5 0.5 0
+      0.5 0.5 0
    triangles 1
    	  0 1 2
 }
@@ -87,9 +93,9 @@ object {
    type generic-mesh 
    name mesh1
    points 3
-      0 -3 0
-	  -1 -1 0
-      1 -1 0
+      0 -1.5 0
+	  -0.5 -0.5 0
+      0.5 -0.5 0
    triangles 1
    	  0 1 2
 }
@@ -99,9 +105,9 @@ object {
    type generic-mesh 
    name mesh0
    points 3
-      -2 3 0
-	  -4 3 0
-      -3 1 0
+      -1 1.5 0
+	  -2 1.5 0
+      -1.5 0.5 0
    triangles 1
    	  0 1 2
 }
@@ -111,9 +117,9 @@ object {
    type generic-mesh 
    name mesh0
    points 3
-      2 3 0
-	  4 3 0
-      3 1 0
+      1 1.5 0
+	  2 1.5 0
+      1.5 0.5 0
    triangles 1
    	  0 1 2
 }
@@ -123,9 +129,9 @@ object {
    type generic-mesh 
    name mesh0
    points 3
-      -4 -3 0
-	  -2 -3 0
-      -3 -1 0
+      -2 -1.5 0
+	  -1 -1.5 0
+      -1.5 -0.5 0
    triangles 1
    	  0 1 2
 }
@@ -135,9 +141,9 @@ object {
    type generic-mesh 
    name mesh0
    points 3
-      2 -3 0
-	  4 -3 0
-      3 -1 0
+      1 -1.5 0
+	  2 -1.5 0
+      1.5 -0.5 0
    triangles 1
    	  0 1 2
    uvs facevarying

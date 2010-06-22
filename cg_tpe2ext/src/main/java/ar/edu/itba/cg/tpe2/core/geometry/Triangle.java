@@ -263,6 +263,11 @@ public class Triangle extends Primitive {
 	
 	@Override
 	public Point3f getReferencePoint() {
-		return new Point3f(p1);
+		Point3f point3f = new Point3f(p1);
+		point3f.add(p2);
+		point3f.add(p3);
+		point3f.scale(1.0f/3.0f);
+		point3f.add(new Point3f(0,-1,0));
+		return point3f;
 	}
 }
