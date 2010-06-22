@@ -33,8 +33,6 @@ public class Wood extends ProceduralShader {
 		float noiseCoef = computeTurbulence(relativePoint, noise.getDepth(), 0.25f, true);
 		noiseCoef = noiseCoef * 15;
 		noiseCoef = noiseCoef - (int) noiseCoef;
-		//float result = noiseCoef * 2;
-	    //result = (float) (result - Math.floor(result) * Math.pow(0.1f,this.noise.getDepth()));
 		
 		return getColor(noiseCoef);
 		
