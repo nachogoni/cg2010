@@ -8,7 +8,7 @@ import com.jme.scene.Skybox;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
-public class InGameState extends RallyGameState {
+public class PreLoadState extends RallyGameState {
 
 	private Skybox skyBox;
 
@@ -27,8 +27,8 @@ public class InGameState extends RallyGameState {
 	@Override
 	public void initGameState(Node rootNode) {
 		super.initGameState(rootNode);
-		this.setName("InGame");
-		skyBox = SkyBox.getDaySkyBox(DisplaySystem.getDisplaySystem(), 200,
+		this.setName("PreLoad");
+		skyBox = SkyBox.getRedSkyBox(DisplaySystem.getDisplaySystem(), 200,
 				200, 200);
 		stateNode.attachChild(skyBox);
 		stateNode.setName(this.getName());
@@ -48,10 +48,10 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("post",
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("prev",
 				false)) {
 			GameStateManager.getInstance().deactivateChildNamed(this.getName());
-			GameStateManager.getInstance().activateChildNamed("Menu");
+			GameStateManager.getInstance().activateChildNamed("InGame");
 		}
 	}
 
