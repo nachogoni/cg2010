@@ -14,7 +14,7 @@ mvn clean install exec:java
 
 * Si se quiere usar desde eclipse, correr:
 
-mvn clean install eclipse:eclipse
+mvn clean install eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true
 
 * Si se quiere correr desde eclipse, ir a Run->External Tools->External Tools Configuration... y crear una nueva configuracion
 * En location path, poner: 
