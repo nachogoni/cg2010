@@ -33,7 +33,7 @@ exec:java
 
 ** Otra forma es creando un nuevo Run configuration y en los argumentos de la VM poner:
 
--Djava.library.path=${workspace_loc:/cg_final}/lib/lwjgl/native/linux
+-Djava.library.path=${workspace_loc:/cg_final}/lib/lwjgl/native/linux:${workspace_loc:/cg_final}/lib/ode
 
 ------------------------------------------------------------------
 
