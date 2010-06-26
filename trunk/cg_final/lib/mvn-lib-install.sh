@@ -13,10 +13,11 @@ mvn install:install-file -Dfile=lib/ode/odejava-jni.jar -DgroupId=org.odejava -D
 #ELEGIR SEGUN SISTEMA OPERATIVO
 mvn install:install-file -Dfile=lib/swt/linux/swt.jar -DgroupId=org.eclipse.swt -DartifactId=swt -Dversion=3.448 -Dpackaging=jar
 
-mvn install:install-file -Dfile=lib/jmephysics.jar -DgroupId=com.jmonkeyengine -DartifactId=jmephysics -Dversion=2.1.0rc1-SNAPSHOT -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jmephysics.jar -Dsources=lib/jmephysics-sources.jar -Djavadoc=lib/jmephysics-javadoc.jar -DgroupId=com.jmonkeyengine -DartifactId=jmephysics -Dversion=2.1.0rc1-SNAPSHOT -Dpackaging=jar
 
 #JMONKEY JARS
-mvn install:install-file -Dfile=lib/jme/jme.jar -DgroupId=com.jmonkeyengine -DartifactId=jme -Dversion=2.0.1 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/jme/jme.jar -Dsources=lib/jme-sources.jar -Djavadoc=lib/jme-javadoc.jar -DgroupId=com.jmonkeyengine -DartifactId=jme -Dversion=2.0.1 -Dpackaging=jar
+
 mvn install:install-file -Dfile=lib/jme/jme-audio.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-audio -Dversion=2.0.1 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/jme/jme-awt.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-awt -Dversion=2.0.1 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/jme/jme-collada.jar -DgroupId=com.jmonkeyengine -DartifactId=jme-collada -Dversion=2.0.1 -Dpackaging=jar
