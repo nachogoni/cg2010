@@ -191,8 +191,6 @@
             <groupId>org.odejava</groupId>
             <artifactId>odejava-jni.java</artifactId>
             <version>0.3-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/ode/odejava-jni.jar</systemPath>
         </dependency>					
 		<dependency>
               <groupId>junit</groupId>
