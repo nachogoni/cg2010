@@ -9,10 +9,10 @@ import com.jme.scene.state.CullState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
-public class SkyBox extends Skybox{
+public class RallySkyBox extends Skybox{
 
 	private static final long serialVersionUID = -3777842691534981883L;
-	private static final Logger logger = Logger.getLogger(SkyBox.class.getName());
+	private static final Logger logger = Logger.getLogger(RallySkyBox.class.getName());
 	
 	public static Skybox getRedSkyBox(DisplaySystem display, float xExtent, float yExtent, float zExtent) {
 		return getSkyBox(display, xExtent, yExtent, zExtent, 

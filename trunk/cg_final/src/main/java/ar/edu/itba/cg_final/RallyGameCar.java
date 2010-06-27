@@ -3,7 +3,7 @@ package ar.edu.itba.cg_final;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
-import ar.edu.itba.cg_final.map.SkyBox;
+import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
 import ar.edu.itba.cg_final.vehicles.Car;
 
@@ -223,7 +223,7 @@ public class RallyGameCar extends BaseSimpleGame {
 	@Override
 	protected void simpleInitGame() {
 
-		skyBox = SkyBox.getRedSkyBox(display, 500, 500, 500);
+		skyBox = RallySkyBox.getRedSkyBox(display, 500, 500, 500);
 		rootNode.attachChild(skyBox);
 		tunePhysics();
 		createFloor();
