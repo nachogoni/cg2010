@@ -54,6 +54,8 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(preLoadState);
 		gameStateManager.attachChild(inGameState);
 
+		KeyBindingManager.getKeyBindingManager().removeAll();
+		KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
 		KeyBindingManager.getKeyBindingManager().set("next", KeyInput.KEY_F);
 		KeyBindingManager.getKeyBindingManager().set("prev", KeyInput.KEY_G);
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
