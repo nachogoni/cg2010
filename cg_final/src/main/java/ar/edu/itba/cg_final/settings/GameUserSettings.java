@@ -1,6 +1,6 @@
-package ar.edu.itba.cg_final;
+package ar.edu.itba.cg_final.settings;
 
-public class GameSettings {
+public class GameUserSettings {
 
 	String terrain;
 	String raceMode;
@@ -8,5 +8,7 @@ public class GameSettings {
 	String dayLight;
 	String videoSettings;
 	String audioSettings;
+	
+	//TODO: Agregar las que faltan
 	
 }
