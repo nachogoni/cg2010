@@ -30,4 +30,8 @@ public abstract class RallyGameState  extends GameState {
 		
 	}
 	
+	public Node getStateNode() {
+		return stateNode;
+	}
+	
 }

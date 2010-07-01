@@ -7,6 +7,7 @@ public class Game {
 
 	private static Game instance;
 	
+	// TODO: ver si son de este tipo y que metodos tienen
 	private Audio audio;
 	private Video video;
 	private Terrain terrain;
@@ -25,8 +26,6 @@ public class Game {
 		return instance;
 	}
 	
-	//TODO: setters de los objetos cargados por el loader
-	
 	public void setSkyBox(Skybox skyBox) {
 		this.skyBox = skyBox;
 	}
@@ -34,4 +33,8 @@ public class Game {
 	public Skybox getSkyBox() {
 		return skyBox;
 	}
+
+    //TODO: setters de los objetos cargados por el loader
+    
+
 }

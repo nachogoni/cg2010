@@ -8,9 +8,10 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void activated() {
+		
 		// Cargamos todo lo necesario en el stateNode
 		stateNode.attachChild(Game.getInstance().getSkyBox());
-
+		
 		// Agregamos el stateNode al rootNode
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
