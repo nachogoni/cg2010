@@ -1,30 +1,50 @@
 package ar.edu.itba.cg_final;
 
+import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import ar.edu.itba.cg_final.states.InGameState;
-import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.MenuState;
+import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
+import ar.edu.itba.cg_final.utils.ResourceLoader;
+import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
+import com.jme.bounding.BoundingBox;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
+import com.jme.image.Texture.WrapMode;
+import com.jme.input.ChaseCamera;
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
+import com.jme.input.action.InputActionInterface;
+import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
+import com.jme.scene.Node;
+import com.jme.scene.Spatial;
+import com.jme.scene.Text;
+import com.jme.scene.shape.Box;
+import com.jme.scene.state.TextureState;
+import com.jme.util.TextureManager;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
+import com.jmex.physics.StaticPhysicsNode;
+import com.jmex.physics.material.Material;
 
 public class RallyGame extends BaseSimpleGame {
-
-	
 	
 	private GameStateManager gameStateManager;
-
+	private PhysicsSpace physicsSpace;
+	protected InputHandler cameraInputHandler;
+	protected boolean showPhysics;
+	private float physicsSpeed = 1;
+	
 	public static void main(String[] args) {
 		RallyGame app = new RallyGame();
 		app.setConfigShowMode(ConfigShowMode.ShowIfNoConfig);
@@ -34,8 +54,9 @@ public class RallyGame extends BaseSimpleGame {
 	@Override
 	protected void simpleInitGame() {
 
+		// Creamos los estados en el juego y mostramos el menu
 		RallyGameState menuState = new MenuState();
-		RallyGameState preLoadState = new PreLoadState();
+		PreLoadState preLoadState = new PreLoadState();
 		RallyGameState inGameState = new InGameState();
 
 		GameStateManager.create();
@@ -49,6 +70,9 @@ public class RallyGame extends BaseSimpleGame {
 		menuState.setActive(true);
 		preLoadState.setActive(false);
 		inGameState.setActive(false);
+		
+		// Seteamos el juego
+		preLoadState.setRallyGame(this);
 
 		gameStateManager.attachChild(menuState);
 		gameStateManager.attachChild(preLoadState);
@@ -59,9 +83,10 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("next", KeyInput.KEY_F);
 		KeyBindingManager.getKeyBindingManager().set("prev", KeyInput.KEY_G);
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
-		
+		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 	}
 	
+	// Metodos para la creacion de los elementos del juego (usados en el preloader)
 	
 	
 	
@@ -69,13 +94,9 @@ public class RallyGame extends BaseSimpleGame {
 	
 	
 	
-	private PhysicsSpace physicsSpace;
+	
+	
 
-	protected InputHandler cameraInputHandler;
-
-	protected boolean showPhysics;
-
-	private float physicsSpeed = 1;
 
 
 	/**
@@ -240,4 +261,141 @@ public class RallyGame extends BaseSimpleGame {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Text label;
+	Car car;
+	ResetAction resetAction;
+	
+    public void createText(Node inGameStateNode) {
+        label = Text.createDefaultTextLabel( "instructions",
+                "Use arrows to drive. Use the mouse wheel to control the chase camera. S to reset the car." );
+        label.setLocalTranslation( 0, 20, 0 );
+        inGameStateNode.attachChild( label );
+        inGameStateNode.updateRenderState();
+    }
+	
+    public void initInput(Node inGameStateNode) {
+        // Simple chase camera
+        input.removeFromAttachedHandlers( cameraInputHandler );
+        cameraInputHandler = new ChaseCamera( cam, car.getChassis().getChild( 0 ) );
+        input.addToAttachedHandlers( cameraInputHandler );
+
+        // Attaching the custom input actions (and its respective keys) to the carInput handler.
+        input.addAction( new AccelAction( car, 1 ),
+                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_UP, InputHandler.AXIS_NONE, false );
+        input.addAction( new AccelAction( car, -1 ),
+                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_DOWN, InputHandler.AXIS_NONE, false );
+        input.addAction( new SteerAction( car, -1 ),
+                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_LEFT, InputHandler.AXIS_NONE, false );
+        input.addAction( new SteerAction( car, 1 ),
+                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_RIGHT, InputHandler.AXIS_NONE, false );
+
+        resetAction = new ResetAction();
+        input.addAction( resetAction, InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_S, InputHandler.AXIS_NONE, false );
+    }
+	
+    public void tunePhysics(Node inGameStateNode) {
+        getPhysicsSpace().setAutoRestThreshold( 0.2f );
+        // Otherwise it would be VERY slow.
+        this.setPhysicsSpeed( 4 );
+    }
+
+    public void createCar(Node inGameStateNode) {
+        Car car = new Car( getPhysicsSpace() );
+        inGameStateNode.attachChild( car );
+    }
+	
+    public void createFloor(Node inGameStateNode) {
+        Spatial floorVisual = new Box( "floor", new Vector3f(), 10000, 0.1f, 10000 );
+        floorVisual.setModelBound( new BoundingBox() );
+        floorVisual.updateModelBound();
+        StaticPhysicsNode floor = getPhysicsSpace().createStaticNode();
+        floor.attachChild( floorVisual );
+        floor.generatePhysicsGeometry();
+        floor.setMaterial( Material.CONCRETE );
+        floor.setLocalTranslation( new Vector3f( 0, -200f, 0 ) );
+        inGameStateNode.attachChild( floor );
+
+        // Glueing the texture on the floor.
+        final TextureState wallTextureState = display.getRenderer().createTextureState();
+        try {
+			wallTextureState.setTexture( TextureManager.loadTexture( ResourceLoader.getURL("texture/dirt.jpg"), 
+					MinificationFilter.NearestNeighborLinearMipMap, MagnificationFilter.NearestNeighbor ) );
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        wallTextureState.getTexture().setScale( new Vector3f( 256, 256, 1 ) );
+        wallTextureState.getTexture().setWrap( WrapMode.Repeat );
+        floorVisual.setRenderState( wallTextureState );
+    }
+	
+
+    /**
+     * Simple input action for accelerating and braking the car.
+     */
+    private class AccelAction implements InputActionInterface {
+        Car car;
+
+        int direction;
+
+        public AccelAction( final Car car, final int direction ) {
+            this.car = car;
+            this.direction = direction;
+        }
+
+        public void performAction( final InputActionEvent e ) {
+            // If the key has just been pressed, lets accelerate in the desired direction
+            if ( e.getTriggerPressed() ) {
+                car.accelerate( direction );
+            }
+            // Otherwise, lets release the wheels.
+            else {
+                car.releaseAccel();
+            }
+        }
+    }
+
+    private class ResetAction extends InputAction {
+        public void performAction( InputActionEvent evt ) {
+            car.setPosition( 0, 50, 0 );
+        }
+    }
+    
+    /**
+     * Simple input action for steering the wheel.
+     */
+    private class SteerAction implements InputActionInterface {
+        Car car;
+
+        int direction;
+
+        public SteerAction( Car car, int direction ) {
+            this.car = car;
+            this.direction = direction;
+        }
+
+        public void performAction( final InputActionEvent e ) {
+            // If the key is down (left or right) lets steer
+            if ( e.getTriggerPressed() ) {
+                car.steer( direction );
+            }
+            // If it's up, lets unsteer
+            else {
+                car.unsteer();
+            }
+        }
+
+    }
+	
+	
+	
 }
