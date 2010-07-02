@@ -1,17 +1,22 @@
 package ar.edu.itba.cg_final;
 
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
 
 import ar.edu.itba.cg_final.states.InGameState;
 import ar.edu.itba.cg_final.states.MenuState;
 import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
-import ar.edu.itba.cg_final.utils.ResourceLoader;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
-import com.jme.bounding.BoundingBox;
+import com.jme.image.Texture;
+import com.jme.image.Texture.ApplyMode;
+import com.jme.image.Texture.CombinerFunctionRGB;
+import com.jme.image.Texture.CombinerOperandRGB;
+import com.jme.image.Texture.CombinerScale;
+import com.jme.image.Texture.CombinerSource;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.image.Texture.WrapMode;
@@ -23,19 +28,29 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
+import com.jme.intersection.BoundingPickResults;
+import com.jme.light.DirectionalLight;
+import com.jme.math.Ray;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
 import com.jme.scene.Text;
-import com.jme.scene.shape.Box;
+import com.jme.scene.state.CullState;
+import com.jme.scene.state.FogState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.CullState.Face;
+import com.jme.scene.state.FogState.DensityFunction;
+import com.jme.scene.state.FogState.Quality;
+import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
-import com.jmex.physics.material.Material;
+import com.jmex.terrain.TerrainPage;
+import com.jmex.terrain.util.FaultFractalHeightMap;
+import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class RallyGame extends BaseSimpleGame {
 	
@@ -313,31 +328,106 @@ public class RallyGame extends BaseSimpleGame {
         inGameStateNode.attachChild( car );
     }
 	
-    public void createFloor(Node inGameStateNode) {
-        Spatial floorVisual = new Box( "floor", new Vector3f(), 10000, 0.1f, 10000 );
-        floorVisual.setModelBound( new BoundingBox() );
-        floorVisual.updateModelBound();
-        StaticPhysicsNode floor = getPhysicsSpace().createStaticNode();
-        floor.attachChild( floorVisual );
-        floor.generatePhysicsGeometry();
-        floor.setMaterial( Material.CONCRETE );
-        floor.setLocalTranslation( new Vector3f( 0, -200f, 0 ) );
-        inGameStateNode.attachChild( floor );
+    public void createTerrain(Node inGameStateNode) {
+    	
+    	statNode.setRenderQueueMode( Renderer.QUEUE_ORTHO );
 
-        // Glueing the texture on the floor.
-        final TextureState wallTextureState = display.getRenderer().createTextureState();
-        try {
-			wallTextureState.setTexture( TextureManager.loadTexture( ResourceLoader.getURL("texture/dirt.jpg"), 
-					MinificationFilter.NearestNeighborLinearMipMap, MagnificationFilter.NearestNeighbor ) );
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        wallTextureState.getTexture().setScale( new Vector3f( 256, 256, 1 ) );
-        wallTextureState.getTexture().setWrap( WrapMode.Repeat );
-        floorVisual.setRenderState( wallTextureState );
+        DirectionalLight dl = new DirectionalLight();
+        dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+        dl.setDirection( new Vector3f( 1, -0.5f, 1 ) );
+        dl.setEnabled( true );
+        lightState.attach( dl );
+
+        DirectionalLight dr = new DirectionalLight();
+        dr.setEnabled( true );
+        dr.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+        dr.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
+        dr.setDirection( new Vector3f( 0.5f, -0.5f, 0 ) );
+
+        lightState.attach( dr );
+
+        display.getRenderer().setBackgroundColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1 ) );
+
+        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 257, 32, 0, 255,
+                0.75f, 3 );
+        Vector3f terrainScale = new Vector3f( 10, 1, 10 );
+        heightMap.setHeightScale( 0.001f );
+        TerrainPage page = new TerrainPage( "Terrain", 33, heightMap.getSize(), terrainScale,
+                heightMap.getHeightMap() );
+        page.setDetailTexture( 1, 16 );
+
+        CullState cs = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
+        cs.setCullFace(Face.Back);
+        cs.setEnabled( true );
+        page.setRenderState( cs );
+
+
+        ProceduralTextureGenerator pt = new ProceduralTextureGenerator( heightMap );
+        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
+                "texture/grassb.png" ) ), -128, 0, 128 );
+        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
+                "texture/dirt.jpg" ) ), 0, 128, 255 );
+        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
+                "texture/highest.jpg" ) ), 128, 255, 384 );
+
+        pt.createTexture( 512 );
+
+        TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+        ts.setEnabled( true );
+        Texture t1 = TextureManager.loadTexture(
+                pt.getImageIcon().getImage(),
+                MinificationFilter.Trilinear,
+                MagnificationFilter.Bilinear,
+                true );
+        ts.setTexture( t1, 0 );
+
+        Texture t2 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+                getResource(
+                "texture/Detail.jpg" ),
+                MinificationFilter.Trilinear,
+                MagnificationFilter.Bilinear );
+        ts.setTexture( t2, 1 );
+        t2.setWrap( WrapMode.Repeat );
+
+        t1.setApply( ApplyMode.Combine );
+        t1.setCombineFuncRGB( CombinerFunctionRGB.Modulate );
+        t1.setCombineSrc0RGB( CombinerSource.CurrentTexture );
+        t1.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
+        t1.setCombineSrc1RGB( CombinerSource.PrimaryColor );
+        t1.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
+        t1.setCombineScaleRGB( CombinerScale.One );
+
+        t2.setApply( ApplyMode.Combine );
+        t2.setCombineFuncRGB( CombinerFunctionRGB.AddSigned );
+        t2.setCombineSrc0RGB( CombinerSource.CurrentTexture );
+        t2.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
+        t2.setCombineSrc1RGB( CombinerSource.Previous );
+        t2.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
+        t2.setCombineScaleRGB( CombinerScale.One );
+        page.setRenderState( ts );
+
+        FogState fs = DisplaySystem.getDisplaySystem().getRenderer().createFogState();
+        fs.setDensity( 0.5f );
+        fs.setEnabled( true );
+        fs.setColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 0.5f ) );
+        fs.setEnd( 1000 );
+        fs.setStart( 500 );
+        fs.setDensityFunction( DensityFunction.Linear );
+        fs.setQuality(Quality.PerVertex);
+        page.setRenderState( fs );
+    	
+        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
+
+        staticNode.attachChild( page );
+
+        staticNode.getLocalTranslation().set( 0, -150, 0 );
+
+        inGameStateNode.attachChild( staticNode );
+        staticNode.generatePhysicsGeometry();
+        //initialize OBBTree of terrain
+        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );        
+        
     }
-	
 
     /**
      * Simple input action for accelerating and braking the car.
