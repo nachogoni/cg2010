@@ -35,6 +35,9 @@ public class PreLoadState extends RallyGameState {
 		// ** Cargamos todo el entorno del juego
 		theGame.tunePhysics(inGameNode);
 		
+		// Cargamos el auto
+		theGame.createCar(inGameNode);
+
 		// Cargamos la configuracion del input
 		theGame.initInput(inGameNode);
 		
@@ -42,8 +45,6 @@ public class PreLoadState extends RallyGameState {
 		game.setSkyBox(RallySkyBox.getRedSkyBox(DisplaySystem
 				.getDisplaySystem(), xExtent, yExtent, zExtent));
 
-		// Cargamos el auto
-		theGame.createCar(inGameNode);
 		
 		// Cargamos el terreno
 		theGame.createFloor(inGameNode);
