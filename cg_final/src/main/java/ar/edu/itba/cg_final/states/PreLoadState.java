@@ -47,7 +47,7 @@ public class PreLoadState extends RallyGameState {
 
 		
 		// Cargamos el terreno
-		theGame.createFloor(inGameNode);
+		theGame.createTerrain(inGameNode);
 		
 		// Cargamos la pista
 		
