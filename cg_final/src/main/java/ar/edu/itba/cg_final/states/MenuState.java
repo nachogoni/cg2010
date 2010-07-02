@@ -2,7 +2,6 @@ package ar.edu.itba.cg_final.states;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.scene.Node;
-import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jmex.game.state.GameStateManager;
 

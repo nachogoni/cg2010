@@ -32,9 +32,12 @@ import com.jme.intersection.BoundingPickResults;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Ray;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.Skybox;
+import com.jme.scene.Spatial;
 import com.jme.scene.Text;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FogState;
@@ -54,11 +57,26 @@ import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class RallyGame extends BaseSimpleGame {
 	
+	// Singleton
+	private static RallyGame instance;
+	
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
 	protected InputHandler cameraInputHandler;
+	private Skybox skybox;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
+	private TerrainPage terrain;
+	
+	public RallyGame() {
+		instance = this;
+	}
+	
+	public static RallyGame getInstance() {
+		if (instance == null)
+			instance = new RallyGame();
+		return instance;
+	}	
 	
 	public static void main(String[] args) {
 		RallyGame app = new RallyGame();
@@ -86,9 +104,6 @@ public class RallyGame extends BaseSimpleGame {
 		preLoadState.setActive(false);
 		inGameState.setActive(false);
 		
-		// Seteamos el juego
-		preLoadState.setRallyGame(this);
-
 		gameStateManager.attachChild(menuState);
 		gameStateManager.attachChild(preLoadState);
 		gameStateManager.attachChild(inGameState);
@@ -220,7 +235,7 @@ public class RallyGame extends BaseSimpleGame {
 			timer.reset();
 			firstFrame = false;
 		}
-
+		
 		GameStateManager.getInstance().update(tpf);
 
 	}
@@ -355,7 +370,7 @@ public class RallyGame extends BaseSimpleGame {
         TerrainPage page = new TerrainPage( "Terrain", 33, heightMap.getSize(), terrainScale,
                 heightMap.getHeightMap() );
         page.setDetailTexture( 1, 16 );
-
+        
         CullState cs = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
         cs.setCullFace(Face.Back);
         cs.setEnabled( true );
@@ -425,7 +440,8 @@ public class RallyGame extends BaseSimpleGame {
         inGameStateNode.attachChild( staticNode );
         staticNode.generatePhysicsGeometry();
         //initialize OBBTree of terrain
-        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );        
+        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
+        this.terrain = page;
         
     }
 
@@ -485,7 +501,21 @@ public class RallyGame extends BaseSimpleGame {
         }
 
     }
+    
+    // Needed to apply restrictions on camera so it wont go below the terrain 
+	public Camera getCamara() {
+		return this.cam;
+	}
+
+	public void setSkyBox(Skybox skyBox) {
+		this.skybox = skyBox;
+	}
 	
-	
-	
+	public TerrainPage getTerrain() {
+		return terrain;
+	}
+
+	public Spatial getSkyBox() {
+		return skybox;
+	}
 }
