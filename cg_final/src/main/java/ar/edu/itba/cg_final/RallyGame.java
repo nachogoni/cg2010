@@ -309,7 +309,7 @@ public class RallyGame extends BaseSimpleGame {
     }
 
     public void createCar(Node inGameStateNode) {
-        Car car = new Car( getPhysicsSpace() );
+    	this.car = new Car( getPhysicsSpace() );
         inGameStateNode.attachChild( car );
     }
 	
