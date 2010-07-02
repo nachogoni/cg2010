@@ -2,7 +2,8 @@ package ar.edu.itba.cg_final.controller;
 
 import com.jme.scene.Skybox;
 
-
+//Se movio al singleton a RallyGame (Ver si hay un disenio mejor)
+@Deprecated
 public class Game {
 
 	private static Game instance;

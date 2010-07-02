@@ -1,8 +1,10 @@
 package ar.edu.itba.cg_final.states;
 
-import ar.edu.itba.cg_final.controller.Game;
+import ar.edu.itba.cg_final.RallyGame;
 
+import com.jme.renderer.Camera;
 import com.jme.scene.Node;
+import com.jmex.terrain.TerrainPage;
 
 public class InGameState extends RallyGameState {
 
@@ -10,7 +12,7 @@ public class InGameState extends RallyGameState {
 	public void activated() {
 		
 		// Cargamos todo lo necesario en el stateNode
-		stateNode.attachChild(Game.getInstance().getSkyBox());
+		stateNode.attachChild(RallyGame.getInstance().getSkyBox());
 		
 		// Agregamos el stateNode al rootNode
 		stateNode.setName(this.getName());
@@ -36,6 +38,17 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void render(float arg0) {
+		//TODO arreglar la condicion de la camara porque anda media chota
+		/*RallyGame game = RallyGame.getInstance();
+		Camera cam = game.getCamara();
+		TerrainPage terrain = game.getTerrain();
+        //We don't want the chase camera to go below the world, so always keep 
+        //it 2 units above the level.
+        if(cam.getLocation().y < (terrain.getHeight(cam.getLocation()))) {
+            cam.getLocation().y = terrain.getHeight(cam.getLocation());
+            cam.update();
+        }
+        rootNode.updateGeometricState(arg0, true);*/
 	}
 
 	@Override

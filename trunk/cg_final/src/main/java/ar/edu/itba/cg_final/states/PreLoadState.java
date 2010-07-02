@@ -1,7 +1,6 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
-import ar.edu.itba.cg_final.controller.Game;
 import ar.edu.itba.cg_final.map.RallySkyBox;
 
 import com.jme.scene.Node;
@@ -10,8 +9,6 @@ import com.jmex.game.state.GameStateManager;
 
 public class PreLoadState extends RallyGameState {
 
-	private RallyGame theGame;
-	
 	@Override
 	public void activated() {
 		// Obtenemos el stateNode del InGameState para ir asignandole los modelos a crear
@@ -22,24 +19,24 @@ public class PreLoadState extends RallyGameState {
 		inGameNode.detachAllChildren();
 		
 		// 
-		Game game = Game.getInstance();
-
+		RallyGame game = RallyGame.getInstance();
+		
 		// ** Cargamos todo lo del GlobalSettings
-		float xExtent = 200;
-		float yExtent = 200;
-		float zExtent = 200;
+		float xExtent = 1000;
+		float yExtent = 1000;
+		float zExtent = 1000;
 		
 		// ** Cargamos todo lo de GameUserSettings (TODO: Sacar todo de lo que setea el menu)
 		
 
 		// ** Cargamos todo el entorno del juego
-		theGame.tunePhysics(inGameNode);
+		game.tunePhysics(inGameNode);
 		
 		// Cargamos el auto
-		theGame.createCar(inGameNode);
+		game.createCar(inGameNode);
 
 		// Cargamos la configuracion del input
-		theGame.initInput(inGameNode);
+		game.initInput(inGameNode);
 		
 		// Cargamos el skybox
 		game.setSkyBox(RallySkyBox.getRedSkyBox(DisplaySystem
@@ -47,19 +44,13 @@ public class PreLoadState extends RallyGameState {
 
 		
 		// Cargamos el terreno
-		theGame.createTerrain(inGameNode);
+		game.createTerrain(inGameNode);
 		
 		// Cargamos la pista
-		
-
-		
-		
 
 		// Otros...
-		theGame.createText(inGameNode);
+		game.createText(inGameNode);
 
-		
-		
 
 		// Actualizamos el rootNode con el stateNode
         rootNode.attachChild(this.stateNode);
@@ -96,7 +87,5 @@ public class PreLoadState extends RallyGameState {
 	public void update(float arg0) {
 	}
 	
-	public void setRallyGame(RallyGame theGame) {
-		this.theGame = theGame;
-	}
+
 }
