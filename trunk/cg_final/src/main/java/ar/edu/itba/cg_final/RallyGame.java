@@ -1,8 +1,10 @@
 package ar.edu.itba.cg_final;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
+
 
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.states.FinishedState;
@@ -48,6 +50,10 @@ import com.jme.scene.state.FogState.DensityFunction;
 import com.jme.scene.state.FogState.Quality;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jmex.audio.AudioSystem;
+import com.jmex.audio.AudioTrack;
+import com.jmex.audio.MusicTrackQueue;
+import com.jmex.audio.MusicTrackQueue.RepeatType;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
@@ -57,6 +63,9 @@ import com.jmex.terrain.util.FaultFractalHeightMap;
 import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class RallyGame extends BaseSimpleGame {
+	
+	private static final Logger logger = Logger.getLogger(RallyGame.class
+			.getName());	
 	
 	// Singleton
 	private static RallyGame instance;
@@ -129,9 +138,25 @@ public class RallyGame extends BaseSimpleGame {
 	// Metodos para la creacion de los elementos del juego (usados en el preloader)
 	
 	
-	
-	
-	
+	public void initAudio() {
+		try {
+			AudioTrack track = AudioSystem.getSystem().createAudioTrack(
+					RallyGame.class.getClassLoader().getResource(
+							"sound/maninside.ogg"), false);
+			AudioTrack track2 = AudioSystem.getSystem().createAudioTrack(
+					RallyGame.class.getClassLoader().getResource(
+							"sound/cartonero.ogg"), false);
+
+			MusicTrackQueue queue = AudioSystem.getSystem().getMusicQueue();
+			queue.setCrossfadeinTime(0);
+			queue.setRepeatType(RepeatType.ALL);
+			queue.addTrack(track);
+			queue.addTrack(track2);
+		} catch (Exception e) {
+			logger.logp(Level.SEVERE, this.getClass().toString(),
+					"simpleAppletSetup()", "Exception", e);			
+		}	
+	}
 	
 	
 	
@@ -384,7 +409,7 @@ public class RallyGame extends BaseSimpleGame {
 
         display.getRenderer().setBackgroundColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1 ) );
 
-        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 257, 32, 0, 255,
+        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 1025, 32, 0, 100,
                 0.75f, 3 );
         Vector3f terrainScale = new Vector3f( 10, 1, 10 );
         heightMap.setHeightScale( 0.001f );
