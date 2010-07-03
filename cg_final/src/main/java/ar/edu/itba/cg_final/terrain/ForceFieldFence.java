@@ -94,7 +94,7 @@ public class ForceFieldFence extends Node {
      */
     private void buildFence() {
         //This cylinder will act as the four main posts at each corner
-        Cylinder postGeometry = new Cylinder("post", 10, 10, 1, 10);
+        Cylinder postGeometry = new Cylinder("post", 10, 10, 0.1f, 1);
         Quaternion q = new Quaternion();
         //rotate the cylinder to be vertical
         q.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
@@ -202,7 +202,7 @@ public class ForceFieldFence extends Node {
         
         //add the tower to the opaque queue (we don't want to be able to see through them)
         //and we do want to see them through the forcefield.
-        towerNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+        towerNode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
         
         //load a texture for the towers
         TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
