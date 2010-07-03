@@ -84,7 +84,7 @@ public class PreLoadState extends RallyGameState {
 				float zExtent = 600;
 				// Cargamos el skybox
 				refreshLabel("Skybox");
-				game.createSkyBox(inGameNode, "red", xExtent, yExtent, zExtent);
+				game.createSkyBox(inGameNode, "day", xExtent, yExtent, zExtent);
 
 				break;
 			case 15:
