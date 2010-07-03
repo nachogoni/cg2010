@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
+import com.jmex.audio.AudioSystem;
+
 
 public class InGameState extends RallyGameState {
 
@@ -14,6 +16,7 @@ public class InGameState extends RallyGameState {
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
+		AudioSystem.getSystem().getMusicQueue().play();
 	}
 
 	@Override
@@ -48,6 +51,10 @@ public class InGameState extends RallyGameState {
 //			GameStateManager.getInstance().deactivateChildNamed(this.getName());
 //			GameStateManager.getInstance().activateChildNamed("FinishedGame");
 //		}
+		
+		AudioSystem.getSystem().update();
+		
 	}
+
 
 }

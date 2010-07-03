@@ -113,10 +113,11 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Etiqueta");
 				game.createText(inGameNode);
 				break;
-//			case 70:
-//				// Otros...
-//				refreshLabel("Otros...");
-//				break;
+			case 70:
+				// Otros...
+				refreshLabel("Audio");
+				game.initAudio();
+				break;
 //			case 80:
 //				refreshLabel("");
 //				break;
