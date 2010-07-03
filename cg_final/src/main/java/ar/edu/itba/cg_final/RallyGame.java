@@ -5,8 +5,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-
-
+import ar.edu.itba.cg_final.map.Flag;
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.states.FinishedState;
 import ar.edu.itba.cg_final.states.InGameState;
@@ -43,13 +42,11 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.scene.state.CullState;
-import com.jme.scene.state.FogState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
-import com.jme.scene.state.FogState.DensityFunction;
-import com.jme.scene.state.FogState.Quality;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
@@ -79,6 +76,8 @@ public class RallyGame extends BaseSimpleGame {
 	private float physicsSpeed = 1;
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
+    //the flag to grab
+    private Flag flag;
 	
 	public RallyGame() {
 		instance = this;
@@ -197,7 +196,17 @@ public class RallyGame extends BaseSimpleGame {
     }
 	
 	
-
+    /**
+     * we created a new Flag class, so we'll use it to add the flag to the world.
+     * This is the flag that we desire, the one to get.
+     *
+     */
+    public void buildFlag(Node inGameStateNode) {
+        //create the flag and place it
+        flag = new Flag(terrain);
+        inGameStateNode.attachChild(flag);
+        flag.placeFlag();
+    }
 
 
 	/**
@@ -374,6 +383,8 @@ public class RallyGame extends BaseSimpleGame {
 	Text label;
 	Car car;
 	ResetAction resetAction;
+
+	private Skybox skybox;
 	
     public void createText(Node inGameStateNode) {
         label = Text.createDefaultTextLabel( "instructions",
@@ -506,15 +517,7 @@ public class RallyGame extends BaseSimpleGame {
         t2.setCombineScaleRGB( CombinerScale.One );
         page.setRenderState( ts );
 
-        FogState fs = DisplaySystem.getDisplaySystem().getRenderer().createFogState();
-        fs.setDensity( 0.5f );
-        fs.setEnabled( true );
-        fs.setColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 0.5f ) );
-        fs.setEnd( 1000 );
-        fs.setStart( 500 );
-        fs.setDensityFunction( DensityFunction.Linear );
-        fs.setQuality(Quality.PerVertex);
-        page.setRenderState( fs );
+
     	
         final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
 
@@ -594,19 +597,27 @@ public class RallyGame extends BaseSimpleGame {
 
 	// Create skybox
 	public void createSkyBox(Node inGameStateNode, String sky, float xExtent, float yExtent, float zExtent) {
+		Skybox skyBox;
 		if (sky.equals("day") == true) {
-			inGameStateNode.attachChild(RallySkyBox.getDaySkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+			skyBox = RallySkyBox.getDaySkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
+			
 		} else if (sky.equals("red")) {
-			inGameStateNode.attachChild(RallySkyBox.getRedSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+			skyBox = RallySkyBox.getRedSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
 		} else if (sky.equals("night")) {
-			inGameStateNode.attachChild(RallySkyBox.getNightSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+			skyBox = RallySkyBox.getNightSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
 		} else {
-			inGameStateNode.attachChild(RallySkyBox.getNightSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+			skyBox = RallySkyBox.getNightSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
 		}
+		inGameStateNode.attachChild(skyBox);
+		this.skybox = skyBox; 
+	}
+	
+	public Skybox getSkybox() {
+		return skybox;
 	}
 	
 }
