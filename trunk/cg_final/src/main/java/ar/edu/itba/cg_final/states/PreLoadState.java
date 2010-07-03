@@ -39,9 +39,8 @@ public class PreLoadState extends RallyGameState {
 		game.initInput(inGameNode);
 		
 		// Cargamos el skybox
-		game.setSkyBox(RallySkyBox.getRedSkyBox(DisplaySystem
+		stateNode.attachChild(RallySkyBox.getRedSkyBox(DisplaySystem
 				.getDisplaySystem(), xExtent, yExtent, zExtent));
-
 		
 		// Cargamos el terreno
 		game.createTerrain(inGameNode);

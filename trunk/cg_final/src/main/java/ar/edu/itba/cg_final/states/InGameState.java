@@ -1,19 +1,11 @@
 package ar.edu.itba.cg_final.states;
 
-import ar.edu.itba.cg_final.RallyGame;
-
-import com.jme.renderer.Camera;
 import com.jme.scene.Node;
-import com.jmex.terrain.TerrainPage;
 
 public class InGameState extends RallyGameState {
 
 	@Override
 	public void activated() {
-		
-		// Cargamos todo lo necesario en el stateNode
-		stateNode.attachChild(RallyGame.getInstance().getSkyBox());
-		
 		// Agregamos el stateNode al rootNode
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);

@@ -33,7 +33,7 @@ public class GameController {
 		return checkPoints.get(name);
 	}
 	
-	public boolean passThrow(Player player, CheckPoint checkPoint) {
+	public boolean passThrough(Player player, CheckPoint checkPoint) {
 		if (player == null || checkPoint == null)
 			return false;
 		
