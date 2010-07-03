@@ -1,6 +1,5 @@
 package ar.edu.itba.cg_final;
 
-import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,17 +18,13 @@ import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
 import com.jme.image.Texture;
-import com.jme.image.Texture2D;
 import com.jme.image.Texture.ApplyMode;
-import com.jme.image.Texture.CombinerFunctionAlpha;
 import com.jme.image.Texture.CombinerFunctionRGB;
-import com.jme.image.Texture.CombinerOperandAlpha;
 import com.jme.image.Texture.CombinerOperandRGB;
 import com.jme.image.Texture.CombinerScale;
 import com.jme.image.Texture.CombinerSource;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
-import com.jme.image.Texture.RenderToTextureType;
 import com.jme.image.Texture.WrapMode;
 import com.jme.input.ChaseCamera;
 import com.jme.input.FirstPersonHandler;
@@ -41,23 +36,21 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 import com.jme.intersection.BoundingPickResults;
 import com.jme.light.DirectionalLight;
+import com.jme.math.FastMath;
 import com.jme.math.Ray;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.renderer.TextureRenderer;
 import com.jme.scene.BillboardNode;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.BlendState;
-import com.jme.scene.state.ColorMaskState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
-import com.jme.scene.state.RenderState.StateType;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
@@ -88,7 +81,6 @@ public class RallyGame extends BaseSimpleGame {
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
     //the flag to grab
-    private Flag flag;
 	
 	public RallyGame() {
 		instance = this;
@@ -213,10 +205,12 @@ public class RallyGame extends BaseSimpleGame {
      *
      */
     public void buildFlag(Node inGameStateNode) {
-        //create the flag and place it
-        flag = new Flag(terrain);
+//    	flag = new Flag(10,0,10,2);
+    	float x = FastMath.nextRandomFloat() * 10000 - 5000;
+    	float z = FastMath.nextRandomFloat() * 10000 - 5000;
+    	//TODO: ver altura
+        Flag flag = new Flag(x, 0/*terrain.getHeight(x, z)*/, z, 2);
         inGameStateNode.attachChild(flag);
-        flag.placeFlag();
     }
 
 

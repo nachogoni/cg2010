@@ -1,37 +1,6 @@
-/*
- * Copyright (c) 2003-2009 jMonkeyEngine
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * * Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the distribution.
- *
- * * Neither the name of 'jMonkeyEngine' nor the names of its contributors 
- *   may be used to endorse or promote products derived from this software 
- *   without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package ar.edu.itba.cg_final.map;
 
+import java.net.URL;
 
 import com.jme.image.Texture;
 import com.jme.light.LightNode;
@@ -52,41 +21,28 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.effects.cloth.ClothPatch;
 import com.jmex.effects.cloth.ClothUtils;
-import com.jmex.terrain.TerrainPage;
 
-/**
- * Flag maintains the object that is the "goal" of the game. The
- * drivers are to try to grab the flags for points. The main job of 
- * the class is to build the flag geometry, and position itself randomly
- * within the level after a period of time.
- * @author Mark Powell
- *
- */
-public class Flag extends Node{
+public class Flag extends Node {
+
 	private static final long serialVersionUID = 1L;
-
-    //10 second life time
-    private static final int LIFE_TIME = 10;
-    //start off with a full life time
-    float countdown = LIFE_TIME;
-    //reference to the level terrain for placement
-    TerrainPage tb;
     //the cloth that makes up the flag.
     private ClothPatch cloth;
     //parameters for the wind
     private float windStrength = 15f;
     private Vector3f windDirection = new Vector3f(0.8f, 0, 0.2f);
     private SpringPointForce gravity, wind;
-    
-    /**
-     * Constructor builds the flag, taking the terrain as the parameter. This
-     * is just the reference to the game's terrain object so that we can 
-     * randomly place this flag on the level.
-     * @param tb the terrain used to place the flag.
-     */
-    public Flag(TerrainPage tb) {
-        super("flag");
-        this.tb = tb;
+	
+	public Flag() {
+		this(0, 0, 0, 1);
+	}
+	
+	public Flag(float x, float y, float z, float scale) {
+		this(x, y, z, scale, Flag.class.getClassLoader().getResource(
+		"images/Monkey.jpg"));
+	}
+	
+	public Flag(float x, float y, float z, float scale, URL clothPath) {
+        super();
         //create a cloth patch that will handle the flag part of our flag.
         cloth = new ClothPatch("cloth", 25, 25, 1f, 10);
         // Add our custom flag wind force to the cloth
@@ -109,9 +65,7 @@ public class Flag extends Node{
         //Let's promote jME! 
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         ts.setTexture(
-            TextureManager.loadTexture(
-            Flag.class.getClassLoader().getResource(
-            "images/Monkey.jpg"),
+            TextureManager.loadTexture(clothPath,
             Texture.MinificationFilter.Trilinear,
             Texture.MagnificationFilter.Bilinear));
         
@@ -160,49 +114,24 @@ public class Flag extends Node{
             
         }
         this.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-        this.setLocalScale(0.25f);
-        
+        this.setLocalScale(scale);
+        placeFlag(x, y + c.getHeight(), z);
     }
-    
-    /**
-     * During the update, we decrement the time. When it reaches zero, we will
-     * reset the flag.
-     * @param time the time between frame.
-     */
+	
     public void update(float time) {
-        countdown -= time;
-        
-        if(countdown <= 0) {
-            reset();
-        }
+    	
+    }
+	
+    public void placeFlag(float x, float z) {
+    	placeFlag(x, 0, z);
     }
     
-    /**
-     * reset sets the life time back to 10 seconds, and then randomly places the flag
-     * on the terrain.
-     *
-     */
-    public void reset() {
-        countdown = LIFE_TIME;
-        placeFlag();
+    public void placeFlag(float x, float y, float z) {
+    	localTranslation.x = x;
+    	localTranslation.y = y;
+    	localTranslation.z = z;
     }
-    
-    /**
-     * place flag picks a random point on the terrain and places the flag there. I
-     * set the values to be between (45 and 175) which places it within the force field
-     * level.
-     *
-     */
-    public void placeFlag() {
-        float x = 45 + FastMath.nextRandomFloat() * 130;
-        float z = 45 + FastMath.nextRandomFloat() * 130;
-        float y = tb.getHeight(x,z) + 23;
-        localTranslation.x = x;
-        localTranslation.y = y;
-        localTranslation.z = z;
-        
-    }
-    
+	
     /**
      * RandomFlagWindForce defines a SpringPointForce that will slighly adjust the
      * direction of the wind and the force of the wind. This will cause the flag
@@ -239,5 +168,5 @@ public class Flag extends Node{
                     * tStr, windDirection.z * tStr);
         }
     };
-
+    
 }
