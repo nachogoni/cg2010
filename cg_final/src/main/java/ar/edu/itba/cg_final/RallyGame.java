@@ -37,7 +37,6 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
-import com.jme.scene.Spatial;
 import com.jme.scene.Text;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FogState;
@@ -63,7 +62,6 @@ public class RallyGame extends BaseSimpleGame {
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
 	protected InputHandler cameraInputHandler;
-	private Skybox skybox;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
 	private TerrainPage terrain;
@@ -507,15 +505,4 @@ public class RallyGame extends BaseSimpleGame {
 		return this.cam;
 	}
 
-	public void setSkyBox(Skybox skyBox) {
-		this.skybox = skyBox;
-	}
-	
-	public TerrainPage getTerrain() {
-		return terrain;
-	}
-
-	public Spatial getSkyBox() {
-		return skybox;
-	}
 }
