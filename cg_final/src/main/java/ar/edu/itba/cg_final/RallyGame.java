@@ -1,5 +1,6 @@
 package ar.edu.itba.cg_final;
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,13 +19,17 @@ import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
 import com.jme.image.Texture;
+import com.jme.image.Texture2D;
 import com.jme.image.Texture.ApplyMode;
+import com.jme.image.Texture.CombinerFunctionAlpha;
 import com.jme.image.Texture.CombinerFunctionRGB;
+import com.jme.image.Texture.CombinerOperandAlpha;
 import com.jme.image.Texture.CombinerOperandRGB;
 import com.jme.image.Texture.CombinerScale;
 import com.jme.image.Texture.CombinerSource;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
+import com.jme.image.Texture.RenderToTextureType;
 import com.jme.image.Texture.WrapMode;
 import com.jme.input.ChaseCamera;
 import com.jme.input.FirstPersonHandler;
@@ -41,12 +46,18 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
+import com.jme.renderer.TextureRenderer;
+import com.jme.scene.BillboardNode;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
+import com.jme.scene.shape.Quad;
+import com.jme.scene.state.BlendState;
+import com.jme.scene.state.ColorMaskState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
+import com.jme.scene.state.RenderState.StateType;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
@@ -510,8 +521,6 @@ public class RallyGame extends BaseSimpleGame {
         t2.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
         t2.setCombineScaleRGB( CombinerScale.One );
         page.setRenderState( ts );
-
-
     	
         final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
 
@@ -525,8 +534,46 @@ public class RallyGame extends BaseSimpleGame {
         inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
         this.terrain = page;
         
-    }
+        //SE AGREGA ARBOLITO
+        //TODO sacar esto de aca y meterlo en una funcion que cargue el bosque.
+        //Ponerlo despues de que se cargue el auto
+        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        blendState.setBlendEnabled( true );
+        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        blendState.setTestEnabled( true );
+        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+        blendState.setEnabled( true );                
+        
+        Quad q = new Quad("Quad");
+        TextureState ts2 = display.getRenderer().createTextureState();
+        ts2.setEnabled(true);
 
+        Texture t3 = TextureManager.loadTexture(
+            RallyGame.class.getClassLoader().getResource(
+            "images/tree1.png"), 
+            MinificationFilter.Trilinear,
+            MagnificationFilter.Bilinear );
+        
+        ts2.setTexture(t3);
+        //t3.setCombineFuncAlpha(CombinerFunctionAlpha.)
+        
+        q.setRenderState(ts2);
+        q.setRenderState(blendState);
+        q.updateRenderState();
+     
+        BillboardNode billboard = new BillboardNode("Billboard");
+        billboard.setAlignment(BillboardNode.AXIAL);
+        billboard.attachChild(q);   
+        billboard.setLocalScale(100f);
+        billboard.setLocalTranslation(terrain.getWorldBound().getCenter().x,
+        		terrain.getWorldBound().getCenter().y+65,
+        		terrain.getWorldBound().getCenter().z);
+        inGameStateNode.attachChild(billboard);        
+        
+        
+        
+    }
     /**
      * Simple input action for accelerating and braking the car.
      */

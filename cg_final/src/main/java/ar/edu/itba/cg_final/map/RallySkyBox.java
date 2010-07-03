@@ -1,13 +1,15 @@
 package ar.edu.itba.cg_final.map;
 
 import java.net.MalformedURLException;
+
 import org.apache.log4j.Logger;
+
 import ar.edu.itba.cg_final.utils.ResourceLoader;
+
 import com.jme.image.Texture;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.CullState;
-import com.jme.scene.state.FogState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
@@ -81,9 +83,9 @@ public class RallySkyBox extends Skybox{
 			zState.setEnabled(false);
 			skybox.setRenderState(zState);
 
-			FogState fs = display.getRenderer().createFogState();
+			/*FogState fs = display.getRenderer().createFogState();
 			fs.setEnabled(false);
-			skybox.setRenderState(fs);
+			skybox.setRenderState(fs);*/
 
 			skybox.setLightCombineMode(Spatial.LightCombineMode.Off);
 			skybox.setCullHint(Spatial.CullHint.Never);
