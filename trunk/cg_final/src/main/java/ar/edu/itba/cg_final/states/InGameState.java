@@ -1,5 +1,8 @@
 package ar.edu.itba.cg_final.states;
 
+import ar.edu.itba.cg_final.RallyGame;
+
+import com.jme.scene.Skybox;
 import com.jmex.audio.AudioSystem;
 
 
@@ -51,9 +54,12 @@ public class InGameState extends RallyGameState {
 //			GameStateManager.getInstance().deactivateChildNamed(this.getName());
 //			GameStateManager.getInstance().activateChildNamed("FinishedGame");
 //		}
-		
+		RallyGame game = RallyGame.getInstance();
+		Skybox sky = game.getSkybox();
 		AudioSystem.getSystem().update();
 		
+		sky.getLocalTranslation().set(game.getCamara().getLocation());
+		sky.updateGeometricState(0.0f, true);	
 	}
 
 

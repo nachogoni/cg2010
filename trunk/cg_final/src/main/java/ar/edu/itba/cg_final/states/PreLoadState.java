@@ -79,6 +79,15 @@ public class PreLoadState extends RallyGameState {
 				game.tunePhysics(inGameNode);
 				break;
 			case 10:
+				float xExtent = 600;
+				float yExtent = 600;
+				float zExtent = 600;
+				// Cargamos el skybox
+				refreshLabel("Skybox");
+				game.createSkyBox(inGameNode, "red", xExtent, yExtent, zExtent);
+
+				break;
+			case 15:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
 				game.createTerrain(inGameNode);
@@ -96,13 +105,7 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 40:
 				//TODO: vienen de las settings...
-				float xExtent = 1000;
-				float yExtent = 1000;
-				float zExtent = 1000;
-				// Cargamos el skybox
-				refreshLabel("Skybox");
-				game.createSkyBox(inGameNode, "red", xExtent, yExtent, zExtent);
-				break;
+
 			case 50:
 				// Cargamos la pista
 //				refreshLabel("Pista");
@@ -122,9 +125,10 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Enviroment");
 				game.buildEnvironment(inGameNode);
 				break;
-//			case 90:
-//				refreshLabel("");
-//				break;
+			case 90:
+				refreshLabel("Flag");
+				game.buildFlag(inGameNode);
+				break;
 //			case 100:
 //				refreshLabel("");
 //				break;

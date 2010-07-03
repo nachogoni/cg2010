@@ -3,7 +3,6 @@ package ar.edu.itba.cg_final.settings;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Properties;
 
 public class GlobalSettings {
