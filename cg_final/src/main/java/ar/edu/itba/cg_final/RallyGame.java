@@ -4,10 +4,13 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import ar.edu.itba.cg_final.map.RallySkyBox;
+import ar.edu.itba.cg_final.states.FinishedState;
 import ar.edu.itba.cg_final.states.InGameState;
 import ar.edu.itba.cg_final.states.MenuState;
 import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
+import ar.edu.itba.cg_final.states.StartState;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
@@ -36,7 +39,6 @@ import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FogState;
@@ -88,23 +90,25 @@ public class RallyGame extends BaseSimpleGame {
 		// Creamos los estados en el juego y mostramos el menu
 		RallyGameState menuState = new MenuState();
 		PreLoadState preLoadState = new PreLoadState();
+		RallyGameState startGameState = new StartState();
 		RallyGameState inGameState = new InGameState();
+		RallyGameState finishedGameState = new FinishedState();
 
 		GameStateManager.create();
 
 		gameStateManager = GameStateManager.getInstance();
 
-		menuState.initGameState(rootNode);
-		preLoadState.initGameState(rootNode);
-		inGameState.initGameState(rootNode);
-
 		menuState.setActive(true);
 		preLoadState.setActive(false);
+		startGameState.setActive(false);
 		inGameState.setActive(false);
+		finishedGameState.setActive(false);
 		
 		gameStateManager.attachChild(menuState);
 		gameStateManager.attachChild(preLoadState);
+		gameStateManager.attachChild(startGameState);
 		gameStateManager.attachChild(inGameState);
+		gameStateManager.attachChild(finishedGameState);
 
 		KeyBindingManager.getKeyBindingManager().removeAll();
 		KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
@@ -112,6 +116,14 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("prev", KeyInput.KEY_G);
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
+	}
+	
+	public void setPause(boolean state) {
+		this.pause = state;
+	}
+	
+	public Node getRootNode() {
+		return rootNode;
 	}
 	
 	// Metodos para la creacion de los elementos del juego (usados en el preloader)
@@ -337,8 +349,19 @@ public class RallyGame extends BaseSimpleGame {
     }
 
     public void createCar(Node inGameStateNode) {
+    	
+    	Node auto = new Node();
+    	
     	this.car = new Car( getPhysicsSpace() );
-        inGameStateNode.attachChild( car );
+//        inGameStateNode.attachChild( car );
+    	
+    	auto.attachChild(car);
+    	
+    	auto.setLocalScale(1f);
+    	
+        inGameStateNode.attachChild( auto );
+
+    	
     }
 	
     public void createTerrain(Node inGameStateNode) {
@@ -505,4 +528,21 @@ public class RallyGame extends BaseSimpleGame {
 		return this.cam;
 	}
 
+	// Create skybox
+	public void createSkyBox(Node inGameStateNode, String sky, float xExtent, float yExtent, float zExtent) {
+		if (sky.equals("day") == true) {
+			inGameStateNode.attachChild(RallySkyBox.getDaySkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+		} else if (sky.equals("red")) {
+			inGameStateNode.attachChild(RallySkyBox.getRedSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+		} else if (sky.equals("night")) {
+			inGameStateNode.attachChild(RallySkyBox.getNightSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+		} else {
+			inGameStateNode.attachChild(RallySkyBox.getNightSkyBox(
+					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent));
+		}
+	}
+	
 }

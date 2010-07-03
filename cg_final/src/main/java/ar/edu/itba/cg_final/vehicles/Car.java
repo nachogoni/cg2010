@@ -46,7 +46,7 @@ public class Car extends Node {
      *
      * @param pSpace physics space
      */
-    private void createSuspension( final PhysicsSpace pSpace ) {
+    private void createSuspension( final PhysicsSpace pSpace ) {   	
         frontSuspension = new Suspension( pSpace, chassisNode, CarData.FRONT_SUSPENSION_OFFSET, true );
         this.attachChild( frontSuspension );
         rearSuspension = new Suspension( pSpace, chassisNode, CarData.REAR_SUSPENSION_OFFSET, false );

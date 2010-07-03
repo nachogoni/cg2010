@@ -1,77 +1,63 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
-import ar.edu.itba.cg_final.map.RallySkyBox;
 
 import com.jme.scene.Node;
-import com.jme.system.DisplaySystem;
+import com.jme.scene.Text;
 import com.jmex.game.state.GameStateManager;
 
 public class PreLoadState extends RallyGameState {
 
+	private Text info;
+	private RallyGame game;
+	private Integer task = 0;
+	private Node inGameNode;
+	private InGameState inGame;
+	private boolean updateable = false;
+	
+	public PreLoadState() {
+		this.setName("PreLoad");
+		stateNode.setName(this.getName());
+	}
+	
+	private void refreshLabel(String text) {
+		this.stateNode.detachChildNamed("loaderInfo");
+		info = Text.createDefaultTextLabel("loaderInfo", "Cargando: " + text + "...");
+    	info.setLocalTranslation(  300, 400, 0);
+    	this.stateNode.attachChild(info);
+    	return;
+	}
+	
 	@Override
 	public void activated() {
-		// Obtenemos el stateNode del InGameState para ir asignandole los modelos a crear
-		InGameState inGame = (InGameState)GameStateManager.getInstance().getChild("InGame");
-		Node inGameNode = inGame.getStateNode();
 		
-		// Borramos todos los nodos que contenga el stateNode del InGameState
-		inGameNode.detachAllChildren();
+		// Hacer desde el principio
+		this.task = 0;
 		
-		// 
-		RallyGame game = RallyGame.getInstance();
-		
-		// ** Cargamos todo lo del GlobalSettings
-		float xExtent = 1000;
-		float yExtent = 1000;
-		float zExtent = 1000;
-		
-		// ** Cargamos todo lo de GameUserSettings (TODO: Sacar todo de lo que setea el menu)
-		
-
-		// ** Cargamos todo el entorno del juego
-		game.tunePhysics(inGameNode);
-		
-		// Cargamos el auto
-		game.createCar(inGameNode);
-
-		// Cargamos la configuracion del input
-		game.initInput(inGameNode);
-		
-		// Cargamos el skybox
-		stateNode.attachChild(RallySkyBox.getRedSkyBox(DisplaySystem
-				.getDisplaySystem(), xExtent, yExtent, zExtent));
-		
-		// Cargamos el terreno
-		game.createTerrain(inGameNode);
-		
-		// Cargamos la pista
-
-		// Otros...
-		game.createText(inGameNode);
-
-
-		// Actualizamos el rootNode con el stateNode
-        rootNode.attachChild(this.stateNode);
+		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
 		
-		// ** Saltamos al proximo estado: InGameState
-		GameStateManager.getInstance().deactivateChildNamed(this.getName());
-		GameStateManager.getInstance().activateChildNamed("InGame");
+		// Obtenemos el stateNode del InGameState para ir asignandole los modelos a crear
+		inGame = (InGameState)GameStateManager.getInstance().getChild("InGame");
+		inGameNode = inGame.getStateNode();
+
+		// Borramos todos los nodos que contenga el stateNode del InGameState
+		inGameNode.detachAllChildren();
+
+		refreshLabel("...");
+    	
+    	// Tomamos la instancia del RallyGame
+    	game = RallyGame.getInstance();
+    	
+    	game.setPause(true);
+    	
+    	updateable = true;
 	}
 
 	@Override
 	public void deactivated() {
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();
-	}
-
-	@Override
-	public void initGameState(Node rootNode) {
-		super.initGameState(rootNode);
-		this.setName("PreLoad");
-
-		// TODO: Podria tener una pantallita de cargando...
 	}
 
 	@Override
@@ -84,6 +70,98 @@ public class PreLoadState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
+		if (updateable ) {		
+			switch(task)
+			{
+			case 0:
+				// Actualizamos la fisica
+				refreshLabel("Fisica");
+				game.tunePhysics(inGameNode);
+				break;
+			case 10:
+				// Cargamos el terreno
+				refreshLabel("Terreno");
+				game.createTerrain(inGameNode);
+				break;
+			case 20:
+				// Cargamos los autos
+				refreshLabel("Autos");
+				game.createCar(inGameNode);
+				//TODO: Actualizar la posicion del auto en base a la altura del terreno...
+				break;
+			case 30:
+				// Cargamos la configuracion del input
+				refreshLabel("Teclas");
+				game.initInput(inGameNode);
+				break;
+			case 40:
+				//TODO: vienen de las settings...
+				float xExtent = 1000;
+				float yExtent = 1000;
+				float zExtent = 1000;
+				// Cargamos el skybox
+				refreshLabel("Skybox");
+				game.createSkyBox(inGameNode, "red", xExtent, yExtent, zExtent);
+				break;
+			case 50:
+				// Cargamos la pista
+//				refreshLabel("Pista");
+				// TODO
+				break;
+			case 60:
+				// Creamos la etiqueta (????)
+				refreshLabel("Etiqueta");
+				game.createText(inGameNode);
+				break;
+//			case 70:
+//				// Otros...
+//				refreshLabel("Otros...");
+//				break;
+//			case 80:
+//				refreshLabel("");
+//				break;
+//			case 90:
+//				refreshLabel("");
+//				break;
+//			case 100:
+//				refreshLabel("");
+//				break;
+//			case 110:
+//				refreshLabel("");
+//				break;
+//			case 120:
+//				refreshLabel("");
+//				break;
+//			case 130:
+//				refreshLabel("");
+//				break;
+//			case 140:
+//				refreshLabel("");
+//				break;
+//			case 150:
+//				refreshLabel("");
+//				break;
+//			case 160:
+//				refreshLabel("");
+//				break;
+//			case 170:
+//				refreshLabel("");
+//				break;
+//			case 180:
+//				refreshLabel("");
+//				break;
+			case 190:
+				// Saltamos al proximo estado: InGameState
+				refreshLabel("La partida!");
+				GameStateManager.getInstance().deactivateChildNamed(this.getName());
+				GameStateManager.getInstance().activateChildNamed("StartGame");
+				break;
+			default:
+				break;	
+			}
+			// Tarea terminada -> saltar a la siguiente tarea...
+			this.task++;
+		}
 	}
 	
 
