@@ -118,9 +118,10 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Audio");
 				game.initAudio();
 				break;
-//			case 80:
-//				refreshLabel("");
-//				break;
+			case 80:
+				refreshLabel("Enviroment");
+				game.buildEnvironment(inGameNode);
+				break;
 //			case 90:
 //				refreshLabel("");
 //				break;
