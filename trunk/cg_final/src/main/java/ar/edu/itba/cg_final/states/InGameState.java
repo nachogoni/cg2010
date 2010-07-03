@@ -1,9 +1,13 @@
 package ar.edu.itba.cg_final.states;
 
-import com.jme.scene.Node;
 
 public class InGameState extends RallyGameState {
 
+	public InGameState() {
+		this.setName("InGame");
+		stateNode.setName(this.getName());
+	}
+	
 	@Override
 	public void activated() {
 		// Agregamos el stateNode al rootNode
@@ -16,12 +20,6 @@ public class InGameState extends RallyGameState {
 	public void deactivated() {
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();
-	}
-
-	@Override
-	public void initGameState(Node rootNode) {
-		super.initGameState(rootNode);
-		this.setName("InGame");
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class InGameState extends RallyGameState {
 //		if (KeyBindingManager.getKeyBindingManager().isValidCommand("post",
 //				false)) {
 //			GameStateManager.getInstance().deactivateChildNamed(this.getName());
-//			GameStateManager.getInstance().activateChildNamed("Menu");
+//			GameStateManager.getInstance().activateChildNamed("FinishedGame");
 //		}
 	}
 

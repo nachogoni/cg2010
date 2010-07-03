@@ -1,12 +1,16 @@
 package ar.edu.itba.cg_final.states;
 
 import com.jme.input.KeyBindingManager;
-import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
 
+	public MenuState() {
+		this.setName("Menu");
+		stateNode.setName(this.getName());
+	}
+	
 	@Override
 	public void activated() {
         Text label = Text.createDefaultTextLabel( "instructions",
@@ -22,13 +26,6 @@ public class MenuState extends RallyGameState {
 	public void deactivated() {
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();
-	}
-
-	@Override
-	public void initGameState(Node rootNode) {
-		super.initGameState(rootNode);
-		this.setName("Menu");
-		stateNode.setName(this.getName());
 	}
 
 	@Override

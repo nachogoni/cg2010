@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
+import ar.edu.itba.cg_final.RallyGame;
+
 import com.jme.scene.Node;
 import com.jmex.game.state.GameState;
 
@@ -8,8 +10,8 @@ public abstract class RallyGameState  extends GameState {
 	protected Node stateNode = new Node();
 	protected Node rootNode;
 	
-	public void initGameState(Node rootNode) {
-		this.rootNode = rootNode;
+	{
+		this.rootNode = RallyGame.getInstance().getRootNode();
 	}
 
 	// Genera una llamada al estado cuando es activdado
