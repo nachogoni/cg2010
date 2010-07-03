@@ -417,16 +417,15 @@ public class RallyGame extends BaseSimpleGame {
 //        inGameStateNode.attachChild( car );
     	
     	this.car.setPosition(terrain.getWorldBound().getCenter().x,
-    			terrain.getWorldBound().getCenter().y,
+    			terrain.getWorldBound().getCenter().y+24,
     			terrain.getWorldBound().getCenter().z);
     	
     	auto.attachChild(car);
     	
     	auto.setLocalScale(1f);
-    	
     
         inGameStateNode.attachChild( auto );
-
+        inGameStateNode.updateGeometricState(0, true);
     	
     }
 	
