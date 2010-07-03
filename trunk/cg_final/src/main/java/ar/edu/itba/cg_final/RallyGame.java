@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 
+
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.states.FinishedState;
 import ar.edu.itba.cg_final.states.InGameState;
@@ -13,6 +14,7 @@ import ar.edu.itba.cg_final.states.MenuState;
 import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
 import ar.edu.itba.cg_final.states.StartState;
+import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
@@ -76,6 +78,7 @@ public class RallyGame extends BaseSimpleGame {
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
 	private TerrainPage terrain;
+	private ForceFieldFence fence;
 	
 	public RallyGame() {
 		instance = this;
@@ -159,6 +162,39 @@ public class RallyGame extends BaseSimpleGame {
 	}
 	
 	
+    /**
+     * buildEnvironment will create a fence. 
+     */
+    public void buildEnvironment(Node inGameStateNode) {
+        //This is the main node of our fence
+        fence = new ForceFieldFence("fence");
+        
+        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
+        //first we'll scale the entire "model" by a factor of 5
+        fence.setLocalScale(320);
+        
+        //now let's move the fence to to the height of the terrain and in a little bit.
+        
+        fence.setLocalTranslation(new Vector3f(0, 
+        		terrain.getHeight(25,25)+10, 
+        		0));
+        
+        fence.updateGeometricState(0, true);
+        
+        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
+
+        staticNode.attachChild( fence );
+
+        
+        
+        staticNode.getLocalTranslation().set( terrain.getWorldBound().getCenter().x - fence.getWorldBound().getCenter().x, 
+        		-150, terrain.getWorldBound().getCenter().z - fence.getWorldBound().getCenter().z);
+
+        inGameStateNode.attachChild( staticNode );
+        staticNode.generatePhysicsGeometry();
+        //initialize OBBTree of terrain
+        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
+    }
 	
 	
 
@@ -380,10 +416,15 @@ public class RallyGame extends BaseSimpleGame {
     	this.car = new Car( getPhysicsSpace() );
 //        inGameStateNode.attachChild( car );
     	
+    	this.car.setPosition(terrain.getWorldBound().getCenter().x,
+    			terrain.getWorldBound().getCenter().y,
+    			terrain.getWorldBound().getCenter().z);
+    	
     	auto.attachChild(car);
     	
     	auto.setLocalScale(1f);
     	
+    
         inGameStateNode.attachChild( auto );
 
     	
@@ -391,7 +432,6 @@ public class RallyGame extends BaseSimpleGame {
 	
     public void createTerrain(Node inGameStateNode) {
     	
-    	statNode.setRenderQueueMode( Renderer.QUEUE_ORTHO );
 
         DirectionalLight dl = new DirectionalLight();
         dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
@@ -482,7 +522,7 @@ public class RallyGame extends BaseSimpleGame {
         staticNode.attachChild( page );
 
         staticNode.getLocalTranslation().set( 0, -150, 0 );
-
+        
         inGameStateNode.attachChild( staticNode );
         staticNode.generatePhysicsGeometry();
         //initialize OBBTree of terrain
