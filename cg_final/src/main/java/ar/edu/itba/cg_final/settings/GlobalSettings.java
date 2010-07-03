@@ -3,6 +3,7 @@ package ar.edu.itba.cg_final.settings;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 public class GlobalSettings {
@@ -21,10 +22,9 @@ public class GlobalSettings {
 		}
 	}
 	
-	public String getUserName() {
-		return p.getProperty("user.name");
-	}
 
-	//TODO:
+	public String getProperty(String property) {
+		return p.getProperty(property);
+	}
 	
 }
