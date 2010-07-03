@@ -620,4 +620,7 @@ public class RallyGame extends BaseSimpleGame {
 		return skybox;
 	}
 	
+	public TerrainPage getTerrain() {
+		return terrain;
+	}
 }
