@@ -1,15 +1,23 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.vehicles.Car;
 
+import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Skybox;
+import com.jme.scene.Text;
+import com.jme.system.DisplaySystem;
 import com.jmex.audio.AudioSystem;
 import com.jmex.terrain.TerrainPage;
 
 
 public class InGameState extends RallyGameState {
 
+	private Car playerCar;
+	private int width = DisplaySystem.getDisplaySystem().getWidth();
+	private int height = DisplaySystem.getDisplaySystem().getHeight();
+	
 	public InGameState() {
 		this.setName("InGame");
 		stateNode.setName(this.getName());
@@ -22,6 +30,7 @@ public class InGameState extends RallyGameState {
 		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
 		AudioSystem.getSystem().getMusicQueue().play();
+		playerCar = (Car)rootNode.getChild("PlayerCar");
 	}
 
 	@Override
@@ -62,7 +71,25 @@ public class InGameState extends RallyGameState {
 		AudioSystem.getSystem().update();
 		
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
-		sky.updateGeometricState(0.0f, true);	
+		sky.updateGeometricState(0.0f, true);
+		
+		// Update speed
+		Integer carSpeed = (int)playerCar.getLinearSpeed();
+		this.stateNode.detachChildNamed("speed");
+		Text speed = Text.createDefaultTextLabel("speed", String.format("%03d", carSpeed));
+    	speed.setLocalScale(5);
+    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
+    	this.stateNode.attachChild(speed);
+		
+    	// TODO: for degub
+    	this.stateNode.detachChildNamed("carPos");
+    	Text pos = Text.createDefaultTextLabel("carPos", String.format("Auto: (%04d,%04d)",
+    			(int)(playerCar.getChassis().getLocalTranslation().x), 
+    			(int)(playerCar.getChassis().getLocalTranslation().z)));
+    	pos.setLocalScale(1);
+    	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
+    	this.stateNode.attachChild(pos);
+    	
 	}
 
 

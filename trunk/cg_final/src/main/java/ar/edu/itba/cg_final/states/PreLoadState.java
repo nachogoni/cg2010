@@ -95,7 +95,7 @@ public class PreLoadState extends RallyGameState {
 			case 20:
 				// Cargamos los autos
 				refreshLabel("Autos");
-				game.createCar(inGameNode);
+				game.createCar(inGameNode, "PlayerCar");
 				//TODO: Actualizar la posicion del auto en base a la altura del terreno...
 				break;
 			case 30:

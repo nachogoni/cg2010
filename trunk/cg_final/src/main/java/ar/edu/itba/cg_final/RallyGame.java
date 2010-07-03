@@ -420,22 +420,16 @@ public class RallyGame extends BaseSimpleGame {
         this.setPhysicsSpeed( 4 );
     }
 
-    public void createCar(Node inGameStateNode) {
-    	
-    	Node auto = new Node();
+    public void createCar(Node inGameStateNode, String carName) {
     	
     	this.car = new Car( getPhysicsSpace() );
-//        inGameStateNode.attachChild( car );
+    	this.car.setName(carName);
     	
     	this.car.setPosition(terrain.getWorldBound().getCenter().x,
     			terrain.getWorldBound().getCenter().y+24,
     			terrain.getWorldBound().getCenter().z);
     	
-    	auto.attachChild(car);
-    	
-    	auto.setLocalScale(1f);
-    
-        inGameStateNode.attachChild( auto );
+        inGameStateNode.attachChild( car );
         inGameStateNode.updateGeometricState(0, true);
     	
     }
