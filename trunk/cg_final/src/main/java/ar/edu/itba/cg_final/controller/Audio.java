@@ -11,10 +11,13 @@ public class Audio {
 
 	private MusicTrackQueue queue;
 	
+	private AudioTrack rep;
+	
+	
 	public Audio(){
 		this.queue = AudioSystem.getSystem().getMusicQueue();
-		queue.setCrossfadeinTime(0);
-		queue.setRepeatType(RepeatType.ALL);
+		this.queue.setCrossfadeinTime(0);
+		this.queue.setRepeatType(RepeatType.ALL);
 	}
 	
 	public void addAudio(String path){
@@ -39,4 +42,19 @@ public class Audio {
 						path), false);
 		aTrack.play();
 	}
+
+	public void playRepeatedly(String path){
+		this.stopRepeatedly();
+		rep = AudioSystem.getSystem().createAudioTrack(
+				RallyGame.class.getClassLoader().getResource(
+						path), false);
+		rep.setLooping(true);
+		rep.play();
+	}
+	
+	public void stopRepeatedly(){
+		if(rep != null)
+			rep.stop();
+	}
+	
 }
