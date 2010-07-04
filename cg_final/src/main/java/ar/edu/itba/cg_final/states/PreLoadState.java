@@ -105,7 +105,7 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 40:
 				//TODO: vienen de las settings...
-
+				
 			case 50:
 				// Cargamos la pista
 //				refreshLabel("Pista");
@@ -124,6 +124,7 @@ public class PreLoadState extends RallyGameState {
 			case 80:
 				refreshLabel("Enviroment");
 				game.buildEnvironment(inGameNode);
+				game.buildCheckpoint(inGameNode);
 				break;
 			case 90:
 				refreshLabel("Flag");
