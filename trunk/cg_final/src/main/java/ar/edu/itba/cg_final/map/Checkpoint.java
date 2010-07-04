@@ -4,14 +4,13 @@ import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
-import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
+import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.shape.Box;
-import com.jme.scene.shape.Cylinder;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -30,9 +29,9 @@ public class Checkpoint extends Node {
      * create the fence, passing the name to the parent.
      * @param name the name of the fence
      */
-    public Checkpoint(String name) {
+    public Checkpoint(String name, Vector2f position, int rotation) {
         super(name);
-        buildCheckpoint();
+        buildCheckpoint(name, position, rotation);
     }
     
     /**
@@ -53,150 +52,46 @@ public class Checkpoint extends Node {
             t.getTranslation().y = 0;
         }
     }
-	private void buildCheckpoint() {
-        //This cylinder will act as the four main posts at each corner
-        Cylinder postGeometry = new Cylinder("post", 10, 10, 0.1f, 1);
-        Quaternion q = new Quaternion();
-        //rotate the cylinder to be vertical
-        q.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
-        postGeometry.setLocalRotation(q);
-        postGeometry.setModelBound(new BoundingBox());
-        postGeometry.updateModelBound();
-        
-        //We will share the post 4 times (one for each post)
-        //It is *not* a good idea to add the original geometry 
-        //as the sharedmeshes will alter its local values.
-        //We then translate the posts into position. 
-        //Magic numbers are bad, but help illustrate the point.:)
-        SharedMesh post1 = new SharedMesh("post1", postGeometry);
-        post1.setLocalTranslation(new Vector3f(0,0.5f,0));
-        SharedMesh post2 = new SharedMesh("post2", postGeometry);
-        post2.setLocalTranslation(new Vector3f(32,0.5f,0));
-        /*SharedMesh post3 = new SharedMesh("post3", postGeometry);
-        post3.setLocalTranslation(new Vector3f(0,0.5f,32));
-        SharedMesh post4 = new SharedMesh("post4", postGeometry);
-        post4.setLocalTranslation(new Vector3f(32,0.5f,32));*/
-        
-        //This cylinder will be the horizontal struts that hold
-        //the field in place.
-        /*Cylinder strutGeometry = new Cylinder("strut", 10,10, 0.125f, 32);
-        strutGeometry.setModelBound(new BoundingBox());
-        strutGeometry.updateModelBound();*/
-        
-        //again, we'll share this mesh.
-        //Some we need to rotate to connect various posts.
-        /*SharedMesh strut1 = new SharedMesh("strut1", strutGeometry);
-        Quaternion rotate90 = new Quaternion();
-        rotate90.fromAngleAxis(FastMath.PI/2, new Vector3f(0,1,0));
-        strut1.setLocalRotation(rotate90);
-        strut1.setLocalTranslation(new Vector3f(16,3f,0));
-        SharedMesh strut2 = new SharedMesh("strut2", strutGeometry);
-        strut2.setLocalTranslation(new Vector3f(0,3f,16));*/
-        /*SharedMesh strut3 = new SharedMesh("strut3", strutGeometry);
-        strut3.setLocalTranslation(new Vector3f(32,3f,16));
-        SharedMesh strut4 = new SharedMesh("strut4", strutGeometry);
-        strut4.setLocalRotation(rotate90);
-        strut4.setLocalTranslation(new Vector3f(16,3f,32));*/
-        
+    
+	private void buildCheckpoint(String name, Vector2f position, float rotation) {
         //Create the actual forcefield 
         //The first box handles the X-axis, the second handles the z-axis.
         //We don't rotate the box as a demonstration on how boxes can be 
         //created differently.
-        Box forceFieldX = new Box("forceFieldX", new Vector3f(-16, -3f, -0.1f), new Vector3f(16f, 100f, 0.1f));
+        Box forceFieldX = new Box(name+".forceFieldX", 
+        		new Vector3f(position.x, 30f, position.y), 100, 60, 1);
         forceFieldX.setModelBound(new BoundingBox());
         forceFieldX.updateModelBound();
         //We are going to share these boxes as well
-        SharedMesh forceFieldX1 = new SharedMesh("forceFieldX1",forceFieldX);
-        forceFieldX1.setLocalTranslation(new Vector3f(16,0,0));
-        /*SharedMesh forceFieldX2 = new SharedMesh("forceFieldX2",forceFieldX);
-        forceFieldX2.setLocalTranslation(new Vector3f(16,0,32));*/
-        
-        //The other box for the Z axis
-        Box forceFieldZ = new Box("forceFieldZ", new Vector3f(-0.1f, -3f, -16), new Vector3f(0.1f, 3f, 16));
-        forceFieldZ.setModelBound(new BoundingBox());
-        forceFieldZ.updateModelBound();
-        //and again we will share it
-        SharedMesh forceFieldZ1 = new SharedMesh("forceFieldZ1",forceFieldZ);
-        forceFieldZ1.setLocalTranslation(new Vector3f(0,0,16));
-       /* SharedMesh forceFieldZ2 = new SharedMesh("forceFieldZ2",forceFieldZ);
-        forceFieldZ2.setLocalTranslation(new Vector3f(32,0,16));*/
+        SharedMesh forceFieldX1 = new SharedMesh(name+".forceFieldX1",forceFieldX);
+        forceFieldX1.setLocalTranslation(new Vector3f(position.x,0,position.y));
+        float [] angles = new float[]{0f,rotation,0f}; 
+        forceFieldX1.setLocalRotation(new Quaternion(angles));
         
         //add all the force fields to a single node and make this node part of
         //the transparent queue.
-        Node forceFieldNode = new Node("check");
-        forceFieldNode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+        Node forceFieldNode = new Node(name+".check");
         forceFieldNode.attachChild(forceFieldX1);
-        //forceFieldNode.attachChild(forceFieldX2);
-        //forceFieldNode.attachChild(forceFieldZ1);
-        //forceFieldNode.attachChild(forceFieldZ2);
-        
-        //Add the alpha values for the transparent node
-        BlendState as1 = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-        as1.setBlendEnabled(true);
-        as1.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
-        as1.setDestinationFunction(BlendState.DestinationFunction.One);
-        as1.setTestEnabled(true);
-        as1.setTestFunction(BlendState.TestFunction.GreaterThan);
-        as1.setEnabled(true);
-        
-        forceFieldNode.setRenderState(as1);
         
         //load a texture for the force field elements
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/reflector.jpg"),
+                  .getResource("texture/checkpoint.png"),
                   Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
-        
-        t.setWrap(Texture.WrapMode.Repeat);
-        t.setTranslation(new Vector3f());
         ts.setTexture(t);
+                
+        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        blendState.setBlendEnabled( true );
+        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        blendState.setTestEnabled( true );
+        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+        blendState.setEnabled( true );   
         
         forceFieldNode.setRenderState(ts);
-        
-       
-        //put all the posts into a tower node
-        Node towerNode = new Node("tower");
-        towerNode.attachChild(post1);
-        towerNode.attachChild(post2);
-        //towerNode.attachChild(post3);
-        //towerNode.attachChild(post4);
-        
-        //add the tower to the opaque queue (we don't want to be able to see through them)
-        //and we do want to see them through the forcefield.
-        towerNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-        
-        //load a texture for the towers
-        TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        Texture t2 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/post.jpg"),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
-        
-        ts2.setTexture(t2);
-        
-        towerNode.setRenderState(ts2);
-        
-        //put all the struts into a single node.
-        //Node strutNode = new Node("strutNode");
-        //strutNode.attachChild(strut1);
-       // strutNode.attachChild(strut2);
-        //strutNode.attachChild(strut3);
-        //strutNode.attachChild(strut4);
-        //this too is in the opaque queue.
-        //strutNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-        
-        //load a texture for the struts
-        TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        Texture t3 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/rust.jpg"),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
-        
-        ts3.setTexture(t3);
-        
-        //strutNode.setRenderState(ts3);
+        forceFieldNode.setRenderState(blendState);
         
         //Attach all the pieces to the main fence node
         this.attachChild(forceFieldNode);
-        //this.attachChild(towerNode);
-        //this.attachChild(strutNode);
     }
 }
