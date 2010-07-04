@@ -1,5 +1,6 @@
 package ar.edu.itba.cg_final;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,6 +68,7 @@ public class RallyGame extends BaseSimpleGame {
 	private Skybox skybox;	
 	
     //the flag to grab
+	private Boolean screenshot = false;
 	
 	public RallyGame() {
 		instance = this;
@@ -116,6 +118,7 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("prev", KeyInput.KEY_G);
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
+		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 	}
 	
 	public void setPause(boolean state) {
@@ -307,6 +310,10 @@ public class RallyGame extends BaseSimpleGame {
 			firstFrame = false;
 		}
 		
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
+				false))
+			screenshot = true;
+		
 		GameStateManager.getInstance().update(tpf);
 
 	}
@@ -343,6 +350,13 @@ public class RallyGame extends BaseSimpleGame {
 		doDebug(r);
 		
 		GameStateManager.getInstance().render(tpf);
+		
+		if( screenshot ){
+			screenshot = false;
+			System.out.println("Screenshot!!!");
+			r.takeScreenShot(new Date().toString());
+		}
+		
 		
 	}
 
