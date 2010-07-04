@@ -39,6 +39,8 @@ public class RallyTrack extends Node {
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
 	
+	private ArrayList<Tree> forest = new ArrayList<Tree>();
+	
 	public RallyTrack(GlobalSettings gs) {
 		
 		RallyGame rg = RallyGame.getInstance();
@@ -170,8 +172,47 @@ public class RallyTrack extends Node {
 			Tree tree = new Tree("tree"+i);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS"); 
 			tree.placeTree(pos.x, terrain.getHeight(pos) + treeHeight, pos.y);
-			this.attachChild(tree);
+			forest.add(tree);
 		}
+		
+	}
+	
+	public void initForest(Node inGameState) {
+		Node forestNode = new Node("forest");
+		/*TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+		.createTextureState();
+		ZBufferState zs = DisplaySystem.getDisplaySystem().getRenderer()
+		.createZBufferState();
+		zs.setFunction(TestFunction.LessThan);
+		
+		zs.setWritable(false);
+		zs.setEnabled(true);	*/	
+		//forestNode.setTextureCombineMode(TextureCombineMode);
+		//forestNode.setRenderState(ts);		
+		for (Tree tree : forest) {
+			//tree.setRenderState(zs);
+			//tree.updateRenderState();
+			forestNode.attachChild(tree);
+		}
+		
+
+
+
+		
+
+
+		//forestNode.updateRenderState();		
+		inGameState.attachChild(forestNode);
+		
+		
+		
+		
+		
+		
+
+
+		
+		
 		
 	}
 	

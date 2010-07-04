@@ -1,13 +1,9 @@
 package ar.edu.itba.cg_final;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.edu.itba.cg_final.controller.Audio;
@@ -35,7 +31,6 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
@@ -43,14 +38,9 @@ import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
-import com.jmex.audio.AudioSystem;
-import com.jmex.audio.AudioTrack;
-import com.jmex.audio.MusicTrackQueue;
-import com.jmex.audio.MusicTrackQueue.RepeatType;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
-import com.jmex.physics.StaticPhysicsNode;
 import com.jmex.terrain.TerrainPage;
 
 public class RallyGame extends BaseSimpleGame {
@@ -404,7 +394,9 @@ public class RallyGame extends BaseSimpleGame {
 	
 	
 	
-	
+	public void createForest(Node inGameStateNode) {
+		rallyTrack.initForest(inGameStateNode);
+	}
 	
 	
 	
