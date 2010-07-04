@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
@@ -68,9 +70,9 @@ public class RallyGame extends BaseSimpleGame {
 	
     //the flag to grab
 	private Boolean screenshot = false;
-//	private int i = 0;
-//	private static FileWriter aFile;
-//	private static BufferedWriter aWriter;
+	private int i = 0;
+	private static FileWriter aFile;
+	private static BufferedWriter aWriter;
 	
 	public RallyGame() {
 		instance = this;
@@ -83,12 +85,12 @@ public class RallyGame extends BaseSimpleGame {
 	}	
 	
 	public static void main(String[] args) throws IOException {
-		//aFile = new FileWriter("waka");
-		//aWriter = new BufferedWriter(aFile);
+		aFile = new FileWriter("waka");
+		aWriter = new BufferedWriter(aFile);
 		RallyGame app = new RallyGame();
 		app.setConfigShowMode(ConfigShowMode.ShowIfNoConfig);
 		app.start();
-		//aWriter.close();
+		aWriter.close();
 	}
 
 	@Override
@@ -311,15 +313,30 @@ public class RallyGame extends BaseSimpleGame {
 		}
 		
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
-				false))
+				false)){
 			screenshot = true;
+			float [] angles = new float[3];
+	    	car.getChassis().getLocalRotation().toAngles(angles);
+			try {
+				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
+						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
+				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
+				i++;
+				aWriter.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 //		if (KeyBindingManager.getKeyBindingManager().isValidCommand("print",
 //				false))
 //		{
-//			System.out.println("Planto Arbol!");
+//			float [] angles = new float[3];
+//	    	car.getChassis().getLocalRotation().toAngles(angles);
 //			try {
-//				aWriter.write("TRACK1.TREE" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
+//				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
 //						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
+//				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
 //				i++;
 //				aWriter.flush();
 //			} catch (IOException e) {

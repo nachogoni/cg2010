@@ -1,7 +1,10 @@
 package ar.edu.itba.cg_final.states;
 
+import java.util.ArrayList;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
+import ar.edu.itba.cg_final.map.Tree;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.renderer.Camera;
@@ -101,9 +104,10 @@ public class InGameState extends RallyGameState {
     	
 //		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
 //			System.out.println("Choco");
-//		}		    	
-    	if (game.getRallyTrack().getFence().hasCollision(playerCar, true)){
-    		System.out.println("Me la di contra la fence!!!!");
+//		}	
+    	if (game.getRallyTrack().getFence().hasCollision(playerCar, true) ||
+    			game.getRallyTrack().getForest().hasCollision(playerCar, true)){
+    		System.out.println("Choque contra algo");
     		this.audio.playOnce("sound/hit.ogg");
     	}
 	}
