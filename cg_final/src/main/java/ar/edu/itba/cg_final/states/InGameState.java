@@ -100,9 +100,9 @@ public class InGameState extends RallyGameState {
     	this.stateNode.attachChild(pos);
     	
     	
-		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
-			System.out.println("Choco");
-		}		    	
+//		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
+//			System.out.println("Choco");
+//		}		    	
     	if (game.getRallyTrack().getFence().hasCollision(playerCar, true)){
     		System.out.println("Me la di contra la fence!!!!");
     		this.audio.playOnce("sound/hit.ogg");

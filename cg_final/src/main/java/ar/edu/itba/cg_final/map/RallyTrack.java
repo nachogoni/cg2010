@@ -1,5 +1,8 @@
 package ar.edu.itba.cg_final.map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.RallyGameCar;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
@@ -32,9 +35,9 @@ import com.jmex.terrain.TerrainPage;
 import com.jmex.terrain.util.FaultFractalHeightMap;
 
 public class RallyTrack extends Node {
+	private static final long serialVersionUID = 1L;
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
-	
 	
 	public RallyTrack(GlobalSettings gs) {
 		
@@ -194,8 +197,24 @@ public class RallyTrack extends Node {
 	   return terrain;
    }
 
+   public List<Checkpoint> createCheckPoints(GlobalSettings gs) {
+	   
+	   List<Checkpoint> cpList = new ArrayList<Checkpoint>();
+
+	   int count = gs.getIntProperty("TRACK1.CHECKPOINT.COUNT");
+	   
+	   for (int i = 1; i <= count; i++) {
+		   Checkpoint cp = new Checkpoint("CP"+String.valueOf(i),
+				   gs.get2DVectorProperty("TRACK1.CHECKPOINT"+i+".POS"),
+				   gs.getIntProperty("TRACK1.CHECKPOINT"+i+".ROT"));
+		   cpList.add(cp);
+		   this.attachChild(cp);
+	   }
+	   
+	   return cpList;
+   }
+
 	public ForceFieldFence getFence() {
 		return fence;
 	}
-	
 }

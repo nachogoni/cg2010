@@ -128,7 +128,7 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 80:
 				refreshLabel("Enviroment");
-				game.buildCheckpoint(inGameNode);
+				game.buildCheckpoint(inGameNode, gs);
 				break;
 			case 90:
 				refreshLabel("Flag");

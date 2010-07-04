@@ -1,6 +1,8 @@
 package ar.edu.itba.cg_final;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -144,35 +146,42 @@ public class RallyGame extends BaseSimpleGame {
 	
 
     
-    public void buildCheckpoint(Node inGameStateNode) {
-    	TerrainPage terrain = rallyTrack.getTerrain();
+    public void buildCheckpoint(Node inGameStateNode, GlobalSettings gs) {
+//    	TerrainPage terrain = rallyTrack.getTerrain();
     	
-        //This is the main node of our fence
-    	Node cp = new Checkpoint("check");
+    	List<Checkpoint> cpList = rallyTrack.createCheckPoints(gs);
+
+    	for (Iterator<Checkpoint> iterator = cpList.iterator(); iterator.hasNext();) {
+			Checkpoint checkpoint = (Checkpoint) iterator.next();
+			inGameStateNode.attachChild(checkpoint);
+		}
     	
-        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
-        //first we'll scale the entire "model" by a factor of 5
-        cp.setLocalScale(5);
-        
-        //now let's move the fence to to the height of the terrain and in a little bit.
-        
-        /*cp.setLocalTranslation(new Vector3f(0, 
-        		terrain.getHeight(25,25)+300, 
-        		0));*/
-        
-        cp.updateGeometricState(0, true);
-        
-        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
+//        //This is the main node of our fence
+//    	Node cp = new Checkpoint("check");
+//    	
+//        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
+//        //first we'll scale the entire "model" by a factor of 5
+//        cp.setLocalScale(5);
+//        
+//        //now let's move the fence to to the height of the terrain and in a little bit.
+//        
+//        /*cp.setLocalTranslation(new Vector3f(0, 
+//        		terrain.getHeight(25,25)+300, 
+//        		0));*/
+//        
+//        cp.updateGeometricState(0, true);
+//        
+//        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
+//
+//        staticNode.attachChild( cp );
+//        
+//        final Vector3f point = new Vector3f(terrain.getWorldBound().getCenter().x,
+//        		terrain.getWorldBound().getCenter().y,
+//        		terrain.getWorldBound().getCenter().z); 
+//        
+//        cp.getLocalTranslation().set(point);
 
-        staticNode.attachChild( cp );
-        
-        final Vector3f point = new Vector3f(terrain.getWorldBound().getCenter().x,
-        		terrain.getWorldBound().getCenter().y,
-        		terrain.getWorldBound().getCenter().z); 
-        
-        cp.getLocalTranslation().set(point);
-
-        inGameStateNode.attachChild( cp );
+//        inGameStateNode.attachChild( cp );
         //staticNode.generatePhysicsGeometry();
     }
 	
