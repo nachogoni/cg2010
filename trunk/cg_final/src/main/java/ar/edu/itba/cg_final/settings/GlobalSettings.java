@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
+import com.jme.math.Vector2f;
+
 public class GlobalSettings {
 
-	GlobalSettings instance;
+	static GlobalSettings instance;
 	
 	Properties p = new Properties();
 	
@@ -26,7 +28,7 @@ public class GlobalSettings {
 		}
 	}
 	
-	public GlobalSettings getInstance(String filepath) {
+	static public GlobalSettings getInstance() {
 		if (instance == null) {
 			instance = new GlobalSettings();
 		}
@@ -65,5 +67,10 @@ public class GlobalSettings {
 	public int getIntProperty(String property){
 		return Integer.parseInt(p.getProperty(property));
 	}	
+	
+	public Vector2f get2DVectorProperty(String property) {
+		String [] ret =p.getProperty(property).split(",");
+		return new Vector2f(Float.parseFloat(ret[0]),Float.parseFloat(ret[1]));
+	}
 	
 }

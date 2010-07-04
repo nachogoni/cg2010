@@ -15,9 +15,12 @@ import com.jmex.terrain.TerrainPage;
 
 public class InGameState extends RallyGameState {
 
-	private Car playerCar;
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
 	private int height = DisplaySystem.getDisplaySystem().getHeight();
+	
+	RallyGame game;
+	Skybox sky;
+	Car playerCar;
 	
 	public InGameState() {
 		this.setName("InGame");
@@ -31,7 +34,9 @@ public class InGameState extends RallyGameState {
 		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
 		AudioSystem.getSystem().getMusicQueue().play();
-		playerCar = (Car)rootNode.getChild("PlayerCar");
+		game = RallyGame.getInstance();
+		sky = game.getSkybox();
+		playerCar = game.getPlayerCar();
 	}
 
 	@Override
@@ -49,7 +54,7 @@ public class InGameState extends RallyGameState {
 		//TODO arreglar la condicion de la camara porque anda media chota
 		RallyGame game = RallyGame.getInstance();
 		Camera cam = game.getCamara();
-		TerrainPage terrain = game.getTerrain();
+		TerrainPage terrain = game.getRallyTrack().getTerrain();
         //We don't want the chase camera to go below the world, so always keep 
         //it 2 units above the level.
 		final float fix = 130;
@@ -67,8 +72,7 @@ public class InGameState extends RallyGameState {
 //			GameStateManager.getInstance().deactivateChildNamed(this.getName());
 //			GameStateManager.getInstance().activateChildNamed("FinishedGame");
 //		}
-		RallyGame game = RallyGame.getInstance();
-		Skybox sky = game.getSkybox();
+		
 		AudioSystem.getSystem().update();
 		
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
@@ -92,7 +96,7 @@ public class InGameState extends RallyGameState {
     	this.stateNode.attachChild(pos);
     	
     	
-		if (game.getRootNode().getChild("check").hasCollision(game.getRootNode().getChild("PlayerCar"), true)) {
+		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
 			System.out.println("Choco");
 		}		    	
     	

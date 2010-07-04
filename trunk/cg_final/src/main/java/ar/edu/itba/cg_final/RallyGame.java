@@ -3,30 +3,20 @@ package ar.edu.itba.cg_final;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import ar.edu.itba.cg_final.map.Checkpoint;
 import ar.edu.itba.cg_final.map.Flag;
 import ar.edu.itba.cg_final.map.RallySkyBox;
+import ar.edu.itba.cg_final.map.RallyTrack;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.states.FinishedState;
 import ar.edu.itba.cg_final.states.InGameState;
 import ar.edu.itba.cg_final.states.MenuState;
 import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
 import ar.edu.itba.cg_final.states.StartState;
-import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
-import com.jme.image.Texture;
-import com.jme.image.Texture.ApplyMode;
-import com.jme.image.Texture.CombinerFunctionRGB;
-import com.jme.image.Texture.CombinerOperandRGB;
-import com.jme.image.Texture.CombinerScale;
-import com.jme.image.Texture.CombinerSource;
-import com.jme.image.Texture.MagnificationFilter;
-import com.jme.image.Texture.MinificationFilter;
-import com.jme.image.Texture.WrapMode;
 import com.jme.input.ChaseCamera;
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
@@ -35,23 +25,16 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
-import com.jme.intersection.BoundingPickResults;
-import com.jme.light.DirectionalLight;
 import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
-import com.jme.math.Ray;
+import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
-import com.jme.scene.state.CullState;
-import com.jme.scene.state.TextureState;
-import com.jme.scene.state.CullState.Face;
+import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
 import com.jmex.audio.AudioTrack;
 import com.jmex.audio.MusicTrackQueue;
@@ -61,8 +44,6 @@ import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.StaticPhysicsNode;
 import com.jmex.terrain.TerrainPage;
-import com.jmex.terrain.util.FaultFractalHeightMap;
-import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class RallyGame extends BaseSimpleGame {
 	
@@ -72,13 +53,19 @@ public class RallyGame extends BaseSimpleGame {
 	// Singleton
 	private static RallyGame instance;
 	
+	private RallyTrack rallyTrack;
+	
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
 	protected InputHandler cameraInputHandler;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
-	private TerrainPage terrain;
-	private ForceFieldFence fence;
+	Text label;
+	Car car;
+	ResetAction resetAction;
+
+	private Skybox skybox;	
+	
     //the flag to grab
 	
 	public RallyGame() {
@@ -163,39 +150,11 @@ public class RallyGame extends BaseSimpleGame {
 	}
 	
 	
-    /**
-     * buildEnvironment will create a fence. 
-     */
-    public void buildEnvironment(Node inGameStateNode) {
-        //This is the main node of our fence
-        fence = new ForceFieldFence("fence");
-        
-        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
-        //first we'll scale the entire "model" by a factor of 5
-        fence.setLocalScale(320);
-        
-        //now let's move the fence to to the height of the terrain and in a little bit.
-        
-        fence.setLocalTranslation(new Vector3f(0, 
-        		terrain.getHeight(25,25)+10, 
-        		0));
-        
-        fence.updateGeometricState(0, true);
-        
-        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
 
-        staticNode.attachChild( fence );
-        
-        staticNode.getLocalTranslation().set( terrain.getWorldBound().getCenter().x - fence.getWorldBound().getCenter().x, 
-        		-150, terrain.getWorldBound().getCenter().z - fence.getWorldBound().getCenter().z);
-
-        inGameStateNode.attachChild( staticNode );
-        staticNode.generatePhysicsGeometry();
-        //initialize OBBTree of terrain
-        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
-    }
     
     public void buildCheckpoint(Node inGameStateNode) {
+    	TerrainPage terrain = rallyTrack.getTerrain();
+    	
         //This is the main node of our fence
     	Node cp = new Checkpoint("check");
     	
@@ -412,11 +371,7 @@ public class RallyGame extends BaseSimpleGame {
 	
 	
 	
-	Text label;
-	Car car;
-	ResetAction resetAction;
 
-	private Skybox skybox;
 	
     public void createText(Node inGameStateNode) {
         label = Text.createDefaultTextLabel( "instructions",
@@ -452,174 +407,35 @@ public class RallyGame extends BaseSimpleGame {
         this.setPhysicsSpeed( 4 );
     }
 
-    public void createCar(Node inGameStateNode, String carName) {
-    	
-    	this.car = new Car( getPhysicsSpace() );
-    	this.car.setName(carName);
+    public void createCar(Node inGameStateNode, GlobalSettings gs) {
+    		
+    	car = new Car( getPhysicsSpace() );
+    	car.setName("PlayerCar");
     	
     	/*this.car.setPosition(terrain.getWorldBound().getCenter().x,
     			terrain.getWorldBound().getCenter().y+24,
     			terrain.getWorldBound().getCenter().z);*/
-    	this.car.setPosition(600, terrain.getHeight(600,-520)-150+24, -520);
     	
-		Quaternion x180 = new Quaternion();
-		x180.fromAngleAxis(FastMath.DEG_TO_RAD * 180, new Vector3f(0, 0, 1));
+    	TerrainPage tp = rallyTrack.getTerrain();
+    	
+    	final Vector2f pos = gs.get2DVectorProperty("TRACK1.CAR.POSITION");
+    	
+    	car.setPosition(pos.x, tp.getHeight(pos)-150+24, pos.y);
+    	
+//		Quaternion x180 = new Quaternion();
+//		x180.fromAngleAxis(FastMath.DEG_TO_RAD * 180, new Vector3f(0, 0, 1));
     	
         inGameStateNode.attachChild( car );
-        inGameStateNode.updateGeometricState(0, true);
+        inGameStateNode.updateGeometricState(0, true);			
     	
     }
-	
-    public void createTerrain(Node inGameStateNode) {
+    public void createRallyTrack(Node inGameStateNode, GlobalSettings gs) {
+    	RallyTrack rt = new RallyTrack(gs);
     	
-
-        DirectionalLight dl = new DirectionalLight();
-        dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
-        dl.setDirection( new Vector3f( 1, -0.5f, 1 ) );
-        dl.setEnabled( true );
-        lightState.attach( dl );
-
-        DirectionalLight dr = new DirectionalLight();
-        dr.setEnabled( true );
-        dr.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
-        dr.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
-        dr.setDirection( new Vector3f( 0.5f, -0.5f, 0 ) );
-
-        lightState.attach( dr );
-
-        display.getRenderer().setBackgroundColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1 ) );
-
-        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 1025, 32, 0, 20,
-                0.75f, 3 );
-        Vector3f terrainScale = new Vector3f( 10, 1, 10 );
-        heightMap.setHeightScale( 0.001f );
-        
-        TerrainPage page = new TerrainPage( "Terrain", 33, heightMap.getSize(), terrainScale,
-                heightMap.getHeightMap() );
-        
-        page.setDetailTexture( 1, 16 );
-        
-        CullState cs = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
-        cs.setCullFace(Face.Back);
-        cs.setEnabled( true );
-        page.setRenderState( cs );
-        //TODO deprecado. ahora se usa una imagen
-        ProceduralTextureGenerator pt = new ProceduralTextureGenerator( heightMap );
-        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
-                "texture/grassb.png" ) ), -128, 0, 128 );
-        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
-                "texture/dirt.jpg" ) ), 0, 128, 255 );
-        pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
-                "texture/highest.jpg" ) ), 128, 255, 384 );
-        
-        pt.createTexture( 512 );
-        
-        TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        ts.setEnabled( true );
-        Texture t2 = TextureManager.loadTexture(
-                pt.getImageIcon().getImage(),
-                MinificationFilter.Trilinear,
-                MagnificationFilter.Bilinear,
-                true );
-        //ts.setTexture( t2, 0 );
-        
-        Texture t3 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
-                getResource(
-                "texture/Detail.jpg" ),
-                MinificationFilter.Trilinear,
-                MagnificationFilter.Bilinear );
-        ts.setTexture( t3, 1 );
-        t3.setWrap( WrapMode.Repeat );
-
-        
-        Texture t1 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
-                getResource(
-                "texture/autodromo2.png" ),
-                MinificationFilter.Trilinear,
-                MagnificationFilter.Bilinear);
-        ts.setTexture( t1, 0 );
-        //t3.set;
-        //t3.setWrap( WrapMode.BorderClamp );        
-        
-        t1.setApply( ApplyMode.Combine );
-        t1.setCombineFuncRGB( CombinerFunctionRGB.Modulate );
-        t1.setCombineSrc0RGB( CombinerSource.CurrentTexture );
-        t1.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
-        t1.setCombineSrc1RGB( CombinerSource.PrimaryColor );
-        t1.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
-        t1.setCombineScaleRGB( CombinerScale.One );
-        
-
-        t2.setApply( ApplyMode.Combine );
-        t2.setCombineFuncRGB( CombinerFunctionRGB.AddSigned );
-        t2.setCombineSrc0RGB( CombinerSource.CurrentTexture );
-        t2.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
-        t2.setCombineSrc1RGB( CombinerSource.Previous );
-        t2.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
-        t2.setCombineScaleRGB( CombinerScale.One );
-        
-        t3.setApply( ApplyMode.Combine );
-        t3.setCombineFuncRGB( CombinerFunctionRGB.AddSigned);
-        t3.setCombineSrc0RGB( CombinerSource.CurrentTexture );
-        t3.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
-        t3.setCombineSrc1RGB( CombinerSource.Previous );
-        t3.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
-        t3.setCombineScaleRGB( CombinerScale.One);
-        
-        page.setRenderState( ts );        
-    	
-        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
-
-        staticNode.attachChild( page );
-
-        staticNode.getLocalTranslation().set( 0, -150, 0 );
-        
-        inGameStateNode.attachChild( staticNode );
-        staticNode.generatePhysicsGeometry();
-        //initialize OBBTree of terrain
-        inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
-        this.terrain = page;
-
-        /*
-        //SE AGREGA ARBOLITO
-        //TODO sacar esto de aca y meterlo en una funcion que cargue el bosque.
-        //Ponerlo despues de que se cargue el auto
-        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-        blendState.setBlendEnabled( true );
-        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
-        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
-        blendState.setTestEnabled( true );
-        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
-        blendState.setEnabled( true );                
-        
-        Quad q = new Quad("Quad");
-        TextureState ts2 = display.getRenderer().createTextureState();
-        ts2.setEnabled(true);
-        Texture t4 = TextureManager.loadTexture(
-            RallyGame.class.getClassLoader().getResource(
-            "images/tree1.png"), 
-            MinificationFilter.Trilinear,
-            MagnificationFilter.Bilinear );
-        
-        ts2.setTexture(t4);
-        //t3.setCombineFuncAlpha(CombinerFunctionAlpha.)
-        
-        q.setRenderState(ts2);
-        q.setRenderState(blendState);
-        q.updateRenderState();
-     
-        BillboardNode billboard = new BillboardNode("Billboard");
-        billboard.setAlignment(BillboardNode.AXIAL);
-        billboard.attachChild(q);   
-        billboard.setLocalScale(100f);
-        billboard.setLocalTranslation(terrain.getWorldBound().getCenter().x,
-        		terrain.getWorldBound().getCenter().y+65,
-        		terrain.getWorldBound().getCenter().z);
-        inGameStateNode.attachChild(billboard);        
-        */
-        
-        
+    	this.rallyTrack = rt;
+    	inGameStateNode.attachChild(rt);
     }
+ 
     /**
      * Simple input action for accelerating and braking the car.
      */
@@ -707,7 +523,17 @@ public class RallyGame extends BaseSimpleGame {
 		return skybox;
 	}
 	
-	public TerrainPage getTerrain() {
-		return terrain;
+	
+	public LightState getLightState() {
+		return lightState;
 	}
+	
+	public RallyTrack getRallyTrack() {
+		return rallyTrack;
+	}
+	
+	public Car getPlayerCar(){
+		return car;
+	}
+	
 }

@@ -1,0 +1,232 @@
+package ar.edu.itba.cg_final.map;
+
+import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.RallyGameCar;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
+import ar.edu.itba.cg_final.terrain.ForceFieldFence;
+import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
+
+import com.jme.image.Texture;
+import com.jme.image.Texture.ApplyMode;
+import com.jme.image.Texture.CombinerFunctionRGB;
+import com.jme.image.Texture.CombinerOperandRGB;
+import com.jme.image.Texture.CombinerScale;
+import com.jme.image.Texture.CombinerSource;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
+import com.jme.image.Texture.WrapMode;
+import com.jme.intersection.BoundingPickResults;
+import com.jme.light.DirectionalLight;
+import com.jme.math.Ray;
+import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Node;
+import com.jme.scene.state.CullState;
+import com.jme.scene.state.TextureState;
+import com.jme.scene.state.CullState.Face;
+import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
+import com.jmex.physics.StaticPhysicsNode;
+import com.jmex.terrain.TerrainPage;
+import com.jmex.terrain.util.FaultFractalHeightMap;
+
+public class RallyTrack extends Node{
+	private TerrainPage terrain;
+	private ForceFieldFence fence;
+	
+	
+	public RallyTrack(GlobalSettings gs) {
+		
+		RallyGame rg = RallyGame.getInstance();
+		buildLights();
+		
+		DisplaySystem display = DisplaySystem.getDisplaySystem(); 
+		
+        display.getRenderer().setBackgroundColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1 ) );
+
+        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 1025, 32, 0, 20,
+                0.75f, 3 );
+        Vector3f terrainScale = new Vector3f( 10, 1, 10 );
+        heightMap.setHeightScale( 0.001f );
+        
+        TerrainPage page = new TerrainPage( "Terrain", 33, heightMap.getSize(), terrainScale,
+                heightMap.getHeightMap() );
+        
+        page.setDetailTexture( 1, 16 );
+        
+        CullState cs = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
+        cs.setCullFace(Face.Back);
+        cs.setEnabled( true );
+        page.setRenderState( cs );
+        
+        TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+        ts.setEnabled( true );
+        
+        String texture;
+        MinificationFilter minF; 
+        MagnificationFilter maxF;
+        if (gs.getProperty("GAME.GRAPHICS.QUALITY").equals(GraphicsQualityUtils.High.toString())) {
+        	texture = "texture/autodromo2.png";
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+        	texture = "texture/autodromo2low.jpg";
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+        
+        Texture t1 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+                getResource(texture), minF, maxF);
+        ts.setTexture( t1, 0 );
+
+        Texture t3 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+                getResource(
+                "texture/Detail.jpg" ),
+                MinificationFilter.Trilinear,
+                MagnificationFilter.Bilinear );
+        ts.setTexture( t3, 1 );
+        t3.setWrap( WrapMode.Repeat );
+        
+        t1.setApply( ApplyMode.Combine );
+        t1.setCombineFuncRGB( CombinerFunctionRGB.Modulate );
+        t1.setCombineSrc0RGB( CombinerSource.CurrentTexture );
+        t1.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
+        t1.setCombineSrc1RGB( CombinerSource.PrimaryColor );
+        t1.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
+        t1.setCombineScaleRGB( CombinerScale.One );
+        
+        t3.setApply( ApplyMode.Combine );
+        t3.setCombineFuncRGB( CombinerFunctionRGB.AddSigned);
+        t3.setCombineSrc0RGB( CombinerSource.CurrentTexture );
+        t3.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
+        t3.setCombineSrc1RGB( CombinerSource.Previous );
+        t3.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
+        t3.setCombineScaleRGB( CombinerScale.One);
+        
+        page.setRenderState( ts );        
+    	
+        final StaticPhysicsNode staticNode = rg.getPhysicsSpace().createStaticNode();
+
+        staticNode.attachChild( page );
+
+        staticNode.getLocalTranslation().set( 0, -150, 0 );
+        
+        this.attachChild( staticNode );
+        staticNode.generatePhysicsGeometry();
+        //initialize OBBTree of terrain
+        
+        this.terrain = page;
+        
+        buildFence();
+        
+        //initialize OBBTree of terrain
+        this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
+	}
+	
+	private void buildFence() {
+		RallyGame rg = RallyGame.getInstance();
+	       //This is the main node of our fence
+        Node fence = new ForceFieldFence("fence");
+        
+        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
+        //first we'll scale the entire "model" by a factor of 5
+        fence.setLocalScale(320);
+        
+        //now let's move the fence to to the height of the terrain and in a little bit.
+        
+        fence.setLocalTranslation(new Vector3f(0, 
+        		terrain.getHeight(25,25)+10, 
+        		0));
+        
+        fence.updateGeometricState(0, true);
+        
+        final StaticPhysicsNode staticNode = rg.getPhysicsSpace().createStaticNode();
+
+        staticNode.attachChild( fence );
+        
+        staticNode.getLocalTranslation().set( terrain.getWorldBound().getCenter().x - fence.getWorldBound().getCenter().x, 
+        		-150, terrain.getWorldBound().getCenter().z - fence.getWorldBound().getCenter().z);
+
+        this.attachChild( staticNode );
+        
+        staticNode.generatePhysicsGeometry();
+	}
+
+	private void createTree(float x, float z) {
+        /*
+        //SE AGREGA ARBOLITO
+        //TODO sacar esto de aca y meterlo en una funcion que cargue el bosque.
+        //Ponerlo despues de que se cargue el auto
+        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        blendState.setBlendEnabled( true );
+        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        blendState.setTestEnabled( true );
+        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+        blendState.setEnabled( true );                
+        
+        Quad q = new Quad("Quad");
+        TextureState ts2 = display.getRenderer().createTextureState();
+        ts2.setEnabled(true);
+        Texture t4 = TextureManager.loadTexture(
+            RallyGame.class.getClassLoader().getResource(
+            "images/tree1.png"), 
+            MinificationFilter.Trilinear,
+            MagnificationFilter.Bilinear );
+        
+        ts2.setTexture(t4);
+        //t3.setCombineFuncAlpha(CombinerFunctionAlpha.)
+        
+        q.setRenderState(ts2);
+        q.setRenderState(blendState);
+        q.updateRenderState();
+     
+        BillboardNode billboard = new BillboardNode("Billboard");
+        billboard.setAlignment(BillboardNode.AXIAL);
+        billboard.attachChild(q);   
+        billboard.setLocalScale(100f);
+        billboard.setLocalTranslation(terrain.getWorldBound().getCenter().x,
+        		terrain.getWorldBound().getCenter().y+65,
+        		terrain.getWorldBound().getCenter().z);
+        inGameStateNode.attachChild(billboard);        
+        */		
+	}
+	
+    private void buildLights() {
+    	RallyGame rg = RallyGame.getInstance();
+    	
+        DirectionalLight dl = new DirectionalLight();
+        dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+        dl.setDirection( new Vector3f( 1, -0.5f, 1 ) );
+        dl.setEnabled( true );
+        rg.getLightState().attach( dl );
+
+        DirectionalLight dr = new DirectionalLight();
+        dr.setEnabled( true );
+        dr.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+        dr.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
+        dr.setDirection( new Vector3f( 0.5f, -0.5f, 0 ) );
+
+        rg.getLightState().attach( dr );
+	}
+
+	/**
+     * buildEnvironment will create a fence. 
+     */
+    public void buildEnvironment(Node inGameStateNode) {
+    	
+
+    }
+    
+   public void createTerrain(Node inGameStateNode) {
+    	
+
+        
+        
+    }    
+   
+   public TerrainPage getTerrain() {
+	   return terrain;
+   }
+	
+}
