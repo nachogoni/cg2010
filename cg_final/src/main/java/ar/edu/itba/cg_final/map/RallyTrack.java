@@ -18,6 +18,7 @@ import com.jme.image.Texture.WrapMode;
 import com.jme.intersection.BoundingPickResults;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Ray;
+import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
@@ -30,7 +31,7 @@ import com.jmex.physics.StaticPhysicsNode;
 import com.jmex.terrain.TerrainPage;
 import com.jmex.terrain.util.FaultFractalHeightMap;
 
-public class RallyTrack extends Node{
+public class RallyTrack extends Node {
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
 	
@@ -119,6 +120,8 @@ public class RallyTrack extends Node{
         
         buildFence();
         
+        buildForest(gs);
+        
         //initialize OBBTree of terrain
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
 	}
@@ -154,44 +157,19 @@ public class RallyTrack extends Node{
         this.fence = fence;
 	}
 
-	private void createTree(float x, float z) {
-        /*
-        //SE AGREGA ARBOLITO
-        //TODO sacar esto de aca y meterlo en una funcion que cargue el bosque.
-        //Ponerlo despues de que se cargue el auto
-        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-        blendState.setBlendEnabled( true );
-        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
-        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
-        blendState.setTestEnabled( true );
-        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
-        blendState.setEnabled( true );                
-        
-        Quad q = new Quad("Quad");
-        TextureState ts2 = display.getRenderer().createTextureState();
-        ts2.setEnabled(true);
-        Texture t4 = TextureManager.loadTexture(
-            RallyGame.class.getClassLoader().getResource(
-            "images/tree1.png"), 
-            MinificationFilter.Trilinear,
-            MagnificationFilter.Bilinear );
-        
-        ts2.setTexture(t4);
-        //t3.setCombineFuncAlpha(CombinerFunctionAlpha.)
-        
-        q.setRenderState(ts2);
-        q.setRenderState(blendState);
-        q.updateRenderState();
-     
-        BillboardNode billboard = new BillboardNode("Billboard");
-        billboard.setAlignment(BillboardNode.AXIAL);
-        billboard.attachChild(q);   
-        billboard.setLocalScale(100f);
-        billboard.setLocalTranslation(terrain.getWorldBound().getCenter().x,
-        		terrain.getWorldBound().getCenter().y+65,
-        		terrain.getWorldBound().getCenter().z);
-        inGameStateNode.attachChild(billboard);        
-        */		
+	private void buildForest(GlobalSettings gs) {
+		
+		float treeHeight = -100;
+		
+		int treeCount = gs.getIntProperty("TRACK1.TREE.COUNT");
+		
+		for (int i = 1; i < treeCount; i++) {
+			Tree tree = new Tree("tree"+i);
+			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS"); 
+			tree.placeTree(pos.x, terrain.getHeight(pos) + treeHeight, pos.y);
+			this.attachChild(tree);
+		}
+		
 	}
 	
     private void buildLights() {
