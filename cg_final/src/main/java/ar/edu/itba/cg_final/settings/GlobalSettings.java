@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.jme.math.Vector2f;
@@ -77,4 +79,14 @@ public class GlobalSettings {
 		return Float.parseFloat(p.getProperty(property));
 	}
 	
+	public List<String> getSkyBoxesNames(){
+		ArrayList<String> arrayList = new ArrayList<String>();
+		String dayName = getProperty("SKYBOX.DAY.NAME");
+		String afterNoonName = getProperty("SKYBOX.AFTERNOON.NAME");
+		String nightName = getProperty("SKYBOX.NIGHT.NAME");
+		arrayList.add(dayName);
+		arrayList.add(afterNoonName);
+		arrayList.add(nightName);
+		return arrayList;
+	}
 }
