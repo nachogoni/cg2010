@@ -1,5 +1,9 @@
 package ar.edu.itba.cg_final;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -74,6 +78,9 @@ public class RallyGame extends BaseSimpleGame {
 	
     //the flag to grab
 	private Boolean screenshot = false;
+//	private int i = 0;
+//	private static FileWriter aFile;
+//	private static BufferedWriter aWriter;
 	
 	public RallyGame() {
 		instance = this;
@@ -85,10 +92,13 @@ public class RallyGame extends BaseSimpleGame {
 		return instance;
 	}	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		//aFile = new FileWriter("waka");
+		//aWriter = new BufferedWriter(aFile);
 		RallyGame app = new RallyGame();
 		app.setConfigShowMode(ConfigShowMode.ShowIfNoConfig);
 		app.start();
+		//aWriter.close();
 	}
 
 	@Override
@@ -124,6 +134,7 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
+		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 	
 	public void setPause(boolean state) {
@@ -311,6 +322,20 @@ public class RallyGame extends BaseSimpleGame {
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
 				false))
 			screenshot = true;
+//		if (KeyBindingManager.getKeyBindingManager().isValidCommand("print",
+//				false))
+//		{
+//			System.out.println("Planto Arbol!");
+//			try {
+//				aWriter.write("TRACK1.TREE" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
+//						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
+//				i++;
+//				aWriter.flush();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		
 		GameStateManager.getInstance().update(tpf);
 
