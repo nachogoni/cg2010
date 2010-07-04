@@ -1,18 +1,22 @@
 package ar.edu.itba.cg_final.settings;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 public class GlobalSettings {
+
+	GlobalSettings instance;
 	
 	Properties p = new Properties();
 	
-	public GlobalSettings(String filepath) {
+	final URL settingsPath = GlobalSettings.class.getClassLoader().getResource("settings/global.properties");
+	
+	public GlobalSettings() {
 		try {
-			p.load(new FileInputStream(filepath));
+			p.load(settingsPath.openStream());
 		} catch (FileNotFoundException e) {
 			System.out.println("Falta el archivo de configuracion");
 			e.printStackTrace();
@@ -22,6 +26,12 @@ public class GlobalSettings {
 		}
 	}
 	
+	public GlobalSettings getInstance(String filepath) {
+		if (instance == null) {
+			instance = new GlobalSettings();
+		}
+		return instance;
+	}
 
 	public String getProperty(String property) {
 		return p.getProperty(property);
@@ -36,9 +46,9 @@ public class GlobalSettings {
 		return;
 	}
 	
-	public void store(String filepath){
+	public void store(){
 		try {
-			p.store(new FileOutputStream(filepath), "Archivos de Configuracion de Rally\n#Las teclas son hexadecimales");
+			p.store(new FileOutputStream(settingsPath.getFile()), "Archivos de Configuracion de Rally\n#Las teclas son hexadecimales");
 		} catch (FileNotFoundException e) {
 			System.out.println("Falta el archivo de configuracion");
 			e.printStackTrace();
@@ -48,8 +58,12 @@ public class GlobalSettings {
 		}
 	}
 	
-	public int getKey(String property){
+	public int getHexProperty(String property){
 		return Integer.parseInt(p.getProperty(property), 16);
 	}
+	
+	public int getIntProperty(String property){
+		return Integer.parseInt(p.getProperty(property));
+	}	
 	
 }
