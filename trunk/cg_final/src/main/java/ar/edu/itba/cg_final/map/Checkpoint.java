@@ -7,7 +7,6 @@ import com.jme.image.Texture;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.shape.Box;
@@ -17,66 +16,48 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
 public class Checkpoint extends Node {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 4783284580069565288L;
-    //The texture that makes up the "force field", we will keep a reference to it
-    // here to allow us to animate it.
-    private Texture t;
     
-    /**
-     * create the fence, passing the name to the parent.
-     * @param name the name of the fence
-     */
-    public Checkpoint(String name, Vector2f position, int rotation) {
+    public Checkpoint(String name, Vector2f position, float rotation, boolean startingGrid) {
         super(name);
-        buildCheckpoint(name, position, rotation);
+        buildCheckpoint(name, position, rotation, startingGrid);
     }
     
-    /**
-     * we add an update method to allow the texture to animate. This will
-     * be called from the main games update method.
-     * @param interpolation the time between frames.
-     */
-    public void update(float interpolation) {
-        //We will use the interpolation value to keep the speed
-        //of the forcefield consistent between computers.
-        //we update the Y have of the texture matrix to give
-        //the appearance the forcefield is moving.
-        t.getTranslation().y += 0.3f * interpolation;
-        //if the translation is over 1, it's wrapped, so go ahead
-        //and check for this (to keep the vector's y value from getting
-        //too large.)
-        if(t.getTranslation().y > 1) {
-            t.getTranslation().y = 0;
-        }
-    }
-    
-	private void buildCheckpoint(String name, Vector2f position, float rotation) {
+	private void buildCheckpoint(String name, Vector2f position, float rotation, boolean startingGrid) {
         //Create the actual forcefield 
         //The first box handles the X-axis, the second handles the z-axis.
         //We don't rotate the box as a demonstration on how boxes can be 
         //created differently.
-        Box forceFieldX = new Box(name+".forceFieldX", 
-        		new Vector3f(position.x, 30f, position.y), 100, 60, 1);
+        Box forceFieldX = new Box(name+".checkPoint", 
+        		new Vector3f(0, 0, 0), 100, 60, 0.1f);
+        
         forceFieldX.setModelBound(new BoundingBox());
         forceFieldX.updateModelBound();
+
         //We are going to share these boxes as well
         SharedMesh forceFieldX1 = new SharedMesh(name+".forceFieldX1",forceFieldX);
-        forceFieldX1.setLocalTranslation(new Vector3f(position.x,0,position.y));
-        float [] angles = new float[]{0f,rotation,0f}; 
-        forceFieldX1.setLocalRotation(new Quaternion(angles));
         
         //add all the force fields to a single node and make this node part of
         //the transparent queue.
         Node forceFieldNode = new Node(name+".check");
         forceFieldNode.attachChild(forceFieldX1);
         
+        float [] angles = new float[]{0f,rotation,0f}; 
+        forceFieldNode.setLocalRotation(new Quaternion(angles));
+        forceFieldNode.setLocalTranslation(position.x, 30f, position.y);
+        
+        String texture;
+        if (startingGrid == true) {
+        	texture = "texture/startinggrid.png";
+        } else {
+        	texture = "texture/checkpoint.png";
+        }
+        
         //load a texture for the force field elements
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/checkpoint.png"),
+        Texture t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
+                  .getResource(texture),
                   Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
         ts.setTexture(t);
                 
@@ -93,5 +74,6 @@ public class Checkpoint extends Node {
         
         //Attach all the pieces to the main fence node
         this.attachChild(forceFieldNode);
-    }
+	
+	}
 }

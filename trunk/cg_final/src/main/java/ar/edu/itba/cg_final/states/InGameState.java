@@ -88,10 +88,12 @@ public class InGameState extends RallyGameState {
     	this.stateNode.attachChild(speed);
 		
     	// TODO: for degub
+    	float [] angles = new float[3];
+    	playerCar.getChassis().getLocalRotation().toAngles(angles);
     	this.stateNode.detachChildNamed("carPos");
-    	Text pos = Text.createDefaultTextLabel("carPos", String.format("Auto: (%04d,%04d)",
+    	Text pos = Text.createDefaultTextLabel("carPos", String.format("Auto: (%04d,%04d) @ %03f",
     			(int)(playerCar.getChassis().getLocalTranslation().x), 
-    			(int)(playerCar.getChassis().getLocalTranslation().z)));
+    			(int)(playerCar.getChassis().getLocalTranslation().z),(angles[1])));
     	pos.setLocalScale(1);
     	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
     	this.stateNode.attachChild(pos);
