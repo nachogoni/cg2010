@@ -9,6 +9,7 @@ import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
 import com.jmex.audio.AudioSystem;
+import com.jmex.game.state.GameStateManager;
 import com.jmex.terrain.TerrainPage;
 
 
@@ -89,6 +90,11 @@ public class InGameState extends RallyGameState {
     	pos.setLocalScale(1);
     	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
     	this.stateNode.attachChild(pos);
+    	
+    	
+		if (game.getRootNode().getChild("check").hasCollision(game.getRootNode().getChild("PlayerCar"), true)) {
+			System.out.println("Choco");
+		}		    	
     	
 	}
 
