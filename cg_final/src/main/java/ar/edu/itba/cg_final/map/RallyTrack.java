@@ -126,7 +126,7 @@ public class RallyTrack extends Node{
 	private void buildFence() {
 		RallyGame rg = RallyGame.getInstance();
 	       //This is the main node of our fence
-        Node fence = new ForceFieldFence("fence");
+		ForceFieldFence fence = new ForceFieldFence("fence");
         
         //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
         //first we'll scale the entire "model" by a factor of 5
@@ -150,6 +150,8 @@ public class RallyTrack extends Node{
         this.attachChild( staticNode );
         
         staticNode.generatePhysicsGeometry();
+        
+        this.fence = fence;
 	}
 
 	private void createTree(float x, float z) {
@@ -209,21 +211,6 @@ public class RallyTrack extends Node{
 
         rg.getLightState().attach( dr );
 	}
-
-	/**
-     * buildEnvironment will create a fence. 
-     */
-    public void buildEnvironment(Node inGameStateNode) {
-    	
-
-    }
-    
-   public void createTerrain(Node inGameStateNode) {
-    	
-
-        
-        
-    }    
    
    public TerrainPage getTerrain() {
 	   return terrain;
