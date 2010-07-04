@@ -4,13 +4,10 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.vehicles.Car;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
-import com.jmex.audio.AudioSystem;
-import com.jmex.game.state.GameStateManager;
 import com.jmex.terrain.TerrainPage;
 
 

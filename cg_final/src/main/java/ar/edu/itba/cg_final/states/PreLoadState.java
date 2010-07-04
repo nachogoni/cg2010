@@ -115,6 +115,7 @@ public class PreLoadState extends RallyGameState {
 				// Cargamos la pista
 //				refreshLabel("Pista");
 				// TODO
+				game.createForest(inGameNode);
 				break;
 			case 60:
 				// Creamos la etiqueta (????)
