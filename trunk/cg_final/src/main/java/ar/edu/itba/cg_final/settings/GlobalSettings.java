@@ -73,4 +73,8 @@ public class GlobalSettings {
 		return new Vector2f(Float.parseFloat(ret[0]),Float.parseFloat(ret[1]));
 	}
 	
+	public float getFloatProperty(String property) {
+		return Float.parseFloat(p.getProperty(property));
+	}
+	
 }
