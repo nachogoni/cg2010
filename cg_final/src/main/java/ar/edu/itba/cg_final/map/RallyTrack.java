@@ -193,5 +193,9 @@ public class RallyTrack extends Node {
    public TerrainPage getTerrain() {
 	   return terrain;
    }
+
+	public ForceFieldFence getFence() {
+		return fence;
+	}
 	
 }
