@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.scene.Node;
 import com.jme.scene.Text;
@@ -14,6 +15,7 @@ public class PreLoadState extends RallyGameState {
 	private Node inGameNode;
 	private InGameState inGame;
 	private boolean updateable = false;
+	GlobalSettings gs;
 	
 	public PreLoadState() {
 		this.setName("PreLoad");
@@ -30,6 +32,8 @@ public class PreLoadState extends RallyGameState {
 	
 	@Override
 	public void activated() {
+		
+		gs = GlobalSettings.getInstance();
 		
 		// Hacer desde el principio
 		this.task = 0;
@@ -90,12 +94,13 @@ public class PreLoadState extends RallyGameState {
 			case 15:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
-				game.createTerrain(inGameNode);
+				//TODO ver que onda el ZORDER de los arboles
+				game.createRallyTrack(inGameNode, gs);
 				break;
 			case 20:
 				// Cargamos los autos
 				refreshLabel("Autos");
-				game.createCar(inGameNode, "PlayerCar");
+				game.createCar(inGameNode, gs);
 				//TODO: Actualizar la posicion del auto en base a la altura del terreno...
 				break;
 			case 30:
@@ -123,7 +128,6 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 80:
 				refreshLabel("Enviroment");
-				game.buildEnvironment(inGameNode);
 				game.buildCheckpoint(inGameNode);
 				break;
 			case 90:
