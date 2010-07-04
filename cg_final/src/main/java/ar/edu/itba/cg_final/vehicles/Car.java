@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final.vehicles;
 
+import ar.edu.itba.cg_final.controller.Audio;
+
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jmex.physics.DynamicPhysicsNode;
@@ -15,11 +17,15 @@ public class Car extends Node {
 
     // Two suspesion systems
     private Suspension rearSuspension, frontSuspension;
+    
+    private Audio a;
 
     public Car( final PhysicsSpace pSpace ) {
         super( "car" );
         createChassi( pSpace );
         createSuspension( pSpace );
+        a = new Audio();
+        a.playRepeatedly("sound/car_neutral.ogg");
         //loadFancySmoke();
     }
 
@@ -89,6 +95,7 @@ public class Car extends Node {
     public void accelerate( final int direction ) {
         rearSuspension.accelerate( direction );
         frontSuspension.accelerate( direction );
+        a.playRepeatedly("sound/car_low.ogg");
     }
 
     /**
@@ -97,6 +104,7 @@ public class Car extends Node {
     public void releaseAccel() {
         rearSuspension.releaseAccel();
         frontSuspension.releaseAccel();
+        a.playRepeatedly("sound/car_neutral.ogg");
     }
 
     /**
