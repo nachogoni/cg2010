@@ -4,6 +4,8 @@ import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
 
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
@@ -37,6 +39,9 @@ public class StartState extends RallyGameState {
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
 		GameStateManager.getInstance().activateChildNamed("InGame");
+		KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
+		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
+		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 		rootNode.updateRenderState();
 	}
 
