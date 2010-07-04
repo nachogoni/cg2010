@@ -36,7 +36,7 @@ public class StartState extends RallyGameState {
 		// Agregamos el stateNode al rootNode
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
-		rootNode.attachChild(((InGameState)GameStateManager.getInstance().getChild("InGame")).getStateNode());
+		GameStateManager.getInstance().activateChildNamed("InGame");
 		rootNode.updateRenderState();
 	}
 
@@ -74,7 +74,7 @@ public class StartState extends RallyGameState {
 			// Start!!
 			refreshLabel("GO!");
 			RallyGame.getInstance().setPause(false);
-			GameStateManager.getInstance().activateChildNamed("InGame");
+			
 		} else if (diff > 6500) {
 			// Sacar el cartel
 			GameStateManager.getInstance().deactivateChildNamed(this.getName());
