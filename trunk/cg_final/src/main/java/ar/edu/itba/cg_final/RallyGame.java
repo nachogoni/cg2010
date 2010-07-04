@@ -42,12 +42,9 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.BillboardNode;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
-import com.jme.scene.shape.Quad;
-import com.jme.scene.state.BlendState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
@@ -458,20 +455,21 @@ public class RallyGame extends BaseSimpleGame {
 
         display.getRenderer().setBackgroundColor( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1 ) );
 
-        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 1025, 32, 0, 100,
+        FaultFractalHeightMap heightMap = new FaultFractalHeightMap( 1025, 32, 0, 20,
                 0.75f, 3 );
         Vector3f terrainScale = new Vector3f( 10, 1, 10 );
         heightMap.setHeightScale( 0.001f );
+        
         TerrainPage page = new TerrainPage( "Terrain", 33, heightMap.getSize(), terrainScale,
                 heightMap.getHeightMap() );
+        
         page.setDetailTexture( 1, 16 );
         
         CullState cs = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
         cs.setCullFace(Face.Back);
         cs.setEnabled( true );
         page.setRenderState( cs );
-
-
+        //TODO deprecado. ahora se usa una imagen
         ProceduralTextureGenerator pt = new ProceduralTextureGenerator( heightMap );
         pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
                 "texture/grassb.png" ) ), -128, 0, 128 );
@@ -479,26 +477,36 @@ public class RallyGame extends BaseSimpleGame {
                 "texture/dirt.jpg" ) ), 0, 128, 255 );
         pt.addTexture( new ImageIcon( RallyGameCar.class.getClassLoader().getResource(
                 "texture/highest.jpg" ) ), 128, 255, 384 );
-
+        
         pt.createTexture( 512 );
-
+        
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         ts.setEnabled( true );
-        Texture t1 = TextureManager.loadTexture(
+        Texture t2 = TextureManager.loadTexture(
                 pt.getImageIcon().getImage(),
                 MinificationFilter.Trilinear,
                 MagnificationFilter.Bilinear,
                 true );
-        ts.setTexture( t1, 0 );
-
-        Texture t2 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+        //ts.setTexture( t2, 0 );
+        
+        Texture t3 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
                 getResource(
                 "texture/Detail.jpg" ),
                 MinificationFilter.Trilinear,
                 MagnificationFilter.Bilinear );
-        ts.setTexture( t2, 1 );
-        t2.setWrap( WrapMode.Repeat );
+        ts.setTexture( t3, 1 );
+        t3.setWrap( WrapMode.Repeat );
 
+        
+        Texture t1 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+                getResource(
+                "texture/autodromo2.png" ),
+                MinificationFilter.Trilinear,
+                MagnificationFilter.Bilinear);
+        ts.setTexture( t1, 0 );
+        //t3.set;
+        //t3.setWrap( WrapMode.BorderClamp );        
+        
         t1.setApply( ApplyMode.Combine );
         t1.setCombineFuncRGB( CombinerFunctionRGB.Modulate );
         t1.setCombineSrc0RGB( CombinerSource.CurrentTexture );
@@ -506,6 +514,7 @@ public class RallyGame extends BaseSimpleGame {
         t1.setCombineSrc1RGB( CombinerSource.PrimaryColor );
         t1.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
         t1.setCombineScaleRGB( CombinerScale.One );
+        
 
         t2.setApply( ApplyMode.Combine );
         t2.setCombineFuncRGB( CombinerFunctionRGB.AddSigned );
@@ -514,7 +523,16 @@ public class RallyGame extends BaseSimpleGame {
         t2.setCombineSrc1RGB( CombinerSource.Previous );
         t2.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
         t2.setCombineScaleRGB( CombinerScale.One );
-        page.setRenderState( ts );
+        
+        t3.setApply( ApplyMode.Combine );
+        t3.setCombineFuncRGB( CombinerFunctionRGB.AddSigned);
+        t3.setCombineSrc0RGB( CombinerSource.CurrentTexture );
+        t3.setCombineOp0RGB( CombinerOperandRGB.SourceColor );
+        t3.setCombineSrc1RGB( CombinerSource.Previous );
+        t3.setCombineOp1RGB( CombinerOperandRGB.SourceColor );
+        t3.setCombineScaleRGB( CombinerScale.One);
+        
+        page.setRenderState( ts );        
     	
         final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
 
@@ -527,7 +545,8 @@ public class RallyGame extends BaseSimpleGame {
         //initialize OBBTree of terrain
         inGameStateNode.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() );      
         this.terrain = page;
-        
+
+        /*
         //SE AGREGA ARBOLITO
         //TODO sacar esto de aca y meterlo en una funcion que cargue el bosque.
         //Ponerlo despues de que se cargue el auto
@@ -542,14 +561,13 @@ public class RallyGame extends BaseSimpleGame {
         Quad q = new Quad("Quad");
         TextureState ts2 = display.getRenderer().createTextureState();
         ts2.setEnabled(true);
-
-        Texture t3 = TextureManager.loadTexture(
+        Texture t4 = TextureManager.loadTexture(
             RallyGame.class.getClassLoader().getResource(
             "images/tree1.png"), 
             MinificationFilter.Trilinear,
             MagnificationFilter.Bilinear );
         
-        ts2.setTexture(t3);
+        ts2.setTexture(t4);
         //t3.setCombineFuncAlpha(CombinerFunctionAlpha.)
         
         q.setRenderState(ts2);
@@ -564,7 +582,7 @@ public class RallyGame extends BaseSimpleGame {
         		terrain.getWorldBound().getCenter().y+65,
         		terrain.getWorldBound().getCenter().z);
         inGameStateNode.attachChild(billboard);        
-        
+        */
         
         
     }
