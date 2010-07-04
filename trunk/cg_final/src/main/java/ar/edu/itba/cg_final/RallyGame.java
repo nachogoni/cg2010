@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.map.Checkpoint;
 import ar.edu.itba.cg_final.map.Flag;
 import ar.edu.itba.cg_final.map.RallySkyBox;
@@ -64,6 +65,8 @@ public class RallyGame extends BaseSimpleGame {
 	Text label;
 	Car car;
 	ResetAction resetAction;
+	
+	private Audio audio;
 
 	private Skybox skybox;	
 	
@@ -132,24 +135,10 @@ public class RallyGame extends BaseSimpleGame {
 	// Metodos para la creacion de los elementos del juego (usados en el preloader)
 	
 	
-	public void initAudio() {
-		try {
-			AudioTrack track = AudioSystem.getSystem().createAudioTrack(
-					RallyGame.class.getClassLoader().getResource(
-							"sound/maninside.ogg"), false);
-			AudioTrack track2 = AudioSystem.getSystem().createAudioTrack(
-					RallyGame.class.getClassLoader().getResource(
-							"sound/cartonero.ogg"), false);
-
-			MusicTrackQueue queue = AudioSystem.getSystem().getMusicQueue();
-			queue.setCrossfadeinTime(0);
-			queue.setRepeatType(RepeatType.ALL);
-			queue.addTrack(track);
-			queue.addTrack(track2);
-		} catch (Exception e) {
-			logger.logp(Level.SEVERE, this.getClass().toString(),
-					"simpleAppletSetup()", "Exception", e);			
-		}	
+	public void initAudio() {	
+		audio = new Audio();
+		audio.addAudio("sound/maninside.ogg");
+		audio.addAudio("sound/cartonero.ogg");
 	}
 	
 	
@@ -548,6 +537,10 @@ public class RallyGame extends BaseSimpleGame {
 	
 	public Car getPlayerCar(){
 		return car;
+	}
+
+	public Audio getAudio() {
+		return audio;
 	}
 	
 }

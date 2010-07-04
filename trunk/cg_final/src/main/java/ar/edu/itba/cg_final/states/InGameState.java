@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.math.Vector3f;
@@ -21,6 +22,7 @@ public class InGameState extends RallyGameState {
 	RallyGame game;
 	Skybox sky;
 	Car playerCar;
+	Audio audio;
 	
 	public InGameState() {
 		this.setName("InGame");
@@ -33,10 +35,12 @@ public class InGameState extends RallyGameState {
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
-		AudioSystem.getSystem().getMusicQueue().play();
+
 		game = RallyGame.getInstance();
 		sky = game.getSkybox();
 		playerCar = game.getPlayerCar();
+		this.audio = game.getAudio();
+		this.audio.play();
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class InGameState extends RallyGameState {
 //			GameStateManager.getInstance().activateChildNamed("FinishedGame");
 //		}
 		
-		AudioSystem.getSystem().update();
+		this.audio.update();
 		
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
 		sky.updateGeometricState(0.0f, true);
@@ -99,7 +103,10 @@ public class InGameState extends RallyGameState {
 		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
 			System.out.println("Choco");
 		}		    	
-    	
+    	if (game.getRallyTrack().getFence().hasCollision(playerCar, true)){
+    		System.out.println("Me la di contra la fence!!!!");
+    		this.audio.playOnce("sound/hit.ogg");
+    	}
 	}
 
 
