@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.itba.cg_final.RallyGame;
-import ar.edu.itba.cg_final.RallyGameCar;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
@@ -82,11 +81,11 @@ public class RallyTrack extends Node {
             maxF = MagnificationFilter.NearestNeighbor;        	
         }
         
-        Texture t1 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+        Texture t1 = TextureManager.loadTexture( RallyGame.class.getClassLoader().
                 getResource(texture), minF, maxF);
         ts.setTexture( t1, 0 );
 
-        Texture t3 = TextureManager.loadTexture( RallyGameCar.class.getClassLoader().
+        Texture t3 = TextureManager.loadTexture( RallyGame.class.getClassLoader().
                 getResource(
                 "texture/Detail.jpg" ),
                 MinificationFilter.Trilinear,
