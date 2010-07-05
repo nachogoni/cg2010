@@ -1,6 +1,5 @@
 package ar.edu.itba.cg_final.map;
 
-import java.util.Random;
 
 import ar.edu.itba.cg_final.RallyGame;
 
@@ -8,19 +7,16 @@ import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
-import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.BillboardNode;
 import com.jme.scene.Node;
-import com.jme.scene.shape.Cylinder;
+import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.physics.StaticPhysicsNode;
-import com.jmex.physics.geometry.PhysicsCylinder;
 
 public class Tree extends Node {
 	
@@ -67,14 +63,16 @@ public class Tree extends Node {
         
         this.attachChild(billboard);        
         
-        Cylinder postGeometry = new Cylinder("treepost", 10, 10, 0.1f, 10);
+        Box boxGeometry = new Box("post",new Vector3f(-0.05f,-10,-0.05f), new Vector3f(0.05f,10,0.05f));
+        /*Cylinder postGeometry = new Cylinder("treepost", 10, 10, 0.1f, 10);
         Quaternion q2 = new Quaternion();
         //rotate the cylinder to be vertical
         q2.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
-        postGeometry.setLocalRotation(q2);
-        postGeometry.setModelBound(new BoundingBox());
-        postGeometry.updateModelBound();     
-        
+        postGeometry.setLocalRotation(q2);*/
+//        postGeometry.setModelBound(new BoundingBox());
+//        postGeometry.updateModelBound();     
+        boxGeometry.setModelBound(new BoundingBox());
+        boxGeometry.updateModelBound();           
         //Ponerlo despues de que se cargue el auto
         
         /*TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
@@ -90,12 +88,13 @@ public class Tree extends Node {
         post.setLocalTranslation(0, -20, 0);*/
         
         final StaticPhysicsNode staticNode = rg.getPhysicsSpace().createStaticNode();
-        PhysicsCylinder pc = staticNode.createCylinder((new Integer((new Random(100)).nextInt())).toString());
-        pc.setLocalRotation(q2);
+        /*PhysicsCylinder pc = staticNode.createCylinder("c" + this.getName());
+        pc.setLocalRotation(q2);*/
+        staticNode.attachChild(boxGeometry);
         
         //staticNode.attachChild(pc);
         staticNode.setLocalTranslation(2, 0, 0);
-        staticNode.setLocalScale(new Vector3f(1,500,100));
+        staticNode.setLocalScale(new Vector3f(1,500,1));
         staticNode.updateGeometricState(0, true);
         //staticNode.updateRenderState();
 
