@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.renderer.Camera;
@@ -107,8 +108,10 @@ public class InGameState extends RallyGameState {
     	
     	if (game.getRallyTrack().getFence().hasCollision(playerCar, true) ||
     			game.getRallyTrack().getForest().hasCollision(playerCar, true)){
-    		System.out.println("Choque contra algo");
-    		this.audio.playOnce("sound/hit.ogg");//TODO
+    		GlobalSettings gs = new GlobalSettings();
+    		
+    		this.audio.playOnce(gs.getProperty("EFFECT.CRASH"));
+
     	}
 	}
 

@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.vehicles;
 
 import ar.edu.itba.cg_final.controller.Audio;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
@@ -98,7 +99,8 @@ public class Car extends Node {
     public void accelerate( final int direction ) {
         rearSuspension.accelerate( direction );
         frontSuspension.accelerate( direction );
-        carAudio.playRepeatedly("sound/car_low.ogg");
+        GlobalSettings gs = new GlobalSettings();
+        carAudio.playRepeatedly(gs.getProperty("EFFECT.ENGINE"));
     }
 
     /**
@@ -107,7 +109,8 @@ public class Car extends Node {
     public void releaseAccel() {
         rearSuspension.releaseAccel();
         frontSuspension.releaseAccel();
-        carAudio.playRepeatedly("sound/car_neutral.ogg");
+        GlobalSettings gs = new GlobalSettings();
+        carAudio.playRepeatedly(gs.getProperty("EFFECT.NEUTRAL"));
     }
 
     /**
