@@ -45,7 +45,7 @@ public class Obstacles extends Node {
         ts2.setEnabled(true);
         Texture t4 = TextureManager.loadTexture(
             RallyGame.class.getClassLoader().getResource(
-            "texture/terrain/road.jpg"), 
+            "texture/crate.png"), 
             MinificationFilter.Trilinear,
             MagnificationFilter.Bilinear );
         
