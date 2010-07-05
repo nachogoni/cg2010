@@ -65,10 +65,10 @@ public class RallyMenuPanel {
 				items.get(activeOption).toggleSelect();
 			}		
 		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("left", false)) {
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("left", true)) {
 			performActions(items.get(activeOption).getLeftAction());
 		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("right", false)) {
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("right", true)) {
 			performActions(items.get(activeOption).getRightAction());
 		}
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("enter", false)) {
