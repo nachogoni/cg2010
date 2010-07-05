@@ -18,14 +18,17 @@ public class Car extends Node {
     // Two suspesion systems
     private Suspension rearSuspension, frontSuspension;
     
-    private Audio a;
+    private Audio carAudio;
 
+    public Audio getCarAudio() {
+    	return carAudio;
+    }
+    
     public Car( final PhysicsSpace pSpace ) {
         super( "car" );
         createChassi( pSpace );
         createSuspension( pSpace );
-        a = new Audio();
-        a.playRepeatedly("sound/car_neutral.ogg");
+        carAudio = new Audio();
         //loadFancySmoke();
     }
 
@@ -95,7 +98,7 @@ public class Car extends Node {
     public void accelerate( final int direction ) {
         rearSuspension.accelerate( direction );
         frontSuspension.accelerate( direction );
-        a.playRepeatedly("sound/car_low.ogg");
+        carAudio.playRepeatedly("sound/car_low.ogg");
     }
 
     /**
@@ -104,7 +107,7 @@ public class Car extends Node {
     public void releaseAccel() {
         rearSuspension.releaseAccel();
         frontSuspension.releaseAccel();
-        a.playRepeatedly("sound/car_neutral.ogg");
+        carAudio.playRepeatedly("sound/car_neutral.ogg");
     }
 
     /**

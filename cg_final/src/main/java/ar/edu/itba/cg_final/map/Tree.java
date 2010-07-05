@@ -11,7 +11,6 @@ import com.jme.image.Texture.MinificationFilter;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Renderer;
 import com.jme.scene.BillboardNode;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Cylinder;

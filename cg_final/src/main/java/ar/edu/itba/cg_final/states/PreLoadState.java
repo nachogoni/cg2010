@@ -117,11 +117,8 @@ public class PreLoadState extends RallyGameState {
 				// TODO
 				game.createForest(inGameNode);
 				break;
-			case 60:
-				// Creamos la etiqueta (????)
-				refreshLabel("Etiqueta");
-				game.createText(inGameNode);
-				break;
+//			case 60:
+//				break;
 			case 70:
 				// Otros...
 				refreshLabel("Audio");
@@ -131,11 +128,8 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Enviroment");
 				game.buildCheckpoint(inGameNode, gs);
 				break;
-			case 90:
-				refreshLabel("Flag");
-				for (int i=0; i<20; i++)
-					game.buildFlag(inGameNode);
-				break;
+//			case 90:
+//				break;
 //			case 100:
 //				refreshLabel("");
 //				break;
@@ -165,7 +159,6 @@ public class PreLoadState extends RallyGameState {
 //				break;
 			case 190:
 				// Saltamos al proximo estado: InGameState
-				refreshLabel("La partida!");
 				GameStateManager.getInstance().deactivateChildNamed(this.getName());
 				GameStateManager.getInstance().activateChildNamed("StartGame");
 				break;

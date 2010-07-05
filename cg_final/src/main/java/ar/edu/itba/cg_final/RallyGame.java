@@ -4,13 +4,13 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import ar.edu.itba.cg_final.controller.Audio;
-import ar.edu.itba.cg_final.map.Checkpoint;
-import ar.edu.itba.cg_final.map.Flag;
+import ar.edu.itba.cg_final.map.CheckPoint;
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.map.RallyTrack;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
@@ -31,8 +31,8 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
-import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
+import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
@@ -47,19 +47,20 @@ import com.jmex.terrain.TerrainPage;
 
 public class RallyGame extends BaseSimpleGame {
 	
-	private static final Logger logger = Logger.getLogger(RallyGame.class
-			.getName());	
-	
 	// Singleton
 	private static RallyGame instance;
 	
 	private RallyTrack rallyTrack;
-	
+
+	private HashMap<String, String> positions = new HashMap<String, String>();
+	private HashMap<String, String> checkPoints = new HashMap<String, String>();
+
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
 	protected InputHandler cameraInputHandler;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
+	private List<CheckPoint> checkPointList;
 	Text label;
 	Car car;
 	ResetAction resetAction;
@@ -142,69 +143,54 @@ public class RallyGame extends BaseSimpleGame {
 	
 	
 	public void initAudio() {	
-		audio = new Audio();
+		audio = new Audio();//TODO
 		audio.addAudio("sound/maninside.ogg");
 		audio.addAudio("sound/cartonero.ogg");
 	}
 	
+	public void passThrough(String player, String checkPoint) {
+		if (positions.get(player).equals(checkPoint)) {
+			positions.put(player, checkPoints.get(checkPoint));
+			Audio sound = new Audio();
+			sound.playOnce("sound/hit.ogg");
+		}
+		return;
+	}
 	
-
+	public List<CheckPoint> getCheckPointList() {
+		return checkPointList;
+	}
     
     public void buildCheckpoint(Node inGameStateNode, GlobalSettings gs) {
-//    	TerrainPage terrain = rallyTrack.getTerrain();
-    	
-    	List<Checkpoint> cpList = rallyTrack.createCheckPoints(gs);
+    	TerrainPage terrain = rallyTrack.getTerrain();
+    	String last = null;
+    	String actual = null;
+    	String first = null;
+    	checkPointList = rallyTrack.createCheckPoints(gs);
 
-    	for (Iterator<Checkpoint> iterator = cpList.iterator(); iterator.hasNext();) {
-			Checkpoint checkpoint = (Checkpoint) iterator.next();
+    	for (Iterator<CheckPoint> iterator = checkPointList.iterator(); iterator.hasNext();) {
+			CheckPoint checkpoint = (CheckPoint) iterator.next();
+			// Actualizamos la altura segun el terreno
+			Vector2f pos = checkpoint.get2DPosition();
+			checkpoint.setPosition(new Vector3f(pos.x, 
+					terrain.getHeight(pos) - 100, pos.y));
+			// Agregamos el checkpoint al nodo del estado que me pasan
 			inGameStateNode.attachChild(checkpoint);
+			// Creamos la lista de checkpoints para la pista
+			actual = checkpoint.getName();
+			if (last != null) {
+				checkPoints.put(last, actual);
+				last = actual;
+			} else {
+				first = actual;
+				last = actual;
+			}
 		}
-    	
-//        //This is the main node of our fence
-//    	Node cp = new Checkpoint("check");
-//    	
-//        //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
-//        //first we'll scale the entire "model" by a factor of 5
-//        cp.setLocalScale(5);
-//        
-//        //now let's move the fence to to the height of the terrain and in a little bit.
-//        
-//        /*cp.setLocalTranslation(new Vector3f(0, 
-//        		terrain.getHeight(25,25)+300, 
-//        		0));*/
-//        
-//        cp.updateGeometricState(0, true);
-//        
-//        final StaticPhysicsNode staticNode = getPhysicsSpace().createStaticNode();
-//
-//        staticNode.attachChild( cp );
-//        
-//        final Vector3f point = new Vector3f(terrain.getWorldBound().getCenter().x,
-//        		terrain.getWorldBound().getCenter().y,
-//        		terrain.getWorldBound().getCenter().z); 
-//        
-//        cp.getLocalTranslation().set(point);
-
-//        inGameStateNode.attachChild( cp );
-        //staticNode.generatePhysicsGeometry();
+		checkPoints.put(actual, first);
+		// Seteamos el punto de partida
+		positions.put(car.getName(), first);
     }
 	
-	
-    /**
-     * we created a new Flag class, so we'll use it to add the flag to the world.
-     * This is the flag that we desire, the one to get.
-     *
-     */
-    public void buildFlag(Node inGameStateNode) {
-//    	flag = new Flag(10,0,10,2);
-    	float x = FastMath.nextRandomFloat() * 10000 - 5000;
-    	float z = FastMath.nextRandomFloat() * 10000 - 5000;
-    	//TODO: ver altura
-        Flag flag = new Flag(x, 0/*terrain.getHeight(x, z)*/, z, 2);
-        inGameStateNode.attachChild(flag);
-    }
-
-
 	/**
 	 * @return speed set by {@link #setPhysicsSpeed(float)}
 	 */
@@ -415,19 +401,6 @@ public class RallyGame extends BaseSimpleGame {
 		rallyTrack.initForest(inGameStateNode);
 	}
 	
-	
-	
-	
-
-	
-    public void createText(Node inGameStateNode) {
-        label = Text.createDefaultTextLabel( "instructions",
-                "Use arrows to drive. Use the mouse wheel to control the chase camera. S to reset the car." );
-        label.setLocalTranslation( 0, 20, 0 );
-        inGameStateNode.attachChild( label );
-        inGameStateNode.updateRenderState();
-    }
-	
     public void initInput(Node inGameStateNode) {
         // Simple chase camera
         input.removeFromAttachedHandlers( cameraInputHandler );
@@ -510,7 +483,7 @@ public class RallyGame extends BaseSimpleGame {
 
     private class ResetAction extends InputAction {
         public void performAction( InputActionEvent evt ) {
-            car.setPosition( 0, 50, 0 );
+            car.setPosition( -500, 50, 600 );
         }
     }
     
