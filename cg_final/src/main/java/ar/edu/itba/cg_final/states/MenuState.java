@@ -110,7 +110,19 @@ public class MenuState extends RallyGameState {
 			}
 		});
 		optionsPanel.addItem(backOptions);
+
 		
+		final RallyMenuItemBoolean highRes = new RallyMenuItemBoolean("High Resolution");
+		IAction setHighRes = new IAction() {
+			public void performAction() {
+				GameUserSettings.getInstance().setHighRes(highRes.getValue());
+			}
+		};
+		highRes.setLeftAction(setHighRes);
+		highRes.setRightAction(setHighRes);
+		highRes.changeValue(GameUserSettings.getInstance().getHighRes());
+		optionsPanel.addItem(highRes);
+
 
 		final RallyMenuItemInteger soundVol = new RallyMenuItemInteger("Sound Effects Volume");
 		IAction volSound = new IAction() {
@@ -174,15 +186,6 @@ public class MenuState extends RallyGameState {
 		});
 		newGamePanel.addItem(backItem);
 		
-		RallyMenuItemVoid startGameItem = new RallyMenuItemVoid("Start Game");
-		startGameItem.setEnterAction(new IAction() {
-			public void performAction() {
-				menu.setActivePanel(mainPanel);
-				GameStateManager.getInstance().deactivateChildNamed("Menu");
-				GameStateManager.getInstance().activateChildNamed("PreLoad");	
-			}
-		});
-		newGamePanel.addItem(startGameItem);
 		
 		final RallyMenuItemListString skyboxitem = new RallyMenuItemListString("Skybox",GlobalSettings.getInstance().getSkyBoxesNames());
 		IAction changeSkybox = new IAction() {
@@ -192,9 +195,18 @@ public class MenuState extends RallyGameState {
 		};
 		skyboxitem.setLeftAction(changeSkybox);
 		skyboxitem.setRightAction(changeSkybox);
-		skyboxitem.toggleSelect();
 		newGamePanel.addItem(skyboxitem);
 		
+		RallyMenuItemVoid startGameItem = new RallyMenuItemVoid("Start Game");
+		startGameItem.setEnterAction(new IAction() {
+			public void performAction() {
+				menu.setActivePanel(mainPanel);
+				GameStateManager.getInstance().deactivateChildNamed("Menu");
+				GameStateManager.getInstance().activateChildNamed("PreLoad");	
+			}
+		});
+		startGameItem.toggleSelect();
+		newGamePanel.addItem(startGameItem);
 		return newGamePanel;
 	}
 
