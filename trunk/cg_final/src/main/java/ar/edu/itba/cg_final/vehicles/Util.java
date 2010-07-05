@@ -65,7 +65,6 @@ public class Util {
         try {
 			resourceSearchPath = ResourceLoader.getURL("vehicle/");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         try {

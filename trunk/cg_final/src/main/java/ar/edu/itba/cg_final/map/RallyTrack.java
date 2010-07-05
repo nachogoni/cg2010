@@ -270,7 +270,8 @@ public class RallyTrack extends Node {
 	   for (int i = 1; i <= count; i++) {
 		   CheckPoint cp = new CheckPoint("CheckPoint"+String.valueOf(i),
 				   gs.get2DVectorProperty("TRACK1.CHECKPOINT"+i+".POS"),
-				   gs.getFloatProperty("TRACK1.CHECKPOINT"+i+".ROT"), (i==1));
+				   gs.getFloatProperty("TRACK1.CHECKPOINT"+i+".ROT"),
+				   (i==1), gs);
 		   cpList.add(cp);
 		   this.attachChild(cp);
 	   }

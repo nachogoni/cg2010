@@ -11,6 +11,7 @@ import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.map.CheckPoint;
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.map.RallyTrack;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.states.FinishedState;
 import ar.edu.itba.cg_final.states.InGameState;
@@ -29,6 +30,7 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -169,8 +171,7 @@ public class RallyGame extends BaseSimpleGame {
 		if (positions.get(player).equals(checkPoint)) {
 			positions.put(player, checkPoints.get(checkPoint));
 			Audio sound = new Audio();
-			sound.playOnce("sound/hit.ogg"); //TODO
-			
+			sound.playOnce(GlobalSettings.getInstance().getProperty("CAR.CHECKPOINT.SOUND"));
 			// Take last time
 			long actualTime = new Date().getTime();
 			System.out.println(pauseTime);
@@ -218,6 +219,7 @@ public class RallyGame extends BaseSimpleGame {
 			actual = checkpoint.getName();
 			if (last != null) {
 				checkPoints.put(last, actual);
+//				checkPoints.put(firstCheckPoint, firstCheckPoint);
 				last = actual;
 			} else {
 				firstCheckPoint  = actual;
@@ -332,7 +334,6 @@ public class RallyGame extends BaseSimpleGame {
 
 		if (showCheckPointTime) {
 			checkPointTimer-=tpf;
-			System.out.println(checkPointTimer);
 			if (checkPointTimer <= 0) {
 				StringBuffer timeText = timeCheckPoint.getText();
 				timeText.replace(0, timeText.length(),"");
@@ -351,35 +352,7 @@ public class RallyGame extends BaseSimpleGame {
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
 				false)){
 			screenshot = true;
-//			float [] angles = new float[3];
-//	    	car.getChassis().getLocalRotation().toAngles(angles);
-//			try {
-//				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
-//						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
-//				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
-//				i++;
-//				aWriter.flush();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 		}
-//		if (KeyBindingManager.getKeyBindingManager().isValidCommand("print",
-//				false))
-//		{
-//			float [] angles = new float[3];
-//	    	car.getChassis().getLocalRotation().toAngles(angles);
-//			try {
-//				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
-//						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
-//				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
-//				i++;
-//				aWriter.flush();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 		
 		GameStateManager.getInstance().update(tpf);
 
@@ -488,12 +461,12 @@ public class RallyGame extends BaseSimpleGame {
     	
     	car.setPosition(pos.x, tp.getHeight(pos)-150+20, pos.y);
     	
-//		Quaternion x180 = new Quaternion(); TODO
-//		x180.fromAngleAxis(FastMath.DEG_TO_RAD * 180, new Vector3f(0, 0, 1));
+//        float [] angles = new float[]{0f,gs.getFloatProperty("TRACK1.CAR.ROTATION"),0f}; 
+//        car.setLocalRotation(new Quaternion(angles));
     	
         inGameStateNode.attachChild( car );
         inGameStateNode.updateGeometricState(0, true);			
-    	
+        
     }
     public void createRallyTrack(Node inGameStateNode, GlobalSettings gs) {
     	RallyTrack rt = new RallyTrack(gs);
@@ -565,22 +538,9 @@ public class RallyGame extends BaseSimpleGame {
 	}
 
 	// Create skybox
-	public void createSkyBox(Node inGameStateNode, String sky, float xExtent, float yExtent, float zExtent) {
-		Skybox skyBox;
-		if (sky.equals("day") == true) {
-			skyBox = RallySkyBox.getDaySkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
-			
-		} else if (sky.equals("red")) {
-			skyBox = RallySkyBox.getRedSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
-		} else if (sky.equals("night")) {
-			skyBox = RallySkyBox.getNightSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
-		} else {
-			skyBox = RallySkyBox.getNightSkyBox(
-					DisplaySystem.getDisplaySystem(), xExtent, yExtent, zExtent);
-		}
+	public void createSkyBox(Node inGameStateNode, GlobalSettings gs, GameUserSettings us) {
+		Skybox skyBox = RallySkyBox.getSkyBox(gs, us.getSkybox(), 
+				DisplaySystem.getDisplaySystem());
 		inGameStateNode.attachChild(skyBox);
 		this.skybox = skyBox; 
 	}

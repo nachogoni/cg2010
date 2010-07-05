@@ -71,7 +71,6 @@ public class MenuState extends RallyGameState {
 					MinificationFilter.BilinearNoMipMaps,
 					MagnificationFilter.Bilinear, 1.0f, true));
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ts.setEnabled(true);
@@ -333,8 +332,6 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void cleanup() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

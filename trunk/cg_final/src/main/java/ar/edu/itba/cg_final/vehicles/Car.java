@@ -1,5 +1,6 @@
 package ar.edu.itba.cg_final.vehicles;
 
+import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
@@ -21,6 +22,8 @@ public class Car extends Node {
     
     private Audio carAudio;
 
+	private boolean locked = false;
+
     public Audio getCarAudio() {
     	return carAudio;
     }
@@ -33,6 +36,10 @@ public class Car extends Node {
         //loadFancySmoke();
     }
 
+    public void isLocked(boolean state) {
+    	locked  = state;
+    }
+    
     public void setPosition( float x, float y, float z ) {
         chassisNode.clearDynamics();
         chassisNode.getLocalTranslation().set( x, y, z );
@@ -97,20 +104,24 @@ public class Car extends Node {
      * @param direction 1 for ahead and -1 for backwards
      */
     public void accelerate( final int direction ) {
+    	if (locked)
+    		return;
         rearSuspension.accelerate( direction );
         frontSuspension.accelerate( direction );
-        GlobalSettings gs = new GlobalSettings();
-        carAudio.playRepeatedly(gs.getProperty("EFFECT.ENGINE"));
+        if (!RallyGame.getInstance().isPaused())
+        	carAudio.playRepeatedly(GlobalSettings.getInstance().getProperty("EFFECT.ENGINE"));
     }
 
     /**
      * Stops accelerating both suspensions
      */
     public void releaseAccel() {
+    	if (locked)
+    		return;
         rearSuspension.releaseAccel();
         frontSuspension.releaseAccel();
-        GlobalSettings gs = new GlobalSettings();
-        carAudio.playRepeatedly(gs.getProperty("EFFECT.NEUTRAL"));
+        if (!RallyGame.getInstance().isPaused())
+        	carAudio.playRepeatedly(GlobalSettings.getInstance().getProperty("EFFECT.NEUTRAL"));
     }
 
     /**
