@@ -2,8 +2,11 @@ package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
 
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.scene.Node;
 import com.jmex.game.state.GameState;
+import com.jmex.game.state.GameStateManager;
 
 public abstract class RallyGameState  extends GameState {
 
@@ -14,6 +17,15 @@ public abstract class RallyGameState  extends GameState {
 		this.rootNode = RallyGame.getInstance().getRootNode();
 	}
 
+	@Override
+	public void update(float tpf) {
+		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("show menu", false)) {
+			RallyGame.getInstance().setPause(true);
+			GameStateManager.getInstance().activateChildNamed("Menu");
+		}		
+	}
+	
 	// Genera una llamada al estado cuando es activdado
 	public abstract void activated();
 

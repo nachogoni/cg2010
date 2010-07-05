@@ -4,6 +4,9 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.vehicles.Car;
+
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
@@ -39,6 +42,8 @@ public class InGameState extends RallyGameState {
 		this.audio = game.getAudio();
 		this.audio.play();
         playerCar.getCarAudio().playRepeatedly("sound/car_neutral.ogg");//TODO
+        KeyBindingManager.getKeyBindingManager().set("show menu", KeyInput.KEY_ESCAPE);
+		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
         
         // Speedometer
 		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
@@ -75,9 +80,10 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
+		super.update(arg0);
+		
 		this.audio.update();
 		
-		// Ubicamos el skybox
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
 		sky.updateGeometricState(0.0f, true);
 		
@@ -116,5 +122,6 @@ public class InGameState extends RallyGameState {
 
     	}
 	}
+
 
 }

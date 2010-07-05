@@ -39,7 +39,6 @@ public class StartState extends RallyGameState {
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
 		GameStateManager.getInstance().activateChildNamed("InGame");
-		KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 		rootNode.updateRenderState();
@@ -61,6 +60,7 @@ public class StartState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
+		super.update(arg0);
 		long diff = (new Date().getTime()) - start;
 		
 		if ((diff > 500) && (diff < 2000)) {

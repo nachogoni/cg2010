@@ -41,6 +41,7 @@ import com.jme.scene.Text;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
+import com.jmex.model.collada.schema.bool;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.terrain.TerrainPage;
@@ -122,17 +123,16 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(inGameState);
 		gameStateManager.attachChild(finishedGameState);
 
-		KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
-		KeyBindingManager.getKeyBindingManager().set("next", KeyInput.KEY_F);
-		KeyBindingManager.getKeyBindingManager().set("prev", KeyInput.KEY_G);
-		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
-		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 		//KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 	
 	public void setPause(boolean state) {
 		this.pause = state;
+	}
+	
+	public boolean isPaused(){
+		return this.pause;
 	}
 	
 	public Node getRootNode() {
