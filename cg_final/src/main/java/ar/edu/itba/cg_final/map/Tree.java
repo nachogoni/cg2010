@@ -63,16 +63,30 @@ public class Tree extends Node {
         
         this.attachChild(billboard);        
         
-        Box boxGeometry = new Box("post",new Vector3f(-0.05f,-10,-0.05f), new Vector3f(0.05f,10,0.05f));
+        Box boxGeometry = new Box("post",new Vector3f(-1f,-10,-1f), new Vector3f(1f,10,1f));
         /*Cylinder postGeometry = new Cylinder("treepost", 10, 10, 0.1f, 10);
         Quaternion q2 = new Quaternion();
         //rotate the cylinder to be vertical
         q2.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
         postGeometry.setLocalRotation(q2);*/
 //        postGeometry.setModelBound(new BoundingBox());
-//        postGeometry.updateModelBound();     
+//        postGeometry.updateModelBound();
         boxGeometry.setModelBound(new BoundingBox());
         boxGeometry.updateModelBound();           
+
+        BlendState blendState2 = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        blendState2.setBlendEnabled( true );
+        blendState2.setSourceFunction( BlendState.SourceFunction.DestinationAlpha);
+        
+        blendState2.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        
+        blendState2.setTestEnabled( true );
+        blendState2.setTestFunction( BlendState.TestFunction.Never );
+        blendState2.setEnabled( true );                
+        
+        boxGeometry.setRenderState(blendState2);
+        boxGeometry.updateRenderState();
+        
         //Ponerlo despues de que se cargue el auto
         
         /*TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
@@ -93,8 +107,8 @@ public class Tree extends Node {
         staticNode.attachChild(boxGeometry);
         
         //staticNode.attachChild(pc);
-        staticNode.setLocalTranslation(2, 0, 0);
         staticNode.setLocalScale(new Vector3f(1,500,1));
+        staticNode.setLocalTranslation(-2.75f, 0, 3.25f);
         staticNode.updateGeometricState(0, true);
         //staticNode.updateRenderState();
 

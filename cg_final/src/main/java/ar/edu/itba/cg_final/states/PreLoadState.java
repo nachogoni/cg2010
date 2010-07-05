@@ -19,35 +19,37 @@ public class PreLoadState extends RallyGameState {
 	private boolean updateable = false;
 	GlobalSettings gs;
 	GameUserSettings us;
-	
+
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
 	private int height = DisplaySystem.getDisplaySystem().getHeight();
-	
+
 	public PreLoadState() {
 		this.setName("PreLoad");
 		stateNode.setName(this.getName());
 	}
-	
+
 	private void refreshLabel(String text) {
 		StringBuffer lastText = info.getText();
 		lastText.replace(0, lastText.length(), "Cargando: " + text + "...");
-    	return;
+		return;
 	}
-	
+
 	@Override
 	public void activated() {
-		
+
 		gs = GlobalSettings.getInstance();
 		us = GameUserSettings.getInstance();
-		
+
 		// Hacer desde el principio
 		this.task = 0;
-		
+
 		rootNode.attachChild(this.stateNode);
 		rootNode.updateRenderState();
-		
-		// Obtenemos el stateNode del InGameState para ir asignandole los modelos a crear
-		inGame = (InGameState)GameStateManager.getInstance().getChild("InGame");
+
+		// Obtenemos el stateNode del InGameState para ir asignandole los
+		// modelos a crear
+		inGame = (InGameState) GameStateManager.getInstance()
+				.getChild("InGame");
 		inGameNode = inGame.getStateNode();
 
 		// Borramos todos los nodos que contenga el stateNode del InGameState
@@ -55,15 +57,15 @@ public class PreLoadState extends RallyGameState {
 
 		// Creamos el texto de informacion
 		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
-    	info.setLocalTranslation(width*0.35f,height*0.5f, 0);
-    	this.stateNode.attachChild(info);
-    	
-    	// Tomamos la instancia del RallyGame
-    	game = RallyGame.getInstance();
-    	
-    	game.setPause(true);
-    	
-    	updateable = true;
+		info.setLocalTranslation(width * 0.35f, height * 0.5f, 0);
+		this.stateNode.attachChild(info);
+
+		// Tomamos la instancia del RallyGame
+		game = RallyGame.getInstance();
+
+		game.setPause(true);
+
+		updateable = true;
 	}
 
 	@Override
@@ -82,9 +84,8 @@ public class PreLoadState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
-		if (updateable ) {		
-			switch(task)
-			{
+		if (updateable) {
+			switch (task) {
 			case 0:
 				// Actualizamos la fisica
 				refreshLabel("Fisica");
@@ -118,7 +119,7 @@ public class PreLoadState extends RallyGameState {
 			case 70:
 				// Audio
 				refreshLabel("Audio");
-				game.initAudio();
+				game.initAudio(gs);
 				break;
 			case 80:
 				refreshLabel("Enviroment");
@@ -126,16 +127,16 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 190:
 				// Saltamos al proximo estado: InGameState
-				GameStateManager.getInstance().deactivateChildNamed(this.getName());
+				GameStateManager.getInstance().deactivateChildNamed(
+						this.getName());
 				GameStateManager.getInstance().activateChildNamed("StartGame");
 				break;
 			default:
-				break;	
+				break;
 			}
 			// Tarea terminada -> saltar a la siguiente tarea...
 			this.task++;
 		}
 	}
-	
 
 }
