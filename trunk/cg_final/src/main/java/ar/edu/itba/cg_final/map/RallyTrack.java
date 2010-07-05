@@ -42,6 +42,7 @@ public class RallyTrack extends Node {
 	private ArrayList<Tree> forestList = new ArrayList<Tree>();
 	private Node forest;
 	private Node pyramids;
+	private Node obstacles;
 
 	public RallyTrack(GlobalSettings gs) {
 		
@@ -130,6 +131,8 @@ public class RallyTrack extends Node {
         buildForest(gs);
         
         buildPyramids(gs);
+        
+        generateObstacles(gs);
         
         //initialize OBBTree of terrain
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
@@ -235,6 +238,22 @@ public class RallyTrack extends Node {
 
         rg.getLightState().attach( dr );
 	}
+    
+   private void generateObstacles(GlobalSettings gs) {
+		int count = gs.getIntProperty("TRACK1.OBSTACLES.COUNT");
+		obstacles = new Node();
+		
+		
+		for (int i = 1; i <= count; i++) {
+			Obstacles obstacle = new Obstacles("Obstacle"+i);
+			Vector2f pos = gs.get2DVectorProperty("TRACK1.OBSTACLES" + i + ".POS");
+			
+			obstacle.placeObstacles(pos.x, terrain.getHeight(pos)-145, pos.y);
+			obstacles.attachChild(obstacle);
+		}
+		
+		this.attachChild(obstacles);	   
+   }
    
    public TerrainPage getTerrain() {
 	   return terrain;
