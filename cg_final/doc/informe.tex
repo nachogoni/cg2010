@@ -217,7 +217,8 @@ remitirse al informe del \textit{Trabajo Práctico Número 2 - Extensión}.
 
 Otra de las características desarrolladas, fue la posibilidad de obtener
 capturas de pantallas de cualquier momento del juego.  Para realizar dicha
-acción, hay que presionar la tecla $0$ (cero) en cualquier momento del mismo.
+acción, hay que presionar la tecla ``0`` (cero) en cualquier momento del
+mismo.
 
 Las imágenes producidas, son almacenadas en la raíz del proyecto, y el nombre
 con el que se guardan es la fecha en que fueron realizados.
@@ -256,6 +257,10 @@ destacar que estas instrucciones están basadas en la configuración default del
 juego, ya que cabe la posibilidad de modificar las teclas a utilizar.
 
 \subsection{¿Cómo se Juega?}
+Para jugar al juego, solo es necesario conocer las teclas para moverse a traves
+de la pista.  Lo único necesario es saber con qué teclas avanzar, retroceder,
+girar a la izquierda y a la derecha.  Luego, solo es necesario atravesar los
+diferentes checkpoints hasta llegar a la meta.
 
 \subsection{Los Menúes}
 Para movernos a través de los menúes, es necesario utilizar las flechas hacia
@@ -269,12 +274,116 @@ sonido y demás opciones, es necesario utilizar las flechas hacia la derecha e
 izquierda para cambiar la opción.
 \section{Configuración}
 \label{configuracion}
+El juego, como mencionamos con antelación, tiene ciertas características que
+son configurables.  Desde las teclas, las texturas de los skyboxes, las
+características de las pistas y las pistas en sí son configurables.
+
+Todas estas características configurables, pueden ser modificadas desde el
+archivo "global.properties".
 
 \subsection{Configuración del Juego}
 
+Desde el archivo previamente mencionado, es posible configurar todas las teclas
+del juego además de los nombres y texturas de los skyboxes, el estado de la
+música y los efectos como las pistas a escucharse ante cada evento y/o pistas
+de la música ambiental.  Además, tanto para la música como para los efectos, es
+posible configurar en qué nivel quiere uno que se encuentren, del 0 al 100,
+siendo 100 el volumen más alto de la música o efecto.
+
 \subsection{Configuración de Nuevas Pistas}
+
+Desde el archivo de configuración, es posible determinar la posición de los
+distintos objetos que componen a la escena.
+
+Los árboles, checkpoints, pirámides con texturas procedurales, como el resto de
+los objetos presentes, pueden ser configurados fácilmente desde el archivo de
+configuración.
+
+Para configurar los árboles presentes en la escena, es necesario indicar qué
+cantidad de árboles habrá, y acto seguido, indicar para cada uno de esos
+árboles, que posición van a ocupar en el terreno.
+
+Un ejemplo del archivo de configuración para la determinación de la posición de
+los árboles es:
+
+\begin{verbatim}
+TRACK1.TREE.COUNT=425
+TRACK1.TREE1.POS=672, -846
+TRACK1.TREE2.POS=664, -859
+TRACK1.TREE3.POS=642, -889
+...
+TRACK1.TREE425.POS=1642, -1889
+\end{verbatim}
+
+Donde se puede observar cómo en la primera línea, se le indica la cantidad de
+árboles presentes en la escena y luego, para cada uno de los árboles, una
+posición dada por dos puntos.
+
+Para el caso de los checkpoints, es similar a los árboles pero con una pequeña
+variación, dada por la necesidad de determinar la rotación del plano que
+contiene al checkpoint.
+
+Un ejemplo del archivo de configuración para la determinación de la posición de
+los checkpoints es:
+
+\begin{verbatim}
+TRACK1.CHECKPOINT.COUNT=8
+TRACK1.CHECKPOINT1.POS=515,-806
+TRACK1.CHECKPOINT1.ROT=6.68925
+TRACK1.CHECKPOINT2.POS=-4434,-3150
+TRACK1.CHECKPOINT2.ROT=6.32625
+TRACK1.CHECKPOINT3.POS=694,-4591
+TRACK1.CHECKPOINT3.ROT=4.748
+TRACK1.CHECKPOINT4.POS=3880,-3081
+TRACK1.CHECKPOINT4.ROT=3.604
+TRACK1.CHECKPOINT5.POS=4094,-138
+TRACK1.CHECKPOINT5.ROT=3.126
+TRACK1.CHECKPOINT6.POS=2069,1334
+TRACK1.CHECKPOINT6.ROT=7.718
+TRACK1.CHECKPOINT7.POS=-674,4184
+TRACK1.CHECKPOINT7.ROT=2.126
+TRACK1.CHECKPOINT8.POS=-4363,3862
+TRACK1.CHECKPOINT8.ROT=6.451
+\end{verbatim}
+
+Donde aca podemos observar como están presentes los 8 checkpoints utilizados en
+la pista presentada, donde cada uno tiene su posición y su rotación en
+radiantes.
+
+Otra posibilidad sería la de configurar las pirámides con texturas
+procedurales.  De forma similar que los ejemplos presentados con antelación, un
+ejemplo de una entrada en el archivo de configuración sería:
+
+\begin{verbatim}
+TRACK1.PIRAMID.COUNT=2
+TRACK1.PIRAMID1.POS=2858,2142
+TRACK1.PIRAMID1.TYPE=Marble
+TRACK1.PIRAMID2.POS=1850,-150
+TRACK1.PIRAMID2.TYPE=Stone
+\end{verbatim}
+
+Donde además de indicar la cantidad de pirámides que van a haber en el terreno,
+es necesario indicarle que textura utilizaran.  Previamente en el informe
+comentamos la existencia de dos tipos de texturas procedurales, piedra y
+marmol, tal como se pueden apreciar en el archivo de configuración de la pista.
+
+NO SE COMO SE HACE LA PARTE DE LA PISTA EN SI.
 
 \section{Conclusión}
 \label{conclusiones}
+
+A lo largo del desarrollo del juego, pudimos adquirir varios conceptos y
+enseñanzas del proceso que conlleva crear y desarrollar uno.
+
+Para comenzar, adquirimos conocimientos sobre las distintas partes que componen
+a un juego, las distintas fases de los mismos y además, logramos adquirir
+cierta experiencia utilizando un framework para el desarrollo de videojuegos en
+Java.
+
+Cabe destacar que debido a que el grupo eligió utilizar JME2 para el desarrollo
+del juego, ante cada problema o situación que requirió de asistencia, logramos
+sortear el inconveniente gracias a la extensa documentación sobre el Framework
+que está disponible en los distintos foros y en la misma documentación propia
+de los desarrolladores del mismo.
 
 \end{document}
