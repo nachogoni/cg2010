@@ -3,12 +3,16 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.vehicles.Car;
+
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.renderer.Camera;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
+import com.jme.scene.Spatial;
 import com.jme.scene.Text;
+import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.system.DisplaySystem;
 import com.jmex.terrain.TerrainPage;
 
@@ -46,7 +50,13 @@ public class InGameState extends RallyGameState {
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
         
         // Speedometer
+		
 		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
+    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
+    	speed.setCullHint( Spatial.CullHint.Never );
+    	speed.setRenderState( Text.getDefaultFontTextureState() );
+		speed.setRenderState( Text.getFontBlend() );
+    	speed.setLightCombineMode(LightCombineMode.Off);
     	speed.setLocalScale(5);
     	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
     	this.stateNode.attachChild(speed);

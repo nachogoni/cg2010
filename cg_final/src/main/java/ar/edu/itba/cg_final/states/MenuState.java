@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final.states;
 
 import java.net.MalformedURLException;
 import java.util.List;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
@@ -147,6 +148,17 @@ public class MenuState extends RallyGameState {
 			}
 		});
 		mainPanel.addItem(options);
+
+		RallyMenuItemVoid resumeGame = new RallyMenuItemVoid("Resume Game");
+		resumeGame.setEnterAction(new IAction() {
+			public void performAction() {
+				if ( RallyGame.getInstance().isPaused() ){
+					RallyGame.getInstance().setPause(false);
+					GameStateManager.getInstance().deactivateChildNamed("Menu");
+				}
+			}
+		});
+		mainPanel.addItem(resumeGame);
 		
 		RallyMenuItemVoid newGame = new RallyMenuItemVoid("New Game");
 		newGame.setEnterAction(new IAction() {
@@ -158,18 +170,8 @@ public class MenuState extends RallyGameState {
 		});
 		mainPanel.addItem(newGame);
 		
-		RallyMenuItemVoid resumeGame = new RallyMenuItemVoid("Resume Game");
-		resumeGame.setEnterAction(new IAction() {
-			public void performAction() {
-				if ( RallyGame.getInstance().isPaused() ){
-					RallyGame.getInstance().setPause(false);
-					GameStateManager.getInstance().deactivateChildNamed("Menu");
-				}
-			}
-		});
-		resumeGame.toggleSelect();
+		newGame.toggleSelect();
 		
-		mainPanel.addItem(resumeGame);
 		
 		return mainPanel;
 	}
@@ -261,7 +263,7 @@ public class MenuState extends RallyGameState {
 		newGamePanel.addItem(backItem);
 		
 		
-		final RallyMenuItemListString skyboxitem = new RallyMenuItemListString("Skybox",GlobalSettings.getInstance().getSkyBoxesNames());
+		final RallyMenuItemListString skyboxitem = new RallyMenuItemListString("Sky:",GlobalSettings.getInstance().getSkyBoxesNames());
 		IAction changeSkybox = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setSkyBox(skyboxitem.getSelectedValue());
