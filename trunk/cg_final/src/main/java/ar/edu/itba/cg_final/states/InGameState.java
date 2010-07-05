@@ -1,18 +1,15 @@
 package ar.edu.itba.cg_final.states;
 
-import java.util.ArrayList;
-
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
-import ar.edu.itba.cg_final.map.Tree;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.renderer.Camera;
+import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
 import com.jmex.terrain.TerrainPage;
-
 
 public class InGameState extends RallyGameState {
 
@@ -41,6 +38,7 @@ public class InGameState extends RallyGameState {
 		playerCar = game.getPlayerCar();
 		this.audio = game.getAudio();
 		this.audio.play();
+        playerCar.getCarAudio().playRepeatedly("sound/car_neutral.ogg");//TODO
 	}
 
 	@Override
@@ -101,14 +99,16 @@ public class InGameState extends RallyGameState {
     	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
     	this.stateNode.attachChild(pos);
     	
+    	for (Node node : game.getCheckPointList()) {
+    		if (node.hasCollision(playerCar, true)) {
+    			game.passThrough(playerCar.getName(), node.getName());
+    		}		    	
+		}
     	
-//		if (game.getRootNode().getChild("check").hasCollision(playerCar, true)) {
-//			System.out.println("Choco");
-//		}	
     	if (game.getRallyTrack().getFence().hasCollision(playerCar, true) ||
     			game.getRallyTrack().getForest().hasCollision(playerCar, true)){
     		System.out.println("Choque contra algo");
-    		this.audio.playOnce("sound/hit.ogg");
+    		this.audio.playOnce("sound/hit.ogg");//TODO
     	}
 	}
 

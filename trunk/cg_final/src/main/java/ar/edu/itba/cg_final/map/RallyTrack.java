@@ -232,14 +232,14 @@ public class RallyTrack extends Node {
 	   return terrain;
    }
 
-   public List<Checkpoint> createCheckPoints(GlobalSettings gs) {
+   public List<CheckPoint> createCheckPoints(GlobalSettings gs) {
 	   
-	   List<Checkpoint> cpList = new ArrayList<Checkpoint>();
+	   List<CheckPoint> cpList = new ArrayList<CheckPoint>();
 
 	   int count = gs.getIntProperty("TRACK1.CHECKPOINT.COUNT");
 	   
 	   for (int i = 1; i <= count; i++) {
-		   Checkpoint cp = new Checkpoint("CP"+String.valueOf(i),
+		   CheckPoint cp = new CheckPoint("CheckPoint"+String.valueOf(i),
 				   gs.get2DVectorProperty("TRACK1.CHECKPOINT"+i+".POS"),
 				   gs.getFloatProperty("TRACK1.CHECKPOINT"+i+".ROT"), (i==1));
 		   cpList.add(cp);
