@@ -64,7 +64,7 @@ public class CheckPoint extends Node {
         
         String texture;
         if (startingGrid == true) {
-        	texture = "texture/startinggrid.png";
+        	texture = "texture/largada.png";
         } else {
         	texture = "texture/checkpoint2.png";
         }
