@@ -71,9 +71,9 @@ public class RallyGame extends BaseSimpleGame {
 	
     //the flag to grab
 	private Boolean screenshot = false;
-	private int i = 0;
-	private static FileWriter aFile;
-	private static BufferedWriter aWriter;
+//	private int i = 0;
+//	private static FileWriter aFile;
+//	private static BufferedWriter aWriter;
 	
 	public RallyGame() {
 		instance = this;
@@ -86,12 +86,12 @@ public class RallyGame extends BaseSimpleGame {
 	}	
 	
 	public static void main(String[] args) throws IOException {
-		aFile = new FileWriter("waka");
-		aWriter = new BufferedWriter(aFile);
+//		aFile = new FileWriter("waka");
+//		aWriter = new BufferedWriter(aFile);
 		RallyGame app = new RallyGame();
 		app.setConfigShowMode(ConfigShowMode.ShowIfNoConfig);
 		app.start();
-		aWriter.close();
+//		aWriter.close();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("post", KeyInput.KEY_H);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
-		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
+		//KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 	
 	public void setPause(boolean state) {
@@ -142,10 +142,11 @@ public class RallyGame extends BaseSimpleGame {
 	// Metodos para la creacion de los elementos del juego (usados en el preloader)
 	
 	
-	public void initAudio() {	
+	public void initAudio() {
+		GlobalSettings gs = new GlobalSettings();
 		audio = new Audio();//TODO
-		audio.addAudio("sound/maninside.ogg");
-		audio.addAudio("sound/cartonero.ogg");
+		audio.addAudio(gs.getProperty("MUSIC.SONG2.PATH"));//TODO
+		audio.addAudio(gs.getProperty("MUSIC.SONG1.PATH"));
 	}
 	
 	public void passThrough(String player, String checkPoint) {
@@ -301,18 +302,18 @@ public class RallyGame extends BaseSimpleGame {
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
 				false)){
 			screenshot = true;
-			float [] angles = new float[3];
-	    	car.getChassis().getLocalRotation().toAngles(angles);
-			try {
-				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
-						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
-				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
-				i++;
-				aWriter.flush();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			float [] angles = new float[3];
+//	    	car.getChassis().getLocalRotation().toAngles(angles);
+//			try {
+//				aWriter.write("TRACK1.CHECKPOINT" + i + ".POS=" + (int) car.getChassis().getLocalTranslation().x + 
+//						", " + (int) car.getChassis().getLocalTranslation().z + "\n");
+//				aWriter.write("TRACK1.CHECKPOINT" + i + ".ROT=" + angles[1]);
+//				i++;
+//				aWriter.flush();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 //		if (KeyBindingManager.getKeyBindingManager().isValidCommand("print",
 //				false))
