@@ -24,6 +24,7 @@ import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Pyramid;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
@@ -40,6 +41,7 @@ public class RallyTrack extends Node {
 	
 	private ArrayList<Tree> forestList = new ArrayList<Tree>();
 	private Node forest;
+	private StonePyramid pyramid;
 
 	public RallyTrack(GlobalSettings gs) {
 		
@@ -127,6 +129,8 @@ public class RallyTrack extends Node {
         
         buildForest(gs);
         
+        buildPyramid(gs);
+        
         //initialize OBBTree of terrain
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
 	}
@@ -178,36 +182,25 @@ public class RallyTrack extends Node {
 	}
 	
 	public void initForest(Node inGameState) {
+
 		Node forestNode = new Node("forest");
-		/*TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
-		.createTextureState();
-		ZBufferState zs = DisplaySystem.getDisplaySystem().getRenderer()
-		.createZBufferState();
-		zs.setFunction(TestFunction.LessThan);
-		
-		zs.setWritable(false);
-		zs.setEnabled(true);	*/	
-		//forestNode.setTextureCombineMode(TextureCombineMode);
-		//forestNode.setRenderState(ts);		
+
 		for (Tree tree : forestList) {
-			//tree.setRenderState(zs);
-			//tree.updateRenderState();
 			forestNode.attachChild(tree);
 		}
 
-		//forestNode.updateRenderState();		
 		inGameState.attachChild(forestNode);
 		
 		this.forest = forestNode;
 		
+	}
+	
+	private void buildPyramid(GlobalSettings gs) {
+		pyramid = new StonePyramid("pyramid");
+		Vector2f pos = gs.get2DVectorProperty("TRACK1.PIRAMID.POS");
 		
-		
-		
-
-
-		
-		
-		
+		pyramid.placePiramid(pos.x, terrain.getHeight(pos) + 320, pos.y);
+		this.attachChild(pyramid);
 	}
 	
     private void buildLights() {
@@ -256,5 +249,7 @@ public class RallyTrack extends Node {
 	public Node getForest() {
 		return forest;
 	}
+	
+
 
 }
