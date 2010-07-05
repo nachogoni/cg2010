@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.map;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.textures.MarbleProceduralTexture;
 import ar.edu.itba.cg_final.textures.StoneProceduralTexture;
 
 import com.jme.bounding.BoundingBox;
@@ -14,26 +15,33 @@ import com.jmex.physics.StaticPhysicsNode;
 import com.jmex.terrain.util.MidPointHeightMap;
 import com.jmex.terrain.util.ProceduralTextureGenerator;
 
-public class StonePyramid extends Node {
+public class ProceduralTexturePyramid extends Node {
 	
 	private static final long serialVersionUID = -2270974621034389670L;
 
-	public StonePyramid(String name) {
-		this();
+	public static enum pyramidType {
+		MARBLE, STONE
+	}
+	
+	
+	public ProceduralTexturePyramid(String name, pyramidType type) {
+		this(type);
 		this.setName(name);
 	}
 	
-	public StonePyramid() {
+	public ProceduralTexturePyramid(pyramidType type) {
 		RallyGame rg = RallyGame.getInstance();
     	
         Pyramid pyramid = new Pyramid("pyramid", 20, 20);
         pyramid.setModelBound(new BoundingBox());
         pyramid.updateModelBound();
         pyramid.setLocalScale(50);
-    	//Box box = new Box("caja",new Vector3f(0,0,0), new Vector3f(1,1,1));
-    	//box.setLocalScale(100);
-            // generate a terrain texture with 2 textures
-        ProceduralTextureGenerator pt = new StoneProceduralTexture(new MidPointHeightMap(64, 1f));
+        ProceduralTextureGenerator pt;
+        if (type.equals(pyramidType.MARBLE)) {
+        	pt = new MarbleProceduralTexture(new MidPointHeightMap(64, 1f));
+        } else {
+        	pt = new StoneProceduralTexture(new MidPointHeightMap(64, 1f));
+        }
         pt.createTexture(512);
         
         // assign the texture to the terrain

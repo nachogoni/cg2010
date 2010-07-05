@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.map.ProceduralTexturePyramid.pyramidType;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
@@ -24,7 +25,6 @@ import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.shape.Pyramid;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
@@ -41,7 +41,7 @@ public class RallyTrack extends Node {
 	
 	private ArrayList<Tree> forestList = new ArrayList<Tree>();
 	private Node forest;
-	private StonePyramid pyramid;
+	private Node pyramids;
 
 	public RallyTrack(GlobalSettings gs) {
 		
@@ -129,7 +129,7 @@ public class RallyTrack extends Node {
         
         buildForest(gs);
         
-        buildPyramid(gs);
+        buildPyramids(gs);
         
         //initialize OBBTree of terrain
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
@@ -172,7 +172,7 @@ public class RallyTrack extends Node {
 		
 		int treeCount = gs.getIntProperty("TRACK1.TREE.COUNT");
 		
-		for (int i = 1; i < treeCount; i++) {
+		for (int i = 1; i <= treeCount; i++) {
 			Tree tree = new Tree("tree"+i);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS"); 
 			tree.placeTree(pos.x, terrain.getHeight(pos) + treeHeight, pos.y);
@@ -195,12 +195,27 @@ public class RallyTrack extends Node {
 		
 	}
 	
-	private void buildPyramid(GlobalSettings gs) {
-		pyramid = new StonePyramid("pyramid");
-		Vector2f pos = gs.get2DVectorProperty("TRACK1.PIRAMID.POS");
+	private void buildPyramids(GlobalSettings gs) {
 		
-		pyramid.placePiramid(pos.x, terrain.getHeight(pos) + 320, pos.y);
-		this.attachChild(pyramid);
+		int count = gs.getIntProperty("TRACK1.PIRAMID.COUNT");
+		pyramids = new Node();
+		
+		
+		for (int i = 1; i <= count; i++) {
+			ProceduralTexturePyramid pyramid;
+			Vector2f pos = gs.get2DVectorProperty("TRACK1.PIRAMID" + i + ".POS");
+			String type = gs.getProperty("TRACK1.PIRAMID" + i + ".TYPE");
+			
+			if (type.equals("Marble")) {
+				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.MARBLE);
+			} else {
+				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.STONE);
+			}
+			pyramid.placePiramid(pos.x, terrain.getHeight(pos) + 320, pos.y);
+			pyramids.attachChild(pyramid);
+		}
+		
+		this.attachChild(pyramids);
 	}
 	
     private void buildLights() {

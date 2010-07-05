@@ -13,9 +13,9 @@ import javax.swing.ImageIcon;
 import com.jmex.terrain.util.AbstractHeightMap;
 import com.jmex.terrain.util.ProceduralTextureGenerator;
 
-public class StoneProceduralTexture extends ProceduralTextureGenerator {
+public class MarbleProceduralTexture extends ProceduralTextureGenerator {
 	private static final Logger logger = Logger
-			.getLogger(StoneProceduralTexture.class.getName());
+			.getLogger(MarbleProceduralTexture.class.getName());
 
 	// collection of alpha maps
 	protected List<BufferedImage> splatMaps;
@@ -30,7 +30,7 @@ public class StoneProceduralTexture extends ProceduralTextureGenerator {
 	 * @param heightMap
 	 *            the height map to use for the texture generation.
 	 */
-	public StoneProceduralTexture(AbstractHeightMap heightMap) {
+	public MarbleProceduralTexture(AbstractHeightMap heightMap) {
 		super(heightMap);
 
 		splatMaps = new ArrayList<BufferedImage>();
@@ -69,11 +69,6 @@ public class StoneProceduralTexture extends ProceduralTextureGenerator {
 		splatTextures.add(img);
 	}
 
-	/**
-	 * <code>createTexture</code> overrides the method in
-	 * <code>ProcduralTextureGenerator</code> to provide the capability to
-	 * overlay the existing procedural texture with one or more 'splat' maps.
-	 */
 	public void createTexture(int textureSize) {
 		super.createTexture(textureSize);
 
@@ -96,20 +91,18 @@ public class StoneProceduralTexture extends ProceduralTextureGenerator {
 	}
 	
 	public Color getColorAt(float x, float y) {
-		float scale = 0.1f;
+		float scale = 0.01f;
 		int maxLevel = 4;
-		float persistance = 0.25f;
 		
 		float noiseCoef = 0;
-		float freq, amp;
+		float freq;
 		float xn = scale*x, yn = scale*y;
 		
 		for(float level = 0 ; level < maxLevel ; level++){
 			freq = (float) Math.pow(2,level);
-			amp = (float) Math.pow(persistance,level);
 			noiseCoef +=  (1/freq) * Math.abs( noise(freq * xn, freq * yn, 0f));
 		}
-		//System.out.println("noisecoef " + noiseCoef);
+		noiseCoef = (float) Math.cos(xn + noiseCoef);
 		return getColor(noiseCoef);
 		
 	}
@@ -131,7 +124,6 @@ public class StoneProceduralTexture extends ProceduralTextureGenerator {
 		float[] finalComponents = {1,1,1};
 		float[] resultComponents = {0,0,0};
 		
-		//float coef = cosineInterpolate(noiseCoef);
 		float coef = noiseCoef;
 		for(int i = 0; i < 3 ; i++)
 			resultComponents[i] = coef * initialComponents[i] + (1.0f - coef) * finalComponents[i];
