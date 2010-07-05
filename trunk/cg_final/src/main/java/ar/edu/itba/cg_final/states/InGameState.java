@@ -4,7 +4,6 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.vehicles.Car;
-
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
@@ -15,8 +14,8 @@ import com.jmex.terrain.TerrainPage;
 public class InGameState extends RallyGameState {
 
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
-	private int height = DisplaySystem.getDisplaySystem().getHeight();
 	
+	Text speed;
 	RallyGame game;
 	Skybox sky;
 	Car playerCar;
@@ -40,6 +39,12 @@ public class InGameState extends RallyGameState {
 		this.audio = game.getAudio();
 		this.audio.play();
         playerCar.getCarAudio().playRepeatedly("sound/car_neutral.ogg");//TODO
+        
+        // Speedometer
+		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
+    	speed.setLocalScale(5);
+    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
+    	this.stateNode.attachChild(speed);
 	}
 
 	@Override
@@ -70,32 +75,29 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
-//		if (KeyBindingManager.getKeyBindingManager().isValidCommand("post",
-//				false)) {
-//			GameStateManager.getInstance().deactivateChildNamed(this.getName());
-//			GameStateManager.getInstance().activateChildNamed("FinishedGame");
-//		}
-		
 		this.audio.update();
 		
+		// Ubicamos el skybox
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
 		sky.updateGeometricState(0.0f, true);
 		
 		// Update speed
-		Integer carSpeed = (int)playerCar.getLinearSpeed();
-		this.stateNode.detachChildNamed("speed");
-		Text speed = Text.createDefaultTextLabel("speed", String.format("%03d", carSpeed));
-    	speed.setLocalScale(5);
-    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
-    	this.stateNode.attachChild(speed);
-		
+		StringBuffer speedText = speed.getText();
+		speedText.replace(0, speedText.length(),
+				String.format("%03d", (int)playerCar.getLinearSpeed()));
+    	
     	// TODO: for degub
     	float [] angles = new float[3];
     	playerCar.getChassis().getLocalRotation().toAngles(angles);
     	this.stateNode.detachChildNamed("carPos");
-    	Text pos = Text.createDefaultTextLabel("carPos", String.format("Auto: (%04d,%04d) @ %03f",
+    	Text pos = Text.createDefaultTextLabel("carPos", 
+    			String.format("Auto: (%04d,%04d,%04d) @ %03.2f Terrain: (%04.2f)",
     			(int)(playerCar.getChassis().getLocalTranslation().x), 
-    			(int)(playerCar.getChassis().getLocalTranslation().z),(angles[1])));
+    			(int)(playerCar.getChassis().getLocalTranslation().y), 
+    			(int)(playerCar.getChassis().getLocalTranslation().z),(angles[1]),
+    			(float)game.getRallyTrack().getTerrain().getHeight(
+    			playerCar.getChassis().getLocalTranslation().x,
+    			playerCar.getChassis().getLocalTranslation().z)));
     	pos.setLocalScale(1);
     	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
     	this.stateNode.attachChild(pos);
@@ -114,6 +116,5 @@ public class InGameState extends RallyGameState {
 
     	}
 	}
-
 
 }
