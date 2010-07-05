@@ -1,5 +1,6 @@
 package ar.edu.itba.cg_final.map;
 
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 
 import com.jme.bounding.BoundingBox;
@@ -20,9 +21,9 @@ public class CheckPoint extends Node {
 	private static final long serialVersionUID = 4783284580069565288L;
 	Node forceFieldNode;
     
-    public CheckPoint(String name, Vector2f position, float rotation, boolean startingGrid) {
+    public CheckPoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs) {
         super(name);
-        buildCheckpoint(name, position, rotation, startingGrid);
+        buildCheckpoint(name, position, rotation, startingGrid, gs);
     }
     
     public Vector2f get2DPosition() {
@@ -38,7 +39,7 @@ public class CheckPoint extends Node {
     	forceFieldNode.setLocalTranslation(newPosition);
     }
     
-	private void buildCheckpoint(String name, Vector2f position, float rotation, boolean startingGrid) {
+	private void buildCheckpoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs) {
         //Create the actual forcefield 
         //The first box handles the X-axis, the second handles the z-axis.
         //We don't rotate the box as a demonstration on how boxes can be 
@@ -64,9 +65,9 @@ public class CheckPoint extends Node {
         
         String texture;
         if (startingGrid == true) {
-        	texture = "texture/largada.png";
+        	texture = gs.getProperty("STARTPOINT.TEXTURE");
         } else {
-        	texture = "texture/checkpoint2.png";
+        	texture = gs.getProperty("CHECKPOINT.TEXTURE");
         }
         
         //load a texture for the force field elements

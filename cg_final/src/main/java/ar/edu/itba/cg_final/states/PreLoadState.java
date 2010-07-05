@@ -1,7 +1,9 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
+
 import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
@@ -16,6 +18,7 @@ public class PreLoadState extends RallyGameState {
 	private InGameState inGame;
 	private boolean updateable = false;
 	GlobalSettings gs;
+	GameUserSettings us;
 	
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
 	private int height = DisplaySystem.getDisplaySystem().getHeight();
@@ -35,6 +38,7 @@ public class PreLoadState extends RallyGameState {
 	public void activated() {
 		
 		gs = GlobalSettings.getInstance();
+		us = GameUserSettings.getInstance();
 		
 		// Hacer desde el principio
 		this.task = 0;
@@ -87,44 +91,32 @@ public class PreLoadState extends RallyGameState {
 				game.tunePhysics(inGameNode);
 				break;
 			case 10:
-				float xExtent = 600;
-				float yExtent = 600;
-				float zExtent = 600;
 				// Cargamos el skybox
 				refreshLabel("Skybox");
-				game.createSkyBox(inGameNode, "day", xExtent, yExtent, zExtent);
-
+				game.createSkyBox(inGameNode, gs, us);
 				break;
 			case 15:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
-				//TODO ver que onda el ZORDER de los arboles
 				game.createRallyTrack(inGameNode, gs);
 				break;
 			case 20:
 				// Cargamos los autos
 				refreshLabel("Autos");
 				game.createCar(inGameNode, gs);
-				//TODO: Actualizar la posicion del auto en base a la altura del terreno...
 				break;
 			case 30:
 				// Cargamos la configuracion del input
 				refreshLabel("Teclas");
 				game.initInput(inGameNode);
 				break;
-			case 40:
-				//TODO: vienen de las settings...
-				
 			case 50:
 				// Cargamos la pista
-//				refreshLabel("Pista");
-				// TODO
+				refreshLabel("Arboles");
 				game.createForest(inGameNode);
 				break;
-//			case 60:
-//				break;
 			case 70:
-				// Otros...
+				// Audio
 				refreshLabel("Audio");
 				game.initAudio();
 				break;
@@ -132,35 +124,6 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Enviroment");
 				game.buildCheckpoint(inGameNode, gs);
 				break;
-//			case 90:
-//				break;
-//			case 100:
-//				refreshLabel("");
-//				break;
-//			case 110:
-//				refreshLabel("");
-//				break;
-//			case 120:
-//				refreshLabel("");
-//				break;
-//			case 130:
-//				refreshLabel("");
-//				break;
-//			case 140:
-//				refreshLabel("");
-//				break;
-//			case 150:
-//				refreshLabel("");
-//				break;
-//			case 160:
-//				refreshLabel("");
-//				break;
-//			case 170:
-//				refreshLabel("");
-//				break;
-//			case 180:
-//				refreshLabel("");
-//				break;
 			case 190:
 				// Saltamos al proximo estado: InGameState
 				GameStateManager.getInstance().deactivateChildNamed(this.getName());

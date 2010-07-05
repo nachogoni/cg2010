@@ -21,14 +21,12 @@ public class StartState extends RallyGameState {
 	}
 	
 	private void refreshLabel(String text) {
-		this.stateNode.detachChildNamed("counter");
-		counter = Text.createDefaultTextLabel("counter", text);
-		counter.setLocalScale(10f);
+		StringBuffer lastText = counter.getText();
+		lastText.replace(0, lastText.length(), text);
 		counter.setLocalTranslation(
 				(DisplaySystem.getDisplaySystem().getWidth() - counter.getWidth())/2,
 				(DisplaySystem.getDisplaySystem().getHeight() - counter.getHeight())/2, 0);
-    	this.stateNode.attachChild(counter);
-		rootNode.updateRenderState();
+		stateNode.updateRenderState();
     	return;
 	}
 	
@@ -38,6 +36,10 @@ public class StartState extends RallyGameState {
 		// Agregamos el stateNode al rootNode
 		stateNode.setName(this.getName());
 		rootNode.attachChild(this.stateNode);
+		counter = Text.createDefaultTextLabel("counter", "");
+		counter.setLocalScale(10f);
+    	this.stateNode.attachChild(counter);
+		RallyGame.getInstance().getPlayerCar().isLocked(true);
 		GameStateManager.getInstance().activateChildNamed("InGame");
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
@@ -78,6 +80,7 @@ public class StartState extends RallyGameState {
 		} else if ((diff > 5000) && (diff < 6500)) {
 			// Start!!
 			refreshLabel("GO!");
+			RallyGame.getInstance().getPlayerCar().isLocked(false);
 			RallyGame.getInstance().setPlaying();
 			RallyGame.getInstance().setPause(false);
 		} else if (diff > 6500) {

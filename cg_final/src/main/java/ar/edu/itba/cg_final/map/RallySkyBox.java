@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
 
 import com.jme.image.Texture;
@@ -19,25 +20,53 @@ public class RallySkyBox extends Skybox{
 	private static final long serialVersionUID = -3777842691534981883L;
 	private static final Logger logger = Logger.getLogger(RallySkyBox.class.getName());
 	
-	public static Skybox getRedSkyBox(DisplaySystem display, float xExtent, float yExtent, float zExtent) {
-		return getSkyBox(display, xExtent, yExtent, zExtent, 
-				"skyboxes/red/north.jpg", "skyboxes/red/west.jpg", 
-				"skyboxes/red/south.jpg", "skyboxes/red/east.jpg", 
-				"skyboxes/red/top.jpg", "skyboxes/red/bottom.jpg"); 
+	public static Skybox getSkyBox(GlobalSettings gs, String skybox, DisplaySystem display) {
+		if (skybox.equals("Night")) {
+			return getNightSkyBox(display, gs);
+		} else if (skybox.equals("Afternoon")) {
+			return getRedSkyBox(display, gs);
+		} else {
+			return getDaySkyBox(display, gs);
+		}
 	}
 	
-	public static Skybox getDaySkyBox(DisplaySystem display, float xExtent, float yExtent, float zExtent) {
-		return getSkyBox(display, xExtent, yExtent, zExtent, 
-				"skyboxes/day/north.jpg", "skyboxes/day/west.jpg", 
-				"skyboxes/day/south.jpg", "skyboxes/day/east.jpg", 
-				"skyboxes/day/top.jpg", "skyboxes/day/bottom.jpg"); 
+	public static Skybox getRedSkyBox(DisplaySystem display, GlobalSettings gs) {
+		return getSkyBox(display, 
+				gs.getIntProperty("SKYBOX.XEXTENT"), 
+				gs.getIntProperty("SKYBOX.YEXTENT"), 
+				gs.getIntProperty("SKYBOX.ZEXTENT"), 
+				gs.getProperty("SKYBOX.AFTERNOON.NORTH"),
+				gs.getProperty("SKYBOX.AFTERNOON.WEST"), 
+				gs.getProperty("SKYBOX.AFTERNOON.SOUTH"),
+				gs.getProperty("SKYBOX.AFTERNOON.EAST"), 
+				gs.getProperty("SKYBOX.AFTERNOON.TOP"),
+				gs.getProperty("SKYBOX.AFTERNOON.BOTTOM")); 
 	}
 	
-	public static Skybox getNightSkyBox(DisplaySystem display, float xExtent, float yExtent, float zExtent) {
-		return getSkyBox(display, xExtent, yExtent, zExtent, 
-				"skyboxes/night/north.jpg", "skyboxes/night/west.jpg", 
-				"skyboxes/night/south.jpg", "skyboxes/night/east.jpg", 
-				"skyboxes/night/top.jpg", "skyboxes/night/bottom.jpg"); 
+	public static Skybox getDaySkyBox(DisplaySystem display, GlobalSettings gs) {
+		return getSkyBox(display, 
+				gs.getIntProperty("SKYBOX.XEXTENT"), 
+				gs.getIntProperty("SKYBOX.YEXTENT"), 
+				gs.getIntProperty("SKYBOX.ZEXTENT"), 
+				gs.getProperty("SKYBOX.DAY.NORTH"),
+				gs.getProperty("SKYBOX.DAY.WEST"), 
+				gs.getProperty("SKYBOX.DAY.SOUTH"),
+				gs.getProperty("SKYBOX.DAY.EAST"), 
+				gs.getProperty("SKYBOX.DAY.TOP"),
+				gs.getProperty("SKYBOX.DAY.BOTTOM")); 
+	}
+	
+	public static Skybox getNightSkyBox(DisplaySystem display, GlobalSettings gs) {
+		return getSkyBox(display, 
+				gs.getIntProperty("SKYBOX.XEXTENT"), 
+				gs.getIntProperty("SKYBOX.YEXTENT"), 
+				gs.getIntProperty("SKYBOX.ZEXTENT"), 
+				gs.getProperty("SKYBOX.NIGHT.NORTH"),
+				gs.getProperty("SKYBOX.NIGHT.WEST"), 
+				gs.getProperty("SKYBOX.NIGHT.SOUTH"),
+				gs.getProperty("SKYBOX.NIGHT.EAST"), 
+				gs.getProperty("SKYBOX.NIGHT.TOP"),
+				gs.getProperty("SKYBOX.NIGHT.BOTTOM")); 
 	}
 	
 	public static Skybox getSkyBox(DisplaySystem display, float xExtent, float yExtent, float zExtent,

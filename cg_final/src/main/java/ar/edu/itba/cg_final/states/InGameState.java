@@ -45,7 +45,7 @@ public class InGameState extends RallyGameState {
 		playerCar = game.getPlayerCar();
 		this.audio = game.getAudio();
 		this.audio.play();
-        playerCar.getCarAudio().playRepeatedly("sound/car_neutral.ogg");//TODO
+        playerCar.getCarAudio().playRepeatedly(GlobalSettings.getInstance().getProperty("CAR.NEUTRAL"));
         KeyBindingManager.getKeyBindingManager().set("show menu", KeyInput.KEY_ESCAPE);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
         
@@ -82,7 +82,6 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void render(float arg0) {
-		//TODO arreglar la condicion de la camara porque anda media chota
 		RallyGame game = RallyGame.getInstance();
 		Camera cam = game.getCamara();
 		TerrainPage terrain = game.getRallyTrack().getTerrain();
@@ -100,8 +99,6 @@ public class InGameState extends RallyGameState {
 	public void update(float arg0) {
 		super.update(arg0);
 		
-		this.audio.update();
-		
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
 		sky.updateGeometricState(0.0f, true);
 		
@@ -109,22 +106,6 @@ public class InGameState extends RallyGameState {
 		StringBuffer speedText = speed.getText();
 		speedText.replace(0, speedText.length(),
 				String.format("%03d", (int)playerCar.getLinearSpeed()));
-    	
-    	// TODO: for degub
-/*    	float [] angles = new float[3];
-    	playerCar.getChassis().getLocalRotation().toAngles(angles);
-    	this.stateNode.detachChildNamed("carPos");
-    	Text pos = Text.createDefaultTextLabel("carPos", 
-    			String.format("Auto: (%04d,%04d,%04d) @ %03.2f Terrain: (%04.2f)",
-    			(int)(playerCar.getChassis().getLocalTranslation().x), 
-    			(int)(playerCar.getChassis().getLocalTranslation().y), 
-    			(int)(playerCar.getChassis().getLocalTranslation().z),(angles[1]),
-    			(float)game.getRallyTrack().getTerrain().getHeight(
-    			playerCar.getChassis().getLocalTranslation().x,
-    			playerCar.getChassis().getLocalTranslation().z)));
-    	pos.setLocalScale(1);
-    	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
-    	this.stateNode.attachChild(pos);*/
     	
     	for (Node node : game.getCheckPointList()) {
     		if (node.hasCollision(playerCar, true)) {
