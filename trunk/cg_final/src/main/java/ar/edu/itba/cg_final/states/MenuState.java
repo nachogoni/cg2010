@@ -1,9 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
-import java.awt.Font;
 import java.net.MalformedURLException;
 import java.util.List;
-
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
@@ -17,12 +15,10 @@ import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.settings.Score;
 import ar.edu.itba.cg_final.settings.Scores;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
-
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Spatial.LightCombineMode;
@@ -30,10 +26,6 @@ import com.jme.scene.shape.Quad;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
-import com.jmex.font3d.Font3D;
-import com.jmex.font3d.Text3D;
-import com.jmex.font3d.effects.Font3DBorder;
-import com.jmex.font3d.effects.Font3DGradient;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {

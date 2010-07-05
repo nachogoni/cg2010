@@ -1,10 +1,8 @@
 package ar.edu.itba.cg_final.states;
-
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.vehicles.Car;
-
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.renderer.Camera;
@@ -17,7 +15,9 @@ import com.jmex.terrain.TerrainPage;
 public class InGameState extends RallyGameState {
 
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
+	private int height = DisplaySystem.getDisplaySystem().getHeight();
 	
+	Text timeCheckPoint;
 	Text speed;
 	RallyGame game;
 	Skybox sky;
@@ -50,6 +50,14 @@ public class InGameState extends RallyGameState {
     	speed.setLocalScale(5);
     	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
     	this.stateNode.attachChild(speed);
+    	
+    	// Checkpoint Time
+    	timeCheckPoint = Text.createDefaultTextLabel("CheckPointTime", "");
+    	timeCheckPoint.setLocalScale(1.5f);
+    	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
+    							(int)(height/2 - timeCheckPoint.getHeight()/2), 0);
+    	this.stateNode.attachChild(timeCheckPoint);
+    	game.setCheckPointText(timeCheckPoint);
 	}
 
 	@Override
@@ -93,7 +101,7 @@ public class InGameState extends RallyGameState {
 				String.format("%03d", (int)playerCar.getLinearSpeed()));
     	
     	// TODO: for degub
-    	float [] angles = new float[3];
+/*    	float [] angles = new float[3];
     	playerCar.getChassis().getLocalRotation().toAngles(angles);
     	this.stateNode.detachChildNamed("carPos");
     	Text pos = Text.createDefaultTextLabel("carPos", 
@@ -106,7 +114,7 @@ public class InGameState extends RallyGameState {
     			playerCar.getChassis().getLocalTranslation().z)));
     	pos.setLocalScale(1);
     	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
-    	this.stateNode.attachChild(pos);
+    	this.stateNode.attachChild(pos);*/
     	
     	for (Node node : game.getCheckPointList()) {
     		if (node.hasCollision(playerCar, true)) {
