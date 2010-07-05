@@ -40,6 +40,7 @@ public class RallyTrack extends Node {
 	private ForceFieldFence fence;
 	
 	private ArrayList<Tree> forestList = new ArrayList<Tree>();
+	//private ArrayList<Tree> obstaclesList = new ArrayList<Tree>();
 	private Node forest;
 	private Node pyramids;
 	private Node obstacles;
@@ -194,6 +195,7 @@ public class RallyTrack extends Node {
 
 		inGameState.attachChild(forestNode);
 		
+		forestNode.setIsCollidable(true);
 		this.forest = forestNode;
 		
 	}
@@ -284,6 +286,11 @@ public class RallyTrack extends Node {
 		return forest;
 	}
 	
-
+	public Node getPyramids() {
+		return pyramids;
+	}
+	public Node getObstacles() {
+		return obstacles;
+	}
 
 }

@@ -132,13 +132,34 @@ public class InGameState extends RallyGameState {
     		}		    	
 		}
     	
-    	if (game.getRallyTrack().getFence().hasCollision(playerCar, true) ||
-    			game.getRallyTrack().getForest().hasCollision(playerCar, true)){
+		if ( game.getRallyTrack().getForest().hasCollision(playerCar, true)) {
+    		GlobalSettings gs = new GlobalSettings();
+    		
+    		this.audio.playOnce(gs.getProperty("EFFECT.CRASH"));
+		}
+    	
+    	if (game.getRallyTrack().getFence().hasCollision(playerCar, true)){
     		GlobalSettings gs = new GlobalSettings();
     		
     		this.audio.playOnce(gs.getProperty("EFFECT.CRASH"));
 
     	}
+
+    	
+     	if (game.getRallyTrack().getPyramids().hasCollision(playerCar, true)){
+    		GlobalSettings gs = new GlobalSettings();
+    		
+    		this.audio.playOnce(gs.getProperty("EFFECT.CRASH"));
+
+    	}
+     	if (game.getRallyTrack().getObstacles().hasCollision(playerCar, true)){
+    		GlobalSettings gs = new GlobalSettings();
+    		
+    		this.audio.playOnce(gs.getProperty("EFFECT.CRASH"));
+
+    	}
+
+    	
 	}
 
 
