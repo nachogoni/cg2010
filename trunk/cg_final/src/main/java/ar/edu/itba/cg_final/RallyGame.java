@@ -30,9 +30,14 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
+import com.jme.light.DirectionalLight;
+import com.jme.light.LightNode;
+import com.jme.light.PointLight;
+import com.jme.light.SpotLight;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
@@ -548,6 +553,74 @@ public class RallyGame extends BaseSimpleGame {
 				DisplaySystem.getDisplaySystem());
 		inGameStateNode.attachChild(skyBox);
 		this.skybox = skyBox; 
+	}
+	
+	public void createLights(){
+		GlobalSettings gs = new GlobalSettings();
+		TerrainPage tp = rallyTrack.getTerrain();
+		Vector2f pos;
+		
+		LightState ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
+		
+
+		
+		//Create a Basic Directional Light
+		DirectionalLight dl = new DirectionalLight();
+		dl.setDirection(new Vector3f(0,-1,0));
+		dl.setDiffuse(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
+		dl.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
+		dl.setEnabled(true);
+		
+		ls.attach(dl);
+		ls.setTwoSidedLighting(true);
+		
+
+		//If there is a first checkpoint it has a Spotlight on top.  Go through it and your car will turn red
+		int i = gs.getIntProperty("TRACK1.CHECKPOINT.COUNT");
+		if(i > 0){
+			pos = gs.get2DVectorProperty("TRACK1.CHECKPOINT1.POS");
+		   	SpotLight sl = new SpotLight();
+			sl.setDiffuse(new ColorRGBA(
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.R"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.G"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.B"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.A")));
+			sl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
+			sl.setDirection(new Vector3f(0, -1, 0));
+			sl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+			sl.setAngle(60);
+			sl.setEnabled(true);
+			ls.attach(sl);
+			ls.setTwoSidedLighting(true);
+		}
+		
+		//Insert Point Lights up to 5. JME Only supports 8 lights.
+		i = gs.getIntProperty("TRACK1.POINTLIGHT.COUNT");
+		for(int j = 1; j <= i && j <= 5; j++){
+			pos = gs.get2DVectorProperty("TRACK1.POINTLIGHT" + j + ".POS");
+			PointLight pl = new PointLight();
+			pl.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+//			pl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
+			pl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+			pl.setEnabled(true);
+			ls.attach(pl);
+			ls.setTwoSidedLighting(true);
+		}
+		
+//		//Spotlight above every Checkpoint
+//		SpotLight sl = new SpotLight();
+//		sl.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+//		sl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
+//		sl.setDirection(new Vector3f(0, -1, 0));
+//		sl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+//		sl.setAngle(60);
+//		sl.setEnabled(true);
+//		
+//		ls.attach(sl);
+//		ls.setTwoSidedLighting(true);
+		
+
+		rootNode.setRenderState(ls);
 	}
 	
 	public Skybox getSkybox() {
