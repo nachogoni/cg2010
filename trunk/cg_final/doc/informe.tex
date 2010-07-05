@@ -1,0 +1,280 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{graphics}
+\usepackage{amsmath}    % need for subequations
+\usepackage{graphicx}   % need for figures
+\usepackage{verbatim}   % useful for program listings
+\usepackage{color}      % use if color is used in text
+\usepackage{subfigure}  % use for side-by-side figures
+\usepackage{hyperref}   % use for hypertext links, including those to external
+
+\pagestyle{fancy}
+
+\lhead[\thepage]{Grupo Número 2}      % Note the different brackets!
+\rhead[Grupo Número 2]{Julio 2010}
+
+%opening
+\title{Trabajo Práctico Final}
+\author{Guillermo Campelo\\Juan Ignacio Goñi\\Juan
+Tenaillon\\Santiago Vazquez}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+El siguiente informe describe cómo se diseñó e implementó el Rally Uribe 100K. 
+Mediante el uso de imágenes se describe cómo fueron diseñadas e implementadas
+las distintas partes que componen al total de la aplicación.  También se
+presentan los inconvenientes que surgieron a lo largo del desarrollo y cómo el
+equipo decidió solucionarlos.  Por último se explicará cómo se utiliza el juego,
+cómo se modifican las distintas opciones de configuración del mismo y las
+conclusiones.
+\end{abstract}
+
+\section{Introducción}
+
+Haciendo uso del Framework JMonkey, se diseñó y desarrolló un juego de rally,
+llamado Rally Uribe 100K.  A continuación, se describe cómo fue realizado el
+mismo, qué características posee y la forma en que se utiliza el mismo.
+
+Para el diseño e implementación del juego, partimos de la base del ejemplo
+proporcionado por el Framework utilizado, y tomando esa base, se realizó
+el desarrollo de las nuevas características.
+
+En la sección \ref{el_juego} se explicará cómo es el juego, los distintos
+estados del mismo, cómo es el sistema de puntaje y los sonidos del mismo.
+
+En la sección \ref{caracteristicas} se explicará qué características
+adicionales fueron desarrolladas para el juego, como las texturas procedurales,
+los screenshots, los arbustos billboard, los skybox intercambiables y demás
+características del mismo.
+
+En la sección \ref{mododeuso} se explicará cómo se utiliza el juego, explicando
+las teclas a utilizar por defecto, además de explicar cómo utilizar las
+distintas opciones del menú.
+
+En la sección \ref{configuracion} se mostrarán las distintas opciones de
+configuración, así como los valores recomendados para la misma.  También se
+explicará cómo definir nuevas pistas, para que el usuario del mismo pueda crear
+sus propios recorridos y utilizarlos con el juego.
+
+Por último, en la sección \ref{conclusiones} se presentarán las conclusiones
+alcanzadas por el equipo, además de posibles extensiones al mismo y la
+enseñanza obtenida del diseño y desarrollo del mismo.
+
+\section{El Juego}
+\label{el_juego}
+
+En esta sección se explicará el juego en sí.  El objetivo del mismo, el modo de
+juego, los distintos estados, cómo es el sistema de puntajes y los sonidos
+utilizados en el mismo.
+
+\subsection{Descripción}
+El juego consiste en recorrer una pista de carreras, ambientada como si fuera
+de Rally.  El ambiente en el cual se mueve el auto, está compuesto de un
+terreno, con una pista delimitada, con un conjunto de objetos que la componen.
+
+El objetivo del mismo, es dar tres vueltas al recorrido propuesto.  Además de
+completar la totalidad de las vueltas, el jugador debe transitar por la
+totalidad de los checkpoints, en el orden determinado por la pista.  En caso de
+saltearse uno el juego no le permitirá transitar exitosamente por los
+siguientes, y el jugador deberá volver hacia atrás y transitar por el
+checkpoint adeudado.
+
+Al finalizar las tres vueltas, el jugador recibirá el tiempo de su recorrido, y
+mientras más bajo sea ese tiempo, más chances tendrá de ingresar al listado de
+los puntajes más altos.
+\subsection{Modo de Juego}
+Hay un solo modo de juego, y este consiste en intentar realizar el menor tiempo
+posible en la realización de las tres vueltas a la pista.
+\subsection{Estados del Juego}
+Hay tres estados diferenciados en el juego.  Antes de comenzar a jugar, durante
+el juego y luego de jugar.
+
+Antes de comenzar a jugar, el jugador encuentra el menú principal de la
+aplicación, el cual le presenta todas las opciones disponibles.  Una vez que el
+usuario selecciona la opción para comenzar a jugar, se realiza la transición al
+siguiente estado, el juego en sí.
+
+\begin{figure}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./main_menu.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Menú Principal.}
+\label{fig:figure0}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./options_menu.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Menú de Opciones.}
+\label{fig:figure00}
+\end{minipage}
+\end{figure}
+
+En este estado, es cuando el jugador maneja el vehículo a través del camino
+propuesto.  El vehículo en esta ocasión, puede colisionar contra los distintos
+objetos que componen la escena, como los árboles, los límites del terreno y las
+pirámides presentes en el recorrido.  Una vez finalizado el recorrido, se
+realiza la transición al tercer y último estado del juego.
+
+En este tercer y último estado, al usuario se le presenta el menú nuevamente,
+donde podrá ver los puntajes máximos hasta el momento o comenzar nuevamente el
+juego para tratar de mejorar su tiempo.
+
+\subsection{Puntajes}
+El juego tiene la opción de ver quienes fueron los jugadores que realizaron los
+diez mejores tiempo en el recorrido a la pista.
+
+Una vez finalizado el recorrido, se le presentará al jugador su tiempo total de
+recorrido, y si el tiempo es lo suficientemente bueno, deberá ingresar su
+nombre para comenzar a figurar en el listado de los mejores tiempos.
+
+En el menú inicial del juego, el jugador puede elegir la opción de highscores,
+para ver cuales son los mejores tiempos a la pista y quien fue el jugador que
+los hizo.
+\subsection{Sonidos}
+El juego, como todos los de su tipo, tiene diferentes sonidos que ayudan a
+ambientar el mismo.
+
+Comenzando por los sonidos de ambiente, donde se decidió que se iban a utilizar
+dos pistas para tener cierto cambio en la música de ambiente pero sin entrar en
+la exageración de utilizar muchas pistas.
+
+También fueron utilizados dos sonidos para ser utilizados por el vehículo para
+denotar situaciones en las que se está acelerando y situaciones en las que no.
+
+Por último, fue utilizado un sonido para los momentos en que el vehículo
+colisiona contra algun objeto presente en el terreno.
+
+Todos los sonidos propios del vehículo y su entorno fueron obtenidos de
+Internet, de páginas de uso libre y gratuito.  Los temas utilizados para la
+música ambiental, corresponden a la autoría de Santiago Vazquez, integrante del
+equipo.
+
+\begin{figure}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./startinggrid.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Grilla de Partida del Rally Uribe 100K. Bajo nivel de detalle.}
+\label{fig:figure1}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./startinggrid_high.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Grilla de Partida del Rally Uribe 100K. Alto nivel de detalle.}
+\label{fig:figure2}
+\end{minipage}
+\end{figure}
+
+
+\section{Características Extra}
+\label{caracteristicas}
+
+Dentro de las características opcionales a implementar, el equipo se inclinó
+por las siguientes: texturas procedurales, capturas de pantallas, árboles con
+billboards \textbf{PONER EL RESTO DE LAS CARACTERISTICAS EXTRA}
+
+\subsection{Texturas Procedurales}
+
+Para la realización de las texturas procedurales, el desarrollo fue basado en
+el diseñado para la extensión del \textit{Trabajo Práctico Número 2 - Ray
+Tracer}.  Se implementaron dos texturas procedurales, piedra y marmol.
+
+\begin{figure}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./marble.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Textura Procedural: Marmol.}
+\label{fig:figure5}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+ \includegraphics[scale=0.250]{./stone.png}
+ % startinggrid.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Textura Procedural: Piedra}
+\label{fig:figure6}
+\end{minipage}
+\end{figure}
+
+Donde en la figura \ref{fig:figure5} y \ref{fig:figure6} se puede observar las
+dos texturas procedurales realizadas, marmol y piedra respectivamente.
+
+Las dos fueron realizadas utilizando Perlin Noise, realizando las sumas
+sucesivas de los ruidos para distintas frecuencias.  Para más detalle,
+remitirse al informe del \textit{Trabajo Práctico Número 2 - Extensión}.
+
+\subsection{Capturas de Pantalla}
+
+Otra de las características desarrolladas, fue la posibilidad de obtener
+capturas de pantallas de cualquier momento del juego.  Para realizar dicha
+acción, hay que presionar la tecla $0$ (cero) en cualquier momento del mismo.
+
+Las imágenes producidas, son almacenadas en la raíz del proyecto, y el nombre
+con el que se guardan es la fecha en que fueron realizados.
+
+Esta característica fue muy utilizada a la hora de realizar este informe.
+
+\subsection{Billboards}
+
+Otra característica implementada, fue el hecho de contar con árboles realizados
+con texturas de tipo billboard.
+
+En las imágenes presentadas con antelación y más precisamente en la figura
+\ref{fig:figure7}, puede observarse cómo este tipo de árboles son utilizados a
+lo largo de todo el recorrido; donde también cabe mencionar que el vehículo
+puede colisionar contra este tipo de texturas.
+
+Algo interesante sobre este tipo de texturas es que nos brindan la posibilidad
+de verlas correctamente desde cualquier ángulo, además permitiendo que se vean
+con claridad las otras texturas detras de ellas.
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.4]{./billboard.png}
+ % billboard.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{Árboles con Texturas Billboard.}
+ \label{fig:figure7}
+\end{figure}
+
+
+\subsection{Agregar características opcionales desarrolladas}
+
+\section{Modo de Uso}
+\label{mododeuso}
+En esta sección, comentaremos la forma de jugar al Rally Uribe 100K.  Cabe
+destacar que estas instrucciones están basadas en la configuración default del
+juego, ya que cabe la posibilidad de modificar las teclas a utilizar.
+
+\subsection{¿Cómo se Juega?}
+
+\subsection{Los Menúes}
+Para movernos a través de los menúes, es necesario utilizar las flechas hacia
+arriba, abajo, izquierda, derecha y el enter.  Con las flechas de arriba y
+abajo, marcaremos la opción deseada, mientras que con la tecla de enter,
+seleccionaremos la misma.
+
+En las opciones del menú que contengan distintas posibilidades de
+configuración, ya sea el momento del día en cual vamos a correr, estado del
+sonido y demás opciones, es necesario utilizar las flechas hacia la derecha e
+izquierda para cambiar la opción.
+\section{Configuración}
+\label{configuracion}
+
+\subsection{Configuración del Juego}
+
+\subsection{Configuración de Nuevas Pistas}
+
+\section{Conclusión}
+\label{conclusiones}
+
+\end{document}
