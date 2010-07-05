@@ -30,7 +30,6 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
-import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -156,11 +155,18 @@ public class RallyGame extends BaseSimpleGame {
 		return rootNode;
 	}
 	
-	public void initAudio() {
-		GlobalSettings gs = new GlobalSettings();
+	public void initAudio(GlobalSettings gs) {
 		audio = new Audio();
 		audio.addAudio(gs.getProperty("MUSIC.SONG2.PATH"));
 		audio.addAudio(gs.getProperty("MUSIC.SONG1.PATH"));
+		
+		
+		audio.setHitSound(gs.getProperty("EFFECT.CRASH"));
+		audio.setCheckpointSound(gs.getProperty("CAR.CHECKPOINT.SOUND"));
+		
+		car.setEngineSound(gs.getProperty("EFFECT.NEUTRAL"));
+		car.setAcelerationSound(gs.getProperty("EFFECT.ENGINE"));
+		
 	}
 	
 	public void setCheckPointText(Text text) {
@@ -170,8 +176,7 @@ public class RallyGame extends BaseSimpleGame {
 	public void passThrough(String player, String checkPoint) {
 		if (positions.get(player).equals(checkPoint)) {
 			positions.put(player, checkPoints.get(checkPoint));
-			Audio sound = new Audio();
-			sound.playOnce(GlobalSettings.getInstance().getProperty("CAR.CHECKPOINT.SOUND"));
+			audio.playCheckpoint();
 			// Take last time
 			long actualTime = new Date().getTime();
 			System.out.println(pauseTime);
@@ -452,7 +457,7 @@ public class RallyGame extends BaseSimpleGame {
 
     public void createCar(Node inGameStateNode, GlobalSettings gs) {
     		
-    	car = new Car( getPhysicsSpace() );
+    	car = new Car( getPhysicsSpace(), gs );
     	car.setName("PlayerCar");
     	
     	TerrainPage tp = rallyTrack.getTerrain();

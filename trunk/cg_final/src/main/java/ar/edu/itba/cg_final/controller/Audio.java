@@ -11,8 +11,9 @@ public class Audio {
 
 	private MusicTrackQueue queue;
 	
-	private AudioTrack rep;
+	private AudioTrack hitSound;
 	
+	private AudioTrack checkpointSound;
 	
 	public Audio(){
 		this.queue = AudioSystem.getSystem().getMusicQueue();
@@ -28,33 +29,38 @@ public class Audio {
 		queue.addTrack(aTrack);
 	}
 	
-	public void play(){
+	public void playList() {
 		AudioSystem.getSystem().getMusicQueue().play();
+	}
+	
+	public void cleanup() {
+		AudioSystem.getSystem().cleanup();
 	}
 	
 	public void update(){
 		AudioSystem.getSystem().update();
 	}
 	
-	public void playOnce(String path){
-		AudioTrack aTrack = AudioSystem.getSystem().createAudioTrack(
-				RallyGame.class.getClassLoader().getResource(
-						path), false);
-		aTrack.play();
+	public void playHit(){
+		hitSound.play();
 	}
 
-	public void playRepeatedly(String path){
-		this.stopRepeatedly();
-		rep = AudioSystem.getSystem().createAudioTrack(
+	public void setHitSound(String property) {
+		hitSound = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
-						path), false);
-		rep.setLooping(true);
-		rep.play();
+						property), false);
+	}
+
+	public void playCheckpoint() {
+		checkpointSound.play();
 	}
 	
-	public void stopRepeatedly(){
-		if(rep != null)
-			rep.stop();
+	public void setCheckpointSound(String property) {
+		checkpointSound = AudioSystem.getSystem().createAudioTrack(
+				RallyGame.class.getClassLoader().getResource(
+						property), false);
+		checkpointSound.play();
 	}
+	
 	
 }
