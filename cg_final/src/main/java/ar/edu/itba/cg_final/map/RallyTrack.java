@@ -20,12 +20,15 @@ import com.jme.image.Texture.MinificationFilter;
 import com.jme.image.Texture.WrapMode;
 import com.jme.intersection.BoundingPickResults;
 import com.jme.light.DirectionalLight;
+import com.jme.light.PointLight;
+import com.jme.light.SpotLight;
 import com.jme.math.Ray;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.CullState;
+import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.CullState.Face;
 import com.jme.system.DisplaySystem;
@@ -48,7 +51,7 @@ public class RallyTrack extends Node {
 	public RallyTrack(GlobalSettings gs) {
 		
 		RallyGame rg = RallyGame.getInstance();
-		buildLights();
+		
 		
 		DisplaySystem display = DisplaySystem.getDisplaySystem(); 
 		
@@ -134,6 +137,8 @@ public class RallyTrack extends Node {
         buildPyramids(gs);
         
         generateObstacles(gs);
+        
+        buildLights(rg);
         
         //initialize OBBTree of terrain
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
@@ -223,22 +228,84 @@ public class RallyTrack extends Node {
 		this.attachChild(pyramids);
 	}
 	
-    private void buildLights() {
-    	RallyGame rg = RallyGame.getInstance();
+    private void buildLights(RallyGame rg) {
+//    	RallyGame rg = RallyGame.getInstance();
+//    	
+//        DirectionalLight dl = new DirectionalLight();
+//        dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+//        dl.setDirection( new Vector3f( 1, -0.5f, 1 ) );
+//        dl.setEnabled( true );
+//        rg.getLightState().attach( dl );
+//
+//        DirectionalLight dr = new DirectionalLight();
+//        dr.setEnabled( true );
+//        dr.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
+//        dr.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
+//        dr.setDirection( new Vector3f( 0.5f, -0.5f, 0 ) );
+//
+//        rg.getLightState().attach( dr );
     	
-        DirectionalLight dl = new DirectionalLight();
-        dl.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
-        dl.setDirection( new Vector3f( 1, -0.5f, 1 ) );
-        dl.setEnabled( true );
-        rg.getLightState().attach( dl );
+    	GlobalSettings gs = new GlobalSettings();
+		TerrainPage tp = this.getTerrain();
+		Vector2f pos;
+		
+		LightState ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
+		
 
-        DirectionalLight dr = new DirectionalLight();
-        dr.setEnabled( true );
-        dr.setDiffuse( new ColorRGBA( 1.0f, 1.0f, 1.0f, 1.0f ) );
-        dr.setAmbient( new ColorRGBA( 0.5f, 0.5f, 0.5f, 1.0f ) );
-        dr.setDirection( new Vector3f( 0.5f, -0.5f, 0 ) );
+		
+		//Create a Basic Directional Light
+		DirectionalLight dl = new DirectionalLight();
+		dl.setDirection(new Vector3f(0,-1,0));
+		dl.setDiffuse(new ColorRGBA(
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.R"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.G"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.B"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.A")));
+		dl.setAmbient(new ColorRGBA(0.2f, 0.2f, 0.2f, 1.0f));
+		dl.setEnabled(true);
+		
+		ls.attach(dl);
+		ls.setTwoSidedLighting(true);
+		
 
-        rg.getLightState().attach( dr );
+		//If there is a first checkpoint it has a Spotlight on top.  Go through it and your car will turn red
+		int i = gs.getIntProperty("TRACK1.CHECKPOINT.COUNT");
+		if(i > 0){
+			pos = gs.get2DVectorProperty("TRACK1.CHECKPOINT1.POS");
+		   	SpotLight sl = new SpotLight();
+			sl.setDiffuse(new ColorRGBA(
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.R"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.G"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.B"), 
+					gs.getFloatProperty("TRACK1.LIGHT.SPOTLIGHT.A")));
+			sl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
+			sl.setDirection(new Vector3f(0, -1, 0));
+			sl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+			sl.setAngle(60);
+			sl.setEnabled(true);
+			ls.attach(sl);
+			ls.setTwoSidedLighting(true);
+		}
+		
+		//Insert Point Lights up to 5. JME Only supports 8 lights.
+		i = gs.getIntProperty("TRACK1.POINTLIGHT.COUNT");
+		for(int j = 1; j <= i && j <= 5; j++){
+			pos = gs.get2DVectorProperty("TRACK1.POINTLIGHT" + j + ".POS");
+			PointLight pl = new PointLight();
+			pl.setDiffuse(new ColorRGBA(
+					gs.getFloatProperty("TRACK1.POINTLIGHT"+ j +".R"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT"+ j +".G"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT"+ j +".B"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT"+ j +".A")));
+//			pl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
+			pl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+			pl.setEnabled(true);
+			ls.attach(pl);
+			ls.setTwoSidedLighting(true);
+		}
+		
+		rg.getRootNode().setRenderState(ls);
+    	
 	}
     
    private void generateObstacles(GlobalSettings gs) {
