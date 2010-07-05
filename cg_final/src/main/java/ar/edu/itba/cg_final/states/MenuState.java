@@ -1,8 +1,10 @@
 package ar.edu.itba.cg_final.states;
 
 import java.awt.Font;
+import java.net.MalformedURLException;
 import java.util.List;
 
+import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
 import ar.edu.itba.cg_final.menu.actions.IAction;
@@ -14,12 +16,20 @@ import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.settings.Score;
 import ar.edu.itba.cg_final.settings.Scores;
+import ar.edu.itba.cg_final.utils.ResourceLoader;
 
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
+import com.jme.scene.Spatial.LightCombineMode;
+import com.jme.scene.shape.Quad;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
 import com.jmex.font3d.Font3D;
 import com.jmex.font3d.Text3D;
 import com.jmex.font3d.effects.Font3DBorder;
@@ -40,10 +50,38 @@ public class MenuState extends RallyGameState {
 		this.setName("Menu");
 		stateNode.setName(this.getName());
 		buildMenu();
+		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"));
 		addTitle();
 		stateNode.attachChild(menu.getMenuNode());
 	}
 	
+	private void putBackGround(String backgroundImage) {
+		int width = DisplaySystem.getDisplaySystem().getWidth();
+		int height = DisplaySystem.getDisplaySystem().getHeight();
+
+		Quad background = new Quad("background", width, height);
+		background.setDefaultColor(ColorRGBA.white);
+		background.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		background.setLightCombineMode(LightCombineMode.Off);
+		background.setLocalTranslation(width / 2, height / 2, 0f);
+
+		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+				.createTextureState();
+		try {
+			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL(backgroundImage),
+					MinificationFilter.BilinearNoMipMaps,
+					MagnificationFilter.Bilinear, 1.0f, true));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ts.setEnabled(true);
+		background.setRenderState(ts);
+
+		background.updateRenderState();
+		stateNode.attachChild(background);
+	}
+
 	private void addTitle() {
 		/*
 		Font3D font = new Font3D(new Font("Verdana", Font.PLAIN, 4), 0.1f, true, true, true);
@@ -121,12 +159,25 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid newGame = new RallyMenuItemVoid("New Game");
 		newGame.setEnterAction(new IAction() {
 			public void performAction() {
-				menu.setActivePanel(newGamePanel);
+				if ( ! RallyGame.getInstance().isPaused() ){
+					menu.setActivePanel(newGamePanel);
+				}
 			}
 		});
-		newGame.toggleSelect();
-		
 		mainPanel.addItem(newGame);
+		
+		RallyMenuItemVoid resumeGame = new RallyMenuItemVoid("Resume Game");
+		resumeGame.setEnterAction(new IAction() {
+			public void performAction() {
+				if ( RallyGame.getInstance().isPaused() ){
+					RallyGame.getInstance().setPause(false);
+					GameStateManager.getInstance().deactivateChildNamed("Menu");
+				}
+			}
+		});
+		resumeGame.toggleSelect();
+		
+		mainPanel.addItem(resumeGame);
 		
 		return mainPanel;
 	}
