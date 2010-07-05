@@ -66,7 +66,7 @@ public class CheckPoint extends Node {
         if (startingGrid == true) {
         	texture = "texture/startinggrid.png";
         } else {
-        	texture = "texture/checkpoint.png";
+        	texture = "texture/checkpoint2.png";
         }
         
         //load a texture for the force field elements
