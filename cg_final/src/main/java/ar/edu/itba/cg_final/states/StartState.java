@@ -78,8 +78,8 @@ public class StartState extends RallyGameState {
 		} else if ((diff > 5000) && (diff < 6500)) {
 			// Start!!
 			refreshLabel("GO!");
+			RallyGame.getInstance().setPlaying();
 			RallyGame.getInstance().setPause(false);
-			
 		} else if (diff > 6500) {
 			// Sacar el cartel
 			GameStateManager.getInstance().deactivateChildNamed(this.getName());

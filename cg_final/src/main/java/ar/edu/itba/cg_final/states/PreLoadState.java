@@ -2,9 +2,9 @@ package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
-
 import com.jme.scene.Node;
 import com.jme.scene.Text;
+import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
 public class PreLoadState extends RallyGameState {
@@ -17,16 +17,17 @@ public class PreLoadState extends RallyGameState {
 	private boolean updateable = false;
 	GlobalSettings gs;
 	
+	private int width = DisplaySystem.getDisplaySystem().getWidth();
+	private int height = DisplaySystem.getDisplaySystem().getHeight();
+	
 	public PreLoadState() {
 		this.setName("PreLoad");
 		stateNode.setName(this.getName());
 	}
 	
 	private void refreshLabel(String text) {
-		this.stateNode.detachChildNamed("loaderInfo");
-		info = Text.createDefaultTextLabel("loaderInfo", "Cargando: " + text + "...");
-    	info.setLocalTranslation(  300, 400, 0);
-    	this.stateNode.attachChild(info);
+		StringBuffer lastText = info.getText();
+		lastText.replace(0, lastText.length(), "Cargando: " + text + "...");
     	return;
 	}
 	
@@ -48,7 +49,10 @@ public class PreLoadState extends RallyGameState {
 		// Borramos todos los nodos que contenga el stateNode del InGameState
 		inGameNode.detachAllChildren();
 
-		refreshLabel("...");
+		// Creamos el texto de informacion
+		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
+    	info.setLocalTranslation(width*0.35f,height*0.5f, 0);
+    	this.stateNode.attachChild(info);
     	
     	// Tomamos la instancia del RallyGame
     	game = RallyGame.getInstance();

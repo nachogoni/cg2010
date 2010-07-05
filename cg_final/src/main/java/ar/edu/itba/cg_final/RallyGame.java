@@ -1,7 +1,5 @@
 package ar.edu.itba.cg_final;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,7 +39,6 @@ import com.jme.scene.Text;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
-import com.jmex.model.collada.schema.bool;
 import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.terrain.TerrainPage;
@@ -50,12 +47,13 @@ public class RallyGame extends BaseSimpleGame {
 	
 	// Singleton
 	private static RallyGame instance;
-	
 	private RallyTrack rallyTrack;
-
 	private HashMap<String, String> positions = new HashMap<String, String>();
 	private HashMap<String, String> checkPoints = new HashMap<String, String>();
-
+	private long initTime;
+	private Text timeCheckPoint;
+	private boolean showCheckPointTime = false;
+	private float checkPointTimer;
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
 	protected InputHandler cameraInputHandler;
@@ -67,7 +65,6 @@ public class RallyGame extends BaseSimpleGame {
 	ResetAction resetAction;
 	
 	private Audio audio;
-
 	private Skybox skybox;	
 	
     //the flag to grab
@@ -75,7 +72,17 @@ public class RallyGame extends BaseSimpleGame {
 //	private int i = 0;
 //	private static FileWriter aFile;
 //	private static BufferedWriter aWriter;
+
+	private boolean playing = false;
+	private float pauseTime = 0;
+	private String firstCheckPoint = null;
+	private int laps = 0;
+	private long raceTime = 0;
 	
+	public long getRaceTime() {
+		return raceTime;
+	}
+
 	public RallyGame() {
 		instance = this;
 	}
@@ -127,8 +134,16 @@ public class RallyGame extends BaseSimpleGame {
 		//KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 	
+	public void setPlaying() {
+		playing = true;
+		initTime = new Date().getTime();
+		((RallyGameState)gameStateManager.getChild("InGame")).
+		getStateNode().attachChild(timeCheckPoint);
+	}
+	
 	public void setPause(boolean state) {
-		this.pause = state;
+		if (playing)
+			this.pause = state;
 	}
 	
 	public boolean isPaused(){
@@ -139,21 +154,44 @@ public class RallyGame extends BaseSimpleGame {
 		return rootNode;
 	}
 	
-	// Metodos para la creacion de los elementos del juego (usados en el preloader)
-	
-	
 	public void initAudio() {
 		GlobalSettings gs = new GlobalSettings();
-		audio = new Audio();//TODO
-		audio.addAudio(gs.getProperty("MUSIC.SONG2.PATH"));//TODO
+		audio = new Audio();
+		audio.addAudio(gs.getProperty("MUSIC.SONG2.PATH"));
 		audio.addAudio(gs.getProperty("MUSIC.SONG1.PATH"));
+	}
+	
+	public void setCheckPointText(Text text) {
+		timeCheckPoint = text;
 	}
 	
 	public void passThrough(String player, String checkPoint) {
 		if (positions.get(player).equals(checkPoint)) {
 			positions.put(player, checkPoints.get(checkPoint));
 			Audio sound = new Audio();
-			sound.playOnce("sound/hit.ogg");
+			sound.playOnce("sound/hit.ogg"); //TODO
+			
+			// Take last time
+			long actualTime = new Date().getTime();
+			System.out.println(pauseTime);
+			Date date = new Date(actualTime - initTime + (long)pauseTime);
+			StringBuffer timeText = timeCheckPoint.getText();
+			timeText.replace(0, timeText.length(),
+					String.format("%02d:%02d",date.getMinutes(), date.getSeconds()));
+			showCheckPointTime = true;
+			checkPointTimer = 3;
+			
+			// Check laps!
+			if (checkPoint.equals(firstCheckPoint)) {
+				laps++;
+				if (laps == 3) {
+					// Termino el juego
+					this.setPause(true);
+					gameStateManager.activateChildNamed("FinishedGame");
+					raceTime  = actualTime;
+				}
+			}
+			
 		}
 		return;
 	}
@@ -166,7 +204,6 @@ public class RallyGame extends BaseSimpleGame {
     	TerrainPage terrain = rallyTrack.getTerrain();
     	String last = null;
     	String actual = null;
-    	String first = null;
     	checkPointList = rallyTrack.createCheckPoints(gs);
 
     	for (Iterator<CheckPoint> iterator = checkPointList.iterator(); iterator.hasNext();) {
@@ -183,13 +220,13 @@ public class RallyGame extends BaseSimpleGame {
 				checkPoints.put(last, actual);
 				last = actual;
 			} else {
-				first = actual;
+				firstCheckPoint  = actual;
 				last = actual;
 			}
 		}
-		checkPoints.put(actual, first);
+		checkPoints.put(actual, firstCheckPoint);
 		// Seteamos el punto de partida
-		positions.put(car.getName(), first);
+		positions.put(car.getName(), firstCheckPoint);
     }
 	
 	/**
@@ -289,8 +326,20 @@ public class RallyGame extends BaseSimpleGame {
 			/** Update controllers/render states/transforms/bounds for rootNode. */
 			rootNode.updateGeometricState(tpf, true);
 			statNode.updateGeometricState(tpf, true);
+		} else {
+			pauseTime+=tpf;
 		}
 
+		if (showCheckPointTime) {
+			checkPointTimer-=tpf;
+			System.out.println(checkPointTimer);
+			if (checkPointTimer <= 0) {
+				StringBuffer timeText = timeCheckPoint.getText();
+				timeText.replace(0, timeText.length(),"");
+				showCheckPointTime = false;
+			}
+		}
+		
 		if (firstFrame) {
 			// drawing and calculating the first frame usually takes longer than
 			// the rest
@@ -433,17 +482,13 @@ public class RallyGame extends BaseSimpleGame {
     	car = new Car( getPhysicsSpace() );
     	car.setName("PlayerCar");
     	
-    	/*this.car.setPosition(terrain.getWorldBound().getCenter().x,
-    			terrain.getWorldBound().getCenter().y+24,
-    			terrain.getWorldBound().getCenter().z);*/
-    	
     	TerrainPage tp = rallyTrack.getTerrain();
     	
     	final Vector2f pos = gs.get2DVectorProperty("TRACK1.CAR.POSITION");
     	
-    	car.setPosition(pos.x, tp.getHeight(pos)-150+24, pos.y);
+    	car.setPosition(pos.x, tp.getHeight(pos)-150+20, pos.y);
     	
-//		Quaternion x180 = new Quaternion();
+//		Quaternion x180 = new Quaternion(); TODO
 //		x180.fromAngleAxis(FastMath.DEG_TO_RAD * 180, new Vector3f(0, 0, 1));
     	
         inGameStateNode.attachChild( car );
