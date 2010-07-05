@@ -12,6 +12,7 @@ public class GameUserSettings {
 	private Boolean musicOn = true;
 	private Integer sfxVolume = 100;
 	private Boolean sfxOn = true;
+	private Boolean highRes = true;
 	private String skybox = GlobalSettings.getInstance().getSkyBoxesNames().get(0);
 	
 	static private GameUserSettings instance;
@@ -64,12 +65,20 @@ public class GameUserSettings {
 	public void setSkyBox(String newSkybox) {
 		this.skybox = newSkybox;
 	}
+	
+	public void setHighRes(Boolean highRes) {
+		this.highRes = highRes;
+	}
+	
+	public Boolean getHighRes() {
+		return highRes;
+	}
 
 	@Override
 	public String toString() {
-		return "GameUserSettings [musicOn=" + musicOn + ", musicVolume="
-				+ musicVolume + ", sfxOn=" + sfxOn + ", sfxVolume=" + sfxVolume
-				+ ", skybox=" + skybox + "]";
+		return "GameUserSettings [highRes=" + highRes + ", musicOn=" + musicOn
+				+ ", musicVolume=" + musicVolume + ", sfxOn=" + sfxOn
+				+ ", sfxVolume=" + sfxVolume + ", skybox=" + skybox + "]";
 	}
-	
+
 }

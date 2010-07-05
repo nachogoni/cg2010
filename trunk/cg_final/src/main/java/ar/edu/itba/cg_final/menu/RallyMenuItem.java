@@ -50,7 +50,7 @@ public abstract class RallyMenuItem<T>{
 		textSpatial.setRenderState( Text.getDefaultFontTextureState() );
 		textSpatial.setRenderState( Text.getFontBlend() );
 		textSpatial.setTextColor(defaultColor);
-		textSpatial.setLocalScale(3);
+		textSpatial.setLocalScale(1.5f);
 		textSpatial.setLightCombineMode(LightCombineMode.Off);
 		textSpatial.updateRenderState();
 	}
