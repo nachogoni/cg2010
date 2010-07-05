@@ -16,12 +16,15 @@ import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.settings.Score;
 import ar.edu.itba.cg_final.settings.Scores;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
+
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
+import com.jme.scene.Text;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.TextureState;
@@ -31,6 +34,7 @@ import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
 
+	private static final float TOLE = 0.2f;
 	private RallyMenu menu;
 	private RallyMenuPanel mainPanel;
 	private RallyMenuPanel optionsPanel;
@@ -38,6 +42,8 @@ public class MenuState extends RallyGameState {
 	private RallyMenuPanel highScorePanel;
 	private RallyMenuItemVoid back;
 	private RallyMenuPanel confirmationPanel;
+	private Text titleText;
+	private ColorRGBA initialColor;
 
 	public MenuState() {
 		this.setName("Menu");
@@ -76,21 +82,18 @@ public class MenuState extends RallyGameState {
 	}
 
 	private void addTitle() {
-		/*
-		Font3D font = new Font3D(new Font("Verdana", Font.PLAIN, 4), 0.1f, true, true, true);
-		FirstPersonHandler
-//        Font3DGradient gradient = new Font3DGradient(new Vector3f(0.5f,1,0), ColorRGBA.lightGray, new ColorRGBA(0,0,1,1f));
-//        gradient.applyEffect(font);
-//        Font3DTexture fonttexture = new Font3DTexture(TestTextureState.class.getClassLoader().getResource("jmetest/data/model/marble.bmp"));
-//        fonttexture.applyEffect(myfont);
-//        Font3DBorder fontborder = new Font3DBorder(0.05f, ColorRGBA.red, new ColorRGBA(1,1,0,0.3f),font);
-//        fontborder.applyEffect(font);
-		Text3D text = font.createText("Rally Uribe 100K", 4, 0);
-		text.setLocalScale(new Vector3f(1.0f, 1f, 1f));
-		float width = text.getWidth();
-//		text.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth()-width)/2.0f, 0,0);
-		menu.getMenuNode().attachChild(text);
-		*/
+		titleText = Text.createDefaultTextLabel("Title","Rally Uribe 100K");
+		titleText.setLocalScale(3.5f);
+		ColorRGBA textColor = ColorRGBA.green;
+		textColor.interpolate(ColorRGBA.white, 0.7f);
+		titleText.setTextColor(textColor);
+		titleText.setLightCombineMode(LightCombineMode.Off);
+		titleText.setCullHint(CullHint.Never);
+		float width = titleText.getWidth();
+		titleText.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth()-width)/2.0f, DisplaySystem.getDisplaySystem().getHeight()*3/4,0);
+		
+		initialColor = new ColorRGBA(textColor);
+		menu.getMenuNode().attachChild(titleText);
 	}
 
 	private void buildMenu() {
@@ -342,6 +345,11 @@ public class MenuState extends RallyGameState {
 	@Override
 	public void update(float arg0) {
 		menu.update();
+		titleText.setTextColor(titleText.getTextColor().multLocal((float) 0.99));
+
+		float[] textColor = titleText.getTextColor().getColorArray();
+		if ( textColor[0] < TOLE || textColor[1] < TOLE || textColor[2] < TOLE || textColor[3] < TOLE )
+			titleText.setTextColor(new ColorRGBA(initialColor));
 	}
 
 }
