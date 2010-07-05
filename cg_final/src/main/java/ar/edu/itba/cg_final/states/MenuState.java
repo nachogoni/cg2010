@@ -1,5 +1,8 @@
 package ar.edu.itba.cg_final.states;
 
+import java.awt.Font;
+import java.util.List;
+
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
 import ar.edu.itba.cg_final.menu.actions.IAction;
@@ -9,9 +12,18 @@ import ar.edu.itba.cg_final.menu.items.RallyMenuItemListString;
 import ar.edu.itba.cg_final.menu.items.RallyMenuItemVoid;
 import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
+import ar.edu.itba.cg_final.settings.Score;
+import ar.edu.itba.cg_final.settings.Scores;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
+import com.jme.system.DisplaySystem;
+import com.jmex.font3d.Font3D;
+import com.jmex.font3d.Text3D;
+import com.jmex.font3d.effects.Font3DBorder;
+import com.jmex.font3d.effects.Font3DGradient;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
@@ -28,9 +40,28 @@ public class MenuState extends RallyGameState {
 		this.setName("Menu");
 		stateNode.setName(this.getName());
 		buildMenu();
+		addTitle();
 		stateNode.attachChild(menu.getMenuNode());
 	}
 	
+	private void addTitle() {
+		/*
+		Font3D font = new Font3D(new Font("Verdana", Font.PLAIN, 4), 0.1f, true, true, true);
+		FirstPersonHandler
+//        Font3DGradient gradient = new Font3DGradient(new Vector3f(0.5f,1,0), ColorRGBA.lightGray, new ColorRGBA(0,0,1,1f));
+//        gradient.applyEffect(font);
+//        Font3DTexture fonttexture = new Font3DTexture(TestTextureState.class.getClassLoader().getResource("jmetest/data/model/marble.bmp"));
+//        fonttexture.applyEffect(myfont);
+//        Font3DBorder fontborder = new Font3DBorder(0.05f, ColorRGBA.red, new ColorRGBA(1,1,0,0.3f),font);
+//        fontborder.applyEffect(font);
+		Text3D text = font.createText("Rally Uribe 100K", 4, 0);
+		text.setLocalScale(new Vector3f(1.0f, 1f, 1f));
+		float width = text.getWidth();
+//		text.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth()-width)/2.0f, 0,0);
+		menu.getMenuNode().attachChild(text);
+		*/
+	}
+
 	private void buildMenu() {
 		menu = new RallyMenu();
 		menu.addPanel(buildMainPanel());
@@ -219,9 +250,16 @@ public class MenuState extends RallyGameState {
 				menu.setActivePanel(mainPanel);
 			}
 		});
-		back.toggleSelect();
 		highScorePanel.addItem(back);
 		
+		List<Score> scores = Scores.getInstance().getScores();
+		for(int i = scores.size()-1 ; i >= 0 ; i--){
+			Score s = scores.get(i);
+			RallyMenuItemVoid score = new RallyMenuItemVoid(s.getUserID() + " " + s.getScore());
+			highScorePanel.addItem(score);
+			if ( i == 0 )
+				score.toggleSelect();
+		}
 		return highScorePanel;
 	}
 
