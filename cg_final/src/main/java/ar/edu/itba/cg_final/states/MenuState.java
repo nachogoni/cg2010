@@ -7,6 +7,7 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
 import ar.edu.itba.cg_final.menu.actions.IAction;
+import ar.edu.itba.cg_final.menu.actions.MenuInputHandler;
 import ar.edu.itba.cg_final.menu.items.RallyMenuItemBoolean;
 import ar.edu.itba.cg_final.menu.items.RallyMenuItemInteger;
 import ar.edu.itba.cg_final.menu.items.RallyMenuItemListString;
@@ -19,6 +20,7 @@ import ar.edu.itba.cg_final.utils.ResourceLoader;
 
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
+import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
@@ -30,6 +32,8 @@ import com.jme.scene.shape.Quad;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jmex.audio.AudioSystem;
+import com.jmex.audio.AudioTrack;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
@@ -44,14 +48,21 @@ public class MenuState extends RallyGameState {
 	private RallyMenuPanel confirmationPanel;
 	private Text titleText;
 	private ColorRGBA initialColor;
+	private MenuInputHandler keyActions;
+	AudioTrack menuSong;
+	final static String STATE_NAME = "Menu";
 
 	public MenuState() {
-		this.setName("Menu");
+		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
 		buildMenu();
 		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"));
 		addTitle();
 		stateNode.attachChild(menu.getMenuNode());
+		menuSong = AudioSystem.getSystem().createAudioTrack(
+				RallyGame.class.getClassLoader().getResource(
+						GlobalSettings.getInstance().getProperty("MUSIC.MENU")), false);
+		menuSong.setLooping(true);		
 	}
 	
 	private void putBackGround(String backgroundImage) {
@@ -114,6 +125,7 @@ public class MenuState extends RallyGameState {
 			public void performAction() {
 				if ( exit.getValue() )
 					System.exit(0);
+				keyActions.setPanel(mainPanel);
 				menu.setActivePanel(mainPanel);
 			}
 		});
@@ -129,6 +141,7 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid exit = new RallyMenuItemVoid("Exit");
 		exit.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(confirmationPanel);
 				menu.setActivePanel(confirmationPanel
 						);
 			}
@@ -138,6 +151,7 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid highScores = new RallyMenuItemVoid("High Scores");
 		highScores.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(highScorePanel);
 				menu.setActivePanel(highScorePanel);
 			}
 		});
@@ -146,6 +160,7 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid options = new RallyMenuItemVoid("Options");
 		options.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(optionsPanel);
 				menu.setActivePanel(optionsPanel);
 			}
 		});
@@ -156,7 +171,8 @@ public class MenuState extends RallyGameState {
 			public void performAction() {
 				if ( RallyGame.getInstance().isPaused() ){
 					RallyGame.getInstance().setPause(false);
-					GameStateManager.getInstance().deactivateChildNamed("Menu");
+					GameStateManager.getInstance().deactivateChildNamed(MenuState.STATE_NAME);
+					GameStateManager.getInstance().activateChildNamed(InGameState.STATE_NAME);
 				}
 			}
 		});
@@ -166,6 +182,7 @@ public class MenuState extends RallyGameState {
 		newGame.setEnterAction(new IAction() {
 			public void performAction() {
 				if ( ! RallyGame.getInstance().isPaused() ){
+					keyActions.setPanel(newGamePanel);
 					menu.setActivePanel(newGamePanel);
 				}
 			}
@@ -184,6 +201,7 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid backOptions = new RallyMenuItemVoid("Back");
 		backOptions.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(mainPanel);
 				menu.setActivePanel(mainPanel);
 			}
 		});
@@ -259,6 +277,7 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid backItem = new RallyMenuItemVoid("Back");
 		backItem.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(mainPanel);
 				menu.setActivePanel(mainPanel);
 			}
 		});
@@ -278,9 +297,10 @@ public class MenuState extends RallyGameState {
 		RallyMenuItemVoid startGameItem = new RallyMenuItemVoid("Start Game");
 		startGameItem.setEnterAction(new IAction() {
 			public void performAction() {
+				keyActions.setPanel(mainPanel);
 				menu.setActivePanel(mainPanel);
-				GameStateManager.getInstance().deactivateChildNamed("Menu");
-				GameStateManager.getInstance().activateChildNamed("PreLoad");	
+				GameStateManager.getInstance().deactivateChildNamed(MenuState.STATE_NAME);
+				GameStateManager.getInstance().activateChildNamed(PreLoadState.STATE_NAME);	
 			}
 		});
 		startGameItem.toggleSelect();
@@ -295,6 +315,7 @@ public class MenuState extends RallyGameState {
 		back.setEnterAction(new IAction() {
 			public void performAction() {
 				menu.setActivePanel(mainPanel);
+				keyActions.setPanel(mainPanel);
 			}
 		});
 		highScorePanel.addItem(back);
@@ -312,12 +333,9 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void activated() {
-		KeyBindingManager.getKeyBindingManager().removeAll();
-		KeyBindingManager.getKeyBindingManager().add("up", KeyInput.KEY_UP);
-		KeyBindingManager.getKeyBindingManager().add("down", KeyInput.KEY_DOWN);
-		KeyBindingManager.getKeyBindingManager().add("left", KeyInput.KEY_LEFT);
-		KeyBindingManager.getKeyBindingManager().add("right", KeyInput.KEY_RIGHT);
-		KeyBindingManager.getKeyBindingManager().add("enter", KeyInput.KEY_RETURN);
+		menuSong.play();
+		keyActions = new MenuInputHandler(mainPanel);
+		RallyGame.getInstance().setInputHandler(keyActions);
 
 		this.rootNode.attachChild(this.stateNode);
 		this.rootNode.updateRenderState();
@@ -325,7 +343,8 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void deactivated() {
-		KeyBindingManager.getKeyBindingManager().removeAll();
+		RallyGame.getInstance().setInputHandler(new InputHandler());
+		menuSong.stop();
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();
 	}
@@ -341,6 +360,7 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
+		AudioSystem.getSystem().update();
 		menu.update();
 		titleText.setTextColor(titleText.getTextColor().multLocal((float) 0.99));
 

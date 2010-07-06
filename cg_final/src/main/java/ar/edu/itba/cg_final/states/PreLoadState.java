@@ -10,7 +10,7 @@ import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
 public class PreLoadState extends RallyGameState {
-
+	
 	private Text info;
 	private RallyGame game;
 	private Integer task = 0;
@@ -19,12 +19,14 @@ public class PreLoadState extends RallyGameState {
 	private boolean updateable = false;
 	GlobalSettings gs;
 	GameUserSettings us;
+	
+	public static final String STATE_NAME = "PreLoad";
 
 	private int width = DisplaySystem.getDisplaySystem().getWidth();
 	private int height = DisplaySystem.getDisplaySystem().getHeight();
 
 	public PreLoadState() {
-		this.setName("PreLoad");
+		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
 	}
 
@@ -49,7 +51,7 @@ public class PreLoadState extends RallyGameState {
 		// Obtenemos el stateNode del InGameState para ir asignandole los
 		// modelos a crear
 		inGame = (InGameState) GameStateManager.getInstance()
-				.getChild("InGame");
+				.getChild(InGameState.STATE_NAME);
 		inGameNode = inGame.getStateNode();
 
 		// Borramos todos los nodos que contenga el stateNode del InGameState
@@ -102,14 +104,19 @@ public class PreLoadState extends RallyGameState {
 				game.createRallyTrack(inGameNode, gs);
 				break;
 			case 20:
+				// Audio
+				refreshLabel("Audio");
+				game.initAudio(gs);
+				break;
+			case 30:
 				// Cargamos los autos
 				refreshLabel("Autos");
 				game.createCar(inGameNode, gs);
 				break;
-			case 30:
+			case 40:
 				// Cargamos la configuracion del input
-				refreshLabel("Teclas");
-				game.initInput(inGameNode);
+				//refreshLabel("Teclas");
+				//game.initInput(inGameNode);
 				break;
 			case 50:
 				// Cargamos la pista
@@ -117,10 +124,7 @@ public class PreLoadState extends RallyGameState {
 				game.createForest(inGameNode);
 				break;
 			case 70:
-				// Audio
-				refreshLabel("Audio");
-				game.initAudio(gs);
-				break;
+
 			case 80:
 				refreshLabel("CheckPoints");
 				game.buildCheckpoint(inGameNode, gs);
@@ -128,7 +132,7 @@ public class PreLoadState extends RallyGameState {
 			case 90:
 				// Saltamos al proximo estado: InGameState
 				GameStateManager.getInstance().deactivateChildNamed(this.getName());
-				GameStateManager.getInstance().activateChildNamed("StartGame");
+				GameStateManager.getInstance().activateChildNamed(StartState.STATE_NAME);
 				break;
 			default:
 				break;

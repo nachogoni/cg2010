@@ -17,13 +17,14 @@ public abstract class RallyGameState  extends GameState {
 		this.rootNode = RallyGame.getInstance().getRootNode();
 	}
 
+	public RallyGameState() {
+		super();
+		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);	
+	}
+	
 	@Override
 	public void update(float tpf) {
-		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("show menu", false)) {
-			RallyGame.getInstance().setPause(true);
-			GameStateManager.getInstance().activateChildNamed("Menu");
-		}		
+
 	}
 	
 	// Genera una llamada al estado cuando es activdado

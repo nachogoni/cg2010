@@ -15,8 +15,10 @@ public class StartState extends RallyGameState {
 	private long start;
 	private Text counter;
 	
+	final static String STATE_NAME = "StartGame";
+	
 	public StartState() {
-		this.setName("StartGame");
+		this.setName(STATE_NAME);
 		this.stateNode.setName(this.getName());
 	}
 	
@@ -40,7 +42,7 @@ public class StartState extends RallyGameState {
 		counter.setLocalScale(10f);
     	this.stateNode.attachChild(counter);
 		RallyGame.getInstance().getPlayerCar().isLocked(true);
-		GameStateManager.getInstance().activateChildNamed("InGame");
+		GameStateManager.getInstance().activateChildNamed(InGameState.STATE_NAME);
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 		rootNode.updateRenderState();
