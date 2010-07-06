@@ -132,7 +132,6 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(finishedGameState);
 
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
-//		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 
 	public void setPlaying() {
