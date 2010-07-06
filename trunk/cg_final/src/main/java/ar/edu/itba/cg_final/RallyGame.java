@@ -62,7 +62,8 @@ public class RallyGame extends BaseSimpleGame {
 	private List<CheckPoint> checkPointList;
 	Text label;
 	Car car;
-	
+	Vector3f lastCheckPoint = null;
+		
 	private Audio audio;
 	private Skybox skybox;	
 	
