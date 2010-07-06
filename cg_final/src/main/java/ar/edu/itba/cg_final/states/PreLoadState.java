@@ -122,13 +122,12 @@ public class PreLoadState extends RallyGameState {
 				game.initAudio(gs);
 				break;
 			case 80:
-				refreshLabel("Enviroment");
+				refreshLabel("CheckPoints");
 				game.buildCheckpoint(inGameNode, gs);
 				break;
-			case 190:
+			case 90:
 				// Saltamos al proximo estado: InGameState
-				GameStateManager.getInstance().deactivateChildNamed(
-						this.getName());
+				GameStateManager.getInstance().deactivateChildNamed(this.getName());
 				GameStateManager.getInstance().activateChildNamed("StartGame");
 				break;
 			default:

@@ -3,6 +3,7 @@ package ar.edu.itba.cg_final.vehicles;
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jmex.audio.AudioSystem;
@@ -37,6 +38,10 @@ public class Car extends Node {
     public void isLocked(boolean state) {
     	locked  = state;
     }
+
+    public Vector3f getPosition() {
+        return chassisNode.getLocalTranslation();
+    }
     
     public void setPosition( float x, float y, float z ) {
         chassisNode.clearDynamics();
@@ -49,6 +54,13 @@ public class Car extends Node {
     public void setRotation( float x, float y, float z, float w ) {
         chassisNode.clearDynamics();
         chassisNode.getLocalRotation().set( x, y, z, w );
+        frontSuspension.resetPosition();
+        rearSuspension.resetPosition();
+    }
+
+    public void setRotation( float x, float y, float z) {
+        chassisNode.clearDynamics();
+        chassisNode.getLocalRotation().set(new Quaternion(new float[]{x,y,z}));
         frontSuspension.resetPosition();
         rearSuspension.resetPosition();
     }
