@@ -1,7 +1,5 @@
 package ar.edu.itba.cg_final;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +51,7 @@ public class RallyGame extends BaseSimpleGame {
 	private RallyTrack rallyTrack;
 	private HashMap<String, String> positions = new HashMap<String, String>();
 	private HashMap<String, String> checkPoints = new HashMap<String, String>();
-	private long initTime;
+	private long initTime = new Date().getTime();
 	private Text timeCheckPoint;
 	private boolean showCheckPointTime = false;
 	private float checkPointTimer;
@@ -139,7 +137,6 @@ public class RallyGame extends BaseSimpleGame {
 
 	public void setPlaying() {
 		playing = true;
-		initTime = new Date().getTime();
 		((RallyGameState)gameStateManager.getChild("InGame")).
 		getStateNode().attachChild(timeCheckPoint);
 	}
@@ -182,18 +179,20 @@ public class RallyGame extends BaseSimpleGame {
 			audio.playSound(soundsEffects.CHECKPOINT);
 			// Take last time
 			long actualTime = new Date().getTime();
-			raceTime  = actualTime - initTime + (long)pauseTime;
-			Date date = new Date(raceTime);
 			StringBuffer timeText = timeCheckPoint.getText();
 			showCheckPointTime = true;
 			checkPointTimer = 3;
 			// Check laps!
 			if (checkPoint.equals(firstCheckPoint)) {
-				laps++;
 				// Informamos que dio una vuelta
 				timeCheckPoint.setLocalScale(3f);
 				lap = "Lap " + String.valueOf(laps) + ": ";
-				if (laps == 4) { //TODO == 4 para que sean 3 vueltas!
+				if (laps == 0) {
+					// Iniciamos el contador de tiempo
+					lap = "Timer: ";
+					initTime = new Date().getTime();
+					actualTime = initTime;
+				} else if (laps == 3) { //TODO == 3 para que sean 3 vueltas!
 					// Termino el juego
 					lap = "Race: ";
 					checkPointTimer = 300;
@@ -206,11 +205,14 @@ public class RallyGame extends BaseSimpleGame {
 					car.isLocked(true);
 					// Activamos el estado final
 					gameStateManager.activateChildNamed("FinishedGame");
+					laps++;
 				}
 			} else {
 				timeCheckPoint.setLocalScale(1.5f);
 			}
 			// Creamos el string a mostrar
+			raceTime  = actualTime - initTime + (long)pauseTime;
+			Date date = new Date(raceTime);
 			timeText.replace(0, timeText.length(),String.
 					format("%s%02d:%02d",lap, date.getMinutes(), date.getSeconds()));
 		}
