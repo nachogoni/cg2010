@@ -10,6 +10,7 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
+import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
@@ -108,7 +109,7 @@ public class InGameState extends RallyGameState {
                 InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_LEFT, InputHandler.AXIS_NONE, false );
         input.addAction( new SteerAction( car, 1 ),
                 InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_RIGHT, InputHandler.AXIS_NONE, false );
-        input.addAction( new ResetAction( car ),
+        input.addAction( new ResetAction( car, rg ),
                 InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_S, InputHandler.AXIS_NONE, false );
         input.addAction( new ShowMenuAction(), InputHandler.DEVICE_KEYBOARD, 
         		KeyInput.KEY_ESCAPE, InputHandler.AXIS_NONE, false);
@@ -202,7 +203,6 @@ public class InGameState extends RallyGameState {
      */
     private class AccelAction implements InputActionInterface {
         Car car;
-
         int direction;
 
         public AccelAction( final Car car, final int direction ) {
@@ -224,13 +224,17 @@ public class InGameState extends RallyGameState {
 
     private class ResetAction extends InputAction {
     	Car car;
+    	TerrainPage tr;
+    	Vector3f pos;
     	
-    	public ResetAction(Car car) {
+    	public ResetAction(Car car, RallyGame rg) {
     		this.car = car;
+    		this.tr = rg.getRallyTrack().getTerrain();
+    		this.pos = rg.getLastCheckPointPosition();
 		}
     	
         public void performAction( InputActionEvent evt ) {
-            car.setPosition( -500, 50, 600 );
+        	car.setPosition(pos.x, tr.getHeight(pos.x, pos.z)-150+20, pos.z);
         }
     }
     

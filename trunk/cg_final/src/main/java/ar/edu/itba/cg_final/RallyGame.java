@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.map.CheckPoint;
@@ -21,7 +20,6 @@ import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
 import ar.edu.itba.cg_final.states.StartState;
 import ar.edu.itba.cg_final.vehicles.Car;
-
 import com.jme.app.BaseSimpleGame;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -62,7 +60,7 @@ public class RallyGame extends BaseSimpleGame {
 	private List<CheckPoint> checkPointList;
 	Text label;
 	Car car;
-	Vector3f lastCheckPoint = null;
+	Vector3f lastCheckPoint = new Vector3f();
 		
 	private Audio audio;
 	private Skybox skybox;	
@@ -173,7 +171,7 @@ public class RallyGame extends BaseSimpleGame {
 	public void passThrough(String player, String checkPoint) {
 		if (positions.get(player).equals(checkPoint)) {
 			String lap = "";
-			lastCheckPoint = car.getPosition().clone();
+			lastCheckPoint.set(car.getPosition());
 			positions.put(player, checkPoints.get(checkPoint));
 			audio.playSound(soundsEffects.CHECKPOINT);
 			// Take last time
@@ -204,8 +202,8 @@ public class RallyGame extends BaseSimpleGame {
 					car.isLocked(true);
 					// Activamos el estado final
 					gameStateManager.activateChildNamed("FinishedGame");
-					laps++;
 				}
+				laps++;
 			} else {
 				timeCheckPoint.setLocalScale(1.5f);
 			}
@@ -243,7 +241,7 @@ public class RallyGame extends BaseSimpleGame {
 				last = actual;
 			} else {
 				firstCheckPoint  = actual;
-				lastCheckPoint = checkpoint.get3DPosition();
+				lastCheckPoint.set(checkpoint.get3DPosition());
 				last = actual;
 			}
 		}
@@ -574,6 +572,10 @@ public class RallyGame extends BaseSimpleGame {
 	// Metodo que retorna un objeto al que le atacheamos las acciones del teclado
 	public InputHandler getInputHandler() {
 		return this.input;
+	}
+
+	public Vector3f getLastCheckPointPosition() {
+		return lastCheckPoint;
 	}
 	
 }
