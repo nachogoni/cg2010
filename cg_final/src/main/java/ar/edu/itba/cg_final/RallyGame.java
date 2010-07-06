@@ -69,7 +69,7 @@ public class RallyGame extends BaseSimpleGame {
 	
     //the flag to grab
 	private Boolean screenshot = false;
-//	private int i = 0;
+//	private int i = 4;
 //	private static FileWriter aFile;
 //	private static BufferedWriter aWriter;
 
@@ -132,7 +132,7 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(finishedGameState);
 
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
-		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
+//		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 
 	public void setPlaying() {
@@ -362,7 +362,7 @@ public class RallyGame extends BaseSimpleGame {
 				false)){
 			screenshot = true;
 //			try {
-//				aWriter.write("TRACK1.POINTLIGHT"+ i +".POS="+car.getPosition().x+","+car.getPosition().z+"\nTRACK1.POINTLIGHT"+ i +".R=1.0\nTRACK1.POINTLIGHT"+ i +".G=1.0\nTRACK1.POINTLIGHT"+ i +".B=1.0\nTRACK1.POINTLIGHT"+ i +".A=1.0");
+//				aWriter.write("TRACK1.OBSTACLES"+ i +".POS="+car.getPosition().x+","+car.getPosition().z);
 //				aWriter.flush();
 //				i++;
 //			} catch (IOException e) {
@@ -459,7 +459,7 @@ public class RallyGame extends BaseSimpleGame {
 //        car.getLocalRotation().set(new Quaternion(new float[]{0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0}));
     	//TODO: rotarlo...
         inGameStateNode.attachChild( car );
-        inGameStateNode.updateGeometricState(0, true);			
+        inGameStateNode.updateGeometricState(0, true);
         
     }
     public void createRallyTrack(Node inGameStateNode, GlobalSettings gs) {
