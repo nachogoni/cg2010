@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -132,7 +134,7 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(finishedGameState);
 
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
-		//KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
+		KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
 
 	public void setPlaying() {
@@ -357,6 +359,15 @@ public class RallyGame extends BaseSimpleGame {
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
 				false)){
 			screenshot = true;
+//			try {
+//				aWriter.write("TRACK1.POINTLIGHT"+ i +".POS="+car.getPosition().x+","+car.getPosition().z+"\nTRACK1.POINTLIGHT"+ i +".R=1.0\nTRACK1.POINTLIGHT"+ i +".G=1.0\nTRACK1.POINTLIGHT"+ i +".B=1.0\nTRACK1.POINTLIGHT"+ i +".A=1.0");
+//				aWriter.flush();
+//				i++;
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+
 		}
 		
 		GameStateManager.getInstance().update(tpf);
@@ -476,13 +487,19 @@ public class RallyGame extends BaseSimpleGame {
 		
 		LightState ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
 		
-
-		
 		//Create a Basic Directional Light
 		DirectionalLight dl = new DirectionalLight();
 		dl.setDirection(new Vector3f(0,-1,0));
-		dl.setDiffuse(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
-		dl.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
+		dl.setDiffuse(new ColorRGBA(
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.R"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.G"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.B"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.A")));
+		dl.setAmbient(new ColorRGBA(
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.R"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.G"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.B"), 
+				gs.getFloatProperty("TRACK1.AMBIENT.LIGHT.A")));
 		dl.setEnabled(true);
 		
 		ls.attach(dl);
@@ -513,25 +530,17 @@ public class RallyGame extends BaseSimpleGame {
 		for(int j = 1; j <= i && j <= 5; j++){
 			pos = gs.get2DVectorProperty("TRACK1.POINTLIGHT" + j + ".POS");
 			PointLight pl = new PointLight();
-			pl.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+			pl.setDiffuse(new ColorRGBA(
+					gs.getFloatProperty("TRACK1.POINTLIGHT" + j + ".R"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT" + j + ".G"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT" + j + ".B"), 
+					gs.getFloatProperty("TRACK1.POINTLIGHT" + j + ".A")));
 //			pl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
-			pl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
+			pl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+50, pos.y));
 			pl.setEnabled(true);
 			ls.attach(pl);
 			ls.setTwoSidedLighting(true);
 		}
-		
-//		//Spotlight above every Checkpoint
-//		SpotLight sl = new SpotLight();
-//		sl.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-//		sl.setAmbient(new ColorRGBA(0.75f, 0.75f, 0.75f, 1.0f));
-//		sl.setDirection(new Vector3f(0, -1, 0));
-//		sl.setLocation(new Vector3f(pos.x, tp.getHeight(pos)-150+100, pos.y));
-//		sl.setAngle(60);
-//		sl.setEnabled(true);
-//		
-//		ls.attach(sl);
-//		ls.setTwoSidedLighting(true);
 		
 
 		rootNode.setRenderState(ls);
