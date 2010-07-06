@@ -19,8 +19,10 @@ public class FinishedState extends RallyGameState {
 	Vector3f p;
 	Camera cam;
 	
+	public static final String STATE_NAME = "FinishedGame"; 
+	
 	public FinishedState() {
-		this.setName("FinishedGame");
+		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
 	}
 		

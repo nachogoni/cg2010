@@ -3,9 +3,6 @@ package ar.edu.itba.cg_final.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.itba.cg_final.menu.actions.IAction;
-
-import com.jme.input.KeyBindingManager;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
@@ -47,39 +44,19 @@ public class RallyMenuPanel {
 	}
 
 	public void update() {
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("up", false)) {
-			activeOption++;
-			if ( activeOption >= items.size() )
-				activeOption--;
-			else{
-				items.get(activeOption-1).toggleSelect();
-				items.get(activeOption).toggleSelect();
-			}
-		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("down", false)) {
-			activeOption--;
-			if ( activeOption < 0 )
-				activeOption++;
-			else{
-				items.get(activeOption+1).toggleSelect();
-				items.get(activeOption).toggleSelect();
-			}		
-		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("left", true)) {
-			performActions(items.get(activeOption).getLeftAction());
-		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("right", true)) {
-			performActions(items.get(activeOption).getRightAction());
-		}
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("enter", false)) {
-			performActions(items.get(activeOption).getEnterAction());
-		}
 		node.updateRenderState();
 	}
 
-	private void performActions(List<IAction> actions){
-		for(IAction action:actions)
-			action.performAction();
+	public void setActiveOption(int newOpt) {
+		this.activeOption = newOpt;
+	}
+	
+	public int getActiveOption() {
+		return this.activeOption;
+	}
+	
+	public List<RallyMenuItem<?>> getItems() {
+		return this.items;
 	}
 	
 }

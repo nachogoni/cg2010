@@ -1,13 +1,12 @@
 package ar.edu.itba.cg_final.vehicles;
 
-import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.controller.Audio;
+import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jmex.audio.AudioSystem;
-import com.jmex.audio.AudioTrack;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.physics.material.Material;
@@ -24,14 +23,13 @@ public class Car extends Node {
 
 	private boolean locked = false;
     
-    private AudioTrack engineSound;
+	Audio audio;
     
-    private AudioTrack acelSound;
-    
-    public Car( final PhysicsSpace pSpace, GlobalSettings gs ) {
+    public Car( final PhysicsSpace pSpace, GlobalSettings gs, Audio audio ) {
         super( "car" );
         createChassi( pSpace );
         createSuspension( pSpace );
+        this.audio = audio;
         //loadFancySmoke();
     }
 
@@ -118,7 +116,7 @@ public class Car extends Node {
     		return;
         rearSuspension.accelerate( direction );
         frontSuspension.accelerate( direction );
-        acelSound.play(); 
+        audio.playSound(soundsEffects.ACEL);
         //acelSound.fadeIn(2.5f,3f);
     }
 
@@ -130,8 +128,7 @@ public class Car extends Node {
     		return;
         rearSuspension.releaseAccel();
         frontSuspension.releaseAccel();
-        if (!RallyGame.getInstance().isPaused() && acelSound.isActive())
-        	acelSound.pause();
+        audio.stopSound(soundsEffects.ACEL);
     }
 
     /**
@@ -169,23 +166,6 @@ public class Car extends Node {
 	public DynamicPhysicsNode getChassis() {
 		return chassisNode;
 	}
-	
-	public void setEngineSound(String property) {
-		engineSound = AudioSystem.getSystem().createAudioTrack(
-				RallyGame.class.getClassLoader().getResource(
-						property), false);
-		engineSound.setLooping(true);
-	}
-	
-	public void setAcelerationSound(String property) {
-		acelSound = AudioSystem.getSystem().createAudioTrack(
-				RallyGame.class.getClassLoader().getResource(
-						property), false);
-		acelSound.setLooping(true);
-	}
 
-	public void startEngine() {
-		engineSound.play();
-	}
 
 }

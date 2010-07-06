@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import ar.edu.itba.cg_final.controller.Audio;
+import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.map.CheckPoint;
 import ar.edu.itba.cg_final.map.RallySkyBox;
 import ar.edu.itba.cg_final.map.RallyTrack;
@@ -22,14 +23,9 @@ import ar.edu.itba.cg_final.states.StartState;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.app.BaseSimpleGame;
-import com.jme.input.ChaseCamera;
-import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.input.action.InputAction;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.InputActionInterface;
 import com.jme.light.DirectionalLight;
 import com.jme.light.PointLight;
 import com.jme.light.SpotLight;
@@ -61,14 +57,11 @@ public class RallyGame extends BaseSimpleGame {
 	private float checkPointTimer;
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
-	protected InputHandler cameraInputHandler;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
 	private List<CheckPoint> checkPointList;
 	Text label;
 	Car car;
-	ResetAction resetAction;
-	Vector3f lastCheckPoint = null;
 	
 	private Audio audio;
 	private Skybox skybox;	
@@ -163,15 +156,14 @@ public class RallyGame extends BaseSimpleGame {
 	
 	public void initAudio(GlobalSettings gs) {
 		audio = new Audio();
-		audio.addAudio(gs.getProperty("MUSIC.SONG2.PATH"));
-		audio.addAudio(gs.getProperty("MUSIC.SONG1.PATH"));
+		audio.addSong(gs.getProperty("MUSIC.SONG1.PATH"));
+		audio.addSong(gs.getProperty("MUSIC.SONG2.PATH"));
 		
+		audio.addSound(gs.getProperty("EFFECT.CRASH"), soundsEffects.HIT_SOUND);
+		audio.addSound(gs.getProperty("CAR.CHECKPOINT.SOUND"), soundsEffects.CHECKPOINT);
 		
-		audio.setHitSound(gs.getProperty("EFFECT.CRASH"));
-		audio.setCheckpointSound(gs.getProperty("CAR.CHECKPOINT.SOUND"));
-		
-		car.setEngineSound(gs.getProperty("EFFECT.NEUTRAL"));
-		car.setAcelerationSound(gs.getProperty("EFFECT.ENGINE"));
+		audio.addSound(gs.getProperty("EFFECT.NEUTRAL"), soundsEffects.ENGINE, true);
+		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL);
 		
 	}
 	
@@ -184,7 +176,7 @@ public class RallyGame extends BaseSimpleGame {
 			String lap = "";
 			lastCheckPoint = car.getPosition().clone();
 			positions.put(player, checkPoints.get(checkPoint));
-			audio.playCheckpoint();
+			audio.playSound(soundsEffects.CHECKPOINT);
 			// Take last time
 			long actualTime = new Date().getTime();
 			raceTime  = actualTime - initTime + (long)pauseTime;
@@ -278,22 +270,8 @@ public class RallyGame extends BaseSimpleGame {
 	@Override
 	protected void initSystem() {
 		super.initSystem();
-
-		/** Create a basic input controller. */
-		cameraInputHandler = new FirstPersonHandler(cam, 50, 1);
-		input = new InputHandler();
-		input.addToAttachedHandlers(cameraInputHandler);
-
 		setPhysicsSpace(PhysicsSpace.create());
-
-		input.addAction(new InputAction() {
-			public void performAction(InputActionEvent evt) {
-				if (evt.getTriggerPressed()) {
-					showPhysics = !showPhysics;
-				}
-			}
-		}, InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_V,
-				InputHandler.AXIS_NONE, false);
+		input = new InputHandler();
 	}
 
 	/**
@@ -446,25 +424,7 @@ public class RallyGame extends BaseSimpleGame {
 		rallyTrack.initForest(inGameStateNode);
 	}
 	
-    public void initInput(Node inGameStateNode) {
-        // Simple chase camera
-        input.removeFromAttachedHandlers( cameraInputHandler );
-        cameraInputHandler = new ChaseCamera( cam, car.getChassis().getChild( 0 ) );
-        input.addToAttachedHandlers( cameraInputHandler );
 
-        // Attaching the custom input actions (and its respective keys) to the carInput handler.
-        input.addAction( new AccelAction( car, 1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_UP, InputHandler.AXIS_NONE, false );
-        input.addAction( new AccelAction( car, -1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_DOWN, InputHandler.AXIS_NONE, false );
-        input.addAction( new SteerAction( car, -1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_LEFT, InputHandler.AXIS_NONE, false );
-        input.addAction( new SteerAction( car, 1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_RIGHT, InputHandler.AXIS_NONE, false );
-
-        resetAction = new ResetAction();
-        input.addAction( resetAction, InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_S, InputHandler.AXIS_NONE, false );
-    }
 	
     public void tunePhysics(Node inGameStateNode) {
         getPhysicsSpace().setAutoRestThreshold( 0.2f );
@@ -474,7 +434,7 @@ public class RallyGame extends BaseSimpleGame {
 
     public void createCar(Node inGameStateNode, GlobalSettings gs) {
     		
-    	car = new Car( getPhysicsSpace(), gs );
+    	car = new Car( getPhysicsSpace(), gs, audio );
     	car.setName("PlayerCar");
     	
     	TerrainPage tp = rallyTrack.getTerrain();
@@ -493,65 +453,6 @@ public class RallyGame extends BaseSimpleGame {
     	
     	this.rallyTrack = rt;
     	inGameStateNode.attachChild(rt);
-    }
- 
-    /**
-     * Simple input action for accelerating and braking the car.
-     */
-    private class AccelAction implements InputActionInterface {
-        Car car;
-
-        int direction;
-
-        public AccelAction( final Car car, final int direction ) {
-            this.car = car;
-            this.direction = direction;
-        }
-
-        public void performAction( final InputActionEvent e ) {
-            // If the key has just been pressed, lets accelerate in the desired direction
-            if ( e.getTriggerPressed() ) {
-                car.accelerate( direction );
-            }
-            // Otherwise, lets release the wheels.
-            else {
-                car.releaseAccel();
-            }
-        }
-    }
-
-    private class ResetAction extends InputAction {
-        public void performAction( InputActionEvent evt ) {
-        	car.setPosition(lastCheckPoint.x, 
-        			rallyTrack.getTerrain().getHeight(lastCheckPoint.x,
-        					lastCheckPoint.z)-150+20, lastCheckPoint.z);
-        }
-    }
-    
-    /**
-     * Simple input action for steering the wheel.
-     */
-    private class SteerAction implements InputActionInterface {
-        Car car;
-
-        int direction;
-
-        public SteerAction( Car car, int direction ) {
-            this.car = car;
-            this.direction = direction;
-        }
-
-        public void performAction( final InputActionEvent e ) {
-            // If the key is down (left or right) lets steer
-            if ( e.getTriggerPressed() ) {
-                car.steer( direction );
-            }
-            // If it's up, lets unsteer
-            else {
-                car.unsteer();
-            }
-        }
-
     }
     
     // Needed to apply restrictions on camera so it wont go below the terrain 
@@ -654,6 +555,14 @@ public class RallyGame extends BaseSimpleGame {
 
 	public Audio getAudio() {
 		return audio;
+	}
+	
+	public void setInputHandler(InputHandler input) {
+		this.input = input;
+	}
+	// Metodo que retorna un objeto al que le atacheamos las acciones del teclado
+	public InputHandler getInputHandler() {
+		return this.input;
 	}
 	
 }

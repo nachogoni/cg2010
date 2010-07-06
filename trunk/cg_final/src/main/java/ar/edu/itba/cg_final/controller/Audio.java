@@ -1,5 +1,9 @@
 package ar.edu.itba.cg_final.controller;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import ar.edu.itba.cg_final.RallyGame;
 
 import com.jmex.audio.AudioSystem;
@@ -11,17 +15,38 @@ public class Audio {
 
 	private MusicTrackQueue queue;
 	
-	private AudioTrack hitSound;
+	public enum soundsEffects {
+		HIT_SOUND, CHECKPOINT, ENGINE, ACEL 
+	};
 	
-	private AudioTrack checkpointSound;
-	
-	public Audio(){
-		this.queue = AudioSystem.getSystem().getMusicQueue();
-		this.queue.setCrossfadeinTime(0);
-		this.queue.setRepeatType(RepeatType.ALL);
+	private Map<soundsEffects, AudioTrack> map = new HashMap<soundsEffects, AudioTrack>();
+    
+	public void pauseAll() {
+		queue.pause();
+		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
+			AudioTrack sound = iterator.next();
+			if (sound.isPlaying()) {
+				sound.pause();
+			}
+		} 
+	}
+	public void unpauseAll() {
+		queue.play();
+		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
+			AudioTrack sound = iterator.next();
+			if (!sound.isPlaying() && sound.isActive()) {
+				sound.play();
+			}
+		} 		
 	}
 	
-	public void addAudio(String path){
+	public Audio(){
+		queue = AudioSystem.getSystem().getMusicQueue();
+		queue.setCrossfadeinTime(0);
+		queue.setRepeatType(RepeatType.ALL);
+	}
+	
+	public void addSong(String path){
 		AudioTrack aTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						path), false);
@@ -41,26 +66,25 @@ public class Audio {
 		AudioSystem.getSystem().update();
 	}
 	
-	public void playHit(){
-		hitSound.play();
-	}
-
-	public void setHitSound(String property) {
-		hitSound = AudioSystem.getSystem().createAudioTrack(
-				RallyGame.class.getClassLoader().getResource(
-						property), false);
-	}
-
-	public void playCheckpoint() {
-		checkpointSound.play();
+	public void playSound(soundsEffects sound) {
+		map.get(sound).play();
 	}
 	
-	public void setCheckpointSound(String property) {
-		checkpointSound = AudioSystem.getSystem().createAudioTrack(
+	public void addSound(String property, soundsEffects effect, boolean loop) {
+		AudioTrack audioTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						property), false);
-		checkpointSound.play();
+		audioTrack.setLooping(loop);
+		map.put(effect, audioTrack);
+		
 	}
 	
+	public void addSound(String property, soundsEffects effect) {
+		addSound(property, effect, false);
+	}
+	
+	public void stopSound(soundsEffects sound) {
+		map.get(sound).stop();
+	}
 	
 }
