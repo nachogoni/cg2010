@@ -197,7 +197,7 @@ public class RallyGame extends BaseSimpleGame {
 				laps++;
 				// Informamos que dio una vuelta
 				timeCheckPoint.setLocalScale(3f);
-				lap = "Lap " + laps;
+				lap = "Lap " + String.valueOf(laps) + ": ";
 				if (laps == 4) { //TODO == 4 para que sean 3 vueltas!
 					// Termino el juego
 					lap = "Race: ";
@@ -244,7 +244,6 @@ public class RallyGame extends BaseSimpleGame {
 			actual = checkpoint.getName();
 			if (last != null) {
 				checkPoints.put(last, actual);
-//				checkPoints.put(firstCheckPoint, firstCheckPoint);
 				last = actual;
 			} else {
 				firstCheckPoint  = actual;
@@ -484,8 +483,7 @@ public class RallyGame extends BaseSimpleGame {
     	car.setPosition(pos.x, tp.getHeight(pos)-150+20, pos.y);
 //    	car.setRotation(0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0);
 //        car.getLocalRotation().set(new Quaternion(new float[]{0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0}));
-    	
-    	//TODO
+    	//TODO: rotarlo...
         inGameStateNode.attachChild( car );
         inGameStateNode.updateGeometricState(0, true);			
         
