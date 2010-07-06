@@ -31,7 +31,6 @@ import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 import com.jme.light.DirectionalLight;
-import com.jme.light.LightNode;
 import com.jme.light.PointLight;
 import com.jme.light.SpotLight;
 import com.jme.math.Vector2f;
@@ -69,6 +68,7 @@ public class RallyGame extends BaseSimpleGame {
 	Text label;
 	Car car;
 	ResetAction resetAction;
+	Vector3f lastCheckPoint = null;
 	
 	private Audio audio;
 	private Skybox skybox;	
@@ -109,7 +109,7 @@ public class RallyGame extends BaseSimpleGame {
 	}
 
 	@Override
-	protected void simpleInitGame() {
+	public void simpleInitGame() {
 
 		// Creamos los estados en el juego y mostramos el menu
 		RallyGameState menuState = new MenuState();
@@ -121,7 +121,8 @@ public class RallyGame extends BaseSimpleGame {
 		GameStateManager.create();
 
 		gameStateManager = GameStateManager.getInstance();
-
+		gameStateManager.detachAllChildren();
+		
 		KeyBindingManager.getKeyBindingManager().removeAll();
 
 		menuState.setActive(true);
@@ -139,7 +140,7 @@ public class RallyGame extends BaseSimpleGame {
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 		//KeyBindingManager.getKeyBindingManager().set("print", KeyInput.KEY_9);
 	}
-	
+
 	public void setPlaying() {
 		playing = true;
 		initTime = new Date().getTime();
@@ -180,29 +181,43 @@ public class RallyGame extends BaseSimpleGame {
 	
 	public void passThrough(String player, String checkPoint) {
 		if (positions.get(player).equals(checkPoint)) {
+			String lap = "";
+			lastCheckPoint = car.getPosition().clone();
 			positions.put(player, checkPoints.get(checkPoint));
 			audio.playCheckpoint();
 			// Take last time
 			long actualTime = new Date().getTime();
-			System.out.println(pauseTime);
-			Date date = new Date(actualTime - initTime + (long)pauseTime);
+			raceTime  = actualTime - initTime + (long)pauseTime;
+			Date date = new Date(raceTime);
 			StringBuffer timeText = timeCheckPoint.getText();
-			timeText.replace(0, timeText.length(),
-					String.format("%02d:%02d",date.getMinutes(), date.getSeconds()));
 			showCheckPointTime = true;
 			checkPointTimer = 3;
-			
 			// Check laps!
 			if (checkPoint.equals(firstCheckPoint)) {
 				laps++;
-				if (laps == 3) {
+				// Informamos que dio una vuelta
+				timeCheckPoint.setLocalScale(3f);
+				lap = "Lap " + laps;
+				if (laps == 4) { //TODO == 4 para que sean 3 vueltas!
 					// Termino el juego
+					lap = "Race: ";
+					checkPointTimer = 300;
 					this.setPause(true);
+					// Desactivamos el estado del juego
+					gameStateManager.deactivateChildNamed("InGame");
+					// Agregamos el nodo del juego para seguir mostrandolo
+					((RallyGameState)gameStateManager.getChild("FinishedGame")).getStateNode().
+						attachChild(((RallyGameState)gameStateManager.getChild("InGame")).getStateNode());
+					car.isLocked(true);
+					// Activamos el estado final
 					gameStateManager.activateChildNamed("FinishedGame");
-					raceTime  = actualTime;
 				}
+			} else {
+				timeCheckPoint.setLocalScale(1.5f);
 			}
-			
+			// Creamos el string a mostrar
+			timeText.replace(0, timeText.length(),String.
+					format("%s%02d:%02d",lap, date.getMinutes(), date.getSeconds()));
 		}
 		return;
 	}
@@ -233,12 +248,14 @@ public class RallyGame extends BaseSimpleGame {
 				last = actual;
 			} else {
 				firstCheckPoint  = actual;
+				lastCheckPoint = checkpoint.get3DPosition();
 				last = actual;
 			}
 		}
 		checkPoints.put(actual, firstCheckPoint);
 		// Seteamos el punto de partida
 		positions.put(car.getName(), firstCheckPoint);
+		// Apuntamos el auto a la partida
     }
 	
 	/**
@@ -425,10 +442,6 @@ public class RallyGame extends BaseSimpleGame {
 			PhysicsDebugger.drawPhysics(getPhysicsSpace(), r);
 		}
 	}
-
-	
-	
-	
 	
 	public void createForest(Node inGameStateNode) {
 		rallyTrack.initForest(inGameStateNode);
@@ -468,12 +481,11 @@ public class RallyGame extends BaseSimpleGame {
     	TerrainPage tp = rallyTrack.getTerrain();
     	
     	final Vector2f pos = gs.get2DVectorProperty("TRACK1.CAR.POSITION");
-    	
     	car.setPosition(pos.x, tp.getHeight(pos)-150+20, pos.y);
+//    	car.setRotation(0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0);
+//        car.getLocalRotation().set(new Quaternion(new float[]{0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0}));
     	
-//        float [] angles = new float[]{0f,gs.getFloatProperty("TRACK1.CAR.ROTATION"),0f}; 
-//        car.setLocalRotation(new Quaternion(angles));
-    	
+    	//TODO
         inGameStateNode.attachChild( car );
         inGameStateNode.updateGeometricState(0, true);			
         
@@ -512,7 +524,9 @@ public class RallyGame extends BaseSimpleGame {
 
     private class ResetAction extends InputAction {
         public void performAction( InputActionEvent evt ) {
-            car.setPosition( -500, 50, 600 );
+        	car.setPosition(lastCheckPoint.x, 
+        			rallyTrack.getTerrain().getHeight(lastCheckPoint.x,
+        					lastCheckPoint.z)-150+20, lastCheckPoint.z);
         }
     }
     

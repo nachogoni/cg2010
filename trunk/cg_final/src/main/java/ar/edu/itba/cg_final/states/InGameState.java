@@ -51,7 +51,6 @@ public class InGameState extends RallyGameState {
 		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
         
         // Speedometer
-		
 		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
     	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
     	speed.setCullHint( Spatial.CullHint.Never );
@@ -64,6 +63,11 @@ public class InGameState extends RallyGameState {
     	
     	// Checkpoint Time
     	timeCheckPoint = Text.createDefaultTextLabel("CheckPointTime", "");
+    	timeCheckPoint.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
+    	timeCheckPoint.setCullHint( Spatial.CullHint.Never );
+    	timeCheckPoint.setRenderState( Text.getDefaultFontTextureState() );
+    	timeCheckPoint.setRenderState( Text.getFontBlend() );
+    	timeCheckPoint.setLightCombineMode(LightCombineMode.Off);
     	timeCheckPoint.setLocalScale(1.5f);
     	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
     							(int)(height/2 - timeCheckPoint.getHeight()/2), 0);
@@ -130,6 +134,9 @@ public class InGameState extends RallyGameState {
     	for (Node node : game.getCheckPointList()) {
     		if (node.hasCollision(playerCar, true)) {
     			game.passThrough(playerCar.getName(), node.getName());
+    			// Actualizamos la posicion del cartel
+    	    	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
+						(int)(height/2 - timeCheckPoint.getHeight()/2), 0);
     		}		    	
 		}
     	
