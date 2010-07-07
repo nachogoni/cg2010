@@ -123,13 +123,11 @@ public class PreLoadState extends RallyGameState {
 				refreshLabel("Arboles");
 				game.createForest(inGameNode);
 				break;
-			case 70:
-
-			case 80:
+			case 60:
 				refreshLabel("CheckPoints");
 				game.buildCheckpoint(inGameNode, gs);
 				break;
-			case 90:
+			case 70:
 				// Saltamos al proximo estado: InGameState
 				GameStateManager.getInstance().deactivateChildNamed(this.getName());
 				GameStateManager.getInstance().activateChildNamed(StartState.STATE_NAME);

@@ -252,6 +252,11 @@ public class RallyGame extends BaseSimpleGame {
 		// Seteamos el punto de partida
 		positions.put(car.getName(), firstCheckPoint);
 		// Apuntamos el auto a la partida
+		
+//		// Fix de la posicion de la camara
+//		Vector3f p = car.getPosition();
+//		cam.setLocation(new Vector3f(p.x-300,p.y+100,p.z+300));
+//		cam.lookAt(p, new Vector3f(0,1,0));
     }
 	
 	/**

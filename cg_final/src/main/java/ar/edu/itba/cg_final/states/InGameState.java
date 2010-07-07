@@ -1,4 +1,5 @@
 package ar.edu.itba.cg_final.states;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -6,23 +7,32 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.map.CheckPoint;
+import ar.edu.itba.cg_final.utils.ResourceLoader;
 import ar.edu.itba.cg_final.vehicles.Car;
 
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
 import com.jme.scene.Spatial.LightCombineMode;
+import com.jme.scene.shape.Quad;
+import com.jme.scene.state.BlendState;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
 import com.jmex.game.state.GameStateManager;
 import com.jmex.terrain.TerrainPage;
 
@@ -53,6 +63,13 @@ public class InGameState extends RallyGameState {
 		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
 		game = RallyGame.getInstance();
+		
+		
+		
+		
+
+		
+		
     	
 	}
 	
@@ -76,8 +93,6 @@ public class InGameState extends RallyGameState {
 		
 		
 		
-		
-		
         // Variables en pantalla
 		gameTimeText = Text.createDefaultTextLabel("gameTimeText", "Timer: --:--");
 		gameTimeText.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
@@ -90,6 +105,86 @@ public class InGameState extends RallyGameState {
     	this.stateNode.attachChild(gameTimeText);
 
  
+    	
+    	
+    	
+//    	// Speedometer
+//    	float scale = 0.5f;
+//		Quad speedometer = new Quad("speedometer", 564, 368);
+//		speedometer.setDefaultColor(ColorRGBA.white);
+//		speedometer.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+//		speedometer.setLightCombineMode(LightCombineMode.Off);
+//		speedometer.setLocalScale(scale);
+//		speedometer.setLocalTranslation(width-speedometer.getWidth()*scale/2, 
+//				speedometer.getHeight()*scale/2, 0f);
+//
+//		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+//				.createTextureState();
+//		try {
+//			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer 2.png"),
+//					MinificationFilter.NearestNeighborNoMipMaps,
+//					MagnificationFilter.NearestNeighbor, 1.0f, true));
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		}
+//		ts.setEnabled(true);
+//        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+//        blendState.setBlendEnabled( true );
+//        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+//        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+//        blendState.setTestEnabled( true );
+//        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+//        blendState.setEnabled( true );   
+//        speedometer.setRenderState(ts);
+//        speedometer.setRenderState(blendState);
+//		speedometer.updateRenderState();
+//		stateNode.attachChild(speedometer);
+    	
+
+		
+		
+		
+		
+		
+//    	// Speedometer's needle
+//		Quad needle = new Quad("needle", 8, speedometer.getHeight()*scale/2f);
+//		needle.setDefaultColor(ColorRGBA.orange);
+//		needle.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+//		needle.setLightCombineMode(LightCombineMode.Off);
+//		needle.setLocalTranslation(width-speedometer.getWidth()*scale/2-needle.getWidth()*scale/2, 
+//				speedometer.getHeight()*scale/2.5f, 0f);
+//		
+////		needle.rotateUpTo(new Vector3f(0,0.5f,0));
+//////		needle.setLocalRotation(new Quaternion(new float[]{0,45,0}));
+//
+////		TextureState needlets = DisplaySystem.getDisplaySystem().getRenderer()
+////				.createTextureState();
+////		try {
+////			needlets.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer 2.png"),
+////					MinificationFilter.BilinearNearestMipMap,
+////					MagnificationFilter.Bilinear, 1.0f, true));
+////		} catch (MalformedURLException e) {
+////			e.printStackTrace();
+////		}
+////		needlets.setEnabled(true);
+////        BlendState needleblendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+////        needleblendState.setBlendEnabled( true );
+////        needleblendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+////        needleblendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+////        needleblendState.setTestEnabled( true );
+////        needleblendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+////        needleblendState.setEnabled( true );   
+////        needle.setRenderState(needlets);
+////        needle.setRenderState(needleblendState);
+//        needle.updateRenderState();
+//		stateNode.attachChild(needle);
+
+		
+		
+		
+		
+		
+		
     	
     	
     	
@@ -106,7 +201,7 @@ public class InGameState extends RallyGameState {
     	speed.setRenderState( Text.getDefaultFontTextureState() );
 		speed.setRenderState( Text.getFontBlend() );
     	speed.setLightCombineMode(LightCombineMode.Off);
-    	speed.setLocalScale(5);
+    	speed.setLocalScale(5f);
     	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
     	this.stateNode.attachChild(speed);
 
@@ -120,7 +215,7 @@ public class InGameState extends RallyGameState {
     	timeCheckPoint.setLightCombineMode(LightCombineMode.Off);
     	timeCheckPoint.setLocalScale(1.5f);
     	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
-    							(int)(height/2 - timeCheckPoint.getHeight()/2), 0);
+    							(int)(height/3 - timeCheckPoint.getHeight()/2), 0);
     	this.stateNode.attachChild(timeCheckPoint);
 
     	game.setCheckPointText(timeCheckPoint);
