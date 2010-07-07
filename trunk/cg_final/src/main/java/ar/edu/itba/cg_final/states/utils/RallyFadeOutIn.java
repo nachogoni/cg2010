@@ -44,7 +44,7 @@ public class RallyFadeOutIn extends Transient {
 
 	public RallyFadeOutIn(String name, Node rNode, Node out, Node in, ColorRGBA c, float spd) {
 		super(name);
-	    fadeQuad = new Quad("Fade Quad");
+	    fadeQuad = new Quad(name+"Fade Quad");
 	    fadeQuad.updateGeometry(DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight());
 //	    fadeQuad.updateGeometry(5,5);
 	    fadeQuad.setColorBuffer(null);
