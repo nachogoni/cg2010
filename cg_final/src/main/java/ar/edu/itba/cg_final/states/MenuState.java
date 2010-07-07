@@ -321,12 +321,16 @@ public class MenuState extends RallyGameState {
 		highScorePanel.addItem(back);
 		
 		List<Score> scores = Scores.getInstance().getScores();
-		for(int i = scores.size()-1 ; i >= 0 ; i--){
-			Score s = scores.get(i);
-			RallyMenuItemVoid score = new RallyMenuItemVoid(s.getUserID() + " " + s.getScore());
-			highScorePanel.addItem(score);
-			if ( i == 0 )
-				score.toggleSelect();
+		if ( scores == null || scores.isEmpty() ){
+			back.toggleSelect();
+		}else{
+			for(int i = scores.size()-1 ; i >= 0 ; i--){
+				Score s = scores.get(i);
+				RallyMenuItemVoid score = new RallyMenuItemVoid(s.getUserID() + " " + s.getScore());
+				highScorePanel.addItem(score);
+				if ( i == 0 )
+					score.toggleSelect();
+			}
 		}
 		return highScorePanel;
 	}
