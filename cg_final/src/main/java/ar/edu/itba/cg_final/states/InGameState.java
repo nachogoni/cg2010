@@ -44,7 +44,7 @@ public class InGameState extends RallyGameState {
 	public static final String STATE_NAME = "InGame";
 	
 	Text timeCheckPoint;
-	Text speed;
+//	Text speed;
 	RallyGame game;
 	Skybox sky;
 	Car playerCar;
@@ -53,7 +53,7 @@ public class InGameState extends RallyGameState {
 	
 	
 	
-	
+	Node needleNode;
 	private Text gameTimeText;
 	Boolean setCameraPos = false;
 	Vector3f cameraPos = new Vector3f();
@@ -108,37 +108,37 @@ public class InGameState extends RallyGameState {
     	
     	
     	
-//    	// Speedometer
-//    	float scale = 0.5f;
-//		Quad speedometer = new Quad("speedometer", 564, 368);
-//		speedometer.setDefaultColor(ColorRGBA.white);
-//		speedometer.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-//		speedometer.setLightCombineMode(LightCombineMode.Off);
-//		speedometer.setLocalScale(scale);
-//		speedometer.setLocalTranslation(width-speedometer.getWidth()*scale/2, 
-//				speedometer.getHeight()*scale/2, 0f);
-//
-//		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
-//				.createTextureState();
-//		try {
-//			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer 2.png"),
-//					MinificationFilter.NearestNeighborNoMipMaps,
-//					MagnificationFilter.NearestNeighbor, 1.0f, true));
-//		} catch (MalformedURLException e) {
-//			e.printStackTrace();
-//		}
-//		ts.setEnabled(true);
-//        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-//        blendState.setBlendEnabled( true );
-//        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
-//        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
-//        blendState.setTestEnabled( true );
-//        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
-//        blendState.setEnabled( true );   
-//        speedometer.setRenderState(ts);
-//        speedometer.setRenderState(blendState);
-//		speedometer.updateRenderState();
-//		stateNode.attachChild(speedometer);
+    	// Speedometer
+    	float scale = 0.5f;
+		Quad speedometer = new Quad("speedometer", 564, 368);
+		speedometer.setDefaultColor(ColorRGBA.white);
+		speedometer.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		speedometer.setLightCombineMode(LightCombineMode.Off);
+		speedometer.setLocalScale(scale);
+		speedometer.setLocalTranslation(width-speedometer.getWidth()*scale/2, 
+				speedometer.getHeight()*scale/2, 0f);
+
+		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+				.createTextureState();
+		try {
+			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer2.png"),
+					MinificationFilter.NearestNeighborNoMipMaps,
+					MagnificationFilter.NearestNeighbor, 1.0f, true));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		ts.setEnabled(true);
+        BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        blendState.setBlendEnabled( true );
+        blendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        blendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        blendState.setTestEnabled( true );
+        blendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
+        blendState.setEnabled( true );   
+        speedometer.setRenderState(ts);
+        speedometer.setRenderState(blendState);
+		speedometer.updateRenderState();
+		stateNode.attachChild(speedometer);
     	
 
 		
@@ -146,38 +146,19 @@ public class InGameState extends RallyGameState {
 		
 		
 		
-//    	// Speedometer's needle
-//		Quad needle = new Quad("needle", 8, speedometer.getHeight()*scale/2f);
-//		needle.setDefaultColor(ColorRGBA.orange);
-//		needle.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-//		needle.setLightCombineMode(LightCombineMode.Off);
-//		needle.setLocalTranslation(width-speedometer.getWidth()*scale/2-needle.getWidth()*scale/2, 
-//				speedometer.getHeight()*scale/2.5f, 0f);
-//		
-////		needle.rotateUpTo(new Vector3f(0,0.5f,0));
-//////		needle.setLocalRotation(new Quaternion(new float[]{0,45,0}));
-//
-////		TextureState needlets = DisplaySystem.getDisplaySystem().getRenderer()
-////				.createTextureState();
-////		try {
-////			needlets.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer 2.png"),
-////					MinificationFilter.BilinearNearestMipMap,
-////					MagnificationFilter.Bilinear, 1.0f, true));
-////		} catch (MalformedURLException e) {
-////			e.printStackTrace();
-////		}
-////		needlets.setEnabled(true);
-////        BlendState needleblendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-////        needleblendState.setBlendEnabled( true );
-////        needleblendState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
-////        needleblendState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
-////        needleblendState.setTestEnabled( true );
-////        needleblendState.setTestFunction( BlendState.TestFunction.GreaterThanOrEqualTo );
-////        needleblendState.setEnabled( true );   
-////        needle.setRenderState(needlets);
-////        needle.setRenderState(needleblendState);
-//        needle.updateRenderState();
-//		stateNode.attachChild(needle);
+    	// Speedometer's needle
+		Quad needle = new Quad("needle", 2, speedometer.getHeight()*scale/1.8f);
+		needle.setDefaultColor(ColorRGBA.orange);
+		needle.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		needle.setLightCombineMode(LightCombineMode.Off);
+		needle.setLocalTranslation(0f, needle.getHeight()/2, 0f);
+		needle.updateRenderState();
+		needleNode = new Node();
+		needleNode.attachChild(needle);
+		needleNode.setLocalTranslation(width-speedometer.getWidth()*scale/2-needle.getWidth()*scale/2, 
+				speedometer.getHeight()*scale/3.2f, 0f);
+		needleNode.setLocalRotation(new Quaternion(new float[]{0,0,112.5f*3.1415f/180}));
+		stateNode.attachChild(needleNode);
 
 		
 		
@@ -194,16 +175,16 @@ public class InGameState extends RallyGameState {
     	
     	
     	
-        // Speedometer
-		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
-    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
-    	speed.setCullHint( Spatial.CullHint.Never );
-    	speed.setRenderState( Text.getDefaultFontTextureState() );
-		speed.setRenderState( Text.getFontBlend() );
-    	speed.setLightCombineMode(LightCombineMode.Off);
-    	speed.setLocalScale(5f);
-    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
-    	this.stateNode.attachChild(speed);
+//        // Speedometer
+//		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
+//    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
+//    	speed.setCullHint( Spatial.CullHint.Never );
+//    	speed.setRenderState( Text.getDefaultFontTextureState() );
+//		speed.setRenderState( Text.getFontBlend() );
+//    	speed.setLightCombineMode(LightCombineMode.Off);
+//    	speed.setLocalScale(1f);
+//    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
+//    	this.stateNode.attachChild(speed);
 
 
     	// Checkpoint Time
@@ -293,10 +274,19 @@ public class InGameState extends RallyGameState {
 		this.audio.update();
 		
 		// Update speed
-		StringBuffer speedText = speed.getText();
-		speedText.replace(0, speedText.length(),
-				String.format("%03d", (int)playerCar.getLinearSpeed()));
-    	
+//		StringBuffer speedText = speed.getText();
+//		speedText.replace(0, speedText.length(),
+//				String.format("%03d", (int)playerCar.getLinearSpeed()));
+
+		
+		
+		
+		
+		float carSpeed = playerCar.getLinearSpeed();
+		if (carSpeed > 200)
+			carSpeed = 200;
+		float angle = 112.5f - 225 * carSpeed / 200;
+		needleNode.setLocalRotation(new Quaternion(new float[]{0,0,angle*3.1415f/180}));
 
 		
 		
