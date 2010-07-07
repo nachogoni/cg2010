@@ -1,17 +1,20 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jmex.game.state.GameState;
-import com.jmex.game.state.GameStateManager;
 
 public abstract class RallyGameState  extends GameState {
 
 	protected Node stateNode = new Node();
 	protected Node rootNode;
+	private RallyFadeOutIn fio;
 	
 	{
 		this.rootNode = RallyGame.getInstance().getRootNode();
@@ -48,5 +51,41 @@ public abstract class RallyGameState  extends GameState {
 	public Node getStateNode() {
 		return stateNode;
 	}
+
+
+	protected void addFadeController(String string, Node rootNode, Node outStateNode, Node inStateNode, ColorRGBA colorRGBA, float f) {
+		fio = new RallyFadeOutIn("FadeInOut", rootNode, outStateNode, inStateNode, new ColorRGBA(0, 0, 0, 1), 0.01f);
+		Vector3f location = new Vector3f(RallyGame.getInstance().getCamara().getLocation());
+		fio.setLocalTranslation(location.add(RallyGame.getInstance().getCamara().getDirection()));
+        fio.attachTo(rootNode);
+	}
 	
+	protected RallyFadeOutIn getFadeOutIn(){
+		return fio;
+	}
+	
+	protected void fade(float timeF){
+		float time = timeF * fio.getSpeed();
+		ColorRGBA color = fio.getFadeColor();
+		if (fio.getCurrentStage() == 0) {
+			color.a += time;
+			fio.setFadeColor(color);
+			if (fio.getFadeColor().a >= 1.0f) {
+				fio.detachChild(fio.getFadeOutNode());
+				fio.attachChild(fio.getFadeInNode());
+				fio.setCurrentStage(fio.getCurrentStage() + 1);
+			}
+		} else if (fio.getCurrentStage() == 1) {
+			color.a -= time;
+			fio.setFadeColor(color);
+			if (fio.getFadeColor().a <= 0.0f) {
+				fio.setCurrentStage(fio.getCurrentStage() + 1);
+			}
+		} else if (fio.getCurrentStage() == 2) {
+			fio.detachFromNode();
+			fio.setFinished();
+		}
+	}
+
+
 }
