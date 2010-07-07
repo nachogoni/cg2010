@@ -31,6 +31,17 @@ public class RallyMenu {
 				menuNode.attachChild(getActivePanel().getNode());
 			}
 	}
+
+	public void replacePanel(RallyMenuPanel oldPanel, RallyMenuPanel newPanel){
+		for(int i = 0 ; i < panels.size() ; i++ )
+			if ( panels.get(i).equals(oldPanel) ){
+				panels.add(i, newPanel);
+				panels.remove(i+1);
+				menuNode.detachChild(oldPanel.getNode());
+				menuNode.attachChild(newPanel.getNode());
+				return;
+			}
+	}
 	
 	public RallyMenuPanel getActivePanel(){
 		return panels.get(activePanel);

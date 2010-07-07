@@ -36,8 +36,10 @@ public class RallyMenuPanel {
 	public Node getNode(){
 		if ( first ){
 			List<Spatial> children = node.getChildren();
-			for(Spatial c:children)
-				c.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth() - maxwidth)/2, c.getLocalTranslation().getY(), c.getLocalTranslation().getZ());
+			if ( children != null && !children.isEmpty() ){
+				for(Spatial c:children)
+					c.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth() - maxwidth)/2, c.getLocalTranslation().getY(), c.getLocalTranslation().getZ());
+			}
 			first = false;
 		}
 		return node;
