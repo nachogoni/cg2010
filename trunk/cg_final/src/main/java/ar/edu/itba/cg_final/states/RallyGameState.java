@@ -53,8 +53,8 @@ public abstract class RallyGameState  extends GameState {
 	}
 
 
-	protected void addFadeController(String string, Node rootNode, Node outStateNode, Node inStateNode, ColorRGBA colorRGBA, float f) {
-		fio = new RallyFadeOutIn("FadeInOut", rootNode, outStateNode, inStateNode, new ColorRGBA(0, 0, 0, 1), 0.01f);
+	protected void addFadeController(String string, Node rootNode, Node outStateNode, Node inStateNode, ColorRGBA colorRGBA, float speed) {
+		fio = new RallyFadeOutIn(string, rootNode, outStateNode, inStateNode, new ColorRGBA(0, 0, 0, 1), speed);
 		Vector3f location = new Vector3f(RallyGame.getInstance().getCamara().getLocation());
 		fio.setLocalTranslation(location.add(RallyGame.getInstance().getCamara().getDirection()));
         fio.attachTo(rootNode);
