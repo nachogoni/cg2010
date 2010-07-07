@@ -328,9 +328,9 @@ public class RallyTrack extends Node {
 	   return terrain;
    }
 
-   public List<CheckPoint> createCheckPoints(GlobalSettings gs) {
+   public ArrayList<CheckPoint> createCheckPoints(GlobalSettings gs) {
 	   
-	   List<CheckPoint> cpList = new ArrayList<CheckPoint>();
+	   ArrayList<CheckPoint> cpList = new ArrayList<CheckPoint>();
 
 	   int count = gs.getIntProperty("TRACK1.CHECKPOINT.COUNT");
 	   

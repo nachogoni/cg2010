@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class RallyGame extends BaseSimpleGame {
 	private PhysicsSpace physicsSpace;
 	protected boolean showPhysics;
 	private float physicsSpeed = 1;
-	private List<CheckPoint> checkPointList;
+	private ArrayList<CheckPoint> checkPointList;
 	Text label;
 	Car car;
 	Vector3f lastCheckPoint = new Vector3f();
@@ -216,7 +217,7 @@ public class RallyGame extends BaseSimpleGame {
 		return;
 	}
 	
-	public List<CheckPoint> getCheckPointList() {
+	public ArrayList<CheckPoint> getCheckPointList() {
 		return checkPointList;
 	}
     

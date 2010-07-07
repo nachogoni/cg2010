@@ -1,7 +1,11 @@
 package ar.edu.itba.cg_final.states;
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
+import ar.edu.itba.cg_final.map.CheckPoint;
 import ar.edu.itba.cg_final.vehicles.Car;
 
 import com.jme.input.ChaseCamera;
@@ -20,6 +24,7 @@ import com.jme.scene.Text;
 import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
+import com.jmex.model.collada.schema.primaryType;
 import com.jmex.terrain.TerrainPage;
 
 public class InGameState extends RallyGameState {
@@ -36,6 +41,13 @@ public class InGameState extends RallyGameState {
 	Car playerCar;
 	Audio audio;
 	InputHandler actions;
+	
+	
+	
+	
+	Boolean setCameraPos = false;
+	Vector3f cameraPos = new Vector3f();
+	
 	
 	public InGameState() {
 		this.setName(STATE_NAME);
@@ -113,6 +125,11 @@ public class InGameState extends RallyGameState {
                 InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_S, InputHandler.AXIS_NONE, false );
         input.addAction( new ShowMenuAction(), InputHandler.DEVICE_KEYBOARD, 
         		KeyInput.KEY_ESCAPE, InputHandler.AXIS_NONE, false);
+
+        
+        
+        input.addAction( new ChangeCameraAction(), InputHandler.DEVICE_KEYBOARD, 
+        		KeyInput.KEY_C, InputHandler.AXIS_NONE, false);
         
         return input;
     }	
@@ -151,14 +168,22 @@ public class InGameState extends RallyGameState {
 		
 		this.audio.update();
 		
-		sky.getLocalTranslation().set(game.getCamara().getLocation());
-		sky.updateGeometricState(0.0f, true);
-		
 		// Update speed
 		StringBuffer speedText = speed.getText();
 		speedText.replace(0, speedText.length(),
 				String.format("%03d", (int)playerCar.getLinearSpeed()));
     	
+		if (setCameraPos == true) {
+			game.getCamara().setLocation(new Vector3f(cameraPos.x+300,cameraPos.y+100,cameraPos.z+300));
+			game.getCamara().lookAt(cameraPos, new Vector3f(0,1,0));
+		}
+		
+		sky.getLocalTranslation().set(game.getCamara().getLocation());
+		sky.updateGeometricState(0.0f, true);
+		
+		
+
+		
     	// TODO: for degub
 /*    	float [] angles = new float[3];
     	playerCar.getChassis().getLocalRotation().toAngles(angles);
@@ -272,4 +297,44 @@ public class InGameState extends RallyGameState {
 		}
 
     }	    
+
+    
+    
+    
+    
+    
+    private class ChangeCameraAction implements InputActionInterface {
+    	
+    	private ArrayList<CheckPoint> checkPointList;
+    	private int checkPointCount;
+    	private int actual;
+    	
+    	public ChangeCameraAction() {
+			this.checkPointList = game.getCheckPointList();
+			this.checkPointCount = this.checkPointList.size();
+			this.actual = 0;
+		}
+    	
+    	public void performAction( final InputActionEvent e ) {
+    		
+    		if (this.actual == this.checkPointCount) {
+    			// Deshabilito el seteo
+    			setCameraPos = false;
+    			this.actual = 0;
+    		} else {
+    			// Itero entre los checkpoints
+    			cameraPos.set(this.checkPointList.get(this.actual++).get3DPosition());
+    			setCameraPos = true;
+    		}
+
+    	}
+    	
+    }
+    
+    
+    
+    
+    
+    
+    
 }
