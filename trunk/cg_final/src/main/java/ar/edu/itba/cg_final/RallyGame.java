@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Logger;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
@@ -62,6 +61,8 @@ public class RallyGame extends BaseSimpleGame {
 	Text label;
 	Car car;
 	Vector3f lastCheckPoint = new Vector3f();
+	private long checkPointTime = -1;
+	private long actualTime = -1;
 		
 	private Audio audio;
 	private Skybox skybox;	
@@ -176,7 +177,7 @@ public class RallyGame extends BaseSimpleGame {
 			positions.put(player, checkPoints.get(checkPoint));
 			audio.playSound(soundsEffects.CHECKPOINT);
 			// Take last time
-			long actualTime = new Date().getTime();
+			actualTime = new Date().getTime();
 			StringBuffer timeText = timeCheckPoint.getText();
 			showCheckPointTime = true;
 			checkPointTimer = 3;
@@ -210,6 +211,7 @@ public class RallyGame extends BaseSimpleGame {
 			}
 			// Creamos el string a mostrar
 			raceTime  = actualTime - initTime + (long)pauseTime;
+			checkPointTime = raceTime;
 			Date date = new Date(raceTime);
 			timeText.replace(0, timeText.length(),String.
 					format("%s%02d:%02d",lap, date.getMinutes(), date.getSeconds()));
@@ -577,6 +579,22 @@ public class RallyGame extends BaseSimpleGame {
 
 	public Vector3f getLastCheckPointPosition() {
 		return lastCheckPoint;
+	}
+
+	public long getInitTime() {
+		return initTime;
+	}
+
+	public float getPauseTime() {
+		return pauseTime;
+	}
+
+	public long getCheckPointTime() {
+		return checkPointTime;
+	}
+	
+	public long getActualTime() {
+		return actualTime;
 	}
 	
 }
