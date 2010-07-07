@@ -24,8 +24,9 @@ Tenaillon\\Santiago Vazquez}
 \maketitle
 
 \begin{abstract}
-El siguiente informe describe cómo se diseñó e implementó el Rally Uribe
-100K. 
+El siguiente informe describe cómo se diseñó e implementó el \textbf{Rally
+Uribe
+100K}. 
 Mediante el uso de imágenes se describe cómo fueron diseñadas e implementadas
 las distintas partes que componen al total de la aplicación.  También se
 presentan los inconvenientes que surgieron a lo largo del desarrollo y cómo el
@@ -251,7 +252,7 @@ rojo apuntando hacia abajo sobre el primer checkpoint.
 
 Dentro de las características opcionales a implementar, el equipo se inclinó
 por las siguientes: texturas procedurales, capturas de pantallas, árboles con
-billboards \textbf{PONER EL RESTO DE LAS CARACTERISTICAS EXTRA}
+billboards, diferentes skyboxes, c\'amaras est\'aticas y velocimetro.
 
 \subsection{Texturas Procedurales}
 
@@ -320,7 +321,49 @@ con claridad las otras texturas detras de ellas.
 \end{figure}
 
 
-\subsection{Agregar características opcionales desarrolladas}
+\subsection{Uso y Selecci\'on de distintos \textit{Skyboxes}}
+
+Uno de los opcionales seleccionados para el desarrollo del juego, fue darle al
+usuario la posibilidad de elegir distintos skyboxes.  Se ofrecen tres, uno para
+el d\'ia, otro para la tarde y el \'ultimo para la noche.
+
+Cuando el jugador selecciona la opci\'on de $New Game$, tiene la posibilidad de
+seleccionar el momento del d\'ia en que quiere correr la carrera.  Esto se
+ver\'a reflejado en la carrera en si, una vez que comience la misma.  En todas
+las im\'agenes presentes en el informe, se puede apreciar el skybox que
+pertenece al momento \textit{d\'ia} mientras que en la figura \ref{fig:conluz}
+se puede apreciar un cielo rojizo, simulando el atardecer.
+
+\subsection{C\'amaras Est\'aticas}
+
+A lo largo de la carrera, el jugador puede presionar la tecla $C$ y esto va a
+cambiar la c\'amara desde donde se ve la carrera.  En cada checkpoint hay una
+c\'amara est\'atica que est\'a apuntando al mismo.
+
+En la figura \ref{fig:static} se puede apreciar una c\'amara est\'atica en el
+segundo checkpoint.
+
+\begin{figure}
+ \centering
+ \includegraphics[bb=0 0 640 480,scale=0.4,keepaspectratio=true]{./static.png}
+ % static.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
+ \caption{C\'amara est\'atica en el segundo checkpoint}
+ \label{fig:static}
+\end{figure}
+
+\subsection{Velocimetro}
+
+El \'ultimo opcional que decidimos implementar, fue el velocimetro con una
+aguja.  Para realizar esto, utilizamos una imagen de un velocimetro sin la
+aguja, y un cuadrilatero por separado.  Una vez que tuvimos esto, lo
+posicionamos en su lugar y luego le aplicamos a la aguja, una rotaci\'on
+dependiendo de la velocidad actual de veh\'iculo.
+
+Dependiendo de la velocidad lineal del veh\'iculo, hacemos una traducci\'on de
+ese valor lineal a un \'angulo entre $-112.5$ y $112.5$ grados, que nos da la
+rotaci\'on de la aguja para un velocimetro que tolera velocidades entre 0 y 160
+kilometros por hora.
+
 
 \section{Modo de Uso}
 \label{mododeuso}
@@ -333,6 +376,17 @@ Para jugar al juego, solo es necesario conocer las teclas para moverse a traves
 de la pista.  Lo único necesario es saber con qué teclas avanzar, retroceder,
 girar a la izquierda y a la derecha.  Luego, solo es necesario atravesar los
 diferentes checkpoints hasta llegar a la meta.
+
+Por defecto, las teclas para mover el vehiculo a traves del terreno son las
+flechas hacia arriba para acelerar, hacia abajo para desacelerar y ir hacia
+atras, hacia la izquiera para doblar en esa direcci\'on y hacia la derecha para
+doblar a la derecha.
+
+Durante el juego, es posible pausar el mismo mediante la tecla $ESC$ y sacar
+$screenshots$ con la tecla $0$.
+
+Adem\'as, es posible cambiar la c\'amara con la que se ve el veh\'iculo a otras
+c\'amaras est\'aticas mediante la tecla $C$.
 
 \subsection{Los Menúes}
 Para movernos a través de los menúes, es necesario utilizar las flechas hacia
@@ -444,7 +498,13 @@ es necesario indicarle que textura utilizaran.  Previamente en el informe
 comentamos la existencia de dos tipos de texturas procedurales, piedra y
 marmol, tal como se pueden apreciar en el archivo de configuración de la pista.
 
-NO SE COMO SE HACE LA PARTE DE LA PISTA EN SI.
+Para realizar la pista, el Framework de JME nos provee de una funci\'on para
+realizar terrenos.  Uno le indica la altura m\'axima y m\'inima y el terreno es
+generado por el Framework.  Para modificar la textura del terreno, utilizamos
+una imagen obtenida de Google Maps y modificada para que sea una pista de
+carreras.  Hay dos archivos utilizados para la pista, "autodromo2.png" y
+"autodromo2low.png".  El primero es la pista con alta nivel de detalle y el
+segundo es la pista con un nivel de detalle m\'as bajo.
 
 \section{Conclusión}
 \label{conclusiones}
