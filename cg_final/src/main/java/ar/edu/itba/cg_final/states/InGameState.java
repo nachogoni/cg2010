@@ -1,6 +1,6 @@
 package ar.edu.itba.cg_final.states;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
@@ -24,7 +24,6 @@ import com.jme.scene.Text;
 import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
-import com.jmex.model.collada.schema.primaryType;
 import com.jmex.terrain.TerrainPage;
 
 public class InGameState extends RallyGameState {
@@ -45,6 +44,7 @@ public class InGameState extends RallyGameState {
 	
 	
 	
+	private Text gameTimeText;
 	Boolean setCameraPos = false;
 	Vector3f cameraPos = new Vector3f();
 	
@@ -70,6 +70,35 @@ public class InGameState extends RallyGameState {
 		audio.unpauseAll();
 
 
+		
+		
+		
+		
+		
+		
+		
+		
+        // Variables en pantalla
+		gameTimeText = Text.createDefaultTextLabel("gameTimeText", "Timer: --:--");
+		gameTimeText.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
+		gameTimeText.setCullHint( Spatial.CullHint.Never );
+		gameTimeText.setRenderState( Text.getDefaultFontTextureState() );
+		gameTimeText.setRenderState( Text.getFontBlend() );
+		gameTimeText.setLightCombineMode(LightCombineMode.Off);
+		gameTimeText.setLocalScale(1.8f);
+		gameTimeText.setLocalTranslation(0, height - gameTimeText.getHeight(), 0);
+    	this.stateNode.attachChild(gameTimeText);
+
+ 
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         // Speedometer
 		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
     	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
@@ -173,6 +202,13 @@ public class InGameState extends RallyGameState {
 		speedText.replace(0, speedText.length(),
 				String.format("%03d", (int)playerCar.getLinearSpeed()));
     	
+
+		
+		
+		
+		
+		
+		
 		if (setCameraPos == true) {
 			game.getCamara().setLocation(new Vector3f(cameraPos.x+300,cameraPos.y+100,cameraPos.z+300));
 			game.getCamara().lookAt(cameraPos, new Vector3f(0,1,0));
@@ -180,6 +216,24 @@ public class InGameState extends RallyGameState {
 		
 		sky.getLocalTranslation().set(game.getCamara().getLocation());
 		sky.updateGeometricState(0.0f, true);
+		
+		long actual = game.getActualTime();
+    	if (actual > 0) {
+    		long initTime = game.getInitTime();
+	    	long checkPointTime = game.getCheckPointTime();
+	    	String lap = "";
+	    	if (checkPointTime > 0) {
+	    		Date checkPointTimeDate = new Date(checkPointTime);
+	    		lap = String.format(" CheckPoint: %02d:%02d",checkPointTimeDate.getMinutes(), checkPointTimeDate.getSeconds());
+	    	}
+	    	long raceTime  = new Date().getTime() - initTime + (long)game.getPauseTime();
+	    	Date raceTimeDate = new Date(raceTime);
+	    	StringBuffer varText = gameTimeText.getText();
+	    	varText.replace(0, varText.length(),String.
+	    			format("Time: %02d:%02d%s",raceTimeDate.getMinutes(), raceTimeDate.getSeconds(),lap));
+    	}
+		
+		
 		
 		
 
