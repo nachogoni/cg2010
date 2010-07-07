@@ -3,11 +3,9 @@ package ar.edu.itba.cg_final.states;
 import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
-import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
@@ -17,7 +15,6 @@ public class StartState extends RallyGameState {
 
 	private long start;
 	private Text counter;
-	private RallyFadeOutIn fio;
 	private boolean first;
 	
 	final static String STATE_NAME = "StartGame";
@@ -49,14 +46,12 @@ public class StartState extends RallyGameState {
 		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
 
 		first = true;
-		fio = new RallyFadeOutIn("FadeInOut", rootNode, ((RallyGameState) GameStateManager.getInstance().getChild(PreLoadState.STATE_NAME)).getStateNode(), ((RallyGameState) GameStateManager.getInstance().getChild(InGameState.STATE_NAME)).getStateNode(),
+		addFadeController("FadeInOut", rootNode, ((RallyGameState) GameStateManager.getInstance().getChild(PreLoadState.STATE_NAME)).getStateNode(), ((RallyGameState) GameStateManager.getInstance().getChild(InGameState.STATE_NAME)).getStateNode(),
                 new ColorRGBA(0, 0, 0, 1), 0.01f);
-		Vector3f location = new Vector3f(RallyGame.getInstance().getCamara().getLocation());
-		fio.setLocalTranslation(location.add(RallyGame.getInstance().getCamara().getDirection()));
-        fio.attachTo(rootNode);
 
         rootNode.updateRenderState();
 	}
+
 
 	@Override
 	public void deactivated() {
@@ -72,32 +67,10 @@ public class StartState extends RallyGameState {
 	public void render(float arg0) {
 	}
 
-	private void fade(float timeF){
-		float time = timeF * fio.getSpeed();
-		ColorRGBA color = fio.getFadeColor();
-		if (fio.getCurrentStage() == 0) {
-			color.a += time;
-			fio.setFadeColor(color);
-			if (fio.getFadeColor().a >= 1.0f) {
-				fio.detachChild(fio.getFadeOutNode());
-				fio.attachChild(fio.getFadeInNode());
-				fio.setCurrentStage(fio.getCurrentStage() + 1);
-			}
-		} else if (fio.getCurrentStage() == 1) {
-			color.a -= time;
-			fio.setFadeColor(color);
-			if (fio.getFadeColor().a <= 0.0f) {
-				fio.setCurrentStage(fio.getCurrentStage() + 1);
-			}
-		} else if (fio.getCurrentStage() == 2) {
-			fio.detachFromNode();
-			fio.setFinished();
-		}
-	}
-	
+
 	@Override
 	public void update(float arg0) {
-		if ( !fio.hasFinished() ){
+		if ( !getFadeOutIn().hasFinished() ){
 			fade(1);
 			super.update(arg0);
 			return;
