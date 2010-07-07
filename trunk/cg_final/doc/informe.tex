@@ -24,11 +24,13 @@ Tenaillon\\Santiago Vazquez}
 \maketitle
 
 \begin{abstract}
-El siguiente informe describe cómo se diseñó e implementó el Rally Uribe 100K. 
+El siguiente informe describe cómo se diseñó e implementó el Rally Uribe
+100K. 
 Mediante el uso de imágenes se describe cómo fueron diseñadas e implementadas
 las distintas partes que componen al total de la aplicación.  También se
 presentan los inconvenientes que surgieron a lo largo del desarrollo y cómo el
-equipo decidió solucionarlos.  Por último se explicará cómo se utiliza el juego,
+equipo decidió solucionarlos.  Por último se explicará cómo se utiliza el
+juego,
 cómo se modifican las distintas opciones de configuración del mismo y las
 conclusiones.
 \end{abstract}
@@ -51,13 +53,15 @@ adicionales fueron desarrolladas para el juego, como las texturas procedurales,
 los screenshots, los arbustos billboard, los skybox intercambiables y demás
 características del mismo.
 
-En la sección \ref{mododeuso} se explicará cómo se utiliza el juego, explicando
+En la sección \ref{mododeuso} se explicará cómo se utiliza el juego,
+explicando
 las teclas a utilizar por defecto, además de explicar cómo utilizar las
 distintas opciones del menú.
 
 En la sección \ref{configuracion} se mostrarán las distintas opciones de
 configuración, así como los valores recomendados para la misma.  También se
-explicará cómo definir nuevas pistas, para que el usuario del mismo pueda crear
+explicará cómo definir nuevas pistas, para que el usuario del mismo pueda
+crear
 sus propios recorridos y utilizarlos con el juego.
 
 Por último, en la sección \ref{conclusiones} se presentarán las conclusiones
@@ -67,7 +71,8 @@ enseñanza obtenida del diseño y desarrollo del mismo.
 \section{El Juego}
 \label{el_juego}
 
-En esta sección se explicará el juego en sí.  El objetivo del mismo, el modo de
+En esta sección se explicará el juego en sí.  El objetivo del mismo, el modo
+de
 juego, los distintos estados, cómo es el sistema de puntajes y los sonidos
 utilizados en el mismo.
 
@@ -84,7 +89,8 @@ siguientes, y el jugador deberá volver hacia atrás y transitar por el
 checkpoint adeudado.
 
 Al finalizar las tres vueltas, el jugador recibirá el tiempo de su recorrido, y
-mientras más bajo sea ese tiempo, más chances tendrá de ingresar al listado de
+mientras más bajo sea ese tiempo, más chances tendrá de ingresar al listado
+de
 los puntajes más altos.
 \subsection{Modo de Juego}
 Hay un solo modo de juego, y este consiste en intentar realizar el menor tiempo
@@ -95,7 +101,8 @@ el juego y luego de jugar.
 
 Antes de comenzar a jugar, el jugador encuentra el menú principal de la
 aplicación, el cual le presenta todas las opciones disponibles.  Una vez que el
-usuario selecciona la opción para comenzar a jugar, se realiza la transición al
+usuario selecciona la opción para comenzar a jugar, se realiza la transición
+al
 siguiente estado, el juego en sí.
 
 \begin{figure}
@@ -118,7 +125,8 @@ siguiente estado, el juego en sí.
 
 En este estado, es cuando el jugador maneja el vehículo a través del camino
 propuesto.  El vehículo en esta ocasión, puede colisionar contra los distintos
-objetos que componen la escena, como los árboles, los límites del terreno y las
+objetos que componen la escena, como los árboles, los límites del terreno y
+las
 pirámides presentes en el recorrido.  Una vez finalizado el recorrido, se
 realiza la transición al tercer y último estado del juego.
 
@@ -148,12 +156,13 @@ la exageración de utilizar muchas pistas.
 También fueron utilizados dos sonidos para ser utilizados por el vehículo para
 denotar situaciones en las que se está acelerando y situaciones en las que no.
 
-Por último, fue utilizado un sonido para los momentos en que el vehículo
+Por �ltimo, fue utilizado un sonido para los momentos en que el vehículo
 colisiona contra algun objeto presente en el terreno.
 
 Todos los sonidos propios del vehículo y su entorno fueron obtenidos de
 Internet, de páginas de uso libre y gratuito.  Los temas utilizados para la
-música ambiental, corresponden a la autoría de Santiago Vazquez, integrante del
+música ambiental, corresponden a la autoría de Santiago Vazquez, integrante
+del
 equipo.
 
 \begin{figure}
@@ -173,6 +182,44 @@ equipo.
 \label{fig:figure2}
 \end{minipage}
 \end{figure}
+
+\subsection{Iluminaci\'on}
+
+El terreno en el cual se desarrolla el juego, cuenta con tres tipos distintos de
+iluminaci\'on, una luz ambiente, una luz direccional y cinco luces puntuales que
+iluminan la totalidad del recorrido.
+
+La iluminaci\'on ambiente, est\'a configurada por defecto para tener un nivel
+bajo de iluminaci\'on.  Se eligi\'o esto para que el resto de las luces tomen un
+papel m\'as importante en la iluminaci\'on del escenario.
+
+Los valores de rojo, verde, azul y canal alfa que determinan la intensidad y
+color de la luz, son f\'acilmente configurables en el archivo
+``global.properties'', bajo el elemento $TRACK1.AMBIENT.LIGHT$.
+
+La luz direccional, est\'a configurada por defecto con un color rojo intenso y
+est\'a emplazada encima del primer checkpoint del recorrido. La raz\'on de esta
+decisi\'on radica en que ten\'iamos que buscar un lugar donde la luz fue
+visible para demostrar la existencia de la misma, es por eso que cada vez que
+el auto transita por debajo de la grilla de partida, se puede ver un color
+rojizo en el techo del mismo.
+
+Esta luz es tambi\'en configurable en cuanto a los colores rojo, verde, azul y
+el canal alfa.  Para configurar esto, es necesario modificar en el archivo de
+configuraci\'on, las propiedades que se encuentran bajo el elemento
+$TRACK1.LIGHT.SPOTLIGHT$.
+
+Por \'ultimo, las luces puntuales.  Las cinco luces puntuales est\'an en
+distintos lugares a lo largo del recorrido.  A diferencia de los otros dos
+tipos de iluminac\'on, estos tienen una posici\'on determinada por el usuario y
+est\'an configuradas para dar una luz blanca.
+
+Tanto la posici\'on de la luz como el color, son configurables.  Al igual que
+el resto de las luces, para cambiar la posici\'on y color de estas, hay que
+modificar las propiedades de cada luz en el archivo de configuraci\'on.  Cada
+luz puntual est\'a contemplada bajo la propiedad $TRACK1.POINTLIGHTn$ donde $n$
+es el n\'umero de la luz.
+
 
 
 \section{Características Extra}
@@ -227,7 +274,8 @@ Esta característica fue muy utilizada a la hora de realizar este informe.
 
 \subsection{Billboards}
 
-Otra característica implementada, fue el hecho de contar con árboles realizados
+Otra característica implementada, fue el hecho de contar con árboles
+realizados
 con texturas de tipo billboard.
 
 En las imágenes presentadas con antelación y más precisamente en la figura
@@ -286,7 +334,8 @@ archivo "global.properties".
 Desde el archivo previamente mencionado, es posible configurar todas las teclas
 del juego además de los nombres y texturas de los skyboxes, el estado de la
 música y los efectos como las pistas a escucharse ante cada evento y/o pistas
-de la música ambiental.  Además, tanto para la música como para los efectos, es
+de la música ambiental.  Además, tanto para la música como para los efectos,
+es
 posible configurar en qué nivel quiere uno que se encuentren, del 0 al 100,
 siendo 100 el volumen más alto de la música o efecto.
 
@@ -295,7 +344,8 @@ siendo 100 el volumen más alto de la música o efecto.
 Desde el archivo de configuración, es posible determinar la posición de los
 distintos objetos que componen a la escena.
 
-Los árboles, checkpoints, pirámides con texturas procedurales, como el resto de
+Los árboles, checkpoints, pirámides con texturas procedurales, como el resto
+de
 los objetos presentes, pueden ser configurados fácilmente desde el archivo de
 configuración.
 
@@ -303,7 +353,8 @@ Para configurar los árboles presentes en la escena, es necesario indicar qué
 cantidad de árboles habrá, y acto seguido, indicar para cada uno de esos
 árboles, que posición van a ocupar en el terreno.
 
-Un ejemplo del archivo de configuración para la determinación de la posición de
+Un ejemplo del archivo de configuración para la determinación de la posición
+de
 los árboles es:
 
 \begin{verbatim}
@@ -323,7 +374,8 @@ Para el caso de los checkpoints, es similar a los árboles pero con una pequeña
 variación, dada por la necesidad de determinar la rotación del plano que
 contiene al checkpoint.
 
-Un ejemplo del archivo de configuración para la determinación de la posición de
+Un ejemplo del archivo de configuración para la determinación de la posición
+de
 los checkpoints es:
 
 \begin{verbatim}
@@ -362,7 +414,8 @@ TRACK1.PIRAMID2.POS=1850,-150
 TRACK1.PIRAMID2.TYPE=Stone
 \end{verbatim}
 
-Donde además de indicar la cantidad de pirámides que van a haber en el terreno,
+Donde además de indicar la cantidad de pirámides que van a haber en el
+terreno,
 es necesario indicarle que textura utilizaran.  Previamente en el informe
 comentamos la existencia de dos tipos de texturas procedurales, piedra y
 marmol, tal como se pueden apreciar en el archivo de configuración de la pista.

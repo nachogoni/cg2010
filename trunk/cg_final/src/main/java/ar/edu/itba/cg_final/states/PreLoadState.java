@@ -4,8 +4,11 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.Text;
+import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
@@ -60,6 +63,11 @@ public class PreLoadState extends RallyGameState {
 		// Creamos el texto de informacion
 		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
 		info.setLocalTranslation(width * 0.35f, height * 0.5f, 0);
+		info.setTextColor(new ColorRGBA(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 0.95f));
+		info.setCullHint( Spatial.CullHint.Never );
+		info.setRenderState( Text.getDefaultFontTextureState() );
+		info.setRenderState( Text.getFontBlend() );
+		info.setLightCombineMode(LightCombineMode.Off);
 		this.stateNode.attachChild(info);
 
 		// Tomamos la instancia del RallyGame
