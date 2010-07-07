@@ -103,8 +103,15 @@ public class RallyGame extends BaseSimpleGame {
 	}
 
 	@Override
+	protected void initGame() {
+		super.initGame();
+		//Disable F4
+		graphNode.getChild("f4").setLocalTranslation(-100, -100, -100);
+	}
+	
+	@Override
 	public void simpleInitGame() {
-
+		
 		// Creamos los estados en el juego y mostramos el menu
 		RallyGameState menuState = new MenuState();
 		PreLoadState preLoadState = new PreLoadState();
