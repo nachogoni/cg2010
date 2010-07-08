@@ -73,7 +73,7 @@ public class FinishedState extends RallyGameState {
 		if(flag){
 			long raceTime = RallyGame.getInstance().getRaceTime();
 			Scores scores = Scores.getInstance();
-			Score userScore = new Score(new Date().toString(), raceTime);
+			Score userScore = new Score(new Date(), raceTime);
 			scores.addScore(userScore);
 			flag = false;
 		}

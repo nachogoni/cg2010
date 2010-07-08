@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.settings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Score implements Serializable, Comparable<Score> {
 
@@ -14,6 +15,14 @@ public class Score implements Serializable, Comparable<Score> {
 	public Score(String ID, long score) {
 		super();
 		this.userID = ID;
+		this.score = score;
+	}
+	
+	public Score(Date aDate, long score){
+		super();
+		
+		this.userID = String.format("%02d/%02d/%04d - %02d:%02d", aDate.getDate(), aDate.getMonth()+1, 
+				aDate.getYear()+1900, aDate.getHours(), aDate.getMinutes());
 		this.score = score;
 	}
 
@@ -32,15 +41,25 @@ public class Score implements Serializable, Comparable<Score> {
 	public void setScore(long score) {
 		this.score = score;
 	}
+	
+	public String getScoreAsString(){
+		int secs = (int) (score)/1000;
+		int milisecs = (int) score%1000;
+		int min = secs / 60;
+		secs = secs % 60;
+		return min + ":" + secs + "." + milisecs;
+		
+	}
 
 	@Override
 	public String toString() {
-		return "Score [userID=" + userID + ", score=" + score + "]";
+		return "";
 	}
 
 	public int compareTo(Score aScore) {
 		return (int) (this.score-aScore.getScore());
 	}
+	
 	
 	
 

@@ -1,11 +1,13 @@
 package ar.edu.itba.cg_final;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.map.CheckPoint;
@@ -20,6 +22,7 @@ import ar.edu.itba.cg_final.states.PreLoadState;
 import ar.edu.itba.cg_final.states.RallyGameState;
 import ar.edu.itba.cg_final.states.StartState;
 import ar.edu.itba.cg_final.vehicles.Car;
+
 import com.jme.app.BaseSimpleGame;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -424,7 +427,8 @@ public class RallyGame extends BaseSimpleGame {
 		if( screenshot ){
 			screenshot = false;
 			System.out.println("Screenshot!!!");
-			r.takeScreenShot(new Date().toString());
+			new File("screenshots").mkdir();
+			r.takeScreenShot("screenshots/" + new Date().toString());
 		}
 		
 		
