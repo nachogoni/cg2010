@@ -164,6 +164,24 @@ public class InGameState extends RallyGameState {
 		
 		
 		
+		// Map
+		Quad map = new Quad("map", 99*1.5f, 65*1.5f);
+		map.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		map.setLightCombineMode(LightCombineMode.Off);
+		map.setLocalTranslation(map.getWidth()/2, map.getHeight()/2, 0f);
+		map.updateRenderState();
+		TextureState mapts = DisplaySystem.getDisplaySystem().getRenderer()
+		.createTextureState();
+		try {
+			mapts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/autodromo2.jpeg"),
+					MinificationFilter.NearestNeighborNoMipMaps,
+					MagnificationFilter.NearestNeighbor, 1.0f, true));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		mapts.setEnabled(true);
+		map.setRenderState(mapts);
+		stateNode.attachChild(map);
 		
 		
     	
