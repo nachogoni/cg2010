@@ -179,10 +179,10 @@ public class RallyGame extends BaseSimpleGame {
 	
 	public void passThrough(String player, String checkPoint) {
 		if (positions.get(player).equals(checkPoint)) {
-			String lap = "";
+			String lap = "Checkpoint time: ";
 			lastCheckPoint.set(car.getPosition());
 			positions.put(player, checkPoints.get(checkPoint));
-			audio.playSound(soundsEffects.CHECKPOINT);
+//			audio.playSound(soundsEffects.CHECKPOINT);
 			// Take last time
 			actualTime = new Date().getTime();
 			StringBuffer timeText = timeCheckPoint.getText();
