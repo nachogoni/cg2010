@@ -21,12 +21,12 @@ import com.jmex.physics.StaticPhysicsNode;
 public class Tree extends Node {
 	
 	private static final long serialVersionUID = 1130692595359578525L;
+	private boolean isBush;
 	public Tree(String name) {
-		this();
-		this.setName(name);
+		this(name,false);
 	}
 	
-	public Tree() {
+	public void buildTree() {
 
 		RallyGame rg = RallyGame.getInstance();
 		
@@ -62,64 +62,83 @@ public class Tree extends Node {
         billboard.setLocalScale(100f);
         
         this.attachChild(billboard);        
-        
-        Box boxGeometry = new Box("post",new Vector3f(-1f,-10,-1f), new Vector3f(1f,10,1f));
-        /*Cylinder postGeometry = new Cylinder("treepost", 10, 10, 0.1f, 10);
-        Quaternion q2 = new Quaternion();
-        //rotate the cylinder to be vertical
-        q2.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
-        postGeometry.setLocalRotation(q2);*/
-//        postGeometry.setModelBound(new BoundingBox());
-//        postGeometry.updateModelBound();
-        boxGeometry.setModelBound(new BoundingBox());
-        boxGeometry.updateModelBound();           
 
-        BlendState blendState2 = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-        blendState2.setBlendEnabled( true );
-        blendState2.setSourceFunction( BlendState.SourceFunction.DestinationAlpha);
+        if ( ! isBush ){
         
-        blendState2.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
-        
-        blendState2.setTestEnabled( true );
-        blendState2.setTestFunction( BlendState.TestFunction.Never );
-        blendState2.setEnabled( true );                
-        
-        boxGeometry.setRenderState(blendState2);
-        boxGeometry.updateRenderState();
-        
-        //Ponerlo despues de que se cargue el auto
-        
-        /*TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        Texture t3 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/post.jpg"),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
-        ts3.setTexture(t3);*/
-        
-        /*Node post = new Node("treepost");
-        post.attachChild(postGeometry);
-        //post.setRenderState(ts3);
-        post.setLocalScale(15);
-        post.setLocalTranslation(0, -20, 0);*/
-        
-        final StaticPhysicsNode staticNode = rg.getPhysicsSpace().createStaticNode();
-        /*PhysicsCylinder pc = staticNode.createCylinder("c" + this.getName());
-        pc.setLocalRotation(q2);*/
-        staticNode.attachChild(boxGeometry);
-        
-        //staticNode.attachChild(pc);
-        staticNode.setLocalScale(new Vector3f(1,500,1));
-        staticNode.setLocalTranslation(-2.75f, 0, 3.25f);
-        staticNode.updateGeometricState(0, true);
-        //staticNode.updateRenderState();
+			Box boxGeometry = new Box("post", new Vector3f(-1f, -10, -1f),
+					new Vector3f(1f, 10, 1f));
+			/*
+			 * Cylinder postGeometry = new Cylinder("treepost", 10, 10, 0.1f,
+			 * 10); Quaternion q2 = new Quaternion(); //rotate the cylinder to
+			 * be vertical q2.fromAngleAxis(FastMath.PI/2, new Vector3f(1,0,0));
+			 * postGeometry.setLocalRotation(q2);
+			 */
+			// postGeometry.setModelBound(new BoundingBox());
+			// postGeometry.updateModelBound();
+			boxGeometry.setModelBound(new BoundingBox());
+			boxGeometry.updateModelBound();
 
-        //staticNode.attachChild( post );
-        
-        this.attachChild( staticNode );
-        
-        staticNode.generatePhysicsGeometry();     
+			BlendState blendState2 = DisplaySystem.getDisplaySystem()
+					.getRenderer().createBlendState();
+			blendState2.setBlendEnabled(true);
+			blendState2
+					.setSourceFunction(BlendState.SourceFunction.DestinationAlpha);
+
+			blendState2
+					.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
+
+			blendState2.setTestEnabled(true);
+			blendState2.setTestFunction(BlendState.TestFunction.Never);
+			blendState2.setEnabled(true);
+
+			boxGeometry.setRenderState(blendState2);
+			boxGeometry.updateRenderState();
+
+			// Ponerlo despues de que se cargue el auto
+
+			/*
+			 * TextureState ts3 =
+			 * DisplaySystem.getDisplaySystem().getRenderer().
+			 * createTextureState(); Texture t3 =
+			 * TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
+			 * .getResource("texture/post.jpg"),
+			 * Texture.MinificationFilter.Trilinear,
+			 * Texture.MagnificationFilter.Bilinear); ts3.setTexture(t3);
+			 */
+
+			/*
+			 * Node post = new Node("treepost"); post.attachChild(postGeometry);
+			 * //post.setRenderState(ts3); post.setLocalScale(15);
+			 * post.setLocalTranslation(0, -20, 0);
+			 */
+
+	        final StaticPhysicsNode staticNode = rg.getPhysicsSpace().createStaticNode();
+	        /*PhysicsCylinder pc = staticNode.createCylinder("c" + this.getName());
+	        pc.setLocalRotation(q2);*/
+	        staticNode.attachChild(boxGeometry);
+	        
+	        //staticNode.attachChild(pc);
+	        staticNode.setLocalScale(new Vector3f(1,500,1));
+	        staticNode.setLocalTranslation(-2.75f, 0, 3.25f);
+	        staticNode.updateGeometricState(0, true);
+	        //staticNode.updateRenderState();
+	
+	        //staticNode.attachChild( post );
+	        
+	        this.attachChild( staticNode );
+	        
+	        staticNode.generatePhysicsGeometry();
+        }
 		
 	}
-    public void placeTree(float x, float y, float z) {
+	
+    public Tree(String name, boolean arbust) {
+		this.setName(name);
+		this.isBush = arbust;
+		buildTree();
+	}
+
+	public void placeTree(float x, float y, float z) {
     	localTranslation.x = x;
     	localTranslation.y = y;
     	localTranslation.z = z;
