@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.map;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
@@ -19,33 +20,31 @@ import com.jmex.physics.material.Material;
 public class Obstacles extends Node {
 
 	private static final long serialVersionUID = -1725837107311137978L;
-	public Obstacles(String name) {
-		this();
+	public Obstacles(String name, GlobalSettings gs) {
+		this(gs);
 		this.setName(name);
 	}
 	
-	public Obstacles() {
+	public Obstacles(GlobalSettings gs) {
         //createStuff( 10, 0, 10, 0, null, new Sphere( "", 20, 20, 5 ) );
         
-        createStuff( -10, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
-        createStuff( 0, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
-        createStuff( 10, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
-
-        createStuff( -5, 10, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
-        createStuff( 5, 10, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
-        
-        createStuff( 0, 20, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ) );
+        createStuff( -10, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs);
+        createStuff( 0, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs );
+        createStuff( 10, 0, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs);
+        createStuff( -5, 10, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs);
+        createStuff( 5, 10, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs);
+        createStuff( 0, 20, -10, 0, null, new Box( "", new Vector3f(), 5, 5, 5 ),gs);
 
 	}
 	
-    private void createStuff( float x, float y, float z, float angle, Vector3f axis, Geometry geom ) {
+    private void createStuff( float x, float y, float z, float angle, Vector3f axis, Geometry geom, GlobalSettings gs ) {
     	
         //Quad q = new Quad("Quad");
         TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         ts2.setEnabled(true);
         Texture t4 = TextureManager.loadTexture(
             RallyGame.class.getClassLoader().getResource(
-            "texture/crate.png"), 
+            gs.getProperty("TRACK1.OBSTACLE.TEXTURE")), 
             MinificationFilter.Trilinear,
             MagnificationFilter.Bilinear );
         

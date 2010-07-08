@@ -79,11 +79,11 @@ public class RallyTrack extends Node {
         MinificationFilter minF; 
         MagnificationFilter maxF;
         if (gs.getProperty("GAME.GRAPHICS.QUALITY").equals(GraphicsQualityUtils.High.toString())) {
-        	texture = "texture/autodromo2.png";
+        	texture = gs.getProperty("TRACK1.TEXTURE.HIGH");
             minF = MinificationFilter.Trilinear; 
             maxF = MagnificationFilter.Bilinear;
         } else {
-        	texture = "texture/autodromo2low.jpg";
+        	texture = gs.getProperty("TRACK1.TEXTURE.LOW");
             minF = MinificationFilter.NearestNeighborNoMipMaps; 
             maxF = MagnificationFilter.NearestNeighbor;        	
         }
@@ -93,8 +93,7 @@ public class RallyTrack extends Node {
         ts.setTexture( t1, 0 );
 
         Texture t3 = TextureManager.loadTexture( RallyGame.class.getClassLoader().
-                getResource(
-                "texture/Detail.jpg" ),
+                getResource(gs.getProperty("TRACK1.TEXTURE.DETAIL")),
                 MinificationFilter.Trilinear,
                 MagnificationFilter.Bilinear );
         ts.setTexture( t3, 1 );
@@ -130,7 +129,7 @@ public class RallyTrack extends Node {
         
         this.terrain = page;
         
-        buildFence();
+        buildFence(gs);
         
         buildForest(gs);
         
@@ -144,10 +143,10 @@ public class RallyTrack extends Node {
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
 	}
 	
-	private void buildFence() {
+	private void buildFence(GlobalSettings gs) {
 		RallyGame rg = RallyGame.getInstance();
 	       //This is the main node of our fence
-		ForceFieldFence fence = new ForceFieldFence("fence");
+		ForceFieldFence fence = new ForceFieldFence("fence", gs);
         
         //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
         //first we'll scale the entire "model" by a factor of 5
@@ -186,7 +185,7 @@ public class RallyTrack extends Node {
 			if ( i % BUSH_QUOTA == 0 )
 				arbust = true;
 			
-			Tree tree = new Tree("tree"+i, arbust);
+			Tree tree = new Tree("tree"+i, arbust, gs);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS");
 			float ypos = terrain.getHeight(pos) + treeHeight;
 			
@@ -322,7 +321,7 @@ public class RallyTrack extends Node {
 		
 		
 		for (int i = 1; i <= count; i++) {
-			Obstacles obstacle = new Obstacles("Obstacle"+i);
+			Obstacles obstacle = new Obstacles("Obstacle"+i, gs);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.OBSTACLES" + i + ".POS");
 			
 			obstacle.placeObstacles(pos.x, terrain.getHeight(pos)-145, pos.y);
