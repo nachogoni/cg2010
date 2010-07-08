@@ -325,7 +325,7 @@ public class MenuState extends RallyGameState {
 		}else{
 			for(int i = scores.size()-1 ; i >= 0 ; i--){
 				Score s = scores.get(i);
-				RallyMenuItemVoid score = new RallyMenuItemVoid(s.getUserID() + " " + s.getScore());
+				RallyMenuItemVoid score = new RallyMenuItemVoid(s.getUserID() + "     " + s.getScoreAsString());
 				highScorePanel.addItem(score);
 				if ( i == 0 )
 					score.toggleSelect();
