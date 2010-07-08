@@ -28,6 +28,7 @@ import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
 import com.jme.scene.Spatial.LightCombineMode;
+import com.jme.scene.shape.Disk;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
@@ -52,7 +53,8 @@ public class InGameState extends RallyGameState {
 	InputHandler actions;
 	
 	
-	
+	Quad map;
+	Quad carDisk;
 	Node needleNode;
 	private Text gameTimeText;
 	Boolean setCameraPos = false;
@@ -165,7 +167,7 @@ public class InGameState extends RallyGameState {
 		
 		
 		// Map
-		Quad map = new Quad("map", 99*1.5f, 65*1.5f);
+		map = new Quad("map", 99*1.5f, 65*1.5f);
 		map.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		map.setLightCombineMode(LightCombineMode.Off);
 		map.setLocalTranslation(map.getWidth()/2, map.getHeight()/2, 0f);
@@ -183,10 +185,33 @@ public class InGameState extends RallyGameState {
 		map.setRenderState(mapts);
 		stateNode.attachChild(map);
 		
-		
-    	
-    	
-    	
+    	// CheckPoint Positions
+    	ArrayList<CheckPoint> c = game.getCheckPointList();
+    	for (int i = 0; i < c.size(); i++) {
+    		Quad cp = new Quad("mapCP"+i, 7, 7);
+    		cp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    		if (i == 0) {
+    			cp.setDefaultColor(ColorRGBA.red);
+    		} else {
+    			cp.setDefaultColor(ColorRGBA.orange);
+    		}
+    		cp.setLightCombineMode(LightCombineMode.Off);
+    		cp.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
+    		cp.setLocalTranslation(
+    				(map.getWidth() / 2) * c.get(i).get3DPosition().x / 5000 + map.getCenter().x,
+    				(map.getHeight() / 2) * c.get(i).get3DPosition().z / 5000 + map.getCenter().y, 0f);
+    		cp.updateRenderState();
+    		stateNode.attachChild(cp);
+    	}
+
+    	// Map car position
+    	carDisk = new Quad("mapCarPos", 5, 5);
+    	carDisk.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    	carDisk.setDefaultColor(ColorRGBA.yellow);
+    	carDisk.setLightCombineMode(LightCombineMode.Off);
+    	carDisk.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
+    	carDisk.updateRenderState();
+    	stateNode.attachChild(carDisk);
     	
     	
     	
@@ -336,6 +361,9 @@ public class InGameState extends RallyGameState {
 	    			format("Time: %02d:%02d%s",raceTimeDate.getMinutes(), raceTimeDate.getSeconds(),lap));
     	}
 		
+		carDisk.setLocalTranslation(
+				(map.getWidth() / 2) * playerCar.getPosition().x / 5000 + map.getCenter().x,
+				(map.getHeight() / 2) * playerCar.getPosition().z / 5000 + map.getCenter().y, 0f);
 		
 		
 		
