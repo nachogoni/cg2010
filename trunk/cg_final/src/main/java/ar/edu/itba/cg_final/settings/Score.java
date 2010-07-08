@@ -9,9 +9,9 @@ public class Score implements Serializable, Comparable<Score> {
 	 */
 	private static final long serialVersionUID = 2295623734097373090L;
 	private String userID;
-	private int score;
+	private long score;
 	
-	public Score(String ID, int score) {
+	public Score(String ID, long score) {
 		super();
 		this.userID = ID;
 		this.score = score;
@@ -25,11 +25,11 @@ public class Score implements Serializable, Comparable<Score> {
 		this.userID = userID;
 	}
 
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(long score) {
 		this.score = score;
 	}
 
@@ -39,7 +39,7 @@ public class Score implements Serializable, Comparable<Score> {
 	}
 
 	public int compareTo(Score aScore) {
-		return aScore.getScore()-this.score;
+		return (int) (this.score-aScore.getScore());
 	}
 	
 	

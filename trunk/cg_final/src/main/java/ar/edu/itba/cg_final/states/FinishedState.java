@@ -3,6 +3,8 @@ package ar.edu.itba.cg_final.states;
 import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.Score;
+import ar.edu.itba.cg_final.settings.Scores;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -18,6 +20,7 @@ public class FinishedState extends RallyGameState {
     float delta = 0.02f;
 	Vector3f p;
 	Camera cam;
+	boolean flag = true;
 	
 	public static final String STATE_NAME = "FinishedGame"; 
 	
@@ -66,6 +69,13 @@ public class FinishedState extends RallyGameState {
 	        float z = p.z + (float)Math.sin(i+=delta)*200;
 	        cam.setLocation(new Vector3f(x, 80, z));
 	        cam.lookAt(p, new Vector3f(0,1,0));
+		}
+		if(flag){
+			long raceTime = RallyGame.getInstance().getRaceTime();
+			Scores scores = Scores.getInstance();
+			Score userScore = new Score(new Date().toString(), raceTime);
+			scores.addScore(userScore);
+			flag = false;
 		}
 	}
 

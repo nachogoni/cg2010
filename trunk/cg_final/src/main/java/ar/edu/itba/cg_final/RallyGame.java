@@ -194,12 +194,12 @@ public class RallyGame extends BaseSimpleGame {
 				timeCheckPoint.setLocalScale(3f);
 				lap = "Lap " + String.valueOf(laps) + ": ";
 				if (laps == 0) {
-					// Iniciamos el contador de tiempo
-					lap = "Timer: ";
-					initTime = new Date().getTime();
-					actualTime = initTime;
-				} else if (laps == 3) { //TODO == 3 para que sean 3 vueltas!
-					// Termino el juego
+//					// Iniciamos el contador de tiempo
+//					lap = "Timer: ";
+//					initTime = new Date().getTime();
+//					actualTime = initTime;
+//				} else if (laps == 3) { //TODO == 3 para que sean 3 vueltas!
+//					// Termino el juego
 					lap = "Race: ";
 					checkPointTimer = 300;
 					this.setPause(true);
