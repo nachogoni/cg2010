@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.states.utils;
 
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
@@ -45,12 +46,13 @@ public class RallyFadeOutIn extends Transient {
 	public RallyFadeOutIn(String name, Node rNode, Node out, Node in, ColorRGBA c, float spd) {
 		super(name);
 	    fadeQuad = new Quad(name+"Fade Quad");
-	    fadeQuad.updateGeometry(DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight());
-//	    fadeQuad.updateGeometry(5,5);
-	    fadeQuad.setColorBuffer(null);
-	    fadeQuad.getLocalTranslation().z = 1;
+	    fadeQuad.setLocalScale(10000);
+	    fadeQuad.setDefaultColor(new ColorRGBA(0,0,0,0));
+	    fadeQuad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 	    fadeQuad.setLightCombineMode(LightCombineMode.Off);
 	    initialise(fadeQuad, out, in, c, spd);
+	    fadeQuad.setLocalTranslation(DisplaySystem.getDisplaySystem().getWidth()/2, DisplaySystem.getDisplaySystem().getHeight()/2,0);
+	    fadeQuad.updateRenderState();
 	}
 	
 	/**
@@ -199,21 +201,6 @@ public class RallyFadeOutIn extends Transient {
 		speed = s;
 	}
 
-	/**
-	 * Ignoring children, this only updates all the controllers of this
-	 * FadeInOut
-	 * 
-	 * @param time
-	 *            the time to pass to update.
-	 */
-//	public void updateWorldData(float time) {
-//		if (getControllers().size() != 0) {
-//			for (int i = 0; i < getControllers().size(); i++) {
-//				(getController(i)).update(time);
-//			}
-//		}
-//	}
-
 	public void attachTo(Node stateNode) {
 		this.stateNode = stateNode;
 		stateNode.attachChild(this);
@@ -223,7 +210,6 @@ public class RallyFadeOutIn extends Transient {
 	public void detachFromNode() {
 		stateNode.detachChild(fadeQuad);
 		stateNode.detachChild(this);
-//		stateNode.attachChild(getFadeInNode());
 	}
 
 	public void setFinished() {
