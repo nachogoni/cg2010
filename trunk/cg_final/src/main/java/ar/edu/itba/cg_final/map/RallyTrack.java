@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.map.ProceduralTexturePyramid.pyramidType;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
@@ -48,7 +49,7 @@ public class RallyTrack extends Node {
 	private Node pyramids;
 	private Node obstacles;
 
-	public RallyTrack(GlobalSettings gs) {
+	public RallyTrack(GlobalSettings gs, GameUserSettings gus) {
 		
 		RallyGame rg = RallyGame.getInstance();
 		
@@ -78,7 +79,7 @@ public class RallyTrack extends Node {
         String texture;
         MinificationFilter minF; 
         MagnificationFilter maxF;
-        if (gs.getProperty("GAME.GRAPHICS.QUALITY").equals(GraphicsQualityUtils.High.toString())) {
+        if ( gus.getHighRes() ) {
         	texture = gs.getProperty("TRACK1.TEXTURE.HIGH");
             minF = MinificationFilter.Trilinear; 
             maxF = MagnificationFilter.Bilinear;

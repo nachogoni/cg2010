@@ -478,8 +478,8 @@ public class RallyGame extends BaseSimpleGame {
         inGameStateNode.updateGeometricState(0, true);
         
     }
-    public void createRallyTrack(Node inGameStateNode, GlobalSettings gs) {
-    	RallyTrack rt = new RallyTrack(gs);
+    public void createRallyTrack(Node inGameStateNode, GlobalSettings gs, GameUserSettings gus) {
+    	RallyTrack rt = new RallyTrack(gs,gus);
     	
     	this.rallyTrack = rt;
     	inGameStateNode.attachChild(rt);

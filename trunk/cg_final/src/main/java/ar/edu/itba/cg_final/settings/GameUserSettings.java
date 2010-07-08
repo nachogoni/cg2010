@@ -1,5 +1,7 @@
 package ar.edu.itba.cg_final.settings;
 
+import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
+
 
 public class GameUserSettings {
 
@@ -12,12 +14,15 @@ public class GameUserSettings {
 	private Boolean musicOn = true;
 	private Integer sfxVolume = 100;
 	private Boolean sfxOn = true;
-	private Boolean highRes = true;
-	private String skybox = GlobalSettings.getInstance().getSkyBoxesNames().get(0);
+	private Boolean highRes;
+	private String skybox;
 	
 	static private GameUserSettings instance;
 	
 	private GameUserSettings() {
+		String qName = GlobalSettings.getInstance().getProperty("GAME.GRAPHICS.QUALITY");
+		highRes = GraphicsQualityUtils.High.toString().equalsIgnoreCase(qName);
+		skybox = GlobalSettings.getInstance().getSkyBoxesNames().get(0);
 	}
 
 	static public GameUserSettings getInstance(){
