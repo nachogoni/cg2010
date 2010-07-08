@@ -47,7 +47,7 @@ public class StartState extends RallyGameState {
 
 		first = true;
 		addFadeController("FadeInOut", rootNode, ((RallyGameState) GameStateManager.getInstance().getChild(PreLoadState.STATE_NAME)).getStateNode(), ((RallyGameState) GameStateManager.getInstance().getChild(InGameState.STATE_NAME)).getStateNode(),
-                new ColorRGBA(0, 0, 0, 1), 0.01f);
+                new ColorRGBA(0, 0, 0, 1), 0.2f);
 
         rootNode.updateRenderState();
 	}
@@ -71,7 +71,7 @@ public class StartState extends RallyGameState {
 	@Override
 	public void update(float arg0) {
 		if ( !getFadeOutIn().hasFinished() ){
-			fade(1);
+			fade(arg0);
 			super.update(arg0);
 			return;
 		}else if ( first ){

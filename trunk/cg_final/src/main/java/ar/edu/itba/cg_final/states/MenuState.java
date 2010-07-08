@@ -21,8 +21,6 @@ import ar.edu.itba.cg_final.utils.ResourceLoader;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.InputHandler;
-import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Text;
@@ -50,6 +48,7 @@ public class MenuState extends RallyGameState {
 	private ColorRGBA initialColor;
 	private MenuInputHandler keyActions;
 	AudioTrack menuSong;
+	private boolean first;
 	final static String STATE_NAME = "Menu";
 
 	public MenuState() {
@@ -337,14 +336,30 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void activated() {
-		menuSong.play();
-		keyActions = new MenuInputHandler(mainPanel);
-		RallyGame.getInstance().setInputHandler(keyActions);
+		menu.setActivePanel(mainPanel);
 
-		this.rootNode.attachChild(this.stateNode);
+		if ( RallyGame.getInstance().isPaused() ){
+			first = true;
+			addFadeController("FadeMenuGame", rootNode,
+					((RallyGameState) GameStateManager.getInstance().getChild(InGameState.STATE_NAME)).getStateNode(),
+					this.getStateNode(), ColorRGBA.randomColor(), 0.2f);
+		}else{
+			activateFunctionality();
+		}
+		
 		this.rootNode.updateRenderState();
 	}
 
+	private void activateFunctionality(){
+		menuSong.play();
+		keyActions = new MenuInputHandler(mainPanel);
+		RallyGame.getInstance().setInputHandler(keyActions);
+		keyActions.setPanel(mainPanel);
+
+		this.rootNode.attachChild(this.stateNode);		
+	}
+	
+	
 	@Override
 	public void deactivated() {
 		RallyGame.getInstance().setInputHandler(new InputHandler());
@@ -364,6 +379,17 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void update(float arg0) {
+		if ( RallyGame.getInstance().isPaused() ){
+			if ( !getFadeOutIn().hasFinished() ){
+				fade(arg0);
+				super.update(arg0);
+				return;
+			}else if ( first ){
+				activateFunctionality();
+				first = false;
+			}
+		}
+
 		AudioSystem.getSystem().update();
 		menu.update();
 		titleText.setTextColor(titleText.getTextColor().multLocal((float) 0.99));

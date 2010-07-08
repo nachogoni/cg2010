@@ -5,7 +5,6 @@ import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jmex.game.state.GameState;
@@ -54,9 +53,7 @@ public abstract class RallyGameState  extends GameState {
 
 
 	protected void addFadeController(String string, Node rootNode, Node outStateNode, Node inStateNode, ColorRGBA colorRGBA, float speed) {
-		fio = new RallyFadeOutIn(string, rootNode, outStateNode, inStateNode, new ColorRGBA(0, 0, 0, 1), speed);
-		Vector3f location = new Vector3f(RallyGame.getInstance().getCamara().getLocation());
-		fio.setLocalTranslation(location.add(RallyGame.getInstance().getCamara().getDirection()));
+		fio = new RallyFadeOutIn(string, rootNode, outStateNode, inStateNode, colorRGBA, speed);
         fio.attachTo(rootNode);
 	}
 	
