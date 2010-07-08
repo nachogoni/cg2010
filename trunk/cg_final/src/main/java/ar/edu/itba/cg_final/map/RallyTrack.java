@@ -1,7 +1,6 @@
 package ar.edu.itba.cg_final.map;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.map.ProceduralTexturePyramid.pyramidType;
@@ -39,6 +38,7 @@ import com.jmex.terrain.util.FaultFractalHeightMap;
 
 public class RallyTrack extends Node {
 	private static final long serialVersionUID = 1L;
+	private static final int BUSH_QUOTA = 2;
 	private TerrainPage terrain;
 	private ForceFieldFence fence;
 	
@@ -182,9 +182,17 @@ public class RallyTrack extends Node {
 		int treeCount = gs.getIntProperty("TRACK1.TREE.COUNT");
 		
 		for (int i = 1; i <= treeCount; i++) {
-			Tree tree = new Tree("tree"+i);
-			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS"); 
-			tree.placeTree(pos.x, terrain.getHeight(pos) + treeHeight, pos.y);
+			boolean arbust = false;
+			if ( i % BUSH_QUOTA == 0 )
+				arbust = true;
+			
+			Tree tree = new Tree("tree"+i, arbust);
+			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS");
+			float ypos = terrain.getHeight(pos) + treeHeight;
+			
+			if ( arbust )
+				ypos -= 50;
+			tree.placeTree(pos.x, ypos, pos.y);
 			forestList.add(tree);
 		}
 		
