@@ -38,7 +38,7 @@ public class GlobalSettings {
 	}
 
 	public String getProperty(String property) {
-		return p.getProperty(property);
+		return p.getProperty(property.trim()).trim();
 	}
 	
 	public String toString(){
@@ -46,7 +46,7 @@ public class GlobalSettings {
 	}
 	
 	public void setProperty(String property, String value){
-		p.setProperty(property, value);
+		p.setProperty(property.trim(), value.trim());
 		return;
 	}
 	
@@ -63,20 +63,20 @@ public class GlobalSettings {
 	}
 	
 	public int getHexProperty(String property){
-		return Integer.parseInt(p.getProperty(property), 16);
+		return Integer.parseInt(p.getProperty(property.trim()).trim(), 16);
 	}
 	
 	public int getIntProperty(String property){
-		return Integer.parseInt(p.getProperty(property));
+		return Integer.parseInt(p.getProperty(property.trim()).trim());
 	}	
 	
 	public Vector2f get2DVectorProperty(String property) {
-		String [] ret =p.getProperty(property).split(",");
-		return new Vector2f(Float.parseFloat(ret[0]),Float.parseFloat(ret[1]));
+		String [] ret =p.getProperty(property.trim()).trim().split(",");
+		return new Vector2f(Float.parseFloat(ret[0].trim()),Float.parseFloat(ret[1].trim()));
 	}
 	
 	public float getFloatProperty(String property) {
-		return Float.parseFloat(p.getProperty(property));
+		return Float.parseFloat(p.getProperty(property.trim()).trim());
 	}
 	
 	public List<String> getSkyBoxesNames(){
