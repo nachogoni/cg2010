@@ -32,6 +32,8 @@
 package ar.edu.itba.cg_final.terrain;
 
 
+import ar.edu.itba.cg_final.settings.GlobalSettings;
+
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.FastMath;
@@ -64,9 +66,9 @@ public class ForceFieldFence extends Node {
      * create the fence, passing the name to the parent.
      * @param name the name of the fence
      */
-    public ForceFieldFence(String name) {
+    public ForceFieldFence(String name, GlobalSettings gs) {
         super(name);
-        buildFence();
+        buildFence(gs);
     }
     
     /**
@@ -92,7 +94,7 @@ public class ForceFieldFence extends Node {
      * create all the fence geometry.
      *
      */
-    private void buildFence() {
+    private void buildFence(GlobalSettings gs) {
         //This cylinder will act as the four main posts at each corner
         Cylinder postGeometry = new Cylinder("post", 10, 10, 0.1f, 1);
         Quaternion q = new Quaternion();
@@ -183,7 +185,7 @@ public class ForceFieldFence extends Node {
         //load a texture for the force field elements
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/reflector.jpg"),
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE1")),
                   Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
         
         t.setWrap(Texture.WrapMode.Repeat);
@@ -207,7 +209,7 @@ public class ForceFieldFence extends Node {
         //load a texture for the towers
         TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t2 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/post.jpg"),
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.POST.TEXTURE")),
                   Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
         
         ts2.setTexture(t2);
@@ -226,7 +228,7 @@ public class ForceFieldFence extends Node {
         //load a texture for the struts
         TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t3 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource("texture/rust.jpg"),
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE2")),
                   Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
         
         ts3.setTexture(t3);

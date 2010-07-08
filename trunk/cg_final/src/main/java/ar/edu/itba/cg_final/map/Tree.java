@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final.map;
 
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
@@ -22,11 +23,11 @@ public class Tree extends Node {
 	
 	private static final long serialVersionUID = 1130692595359578525L;
 	private boolean isBush;
-	public Tree(String name) {
-		this(name,false);
+	public Tree(String name, GlobalSettings gs) {
+		this(name,false, gs);
 	}
 	
-	public void buildTree() {
+	public void buildTree(GlobalSettings gs) {
 
 		RallyGame rg = RallyGame.getInstance();
 		
@@ -46,7 +47,7 @@ public class Tree extends Node {
         ts2.setEnabled(true);
         Texture t4 = TextureManager.loadTexture(
             RallyGame.class.getClassLoader().getResource(
-            "images/tree1.png"), 
+            gs.getProperty("TRACK1.TREE.TEXTURE")), 
             MinificationFilter.Trilinear,
             MagnificationFilter.Bilinear );
         
@@ -132,10 +133,10 @@ public class Tree extends Node {
 		
 	}
 	
-    public Tree(String name, boolean arbust) {
+    public Tree(String name, boolean arbust, GlobalSettings gs) {
 		this.setName(name);
 		this.isBush = arbust;
-		buildTree();
+		buildTree(gs);
 	}
 
 	public void placeTree(float x, float y, float z) {
