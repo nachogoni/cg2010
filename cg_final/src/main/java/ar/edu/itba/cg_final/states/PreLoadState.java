@@ -109,7 +109,7 @@ public class PreLoadState extends RallyGameState {
 			case 15:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
-				game.createRallyTrack(inGameNode, gs);
+				game.createRallyTrack(inGameNode, gs, us);
 				break;
 			case 20:
 				// Audio
