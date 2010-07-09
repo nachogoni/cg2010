@@ -10,16 +10,26 @@ public class GameUserSettings {
 	String playerCar;
 	String videoSettings;
 
-	private Integer musicVolume = 100;
-	private Boolean musicOn = true;
-	private Integer sfxVolume = 100;
-	private Boolean sfxOn = true;
+	private Integer musicVolume;
+	private Boolean musicOn;
+	private Integer sfxVolume;
+	private Boolean sfxOn;
 	private Boolean highRes;
 	private String skybox;
 	
 	static private GameUserSettings instance;
 	
 	private GameUserSettings() {
+		
+		musicOn = GlobalSettings.getInstance().getIntProperty("MUSIC.STATE") == 1;
+		sfxOn = GlobalSettings.getInstance().getIntProperty("EFFECT.STATE") == 1;
+		
+		int mLevel = GlobalSettings.getInstance().getIntProperty("MUSIC.LEVEL");
+		musicVolume = ( mLevel > 100) ? 100 : (mLevel < 0 ? 0 : mLevel);
+		
+		int sLevel = GlobalSettings.getInstance().getIntProperty("EFFECT.LEVEL");
+		sfxVolume = ( sLevel > 100) ? 100 : (sLevel < 0 ? 0 : sLevel);
+		
 		String qName = GlobalSettings.getInstance().getProperty("GAME.GRAPHICS.QUALITY");
 		highRes = GraphicsQualityUtils.High.toString().equalsIgnoreCase(qName);
 		skybox = GlobalSettings.getInstance().getSkyBoxesNames().get(0);
