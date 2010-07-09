@@ -38,8 +38,6 @@ public class RallyMenu {
 			if ( panels.get(i).equals(oldPanel) ){
 				panels.add(i, newPanel);
 				panels.remove(i+1);
-				menuNode.detachChild(oldPanel.getNode());
-				menuNode.attachChild(newPanel.getNode());
 				return;
 			}
 	}
