@@ -129,7 +129,7 @@ public class PreLoadState extends RallyGameState {
 				// Audio
 				refreshLabel("Audio");
 				bar.getLocalScale().setX(task);
-				game.initAudio(gs,gus);
+				game.initAudio(gs);
 				break;
 			case 40:
 				// Cargamos los autos
