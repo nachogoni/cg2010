@@ -7,6 +7,8 @@ import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.controller.Audio.soundsEffects;
 import ar.edu.itba.cg_final.map.CheckPoint;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
 import ar.edu.itba.cg_final.vehicles.Car;
 
@@ -44,7 +46,6 @@ public class InGameState extends RallyGameState {
 	public static final String STATE_NAME = "InGame";
 	
 	Text timeCheckPoint;
-//	Text speed;
 	RallyGame game;
 	Skybox sky;
 	Car playerCar;
@@ -70,7 +71,7 @@ public class InGameState extends RallyGameState {
 		// Variables en pantalla
 		createTimer();
 	
-		createSpeedmeter();
+		createSpeedmeter(GlobalSettings.getInstance(), GameUserSettings.getInstance());
 
 		createCheckpointTime();
 		
@@ -88,7 +89,7 @@ public class InGameState extends RallyGameState {
     							(int)(height/3 - timeCheckPoint.getHeight()/2), 0);
 	}
 
-	private void createMap() {
+	private void createMap(GlobalSettings gs, GameUserSettings gus) {
 		// Map
 		map = new Quad("map", 99*1.5f, 65*1.5f);
 		map.setRenderQueueMode(Renderer.QUEUE_ORTHO);
@@ -97,10 +98,21 @@ public class InGameState extends RallyGameState {
 		map.updateRenderState();
 		TextureState mapts = DisplaySystem.getDisplaySystem().getRenderer()
 		.createTextureState();
+		
+        MinificationFilter minF; 
+        MagnificationFilter maxF;
+        if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+		
 		try {
-			mapts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/autodromo2.jpeg"),
-					MinificationFilter.NearestNeighborNoMipMaps,
-					MagnificationFilter.NearestNeighbor, 1.0f, true));
+			mapts.setTexture(TextureManager.loadTexture(ResourceLoader.
+					getURL(gs.getProperty("TRACK1.TEXTURE.LOW")),
+					minF, maxF, 1.0f, true));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +149,7 @@ public class InGameState extends RallyGameState {
     	carDisk.updateRenderState();
 	}
 
-	private void createSpeedmeter() {
+	private void createSpeedmeter(GlobalSettings gs, GameUserSettings gus) {
     	// Speedometer
     	float scale = 0.5f;
 		speedometer = new Quad("speedometer", 564, 368);
@@ -148,12 +160,22 @@ public class InGameState extends RallyGameState {
 		speedometer.setLocalTranslation(width-speedometer.getWidth()*scale/2, 
 				speedometer.getHeight()*scale/2, 0f);
 
+        MinificationFilter minF; 
+        MagnificationFilter maxF;
+        if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+        
 		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
 				.createTextureState();
 		try {
-			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/speedometer2.png"),
-					MinificationFilter.NearestNeighborNoMipMaps,
-					MagnificationFilter.NearestNeighbor, 1.0f, true));
+			ts.setTexture(TextureManager.loadTexture(ResourceLoader.
+					getURL(gs.getProperty("CAR.SPEEDOMETER.TEXTURE")),
+					minF, maxF, 1.0f, true));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -216,21 +238,11 @@ public class InGameState extends RallyGameState {
     	stateNode.attachChild(needleNode);
     	//Map
     	if (map == null) {
-    		createMap();
+    		createMap(GlobalSettings.getInstance(), GameUserSettings.getInstance());
     	}
     	stateNode.attachChild(map);
     	stateNode.attachChild(mapCheckpoints);
     	stateNode.attachChild(carDisk);
-//        // Speedometer
-//		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
-//    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
-//    	speed.setCullHint( Spatial.CullHint.Never );
-//    	speed.setRenderState( Text.getDefaultFontTextureState() );
-//		speed.setRenderState( Text.getFontBlend() );
-//    	speed.setLightCombineMode(LightCombineMode.Off);
-//    	speed.setLocalScale(1f);
-//    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
-//    	this.stateNode.attachChild(speed);
 
     	// Checkpoint Time
     	stateNode.attachChild(timeCheckPoint);
@@ -314,12 +326,6 @@ public class InGameState extends RallyGameState {
 		
 		this.audio.update();
 		
-		// Update speed
-//		StringBuffer speedText = speed.getText();
-//		speedText.replace(0, speedText.length(),
-//				String.format("%03d", (int)playerCar.getLinearSpeed()));
-
-		
 		float carSpeed = playerCar.getLinearSpeed();
 		if (carSpeed > 200)
 			carSpeed = 200;
@@ -354,25 +360,6 @@ public class InGameState extends RallyGameState {
 				(map.getWidth() / 2) * playerCar.getPosition().x / 5000 + map.getCenter().x,
 				(map.getHeight() / 2) * playerCar.getPosition().z / 5000 + map.getCenter().y, 0f);
 		
-		
-		
-
-		
-    	// TODO: for degub
-/*    	float [] angles = new float[3];
-    	playerCar.getChassis().getLocalRotation().toAngles(angles);
-    	this.stateNode.detachChildNamed("carPos");
-    	Text pos = Text.createDefaultTextLabel("carPos", 
-    			String.format("Auto: (%04d,%04d,%04d) @ %03.2f Terrain: (%04.2f)",
-    			(int)(playerCar.getChassis().getLocalTranslation().x), 
-    			(int)(playerCar.getChassis().getLocalTranslation().y), 
-    			(int)(playerCar.getChassis().getLocalTranslation().z),(angles[1]),
-    			(float)game.getRallyTrack().getTerrain().getHeight(
-    			playerCar.getChassis().getLocalTranslation().x,
-    			playerCar.getChassis().getLocalTranslation().z)));
-    	pos.setLocalScale(1);
-    	pos.setLocalTranslation((width - (int)(pos.getWidth() * 1.2f)), speed.getHeight(), 0);
-    	this.stateNode.attachChild(pos);*/
     	
     	for (Node node : game.getCheckPointList()) {
     		if (node.hasCollision(playerCar, true)) {
@@ -471,10 +458,6 @@ public class InGameState extends RallyGameState {
 		}
 
     }	    
-
-    
-    
-    
     
     
     private class ChangeCameraAction implements InputActionInterface {
