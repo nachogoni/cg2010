@@ -7,7 +7,6 @@ import ar.edu.itba.cg_final.map.ProceduralTexturePyramid.pyramidType;
 import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
-import ar.edu.itba.cg_final.utils.GraphicsQualityUtils;
 
 import com.jme.image.Texture;
 import com.jme.image.Texture.ApplyMode;
@@ -94,9 +93,7 @@ public class RallyTrack extends Node {
         ts.setTexture( t1, 0 );
 
         Texture t3 = TextureManager.loadTexture( RallyGame.class.getClassLoader().
-                getResource(gs.getProperty("TRACK1.TEXTURE.DETAIL")),
-                MinificationFilter.Trilinear,
-                MagnificationFilter.Bilinear );
+                getResource(gs.getProperty("TRACK1.TEXTURE.DETAIL")),minF,maxF);
         ts.setTexture( t3, 1 );
         t3.setWrap( WrapMode.Repeat );
         
@@ -130,13 +127,13 @@ public class RallyTrack extends Node {
         
         this.terrain = page;
         
-        buildFence(gs);
+        buildFence(gs, gus);
         
-        buildForest(gs);
+        buildForest(gs, gus);
         
-        buildPyramids(gs);
+        buildPyramids(gs, gus);
         
-        generateObstacles(gs);
+        generateObstacles(gs, gus);
         
         buildLights(rg);
         
@@ -144,10 +141,10 @@ public class RallyTrack extends Node {
         this.findPick( new Ray( new Vector3f(), new Vector3f( 1, 0, 0 ) ), new BoundingPickResults() ); 
 	}
 	
-	private void buildFence(GlobalSettings gs) {
+	private void buildFence(GlobalSettings gs, GameUserSettings gus) {
 		RallyGame rg = RallyGame.getInstance();
 	       //This is the main node of our fence
-		ForceFieldFence fence = new ForceFieldFence("fence", gs);
+		ForceFieldFence fence = new ForceFieldFence("fence", gs, gus);
         
         //we will do a little 'tweaking' by hand to make it fit in the terrain a bit better.
         //first we'll scale the entire "model" by a factor of 5
@@ -175,18 +172,23 @@ public class RallyTrack extends Node {
         this.fence = fence;
 	}
 
-	private void buildForest(GlobalSettings gs) {
+	private void buildForest(GlobalSettings gs, GameUserSettings gus) {
 		
 		float treeHeight = -100;
+		int inc = 1;
 		
 		int treeCount = gs.getIntProperty("TRACK1.TREE.COUNT");
 		
-		for (int i = 1; i <= treeCount; i++) {
+        if ( !gus.getHighRes() ) {
+        	inc = 3;        	
+        }
+		
+		for (int i = 1; i <= treeCount; i+=inc) {
 			boolean arbust = false;
 			if ( i % BUSH_QUOTA == 0 )
 				arbust = true;
 			
-			Tree tree = new Tree("tree"+i, arbust, gs);
+			Tree tree = new Tree("tree"+i, arbust, gs, gus);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.TREE" + i + ".POS");
 			float ypos = terrain.getHeight(pos) + treeHeight;
 			
@@ -213,7 +215,7 @@ public class RallyTrack extends Node {
 		
 	}
 	
-	private void buildPyramids(GlobalSettings gs) {
+	private void buildPyramids(GlobalSettings gs, GameUserSettings gus) {
 		
 		int count = gs.getIntProperty("TRACK1.PIRAMID.COUNT");
 		pyramids = new Node();
@@ -225,9 +227,9 @@ public class RallyTrack extends Node {
 			String type = gs.getProperty("TRACK1.PIRAMID" + i + ".TYPE");
 			
 			if (type.equals("Marble")) {
-				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.MARBLE);
+				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.MARBLE, gus);
 			} else {
-				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.STONE);
+				pyramid = new ProceduralTexturePyramid("pyramid", pyramidType.STONE, gus);
 			}
 			pyramid.placePiramid(pos.x, terrain.getHeight(pos) + 320, pos.y);
 			pyramids.attachChild(pyramid);
@@ -316,13 +318,18 @@ public class RallyTrack extends Node {
     	
 	}
     
-   private void generateObstacles(GlobalSettings gs) {
+   private void generateObstacles(GlobalSettings gs, GameUserSettings gus) {
+	   
+	   	int inc = 1;
 		int count = gs.getIntProperty("TRACK1.OBSTACLES.COUNT");
 		obstacles = new Node();
 		
+        if ( !gus.getHighRes() ) {
+        	inc = 3;
+        }
 		
-		for (int i = 1; i <= count; i++) {
-			Obstacles obstacle = new Obstacles("Obstacle"+i, gs);
+		for (int i = 1; i <= count; i+=inc) {
+			Obstacles obstacle = new Obstacles("Obstacle"+i, gs, gus);
 			Vector2f pos = gs.get2DVectorProperty("TRACK1.OBSTACLES" + i + ".POS");
 			
 			obstacle.placeObstacles(pos.x, terrain.getHeight(pos)-145, pos.y);
@@ -336,7 +343,7 @@ public class RallyTrack extends Node {
 	   return terrain;
    }
 
-   public ArrayList<CheckPoint> createCheckPoints(GlobalSettings gs) {
+   public ArrayList<CheckPoint> createCheckPoints(GlobalSettings gs, GameUserSettings gus) {
 	   
 	   ArrayList<CheckPoint> cpList = new ArrayList<CheckPoint>();
 
@@ -346,7 +353,7 @@ public class RallyTrack extends Node {
 		   CheckPoint cp = new CheckPoint("CheckPoint"+String.valueOf(i),
 				   gs.get2DVectorProperty("TRACK1.CHECKPOINT"+i+".POS"),
 				   gs.getFloatProperty("TRACK1.CHECKPOINT"+i+".ROT"),
-				   (i==1), gs);
+				   (i==1), gs, gus);
 		   cpList.add(cp);
 		   this.attachChild(cp);
 	   }

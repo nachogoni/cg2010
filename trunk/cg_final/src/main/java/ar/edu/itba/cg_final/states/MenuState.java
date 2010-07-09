@@ -55,7 +55,8 @@ public class MenuState extends RallyGameState {
 		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
 		buildMenu();
-		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"));
+		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"),
+				GameUserSettings.getInstance());
 		addTitle();
 		stateNode.attachChild(menu.getMenuNode());
 		menuSong = AudioSystem.getSystem().createAudioTrack(
@@ -64,22 +65,32 @@ public class MenuState extends RallyGameState {
 		menuSong.setLooping(true);		
 	}
 	
-	private void putBackGround(String backgroundImage) {
+	private void putBackGround(String backgroundImage, GameUserSettings gus) {
 		int width = DisplaySystem.getDisplaySystem().getWidth();
 		int height = DisplaySystem.getDisplaySystem().getHeight();
+		
+		MinificationFilter minF;
+		MagnificationFilter maxF;
 
 		Quad background = new Quad("background", width, height);
 		background.setDefaultColor(ColorRGBA.white);
 		background.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		background.setLightCombineMode(LightCombineMode.Off);
 		background.setLocalTranslation(width / 2, height / 2, 0f);
-
+		
+		if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+		
 		TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
 				.createTextureState();
 		try {
 			ts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL(backgroundImage),
-					MinificationFilter.BilinearNoMipMaps,
-					MagnificationFilter.Bilinear, 1.0f, true));
+					minF, maxF, 1.0f, true));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
