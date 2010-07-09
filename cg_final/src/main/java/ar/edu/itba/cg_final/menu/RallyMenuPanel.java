@@ -47,12 +47,29 @@ public class RallyMenuPanel {
 
 	public void update() {
 		node.updateRenderState();
+		for(RallyMenuItem<?> item:items){
+			item.getSpatial().updateRenderState();
+		}
 	}
 
 	public void setActiveOption(int newOpt) {
 		this.activeOption = newOpt;
 	}
 	
+	public void setActiveOption(RallyMenuItem<?> option) {
+		int i = 0;
+		for(RallyMenuItem<?> item:items){
+			if ( item.equals(option) ){
+				item.setSelected(true);
+				this.activeOption = i;
+			}else{
+				item.setSelected(false);
+			}
+			i++;
+		}
+		update();
+	}
+
 	public int getActiveOption() {
 		return this.activeOption;
 	}
@@ -60,5 +77,34 @@ public class RallyMenuPanel {
 	public List<RallyMenuItem<?>> getItems() {
 		return this.items;
 	}
+
+	public void setNextActiveOption(boolean dirUp) {
+		int activeOption = getActiveOption();
+		List<RallyMenuItem<?>> items = getItems();
+		int aux;
+		if ( dirUp )
+			aux = getNextActiveOption(activeOption, activeOption+1, dirUp);
+		else
+			aux = getNextActiveOption(activeOption, activeOption-1, dirUp);
+		if ( aux == activeOption )
+			return;
+		setActiveOption(items.get(aux));
+	}
+
+	private int getNextActiveOption(int initial, int current, boolean dirUp) {
+		System.out.println("getNextActiveOption : "+initial+" : "+current+" : "+dirUp);
+		if ( outOfBounds(current) )
+			return initial;
+
+		if ( items.get(current).isEnabled() )
+			return current;
+
+		return getNextActiveOption(initial, dirUp ? current+1 : current-1, dirUp);
+	}
+
+	private boolean outOfBounds(int current) {
+		return current < 0 || current >= items.size();
+	}
+
 	
 }

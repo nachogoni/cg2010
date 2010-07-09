@@ -613,4 +613,7 @@ public class RallyGame extends BaseSimpleGame {
 		return actualTime;
 	}
 	
+	public boolean isPlaying(){
+		return playing;
+	}
 }

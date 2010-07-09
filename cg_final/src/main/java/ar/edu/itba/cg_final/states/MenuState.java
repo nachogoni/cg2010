@@ -23,7 +23,6 @@ import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.InputHandler;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.LightCombineMode;
@@ -51,6 +50,9 @@ public class MenuState extends RallyGameState {
 	private MenuInputHandler keyActions;
 	AudioTrack menuSong;
 	private boolean first;
+	private RallyMenuItemVoid resumeGame;
+	private RallyMenuItemBoolean highRes;
+	private RallyMenuItemVoid newGame;
 	final static String STATE_NAME = "Menu";
 	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
 
@@ -198,7 +200,7 @@ public class MenuState extends RallyGameState {
 		});
 		mainPanel.addItem(options);
 
-		RallyMenuItemVoid resumeGame = new RallyMenuItemVoid("Resume Game");
+		resumeGame = new RallyMenuItemVoid("Resume Game");
 		resumeGame.setEnterAction(new IAction() {
 			public void performAction() {
 				if ( RallyGame.getInstance().isPaused() ){
@@ -210,7 +212,7 @@ public class MenuState extends RallyGameState {
 		});
 		mainPanel.addItem(resumeGame);
 		
-		RallyMenuItemVoid newGame = new RallyMenuItemVoid("New Game");
+		newGame = new RallyMenuItemVoid("New Game");
 		newGame.setEnterAction(new IAction() {
 			public void performAction() {
 				if ( ! RallyGame.getInstance().isPaused() ){
@@ -220,9 +222,6 @@ public class MenuState extends RallyGameState {
 			}
 		});
 		mainPanel.addItem(newGame);
-		
-		newGame.toggleSelect();
-		
 		
 		return mainPanel;
 	}
@@ -240,7 +239,7 @@ public class MenuState extends RallyGameState {
 		optionsPanel.addItem(backOptions);
 
 		
-		final RallyMenuItemBoolean highRes = new RallyMenuItemBoolean("High Resolution");
+		highRes = new RallyMenuItemBoolean("High Resolution");
 		IAction setHighRes = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setHighRes(highRes.getValue());
@@ -369,8 +368,21 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void activated() {
+		if ( RallyGame.getInstance().isPlaying() ){
+			newGame.setEnabled(false);
+			highRes.setEnabled(false);
+			resumeGame.setEnabled(true);
+			mainPanel.setActiveOption(resumeGame);
+		}else{
+			highRes.setEnabled(true);
+			resumeGame.setEnabled(false);
+			newGame.setEnabled(true);
+			mainPanel.setActiveOption(newGame);
+		}
 		menu.setActivePanel(mainPanel);
+		menu.update();
 
+		
 		if ( RallyGame.getInstance().isPaused() ){
 			first = true;
 			addFadeController("FadeMenuGame", rootNode,
