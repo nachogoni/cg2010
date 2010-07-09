@@ -13,6 +13,7 @@ import com.jme.scene.Spatial.LightCombineMode;
 
 public abstract class RallyMenuItem<T>{
 	
+	private static final ColorRGBA deselectedColor = ColorRGBA.darkGray;
 	private ColorRGBA onSelectedColor;
 	private ColorRGBA defaultColor;
 	private String textToDisplay;
@@ -23,6 +24,8 @@ public abstract class RallyMenuItem<T>{
 	private List<IAction> enterAction;
 	private List<IAction> leftAction;
 	private List<IAction> rightAction;
+	private boolean enabled = true;
+
 
 	public RallyMenuItem(String text) {
 		this(text, new ColorRGBA(70.0f/255.0f, 108.0f/255.0f, 234.0f/255.0f, 1.0f)
@@ -61,12 +64,19 @@ public abstract class RallyMenuItem<T>{
 	
 	public void toggleSelect(){
 		selected = !selected;
-		
-		if ( selected )
-			textSpatial.setTextColor(onSelectedColor);
-		else
-			textSpatial.setTextColor(defaultColor);
+		setColorIfSelected();
 		textSpatial.updateRenderState();
+	}
+	
+	private void setColorIfSelected(){
+		if ( !enabled )
+			textSpatial.setTextColor(deselectedColor);
+		else{
+			if ( selected )
+				textSpatial.setTextColor(onSelectedColor);
+			else
+				textSpatial.setTextColor(defaultColor);
+		}
 	}
 	
 	public void changeValue(T newValue){
@@ -111,4 +121,17 @@ public abstract class RallyMenuItem<T>{
 		return rightAction;
 	}
 
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+		setColorIfSelected();
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setSelected(boolean status) {
+		if ( ( status && !selected ) || ( !status && selected ) )
+				toggleSelect();
+	}
 }

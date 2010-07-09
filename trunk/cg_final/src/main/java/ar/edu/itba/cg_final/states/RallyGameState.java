@@ -1,7 +1,6 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
-import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
 import com.jme.input.KeyBindingManager;

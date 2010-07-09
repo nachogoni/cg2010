@@ -39,33 +39,14 @@ public class MenuInputHandler extends InputHandler {
     	
         public void performAction( final InputActionEvent e ) {
         	if ( e.getTriggerPressed() ) {
-	        	int activeOption = panel.getActiveOption();
-	        	List<RallyMenuItem<?>> items = panel.getItems();
-	        	
-				activeOption++;
-				if ( activeOption >= items.size() )
-					activeOption--;
-				else{
-					items.get(activeOption-1).toggleSelect();
-					items.get(activeOption).toggleSelect();
-				}
-				panel.setActiveOption(activeOption);
+        		panel.setNextActiveOption(true);
         	}
 		}
     }	   
     private class DownAction implements InputActionInterface {
         public void performAction( final InputActionEvent e ) {
         	if ( e.getTriggerPressed() ) {
-        		int activeOption = panel.getActiveOption();
-        		List<RallyMenuItem<?>> items = panel.getItems();        	
-        		activeOption--;
-        		if ( activeOption < 0 )
-        			activeOption++;
-        		else{
-        			items.get(activeOption+1).toggleSelect();
-        			items.get(activeOption).toggleSelect();
-        		}
-        		panel.setActiveOption(activeOption);
+        		panel.setNextActiveOption(false);
         	}
 		}
     }
