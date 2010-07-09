@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.controller.Audio;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
 import ar.edu.itba.cg_final.menu.actions.IAction;
@@ -304,6 +305,7 @@ public class MenuState extends RallyGameState {
 		IAction volSound = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setSfxVolume(soundVol.getValue());
+				Audio.getInstance().setSoundsStatusAndVolume();
 			}
 		};
 		soundVol.setLeftAction(volSound);
@@ -316,6 +318,7 @@ public class MenuState extends RallyGameState {
 		IAction onOffSound = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setSfxOn(soundState.getValue());
+				Audio.getInstance().setSoundsStatusAndVolume();
 			}
 		};
 		soundState.setLeftAction(onOffSound);
@@ -328,10 +331,11 @@ public class MenuState extends RallyGameState {
 		IAction volMusic = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setMusicVolume(musicVol.getValue());
+				menuSong.setMaxVolume(GameUserSettings.getInstance().getMusicVolume()/100.f);
 			}
 		};
-		soundVol.setLeftAction(volMusic);
-		soundVol.setRightAction(volMusic);
+		musicVol.setLeftAction(volMusic);
+		musicVol.setRightAction(volMusic);
 		musicVol.changeValue(GameUserSettings.getInstance().getMusicVolume());
 		optionsPanel.addItem(musicVol);
 		
@@ -340,6 +344,9 @@ public class MenuState extends RallyGameState {
 		IAction onOffMusic = new IAction() {
 			public void performAction() {
 				GameUserSettings.getInstance().setMusicOn(musicState.getValue());
+				menuSong.pause();
+				menuSong.setEnabled(GameUserSettings.getInstance().isMusicOn());
+				menuSong.play();
 			}
 		};
 		musicState.setLeftAction(onOffMusic);
@@ -436,8 +443,6 @@ public class MenuState extends RallyGameState {
 		menu.setActivePanel(mainPanel);
 		menu.update();
 
-		if (menuSong.isStopped())
-			menuSong.play();
 		
 		if ( RallyGame.getInstance().isPaused() ){
 			first = true;
@@ -455,8 +460,12 @@ public class MenuState extends RallyGameState {
 		if (keyActions == null)
 			keyActions = new MenuInputHandler(mainPanel);
 		backupHandler = RallyGame.getInstance().getInputHandler(); 
+
+		menuSong.play();
+		menuSong.setVolume(GameUserSettings.getInstance().getMusicVolume()/100.f);
+		menuSong.setEnabled(GameUserSettings.getInstance().isMusicOn());
+
 		RallyGame.getInstance().setInputHandler(keyActions);
-		
 		keyActions.setPanel(mainPanel);
 
 		this.rootNode.attachChild(this.stateNode);		

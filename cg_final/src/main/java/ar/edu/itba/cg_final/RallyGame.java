@@ -163,16 +163,16 @@ public class RallyGame extends BaseSimpleGame {
 		return rootNode;
 	}
 	
-	public void initAudio(GlobalSettings gs) {
-		audio = new Audio();
+	public void initAudio(GlobalSettings gs, GameUserSettings gus) {
+		audio = Audio.getInstance();
 		audio.addSong(gs.getProperty("MUSIC.SONG1.PATH"));
 		audio.addSong(gs.getProperty("MUSIC.SONG2.PATH"));
 		
-		audio.addSound(gs.getProperty("EFFECT.CRASH"), soundsEffects.HIT_SOUND);
-		audio.addSound(gs.getProperty("CAR.CHECKPOINT.SOUND"), soundsEffects.CHECKPOINT);
+		audio.addSound(gs.getProperty("EFFECT.CRASH"), soundsEffects.HIT_SOUND, gus);
+		audio.addSound(gs.getProperty("CAR.CHECKPOINT.SOUND"), soundsEffects.CHECKPOINT, gus);
 		
-		audio.addSound(gs.getProperty("EFFECT.NEUTRAL"), soundsEffects.ENGINE, true);
-		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL, true);
+		audio.addSound(gs.getProperty("EFFECT.NEUTRAL"), soundsEffects.ENGINE, true, gus);
+		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL, true, gus);
 		
 	}
 	
