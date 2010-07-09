@@ -53,6 +53,7 @@ public class MenuState extends RallyGameState {
 	private RallyMenuItemBoolean highRes;
 	private RallyMenuItemVoid newGame;
 	private RallyMenuPanel gameInstructionsPanel;
+	private InputHandler backupHandler;
 	final static String STATE_NAME = "Menu";
 	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
 	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : UP";
@@ -435,6 +436,8 @@ public class MenuState extends RallyGameState {
 		menu.setActivePanel(mainPanel);
 		menu.update();
 
+		if (menuSong.isStopped())
+			menuSong.play();
 		
 		if ( RallyGame.getInstance().isPaused() ){
 			first = true;
@@ -449,9 +452,11 @@ public class MenuState extends RallyGameState {
 	}
 
 	private void activateFunctionality(){
-		menuSong.play();
-		keyActions = new MenuInputHandler(mainPanel);
+		if (keyActions == null)
+			keyActions = new MenuInputHandler(mainPanel);
+		backupHandler = RallyGame.getInstance().getInputHandler(); 
 		RallyGame.getInstance().setInputHandler(keyActions);
+		
 		keyActions.setPanel(mainPanel);
 
 		this.rootNode.attachChild(this.stateNode);		
@@ -460,7 +465,10 @@ public class MenuState extends RallyGameState {
 	
 	@Override
 	public void deactivated() {
-		RallyGame.getInstance().setInputHandler(new InputHandler());
+		if (backupHandler == null)
+			backupHandler = new InputHandler();
+		RallyGame.getInstance().setInputHandler(backupHandler);
+		
 		menuSong.stop();
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();

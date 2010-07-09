@@ -21,7 +21,7 @@ public abstract class RallyGameState  extends GameState {
 
 	public RallyGameState() {
 		super();
-		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);	
+//		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);	
 	}
 	
 	@Override

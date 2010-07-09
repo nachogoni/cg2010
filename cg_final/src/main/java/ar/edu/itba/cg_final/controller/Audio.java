@@ -22,11 +22,11 @@ public class Audio {
 	private Map<soundsEffects, AudioTrack> map = new HashMap<soundsEffects, AudioTrack>();
     
 	public void pauseAll() {
-		queue.pause();
+		queue.stop();
 		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
 			AudioTrack sound = iterator.next();
-			if (sound.isPlaying()) {
-				sound.pause();
+			if (!sound.isStopped()) {
+				sound.stop();
 			}
 		} 
 	}
