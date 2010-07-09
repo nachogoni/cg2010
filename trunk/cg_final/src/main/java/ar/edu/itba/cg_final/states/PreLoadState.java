@@ -5,10 +5,12 @@ import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
 import com.jme.scene.Spatial.LightCombineMode;
+import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
@@ -22,6 +24,7 @@ public class PreLoadState extends RallyGameState {
 	private boolean updateable = false;
 	GlobalSettings gs;
 	GameUserSettings gus;
+	Quad bar;
 	
 	public static final String STATE_NAME = "PreLoad";
 
@@ -41,6 +44,13 @@ public class PreLoadState extends RallyGameState {
 		info.setRenderState( Text.getFontBlend() );
 		info.setLightCombineMode(LightCombineMode.Off);
 		stateNode.attachChild(info);
+
+		// Barra de carga
+    	bar = new Quad("bar", 6, 10);
+    	bar.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    	bar.setLightCombineMode(LightCombineMode.Off);
+    	bar.setLocalTranslation(width/2,height/3,0);
+    	stateNode.attachChild(bar);
 		
 	}
 
@@ -70,7 +80,7 @@ public class PreLoadState extends RallyGameState {
 
 		// Borramos todos los nodos que contenga el stateNode del InGameState
 		inGameNode.detachAllChildren();
-
+		
 		// Tomamos la instancia del RallyGame
 		game = RallyGame.getInstance();
 
@@ -100,44 +110,47 @@ public class PreLoadState extends RallyGameState {
 			case 0:
 				// Actualizamos la fisica
 				refreshLabel("Fisica");
+				bar.getLocalScale().setX(task);
 				game.tunePhysics(inGameNode);
 				break;
 			case 10:
 				// Cargamos el skybox
 				refreshLabel("Skybox");
+				bar.getLocalScale().setX(task);
 				game.createSkyBox(inGameNode, gs, gus);
 				break;
-			case 15:
+			case 20:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
+				bar.getLocalScale().setX(task);
 				game.createRallyTrack(inGameNode, gs, gus);
 				break;
-			case 20:
+			case 30:
 				// Audio
 				refreshLabel("Audio");
+				bar.getLocalScale().setX(task);
 				game.initAudio(gs);
 				break;
-			case 30:
+			case 40:
 				// Cargamos los autos
 				refreshLabel("Autos");
+				bar.getLocalScale().setX(task);
 				game.createCar(inGameNode, gs);
-				break;
-			case 40:
-				// Cargamos la configuracion del input
-				//refreshLabel("Teclas");
-				//game.initInput(inGameNode);
 				break;
 			case 50:
 				// Cargamos la pista
 				refreshLabel("Arboles");
+				bar.getLocalScale().setX(task);
 				game.createForest(inGameNode);
 				break;
 			case 60:
 				refreshLabel("CheckPoints");
+				bar.getLocalScale().setX(task);
 				game.buildCheckpoint(inGameNode, gs, gus);
 				break;
 			case 70:
 				// Saltamos al proximo estado: InGameState
+				bar.getLocalScale().setX(task);
 				GameStateManager.getInstance().deactivateChildNamed(this.getName());
 				GameStateManager.getInstance().activateChildNamed(StartState.STATE_NAME);
 				break;
