@@ -64,8 +64,7 @@ public abstract class RallyGameState  extends GameState {
 	
 	protected void fade(float timeF){
 		float time = timeF * fio.getSpeed();
-		if ( ! GameUserSettings.getInstance().getHighRes() )
-			time *= 8;
+		time *= 8;
 		ColorRGBA color = fio.getFadeColor();
 		if (fio.getCurrentStage() == 0) {
 			color.a += time;

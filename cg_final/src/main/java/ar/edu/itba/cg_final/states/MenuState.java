@@ -23,6 +23,7 @@ import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.InputHandler;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
+import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.LightCombineMode;
@@ -45,11 +46,13 @@ public class MenuState extends RallyGameState {
 	private RallyMenuItemVoid back;
 	private RallyMenuPanel confirmationPanel;
 	private Text titleText;
+	private Text instText;
 	private ColorRGBA initialColor;
 	private MenuInputHandler keyActions;
 	AudioTrack menuSong;
 	private boolean first;
 	final static String STATE_NAME = "Menu";
+	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
 
 	public MenuState() {
 		this.setName(STATE_NAME);
@@ -58,6 +61,7 @@ public class MenuState extends RallyGameState {
 		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"),
 				GameUserSettings.getInstance());
 		addTitle();
+		addInstructions();
 		stateNode.attachChild(menu.getMenuNode());
 		menuSong = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
@@ -65,6 +69,7 @@ public class MenuState extends RallyGameState {
 		menuSong.setLooping(true);		
 	}
 	
+
 	private void putBackGround(String backgroundImage, GameUserSettings gus) {
 		int width = DisplaySystem.getDisplaySystem().getWidth();
 		int height = DisplaySystem.getDisplaySystem().getHeight();
@@ -114,8 +119,25 @@ public class MenuState extends RallyGameState {
 		
 		initialColor = new ColorRGBA(textColor);
 		menu.getMenuNode().attachChild(titleText);
+		menu.getMenuNode().getLocalTranslation().y += 30;
 	}
 
+	private void addInstructions() {
+		instText = Text.createDefaultTextLabel("Instructions",INSTRUCTIONS_TEXT);
+		instText.setTextColor(ColorRGBA.white);
+		instText.setLightCombineMode(LightCombineMode.Off);
+		instText.setCullHint(CullHint.Never);
+		float width = instText.getWidth();
+		int dispWidth = DisplaySystem.getDisplaySystem().getWidth();
+		if ( width > dispWidth ){
+			instText.setLocalScale(dispWidth/width);
+			width = dispWidth;
+		}
+		instText.setLocalTranslation((dispWidth-width)/2.0f, 10, 0);
+		
+		stateNode.attachChild(instText);
+	}
+	
 	private void buildMenu() {
 		menu = new RallyMenu();
 		menu.addPanel(buildMainPanel());
