@@ -42,7 +42,6 @@ public class MenuState extends RallyGameState {
 	private RallyMenuPanel optionsPanel;
 	private RallyMenuPanel newGamePanel;
 	private RallyMenuPanel highScorePanel;
-	private RallyMenuItemVoid back;
 	private RallyMenuPanel confirmationPanel;
 	private Text titleText;
 	private Text instText;
@@ -78,7 +77,7 @@ public class MenuState extends RallyGameState {
 		menuSong = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						GlobalSettings.getInstance().getProperty("MUSIC.MENU")), false);
-		menuSong.setLooping(true);		
+		menuSong.setLooping(true);
 	}
 	
 
@@ -154,7 +153,8 @@ public class MenuState extends RallyGameState {
 		menu.addPanel(buildMainPanel());
 		menu.addPanel(buildOptionsPanel());
 		menu.addPanel(buildNewGamePanel());
-		menu.addPanel(buildHighScorePanel());
+		highScorePanel = new RallyMenuPanel();
+		menu.addPanel(highScorePanel);
 		menu.addPanel(buildGameInstructionsPanel());
 		menu.addPanel(exitConfirmationPanel());
 	}
@@ -388,9 +388,9 @@ public class MenuState extends RallyGameState {
 	}
 
 	private RallyMenuPanel buildHighScorePanel() {
-		highScorePanel = new RallyMenuPanel();
+		RallyMenuPanel highScorePanel = new RallyMenuPanel();
 		
-		back = new RallyMenuItemVoid("Back");
+		RallyMenuItemVoid back = new RallyMenuItemVoid("Back");
 		back.setEnterAction(new IAction() {
 			public void performAction() {
 				menu.setActivePanel(mainPanel);
@@ -416,6 +416,10 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void activated() {
+		RallyMenuPanel newHighScorePanel = buildHighScorePanel();
+		menu.replacePanel(highScorePanel, newHighScorePanel);
+		highScorePanel = newHighScorePanel;
+		
 		menu.getMenuNode().getLocalTranslation().y = 30;
 		if ( RallyGame.getInstance().isPlaying() ){
 			newGame.setEnabled(false);
