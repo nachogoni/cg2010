@@ -74,7 +74,6 @@ public class InGameState extends RallyGameState {
 
 		createCheckpointTime();
 		
-    	
 	}
 	
 	private void createCheckpointTime() {
@@ -136,8 +135,6 @@ public class InGameState extends RallyGameState {
     	carDisk.setLightCombineMode(LightCombineMode.Off);
     	carDisk.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
     	carDisk.updateRenderState();
-    	stateNode.attachChild(carDisk);
-		
 	}
 
 	private void createSpeedmeter() {
@@ -224,7 +221,6 @@ public class InGameState extends RallyGameState {
     	stateNode.attachChild(map);
     	stateNode.attachChild(mapCheckpoints);
     	stateNode.attachChild(carDisk);
-
 //        // Speedometer
 //		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
 //    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
@@ -270,7 +266,6 @@ public class InGameState extends RallyGameState {
         input.addAction( new ShowMenuAction(), InputHandler.DEVICE_KEYBOARD, 
         		KeyInput.KEY_ESCAPE, InputHandler.AXIS_NONE, false);
 
-        
         
         input.addAction( new ChangeCameraAction(), InputHandler.DEVICE_KEYBOARD, 
         		KeyInput.KEY_C, InputHandler.AXIS_NONE, false);
@@ -325,20 +320,11 @@ public class InGameState extends RallyGameState {
 //				String.format("%03d", (int)playerCar.getLinearSpeed()));
 
 		
-		
-		
-		
 		float carSpeed = playerCar.getLinearSpeed();
 		if (carSpeed > 200)
 			carSpeed = 200;
 		float angle = 112.5f - 225 * carSpeed / 200;
 		needleNode.setLocalRotation(new Quaternion(new float[]{0,0,angle*3.1415f/180}));
-
-		
-		
-		
-		
-		
 		
 		if (setCameraPos == true) {
 			game.getCamara().setLocation(new Vector3f(cameraPos.x+300,cameraPos.y+100,cameraPos.z+300));
