@@ -13,12 +13,15 @@ public class RallyMenuItemVoid extends RallyMenuItem<Void> {
 	public RallyMenuItemVoid(String text, ColorRGBA color, ColorRGBA onSelectedColor) {
 		super(text, color, onSelectedColor);
 	}
-
 	
 	public RallyMenuItemVoid(String text, ColorRGBA color, ColorRGBA onSelectedColor, boolean selected) {
 		super(text, color, onSelectedColor, selected);
 	}
-
+	
+	public RallyMenuItemVoid(String text, ColorRGBA color, ColorRGBA onSelectedColor, boolean selected, boolean enabled, ColorRGBA disabledColor) {
+		super(text, color, onSelectedColor, selected, enabled, disabledColor);
+	}
+	
 	@Override
 	public void changeValue(Void newValue) {
 	}

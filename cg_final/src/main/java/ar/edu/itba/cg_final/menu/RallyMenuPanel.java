@@ -92,7 +92,6 @@ public class RallyMenuPanel {
 	}
 
 	private int getNextActiveOption(int initial, int current, boolean dirUp) {
-		System.out.println("getNextActiveOption : "+initial+" : "+current+" : "+dirUp);
 		if ( outOfBounds(current) )
 			return initial;
 
