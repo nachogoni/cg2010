@@ -1,6 +1,7 @@
 package ar.edu.itba.cg_final.states;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
 import com.jme.input.KeyBindingManager;
@@ -63,6 +64,8 @@ public abstract class RallyGameState  extends GameState {
 	
 	protected void fade(float timeF){
 		float time = timeF * fio.getSpeed();
+		if ( ! GameUserSettings.getInstance().getHighRes() )
+			time *= 8;
 		ColorRGBA color = fio.getFadeColor();
 		if (fio.getCurrentStage() == 0) {
 			color.a += time;
