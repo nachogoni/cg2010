@@ -136,16 +136,15 @@ public class MenuState extends RallyGameState {
 
 	private void addUseInstructions() {
 		instText = Text.createDefaultTextLabel("Instructions",INSTRUCTIONS_TEXT);
-		instText.setTextColor(ColorRGBA.white);
+		instText.setTextColor(ColorRGBA.red);
 		instText.setLightCombineMode(LightCombineMode.Off);
 		instText.setCullHint(CullHint.Never);
 		float width = instText.getWidth();
 		int dispWidth = DisplaySystem.getDisplaySystem().getWidth();
 		if ( width > dispWidth ){
-			instText.setLocalScale(dispWidth/width);
-			width = dispWidth;
+			instText.setLocalScale((dispWidth/width)*0.9f);
 		}
-		instText.setLocalTranslation((dispWidth-width)/2.0f, 10, 0);
+		instText.setLocalTranslation((dispWidth-instText.getWidth())/2.0f, 10, 0);
 		
 		stateNode.attachChild(instText);
 	}

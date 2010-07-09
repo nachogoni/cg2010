@@ -201,7 +201,7 @@ public class RallyGame extends BaseSimpleGame {
 					lap = "Timer: ";
 					initTime = new Date().getTime();
 					actualTime = initTime;
-				} else if (laps == 3) { //TODO == 3 para que sean 3 vueltas!
+				} else if (laps == 1) { //TODO == 3 para que sean 3 vueltas!
 					// Termino el juego
 					lap = "Race: ";
 					checkPointTimer = 300;
