@@ -18,6 +18,7 @@ public class Score implements Serializable, Comparable<Score> {
 		this.score = score;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public Score(Date aDate, long score){
 		super();
 		

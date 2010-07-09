@@ -129,11 +129,11 @@ public class RallyGame extends BaseSimpleGame {
 		
 		KeyBindingManager.getKeyBindingManager().removeAll();
 
-		menuState.setActive(true);
-		preLoadState.setActive(false);
-		startGameState.setActive(false);
-		inGameState.setActive(false);
 		finishedGameState.setActive(false);
+		inGameState.setActive(false);
+		startGameState.setActive(false);
+		preLoadState.setActive(false);
+		menuState.setActive(true);
 		
 		gameStateManager.attachChild(menuState);
 		gameStateManager.attachChild(preLoadState);
