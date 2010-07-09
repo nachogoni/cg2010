@@ -47,7 +47,7 @@ public class Score implements Serializable, Comparable<Score> {
 		int milisecs = (int) score%1000;
 		int min = secs / 60;
 		secs = secs % 60;
-		return min + ":" + secs + "." + milisecs;
+		return String.format("%02d:%02d.%03d", min, secs, milisecs);
 		
 	}
 
