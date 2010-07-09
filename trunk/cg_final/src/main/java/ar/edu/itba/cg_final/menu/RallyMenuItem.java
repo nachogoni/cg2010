@@ -13,7 +13,7 @@ import com.jme.scene.Spatial.LightCombineMode;
 
 public abstract class RallyMenuItem<T>{
 	
-	private static final ColorRGBA deselectedColor = ColorRGBA.darkGray;
+	private ColorRGBA deselectedColor;
 	private ColorRGBA onSelectedColor;
 	private ColorRGBA defaultColor;
 	private String textToDisplay;
@@ -37,6 +37,14 @@ public abstract class RallyMenuItem<T>{
 	}
 	
 	public RallyMenuItem(String text, ColorRGBA color, ColorRGBA onSelectedColor, boolean selected) {
+		this(text,color,onSelectedColor,selected,true);
+	}
+	
+	public RallyMenuItem(String text, ColorRGBA color, ColorRGBA onSelectedColor, boolean selected, boolean enabled) {
+		this(text,color,onSelectedColor,selected,true,ColorRGBA.darkGray);
+	}
+	
+	public RallyMenuItem(String text, ColorRGBA color, ColorRGBA onSelectedColor, boolean selected, boolean enabled, ColorRGBA disabledColor) {
 		enterAction = new ArrayList<IAction>();
 		enterAction.add(NoAction.getInstance());
 		leftAction = new ArrayList<IAction>();
@@ -47,15 +55,18 @@ public abstract class RallyMenuItem<T>{
 		textToDisplay = text;
 		this.defaultColor = color;
 		this.onSelectedColor = onSelectedColor;
+		this.deselectedColor = disabledColor;
 		this.selected = selected;
+		this.enabled = enabled;
 		textSpatial = new Text(textToDisplay,textToDisplay);
 		textSpatial.setCullHint( Spatial.CullHint.Never );
 		textSpatial.setRenderState( Text.getDefaultFontTextureState() );
 		textSpatial.setRenderState( Text.getFontBlend() );
-		textSpatial.setTextColor(defaultColor);
+//		textSpatial.setTextColor(defaultColor);
 		textSpatial.setLocalScale(1.5f);
 		textSpatial.setLightCombineMode(LightCombineMode.Off);
 		textSpatial.updateRenderState();
+		setColorIfSelected();
 	}
 
 	public Text getSpatial(){

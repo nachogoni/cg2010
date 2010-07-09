@@ -53,9 +53,19 @@ public class MenuState extends RallyGameState {
 	private RallyMenuItemVoid resumeGame;
 	private RallyMenuItemBoolean highRes;
 	private RallyMenuItemVoid newGame;
+	private RallyMenuPanel gameInstructionsPanel;
 	final static String STATE_NAME = "Menu";
 	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
-
+	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : UP";
+	private static final String GAME_INSTRUCTIONS_DOWN = "Brake : DOWN";
+	private static final String GAME_INSTRUCTIONS_LEFT = "Turn left : LEFT";
+	private static final String GAME_INSTRUCTIONS_RIGHT = "Turn right : RIGHT";
+	private static final String GAME_INSTRUCTIONS_S = "Return to last checkpoint : S";
+	private static final String GAME_INSTRUCTIONS_C = "Change camera : C";
+	private static final String GAME_INSTRUCTIONS_SCREENSHOT = "Take Screenshot : 0";
+	private static final String GAME_INSTRUCTIONS_ESC = "Go to menu : ESC";
+	private static final ColorRGBA GAME_INSTRUCTIONS_COLOR = ColorRGBA.lightGray; 
+	
 	public MenuState() {
 		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
@@ -63,7 +73,7 @@ public class MenuState extends RallyGameState {
 		putBackGround(GlobalSettings.getInstance().getProperty("SKYBOX.NIGHT.NORTH"),
 				GameUserSettings.getInstance());
 		addTitle();
-		addInstructions();
+		addUseInstructions();
 		stateNode.attachChild(menu.getMenuNode());
 		menuSong = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
@@ -123,7 +133,7 @@ public class MenuState extends RallyGameState {
 		menu.getMenuNode().attachChild(titleText);
 	}
 
-	private void addInstructions() {
+	private void addUseInstructions() {
 		instText = Text.createDefaultTextLabel("Instructions",INSTRUCTIONS_TEXT);
 		instText.setTextColor(ColorRGBA.white);
 		instText.setLightCombineMode(LightCombineMode.Off);
@@ -145,7 +155,37 @@ public class MenuState extends RallyGameState {
 		menu.addPanel(buildOptionsPanel());
 		menu.addPanel(buildNewGamePanel());
 		menu.addPanel(buildHighScorePanel());
+		menu.addPanel(buildGameInstructionsPanel());
 		menu.addPanel(exitConfirmationPanel());
+	}
+
+	private RallyMenuPanel buildGameInstructionsPanel() {
+		gameInstructionsPanel = new RallyMenuPanel();
+
+		RallyMenuItemVoid backInstructions = new RallyMenuItemVoid("Back");
+		backInstructions.setEnterAction(new IAction() {
+			public void performAction() {
+				keyActions.setPanel(mainPanel);
+				menu.setActivePanel(mainPanel);
+			}
+		});
+		gameInstructionsPanel.addItem(backInstructions);
+		
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_ESC);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_SCREENSHOT);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_C);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_S);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_RIGHT);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_LEFT);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_DOWN);
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_UP);
+		
+		gameInstructionsPanel.setActiveOption(backInstructions);
+		return gameInstructionsPanel;
+	}
+	
+	private void addInstructionToPanel(RallyMenuPanel rmp, String text){
+		rmp.addItem(new RallyMenuItemVoid(text,ColorRGBA.black,ColorRGBA.black,false,false,GAME_INSTRUCTIONS_COLOR));
 	}
 
 	private RallyMenuPanel exitConfirmationPanel() {
@@ -180,6 +220,15 @@ public class MenuState extends RallyGameState {
 			}
 		});
 		mainPanel.addItem(exit);
+		
+		RallyMenuItemVoid gameInstructions = new RallyMenuItemVoid("Instructions");
+		gameInstructions.setEnterAction(new IAction() {
+			public void performAction() {
+				keyActions.setPanel(gameInstructionsPanel);
+				menu.setActivePanel(gameInstructionsPanel);
+			}
+		});
+		mainPanel.addItem(gameInstructions);
 		
 		RallyMenuItemVoid highScores = new RallyMenuItemVoid("High Scores");
 		highScores.setEnterAction(new IAction() {
