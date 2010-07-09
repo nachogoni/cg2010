@@ -616,4 +616,8 @@ public class RallyGame extends BaseSimpleGame {
 	public boolean isPlaying(){
 		return playing;
 	}
+
+	public void setGameOver() {
+		this.playing = false;
+	}
 }

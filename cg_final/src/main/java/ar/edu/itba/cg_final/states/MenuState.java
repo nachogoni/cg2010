@@ -121,7 +121,6 @@ public class MenuState extends RallyGameState {
 		
 		initialColor = new ColorRGBA(textColor);
 		menu.getMenuNode().attachChild(titleText);
-		menu.getMenuNode().getLocalTranslation().y += 30;
 	}
 
 	private void addInstructions() {
@@ -368,6 +367,7 @@ public class MenuState extends RallyGameState {
 
 	@Override
 	public void activated() {
+		menu.getMenuNode().getLocalTranslation().y = 30;
 		if ( RallyGame.getInstance().isPlaying() ){
 			newGame.setEnabled(false);
 			highRes.setEnabled(false);
