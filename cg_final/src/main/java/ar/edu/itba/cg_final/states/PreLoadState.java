@@ -31,6 +31,17 @@ public class PreLoadState extends RallyGameState {
 	public PreLoadState() {
 		this.setName(STATE_NAME);
 		stateNode.setName(this.getName());
+
+		// Creamos el texto de informacion
+		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
+		info.setLocalTranslation(width * 0.35f, height * 0.5f, 0);
+		info.setTextColor(new ColorRGBA(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 0.95f));
+		info.setCullHint( Spatial.CullHint.Never );
+		info.setRenderState( Text.getDefaultFontTextureState() );
+		info.setRenderState( Text.getFontBlend() );
+		info.setLightCombineMode(LightCombineMode.Off);
+		stateNode.attachChild(info);
+		
 	}
 
 	private void refreshLabel(String text) {
@@ -59,16 +70,6 @@ public class PreLoadState extends RallyGameState {
 
 		// Borramos todos los nodos que contenga el stateNode del InGameState
 		inGameNode.detachAllChildren();
-
-		// Creamos el texto de informacion
-		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
-		info.setLocalTranslation(width * 0.35f, height * 0.5f, 0);
-		info.setTextColor(new ColorRGBA(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 0.95f));
-		info.setCullHint( Spatial.CullHint.Never );
-		info.setRenderState( Text.getDefaultFontTextureState() );
-		info.setRenderState( Text.getFontBlend() );
-		info.setLightCombineMode(LightCombineMode.Off);
-		this.stateNode.attachChild(info);
 
 		// Tomamos la instancia del RallyGame
 		game = RallyGame.getInstance();
