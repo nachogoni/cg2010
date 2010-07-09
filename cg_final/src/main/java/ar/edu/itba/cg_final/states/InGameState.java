@@ -56,6 +56,8 @@ public class InGameState extends RallyGameState {
 	Quad map;
 	Quad carDisk;
 	Node needleNode;
+	Quad speedometer;
+	Node mapCheckpoints;
 	private Text gameTimeText;
 	Boolean setCameraPos = false;
 	Vector3f cameraPos = new Vector3f();
@@ -66,53 +68,83 @@ public class InGameState extends RallyGameState {
 		stateNode.setName(this.getName());
 		game = RallyGame.getInstance();
 		
-		
-		
-		
+		// Variables en pantalla
+		createTimer();
+	
+		createSpeedmeter();
 
-		
+		createCheckpointTime();
 		
     	
 	}
 	
-	@Override
-	public void activated() {
-		rootNode.attachChild(this.stateNode);
-		rootNode.updateRenderState();
+	private void createCheckpointTime() {
+    	timeCheckPoint = Text.createDefaultTextLabel("CheckPointTime", "");
+    	timeCheckPoint.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
+    	timeCheckPoint.setCullHint( Spatial.CullHint.Never );
+    	timeCheckPoint.setRenderState( Text.getDefaultFontTextureState() );
+    	timeCheckPoint.setRenderState( Text.getFontBlend() );
+    	timeCheckPoint.setLightCombineMode(LightCombineMode.Off);
+    	timeCheckPoint.setLocalScale(1.5f);
+    	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
+    							(int)(height/3 - timeCheckPoint.getHeight()/2), 0);
+	}
 
-		sky = game.getSkybox();
-		playerCar = game.getPlayerCar();		
+	private void createMap() {
+		// Map
+		map = new Quad("map", 99*1.5f, 65*1.5f);
+		map.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		map.setLightCombineMode(LightCombineMode.Off);
+		map.setLocalTranslation(map.getWidth()/2, map.getHeight()/2, 0f);
+		map.updateRenderState();
+		TextureState mapts = DisplaySystem.getDisplaySystem().getRenderer()
+		.createTextureState();
+		try {
+			mapts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/autodromo2.jpeg"),
+					MinificationFilter.NearestNeighborNoMipMaps,
+					MagnificationFilter.NearestNeighbor, 1.0f, true));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		mapts.setEnabled(true);
+		map.setRenderState(mapts);
+		map.updateRenderState();		
 		
-		audio = game.getAudio();
-		audio.playList();
-		audio.playSound(soundsEffects.ENGINE);
-		audio.unpauseAll();
+		mapCheckpoints = new Node();
+    	// CheckPoint Positions
+    	ArrayList<CheckPoint> c = game.getCheckPointList();
+    	for (int i = 0; i < c.size(); i++) {
+    		Quad cp = new Quad("mapCP"+i, 7, 7);
+    		cp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    		if (i == 0) {
+    			cp.setDefaultColor(ColorRGBA.red);
+    		} else {
+    			cp.setDefaultColor(ColorRGBA.orange);
+    		}
+    		cp.setLightCombineMode(LightCombineMode.Off);
+    		cp.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
+    		cp.setLocalTranslation(
+    				(map.getWidth() / 2) * c.get(i).get3DPosition().x / 5000 + map.getCenter().x,
+    				(map.getHeight() / 2) * c.get(i).get3DPosition().z / 5000 + map.getCenter().y, 0f);
+    		cp.updateRenderState();
+    		mapCheckpoints.attachChild(cp);
+    	}
 
+    	// Map car position
+    	carDisk = new Quad("mapCarPos", 5, 5);
+    	carDisk.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    	carDisk.setDefaultColor(ColorRGBA.yellow);
+    	carDisk.setLightCombineMode(LightCombineMode.Off);
+    	carDisk.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
+    	carDisk.updateRenderState();
+    	stateNode.attachChild(carDisk);
+		
+	}
 
-		
-		
-		
-		
-		
-		
-        // Variables en pantalla
-		gameTimeText = Text.createDefaultTextLabel("gameTimeText", "Timer: --:--");
-		gameTimeText.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
-		gameTimeText.setCullHint( Spatial.CullHint.Never );
-		gameTimeText.setRenderState( Text.getDefaultFontTextureState() );
-		gameTimeText.setRenderState( Text.getFontBlend() );
-		gameTimeText.setLightCombineMode(LightCombineMode.Off);
-		gameTimeText.setLocalScale(1.8f);
-		gameTimeText.setLocalTranslation(0, height - gameTimeText.getHeight(), 0);
-    	this.stateNode.attachChild(gameTimeText);
-
- 
-    	
-    	
-    	
+	private void createSpeedmeter() {
     	// Speedometer
     	float scale = 0.5f;
-		Quad speedometer = new Quad("speedometer", 564, 368);
+		speedometer = new Quad("speedometer", 564, 368);
 		speedometer.setDefaultColor(ColorRGBA.white);
 		speedometer.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		speedometer.setLightCombineMode(LightCombineMode.Off);
@@ -140,15 +172,8 @@ public class InGameState extends RallyGameState {
         speedometer.setRenderState(ts);
         speedometer.setRenderState(blendState);
 		speedometer.updateRenderState();
-		stateNode.attachChild(speedometer);
-    	
-
 		
-		
-		
-		
-		
-    	// Speedometer's needle
+	   	// Speedometer's needle
 		Quad needle = new Quad("needle", 2, speedometer.getHeight()*scale/1.8f);
 		needle.setDefaultColor(ColorRGBA.orange);
 		needle.setRenderQueueMode(Renderer.QUEUE_ORTHO);
@@ -160,64 +185,47 @@ public class InGameState extends RallyGameState {
 		needleNode.setLocalTranslation(width-speedometer.getWidth()*scale/2-needle.getWidth()*scale/2, 
 				speedometer.getHeight()*scale/3.2f, 0f);
 		needleNode.setLocalRotation(new Quaternion(new float[]{0,0,112.5f*3.1415f/180}));
-		stateNode.attachChild(needleNode);
+			
+		
+	}
 
+	private void createTimer() {
+		gameTimeText = Text.createDefaultTextLabel("gameTimeText", "Timer: --:--");
+		gameTimeText.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
+		gameTimeText.setCullHint( Spatial.CullHint.Never );
+		gameTimeText.setRenderState( Text.getDefaultFontTextureState() );
+		gameTimeText.setRenderState( Text.getFontBlend() );
+		gameTimeText.setLightCombineMode(LightCombineMode.Off);
+		gameTimeText.setLocalScale(1.8f);
+		gameTimeText.setLocalTranslation(0, height - gameTimeText.getHeight(), 0);	
+	}
+
+	@Override
+	public void activated() {
+		rootNode.attachChild(this.stateNode);
+		rootNode.updateRenderState();
+
+		sky = game.getSkybox();
+		playerCar = game.getPlayerCar();		
 		
-		
-		
-		
-		// Map
-		map = new Quad("map", 99*1.5f, 65*1.5f);
-		map.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-		map.setLightCombineMode(LightCombineMode.Off);
-		map.setLocalTranslation(map.getWidth()/2, map.getHeight()/2, 0f);
-		map.updateRenderState();
-		TextureState mapts = DisplaySystem.getDisplaySystem().getRenderer()
-		.createTextureState();
-		try {
-			mapts.setTexture(TextureManager.loadTexture(ResourceLoader.getURL("texture/autodromo2.jpeg"),
-					MinificationFilter.NearestNeighborNoMipMaps,
-					MagnificationFilter.NearestNeighbor, 1.0f, true));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		mapts.setEnabled(true);
-		map.setRenderState(mapts);
-		stateNode.attachChild(map);
-		
-    	// CheckPoint Positions
-    	ArrayList<CheckPoint> c = game.getCheckPointList();
-    	for (int i = 0; i < c.size(); i++) {
-    		Quad cp = new Quad("mapCP"+i, 7, 7);
-    		cp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-    		if (i == 0) {
-    			cp.setDefaultColor(ColorRGBA.red);
-    		} else {
-    			cp.setDefaultColor(ColorRGBA.orange);
-    		}
-    		cp.setLightCombineMode(LightCombineMode.Off);
-    		cp.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
-    		cp.setLocalTranslation(
-    				(map.getWidth() / 2) * c.get(i).get3DPosition().x / 5000 + map.getCenter().x,
-    				(map.getHeight() / 2) * c.get(i).get3DPosition().z / 5000 + map.getCenter().y, 0f);
-    		cp.updateRenderState();
-    		stateNode.attachChild(cp);
+		audio = game.getAudio();
+		audio.playList();
+		audio.playSound(soundsEffects.ENGINE);
+		audio.unpauseAll();
+
+		//Timer
+    	stateNode.attachChild(gameTimeText);
+    	//Speedmeter
+    	stateNode.attachChild(speedometer);
+    	stateNode.attachChild(needleNode);
+    	//Map
+    	if (map == null) {
+    		createMap();
     	}
-
-    	// Map car position
-    	carDisk = new Quad("mapCarPos", 5, 5);
-    	carDisk.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-    	carDisk.setDefaultColor(ColorRGBA.yellow);
-    	carDisk.setLightCombineMode(LightCombineMode.Off);
-    	carDisk.setLocalTranslation(map.getCenter().x, map.getCenter().y, 0f);
-    	carDisk.updateRenderState();
+    	stateNode.attachChild(map);
+    	stateNode.attachChild(mapCheckpoints);
     	stateNode.attachChild(carDisk);
-    	
-    	
-    	
-    	
-    	
-    	
+
 //        // Speedometer
 //		speed = Text.createDefaultTextLabel("speed", String.format("%03d", 000));
 //    	speed.setTextColor(new ColorRGBA(77.0f/255.0f, 77.0f/255.0f, 1f, 0.95f));
@@ -229,21 +237,10 @@ public class InGameState extends RallyGameState {
 //    	speed.setLocalTranslation((width - (int)(speed.getWidth() * 1.2f)),0, 0);
 //    	this.stateNode.attachChild(speed);
 
-
     	// Checkpoint Time
-    	timeCheckPoint = Text.createDefaultTextLabel("CheckPointTime", "");
-    	timeCheckPoint.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
-    	timeCheckPoint.setCullHint( Spatial.CullHint.Never );
-    	timeCheckPoint.setRenderState( Text.getDefaultFontTextureState() );
-    	timeCheckPoint.setRenderState( Text.getFontBlend() );
-    	timeCheckPoint.setLightCombineMode(LightCombineMode.Off);
-    	timeCheckPoint.setLocalScale(1.5f);
-    	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
-    							(int)(height/3 - timeCheckPoint.getHeight()/2), 0);
-    	this.stateNode.attachChild(timeCheckPoint);
+    	stateNode.attachChild(timeCheckPoint);
 
     	game.setCheckPointText(timeCheckPoint);
-    	
     	
     	RallyGame.getInstance().setInputHandler(inGameActions());
 	}
@@ -284,7 +281,14 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void deactivated() {
-		rootNode.detachChild(this.stateNode);
+		stateNode.detachChild(gameTimeText);
+		stateNode.detachChild(speedometer);
+		stateNode.detachChild(needleNode);
+		stateNode.detachChild(map);
+	   	stateNode.detachChild(mapCheckpoints);
+    	stateNode.detachChild(carDisk);		
+    	stateNode.detachChild(timeCheckPoint);
+		rootNode.detachChild(stateNode);
 		rootNode.updateRenderState();
 		if (audio != null) {
 			audio.pauseAll();
