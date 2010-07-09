@@ -51,7 +51,7 @@ public class InGameState extends RallyGameState {
 	Car playerCar;
 	Audio audio;
 	InputHandler actions;
-	
+	InputHandler backupHanlder;
 	
 	Quad map;
 	Quad carDisk;
@@ -226,9 +226,11 @@ public class InGameState extends RallyGameState {
 		sky = game.getSkybox();
 		playerCar = game.getPlayerCar();		
 		
-		audio = game.getAudio();
-		audio.playList();
-		audio.playSound(soundsEffects.ENGINE);
+		if (audio == null) {
+			audio = game.getAudio();
+			audio.playList();
+			audio.playSound(soundsEffects.ENGINE);
+		}
 		audio.unpauseAll();
 
 		//Timer
@@ -249,7 +251,13 @@ public class InGameState extends RallyGameState {
 
     	game.setCheckPointText(timeCheckPoint);
     	
-    	RallyGame.getInstance().setInputHandler(inGameActions());
+    	if (actions == null) {
+    		actions = inGameActions();
+    	}
+    	backupHanlder = RallyGame.getInstance().getInputHandler();
+    	
+		RallyGame.getInstance().setInputHandler(actions);
+    	
 	}
 	
     public InputHandler inGameActions() {
@@ -287,6 +295,8 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void deactivated() {
+		RallyGame.getInstance().setInputHandler(backupHanlder);
+		
 		stateNode.detachChild(gameTimeText);
 		stateNode.detachChild(speedometer);
 		stateNode.detachChild(needleNode);
@@ -452,9 +462,12 @@ public class InGameState extends RallyGameState {
     private class ShowMenuAction implements InputActionInterface {
 
         public void performAction( final InputActionEvent e ) {
-			RallyGame.getInstance().setPause(true);
-			GameStateManager.getInstance().deactivateAllChildren();
-			GameStateManager.getInstance().activateChildNamed(MenuState.STATE_NAME);
+        	if ( e.getTriggerPressed() ) {
+				RallyGame.getInstance().setPause(true);
+	//			GameStateManager.getInstance().deactivateAllChildren();
+				GameStateManager.getInstance().deactivateChildNamed(InGameState.STATE_NAME);
+				GameStateManager.getInstance().activateChildNamed(MenuState.STATE_NAME);
+        	}
 		}
 
     }	    
