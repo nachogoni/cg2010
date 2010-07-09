@@ -61,6 +61,7 @@ public class FinishedState extends RallyGameState {
 
 		if (diff > max) {
 			RallyGame.getInstance().setPause(false);
+			RallyGame.getInstance().setGameOver();
 			((InGameState)GameStateManager.getInstance().getChild("InGame")).getStateNode().detachAllChildren();
 			GameStateManager.getInstance().activateChildNamed("Menu");
 			GameStateManager.getInstance().deactivateChildNamed(this.getName());
