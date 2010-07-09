@@ -172,7 +172,7 @@ public class RallyGame extends BaseSimpleGame {
 		audio.addSound(gs.getProperty("CAR.CHECKPOINT.SOUND"), soundsEffects.CHECKPOINT);
 		
 		audio.addSound(gs.getProperty("EFFECT.NEUTRAL"), soundsEffects.ENGINE, true);
-		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL);
+		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL, true);
 		
 	}
 	
