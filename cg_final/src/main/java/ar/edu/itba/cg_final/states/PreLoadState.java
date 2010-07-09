@@ -21,7 +21,7 @@ public class PreLoadState extends RallyGameState {
 	private InGameState inGame;
 	private boolean updateable = false;
 	GlobalSettings gs;
-	GameUserSettings us;
+	GameUserSettings gus;
 	
 	public static final String STATE_NAME = "PreLoad";
 
@@ -43,7 +43,7 @@ public class PreLoadState extends RallyGameState {
 	public void activated() {
 
 		gs = GlobalSettings.getInstance();
-		us = GameUserSettings.getInstance();
+		gus = GameUserSettings.getInstance();
 
 		// Hacer desde el principio
 		this.task = 0;
@@ -104,12 +104,12 @@ public class PreLoadState extends RallyGameState {
 			case 10:
 				// Cargamos el skybox
 				refreshLabel("Skybox");
-				game.createSkyBox(inGameNode, gs, us);
+				game.createSkyBox(inGameNode, gs, gus);
 				break;
 			case 15:
 				// Cargamos el terreno
 				refreshLabel("Terreno");
-				game.createRallyTrack(inGameNode, gs, us);
+				game.createRallyTrack(inGameNode, gs, gus);
 				break;
 			case 20:
 				// Audio
@@ -133,7 +133,7 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 60:
 				refreshLabel("CheckPoints");
-				game.buildCheckpoint(inGameNode, gs);
+				game.buildCheckpoint(inGameNode, gs, gus);
 				break;
 			case 70:
 				// Saltamos al proximo estado: InGameState

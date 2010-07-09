@@ -32,10 +32,13 @@
 package ar.edu.itba.cg_final.terrain;
 
 
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -66,9 +69,9 @@ public class ForceFieldFence extends Node {
      * create the fence, passing the name to the parent.
      * @param name the name of the fence
      */
-    public ForceFieldFence(String name, GlobalSettings gs) {
+    public ForceFieldFence(String name, GlobalSettings gs, GameUserSettings gus) {
         super(name);
-        buildFence(gs);
+        buildFence(gs, gus);
     }
     
     /**
@@ -94,7 +97,7 @@ public class ForceFieldFence extends Node {
      * create all the fence geometry.
      *
      */
-    private void buildFence(GlobalSettings gs) {
+    private void buildFence(GlobalSettings gs, GameUserSettings gus) {
         //This cylinder will act as the four main posts at each corner
         Cylinder postGeometry = new Cylinder("post", 10, 10, 0.1f, 1);
         Quaternion q = new Quaternion();
@@ -103,6 +106,8 @@ public class ForceFieldFence extends Node {
         postGeometry.setLocalRotation(q);
         postGeometry.setModelBound(new BoundingBox());
         postGeometry.updateModelBound();
+        MinificationFilter minF;
+        MagnificationFilter maxF;
         
         //We will share the post 4 times (one for each post)
         //It is *not* a good idea to add the original geometry 
@@ -182,11 +187,19 @@ public class ForceFieldFence extends Node {
         
         forceFieldNode.setRenderState(as1);
         
+		
+		if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+        
         //load a texture for the force field elements
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE1")),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE1")), minF, maxF);
         
         t.setWrap(Texture.WrapMode.Repeat);
         t.setTranslation(new Vector3f());
@@ -209,8 +222,7 @@ public class ForceFieldFence extends Node {
         //load a texture for the towers
         TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t2 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource(gs.getProperty("TRACK1.AMBIENT.POST.TEXTURE")),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.POST.TEXTURE")), minF, maxF);
         
         ts2.setTexture(t2);
         
@@ -228,8 +240,7 @@ public class ForceFieldFence extends Node {
         //load a texture for the struts
         TextureState ts3 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t3 = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE2")),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
+                  .getResource(gs.getProperty("TRACK1.AMBIENT.WALLS.TEXTURE2")),minF, maxF);
         
         ts3.setTexture(t3);
         

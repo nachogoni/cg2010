@@ -233,11 +233,11 @@ public class RallyGame extends BaseSimpleGame {
 		return checkPointList;
 	}
     
-    public void buildCheckpoint(Node inGameStateNode, GlobalSettings gs) {
+    public void buildCheckpoint(Node inGameStateNode, GlobalSettings gs, GameUserSettings gus) {
     	TerrainPage terrain = rallyTrack.getTerrain();
     	String last = null;
     	String actual = null;
-    	checkPointList = rallyTrack.createCheckPoints(gs);
+    	checkPointList = rallyTrack.createCheckPoints(gs, gus);
 
     	for (Iterator<CheckPoint> iterator = checkPointList.iterator(); iterator.hasNext();) {
 			CheckPoint checkpoint = (CheckPoint) iterator.next();
@@ -491,9 +491,9 @@ public class RallyGame extends BaseSimpleGame {
 	}
 
 	// Create skybox
-	public void createSkyBox(Node inGameStateNode, GlobalSettings gs, GameUserSettings us) {
-		Skybox skyBox = RallySkyBox.getSkyBox(gs, us.getSkybox(), 
-				DisplaySystem.getDisplaySystem());
+	public void createSkyBox(Node inGameStateNode, GlobalSettings gs, GameUserSettings gus) {
+		Skybox skyBox = RallySkyBox.getSkyBox(gs, gus.getSkybox(), 
+				DisplaySystem.getDisplaySystem(), gus);
 		inGameStateNode.attachChild(skyBox);
 		this.skybox = skyBox; 
 	}

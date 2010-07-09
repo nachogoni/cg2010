@@ -1,10 +1,13 @@
 package ar.edu.itba.cg_final.map;
 
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.terrain.ForceFieldFence;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -21,9 +24,9 @@ public class CheckPoint extends Node {
 	private static final long serialVersionUID = 4783284580069565288L;
 	Node forceFieldNode;
     
-    public CheckPoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs) {
+    public CheckPoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs, GameUserSettings gus) {
         super(name);
-        buildCheckpoint(name, position, rotation, startingGrid, gs);
+        buildCheckpoint(name, position, rotation, startingGrid, gs, gus);
     }
     
     public Vector2f get2DPosition() {
@@ -39,7 +42,7 @@ public class CheckPoint extends Node {
     	forceFieldNode.setLocalTranslation(newPosition);
     }
     
-	private void buildCheckpoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs) {
+	private void buildCheckpoint(String name, Vector2f position, float rotation, boolean startingGrid, GlobalSettings gs, GameUserSettings gus) {
         //Create the actual forcefield 
         //The first box handles the X-axis, the second handles the z-axis.
         //We don't rotate the box as a demonstration on how boxes can be 
@@ -49,6 +52,9 @@ public class CheckPoint extends Node {
         
         forceFieldX.setModelBound(new BoundingBox());
         forceFieldX.updateModelBound();
+
+        MinificationFilter minF;
+        MagnificationFilter maxF;
 
         //We are going to share these boxes as well
         SharedMesh forceFieldX1 = new SharedMesh(name+".forceFieldX1",forceFieldX);
@@ -70,11 +76,18 @@ public class CheckPoint extends Node {
         	texture = gs.getProperty("CHECKPOINT.TEXTURE");
         }
         
+		if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+        
         //load a texture for the force field elements
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t = TextureManager.loadTexture(ForceFieldFence.class.getClassLoader()
-                  .getResource(texture),
-                  Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
+                  .getResource(texture), minF, maxF);
         ts.setTexture(t);
                 
         BlendState blendState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();

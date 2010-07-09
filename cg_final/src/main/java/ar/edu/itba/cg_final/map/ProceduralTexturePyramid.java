@@ -1,11 +1,14 @@
 package ar.edu.itba.cg_final.map;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.textures.MarbleProceduralTexture;
 import ar.edu.itba.cg_final.textures.StoneProceduralTexture;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.image.Texture.MagnificationFilter;
+import com.jme.image.Texture.MinificationFilter;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Pyramid;
 import com.jme.scene.state.TextureState;
@@ -24,12 +27,15 @@ public class ProceduralTexturePyramid extends Node {
 	}
 	
 	
-	public ProceduralTexturePyramid(String name, pyramidType type) {
-		this(type);
+	public ProceduralTexturePyramid(String name, pyramidType type, GameUserSettings gus) {
+		this(type, gus);
 		this.setName(name);
 	}
 	
-	public ProceduralTexturePyramid(pyramidType type) {
+	public ProceduralTexturePyramid(pyramidType type, GameUserSettings gus) {
+
+		MinificationFilter minF;
+		MagnificationFilter maxF;
 		RallyGame rg = RallyGame.getInstance();
     	
         Pyramid pyramid = new Pyramid("pyramid", 20, 20);
@@ -43,6 +49,14 @@ public class ProceduralTexturePyramid extends Node {
         	pt = new StoneProceduralTexture(new MidPointHeightMap(64, 1f));
         }
         pt.createTexture(512);
+        
+		if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
         
         // assign the texture to the terrain
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();

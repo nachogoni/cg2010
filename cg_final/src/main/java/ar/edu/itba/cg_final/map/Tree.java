@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final.map;
 
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.bounding.BoundingBox;
@@ -23,11 +24,11 @@ public class Tree extends Node {
 	
 	private static final long serialVersionUID = 1130692595359578525L;
 	private boolean isBush;
-	public Tree(String name, GlobalSettings gs) {
-		this(name,false, gs);
+	public Tree(String name, GlobalSettings gs, GameUserSettings gus) {
+		this(name,false, gs, gus);
 	}
 	
-	public void buildTree(GlobalSettings gs) {
+	public void buildTree(GlobalSettings gs, GameUserSettings gus) {
 
 		RallyGame rg = RallyGame.getInstance();
 		
@@ -42,14 +43,23 @@ public class Tree extends Node {
         blendState.setTestFunction( BlendState.TestFunction.GreaterThan );
         blendState.setEnabled( true );                
         
+		MinificationFilter minF;
+		MagnificationFilter maxF;
+		
+		if ( gus.getHighRes() ) {
+            minF = MinificationFilter.Trilinear; 
+            maxF = MagnificationFilter.Bilinear;
+        } else {
+            minF = MinificationFilter.NearestNeighborNoMipMaps; 
+            maxF = MagnificationFilter.NearestNeighbor;        	
+        }
+        
         Quad q = new Quad("Quad");
         TextureState ts2 = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         ts2.setEnabled(true);
         Texture t4 = TextureManager.loadTexture(
             RallyGame.class.getClassLoader().getResource(
-            gs.getProperty("TRACK1.TREE.TEXTURE")), 
-            MinificationFilter.Trilinear,
-            MagnificationFilter.Bilinear );
+            gs.getProperty("TRACK1.TREE.TEXTURE")),minF, maxF);
         
         ts2.setTexture(t4);
         
@@ -133,10 +143,10 @@ public class Tree extends Node {
 		
 	}
 	
-    public Tree(String name, boolean arbust, GlobalSettings gs) {
+    public Tree(String name, boolean arbust, GlobalSettings gs, GameUserSettings gus) {
 		this.setName(name);
 		this.isBush = arbust;
-		buildTree(gs);
+		buildTree(gs, gus);
 	}
 
 	public void placeTree(float x, float y, float z) {
