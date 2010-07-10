@@ -415,13 +415,14 @@ public class MenuState extends RallyGameState {
 		menu.replacePanel(highScorePanel, newHighScorePanel);
 		highScorePanel = newHighScorePanel;
 		
-		menu.getMenuNode().getLocalTranslation().y = 30;
 		if ( RallyGame.getInstance().isPlaying() ){
 			newGame.setEnabled(false);
 			highRes.setEnabled(false);
 			resumeGame.setEnabled(true);
+			options.setEnabled(false);
 			mainPanel.setActiveOption(resumeGame);
 		}else{
+			options.setEnabled(true);
 			highRes.setEnabled(true);
 			resumeGame.setEnabled(false);
 			if ( RallyGame.getInstance().isGameOver() ){
