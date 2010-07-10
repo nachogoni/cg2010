@@ -50,12 +50,13 @@ public class Audio {
 		AudioTrack aTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						path), false);
-		aTrack.setVolume(gus.getMusicVolume());
+		aTrack.setVolume(gus.getMusicVolume()*0.01f);
 		queue.addTrack(aTrack);
 	}
 	
 	public void playList() {
-		AudioSystem.getSystem().getMusicQueue().play();
+		if (gus.isMusicOn()) 
+			AudioSystem.getSystem().getMusicQueue().play();
 	}
 	
 	public void cleanup() {
@@ -67,14 +68,15 @@ public class Audio {
 	}
 	
 	public void playSound(soundsEffects sound) {
-		map.get(sound).play();
+		if (gus.isSfxOn())
+			map.get(sound).play();
 	}
 	
 	public void addSound(String property, soundsEffects effect, boolean loop) {
 		AudioTrack audioTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						property), false);
-		audioTrack.setVolume(gus.getSfxVolume());
+		audioTrack.setVolume(gus.getSfxVolume()*0.01f);
 		audioTrack.setLooping(loop);
 		map.put(effect, audioTrack);
 	}
