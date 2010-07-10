@@ -3,6 +3,8 @@ package ar.edu.itba.cg_final.states;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.menu.RallyMenu;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
@@ -30,7 +32,6 @@ import com.jme.scene.shape.Quad;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
-import com.jmex.audio.AudioSystem;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
@@ -55,15 +56,17 @@ public class MenuState extends RallyGameState {
 	private RallyMenuItemVoid options;
 	private RallyMenuItemVoid highScores;
 	final static String STATE_NAME = "Menu";
-	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
-	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : UP";
-	private static final String GAME_INSTRUCTIONS_DOWN = "Brake : DOWN";
-	private static final String GAME_INSTRUCTIONS_LEFT = "Turn left : LEFT";
-	private static final String GAME_INSTRUCTIONS_RIGHT = "Turn right : RIGHT";
-	private static final String GAME_INSTRUCTIONS_S = "Return to last checkpoint : S";
-	private static final String GAME_INSTRUCTIONS_C = "Change camera : C";
-	private static final String GAME_INSTRUCTIONS_SCREENSHOT = "Take Screenshot : 0";
-	private static final String GAME_INSTRUCTIONS_ESC = "Go to menu : ESC";
+	private static final String INSTRUCTIONS_TEXT = "Use %s and %s to move up and down on the menu, %s and %s to change their values. %s to go to submenu";
+	 
+	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : %s";
+	private static final String GAME_INSTRUCTIONS_DOWN = "Brake : %s";
+	private static final String GAME_INSTRUCTIONS_LEFT = "Turn left : %s";
+	private static final String GAME_INSTRUCTIONS_RIGHT = "Turn right : %s";
+	private static final String GAME_INSTRUCTIONS_PAUSE = "Pause : %s";
+	private static final String GAME_INSTRUCTIONS_S = "Return to last checkpoint : %s";
+	private static final String GAME_INSTRUCTIONS_C = "Change camera : %s";
+	private static final String GAME_INSTRUCTIONS_SCREENSHOT = "Take Screenshot : %s";
+	private static final String GAME_INSTRUCTIONS_ESC = "Go to menu : %s";
 	private static final ColorRGBA GAME_INSTRUCTIONS_COLOR = ColorRGBA.lightGray; 
 	
 	public MenuState() {
@@ -76,6 +79,7 @@ public class MenuState extends RallyGameState {
 		addUseInstructions();
 		stateNode.attachChild(menu.getMenuNode());
 	}
+
 	
 
 	private void putBackGround(String backgroundImage, GameUserSettings gus) {
@@ -130,7 +134,13 @@ public class MenuState extends RallyGameState {
 	}
 
 	private void addUseInstructions() {
-		instText = Text.createDefaultTextLabel("Instructions",INSTRUCTIONS_TEXT);
+		String upName = Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("ARROWUP"));
+		String downName = Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("ARROWDOWN"));
+		String leftName = Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("ARROWLEFT"));
+		String rightName = Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("ARROWRIGHT"));
+		String enterName = Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("SELECT"));
+		String text = String.format(INSTRUCTIONS_TEXT, upName, downName, leftName, rightName, enterName);
+		instText = Text.createDefaultTextLabel("Instructions",text);
 		instText.setTextColor(ColorRGBA.red);
 		instText.setLightCombineMode(LightCombineMode.Off);
 		instText.setCullHint(CullHint.Never);
@@ -166,22 +176,23 @@ public class MenuState extends RallyGameState {
 			}
 		});
 		gameInstructionsPanel.addItem(backInstructions);
-		
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_ESC);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_SCREENSHOT);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_C);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_S);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_RIGHT);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_LEFT);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_DOWN);
-		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_UP);
+
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_ESC,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("EXIT")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_SCREENSHOT,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("SCREENSHOT")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_C,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("CAMERA")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_S,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("RETURN")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_PAUSE,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("PAUSE")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_RIGHT,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("STEERRIGHT")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_LEFT,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("STEERLEFT")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_DOWN,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("BACKWARD")));
+		addInstructionToPanel(gameInstructionsPanel,GAME_INSTRUCTIONS_UP,Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("FORWARD")));
 		
 		gameInstructionsPanel.setActiveOption(backInstructions);
 		return gameInstructionsPanel;
 	}
 	
-	private void addInstructionToPanel(RallyMenuPanel rmp, String text){
-		rmp.addItem(new RallyMenuItemVoid(text,ColorRGBA.black,ColorRGBA.black,false,false,GAME_INSTRUCTIONS_COLOR));
+	private void addInstructionToPanel(RallyMenuPanel rmp, String text, String value){
+		rmp.addItem(new RallyMenuItemVoid(String.format(text,value),ColorRGBA.black,ColorRGBA.black,false,false,GAME_INSTRUCTIONS_COLOR));
 	}
 
 	private RallyMenuPanel exitConfirmationPanel() {
