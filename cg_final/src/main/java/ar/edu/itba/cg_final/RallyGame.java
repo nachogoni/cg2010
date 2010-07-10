@@ -419,16 +419,9 @@ public class RallyGame extends BaseSimpleGame {
 		super.render(interpolation);
 
 		Renderer r = display.getRenderer();
-//
-//		/** Draw the rootNode and all its children. */
-//		r.draw(rootNode);
-//
-//		/** Call simpleRender() in any derived classes. */
-//		simpleRender();
-//
-//		/** Draw the stats node to show our stat charts. */
-//		r.draw(statNode);
-//
+
+		/** Draw the rootNode and all its children. */
+		r.draw(rootNode);
 		
 		GameStateManager.getInstance().render(tpf);
 		
