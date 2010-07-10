@@ -26,7 +26,6 @@ import ar.edu.itba.cg_final.vehicles.Car;
 import com.jme.app.BaseSimpleGame;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
 import com.jme.light.DirectionalLight;
 import com.jme.light.PointLight;
 import com.jme.light.SpotLight;
@@ -121,6 +120,7 @@ public class RallyGame extends BaseSimpleGame {
 		RallyGameState startGameState = new StartState();
 		RallyGameState inGameState = new InGameState();
 		RallyGameState finishedGameState = new FinishedState();
+		GlobalSettings gs = GlobalSettings.getInstance();
 
 		GameStateManager.create();
 
@@ -141,7 +141,7 @@ public class RallyGame extends BaseSimpleGame {
 		gameStateManager.attachChild(inGameState);
 		gameStateManager.attachChild(finishedGameState);
 
-		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
+		KeyBindingManager.getKeyBindingManager().set("screenshot", gs.getHexProperty("SCREENSHOT"));
 	}
 
 	public void setPlaying() {

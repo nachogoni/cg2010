@@ -16,7 +16,6 @@ import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
@@ -264,6 +263,7 @@ public class InGameState extends RallyGameState {
     	//InputHandler input;
     	//InputHandler cameraInputHandler;
     	RallyGame rg = RallyGame.getInstance();
+    	GlobalSettings gs = GlobalSettings.getInstance();
     	
     	InputHandler input = new InputHandler();
     	Car car = rg.getPlayerCar();
@@ -274,21 +274,20 @@ public class InGameState extends RallyGameState {
         
         // Attaching the custom input actions (and its respective keys) to the carInput handler.
         input.addAction( new AccelAction( car, 1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_UP, InputHandler.AXIS_NONE, false );
+                InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("FORWARD"), InputHandler.AXIS_NONE, false );
         input.addAction( new AccelAction( car, -1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_DOWN, InputHandler.AXIS_NONE, false );
+                InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("BACKWARD"), InputHandler.AXIS_NONE, false );
         input.addAction( new SteerAction( car, -1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_LEFT, InputHandler.AXIS_NONE, false );
+                InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("STEERLEFT"), InputHandler.AXIS_NONE, false );
         input.addAction( new SteerAction( car, 1 ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_RIGHT, InputHandler.AXIS_NONE, false );
+                InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("STEERRIGHT"), InputHandler.AXIS_NONE, false );
         input.addAction( new ResetAction( car, rg ),
-                InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_S, InputHandler.AXIS_NONE, false );
+                InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("RETURN"), InputHandler.AXIS_NONE, false );
         input.addAction( new ShowMenuAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_ESCAPE, InputHandler.AXIS_NONE, false);
+        		gs.getHexProperty("EXIT"), InputHandler.AXIS_NONE, false);
 
-        
         input.addAction( new ChangeCameraAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_C, InputHandler.AXIS_NONE, false);
+        		gs.getHexProperty("CAMERA"), InputHandler.AXIS_NONE, false);
         
         return input;
     }	

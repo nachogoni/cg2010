@@ -4,9 +4,9 @@ import java.util.List;
 
 import ar.edu.itba.cg_final.menu.RallyMenuItem;
 import ar.edu.itba.cg_final.menu.RallyMenuPanel;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 
@@ -21,17 +21,18 @@ public class MenuInputHandler extends InputHandler {
 	
 	public MenuInputHandler(RallyMenuPanel panel) {
 		this.panel = panel;
+		GlobalSettings gs = GlobalSettings.getInstance();
 		
         this.addAction( new UpAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_UP, InputHandler.AXIS_NONE, false);		
+        		gs.getHexProperty("ARROWUP"), InputHandler.AXIS_NONE, false);		
         this.addAction( new DownAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_DOWN, InputHandler.AXIS_NONE, false);		
+        		gs.getHexProperty("ARROWDOWN"), InputHandler.AXIS_NONE, false);		
         this.addAction( new LeftAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_LEFT, InputHandler.AXIS_NONE, false);		
+        		gs.getHexProperty("ARROWLEFT"), InputHandler.AXIS_NONE, false);		
         this.addAction( new RightAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_RIGHT, InputHandler.AXIS_NONE, false);		
+        		gs.getHexProperty("ARROWRIGHT"), InputHandler.AXIS_NONE, false);		
         this.addAction( new EnterAction(), InputHandler.DEVICE_KEYBOARD, 
-        		KeyInput.KEY_RETURN, InputHandler.AXIS_NONE, false);		
+        		gs.getHexProperty("SELECT"), InputHandler.AXIS_NONE, false);		
 
 	}
 	

@@ -3,9 +3,9 @@ package ar.edu.itba.cg_final.states;
 import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 
 import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
@@ -40,10 +40,11 @@ public class StartState extends RallyGameState {
 	
 	@Override
 	public void activated() {
+		GlobalSettings gs = GlobalSettings.getInstance();
 
 		RallyGame.getInstance().getPlayerCar().isLocked(true);
-		KeyBindingManager.getKeyBindingManager().set("toggle_pause", KeyInput.KEY_P);
-		KeyBindingManager.getKeyBindingManager().set("screenshot", KeyInput.KEY_0);
+		KeyBindingManager.getKeyBindingManager().set("toggle_pause", gs.getHexProperty("PAUSE"));
+		KeyBindingManager.getKeyBindingManager().set("screenshot", gs.getHexProperty("SCREENSHOT"));
 
 		first = true;
 		addFadeController("FadeInOut", rootNode, ((RallyGameState) GameStateManager.getInstance().getChild(PreLoadState.STATE_NAME)).getStateNode(), ((RallyGameState) GameStateManager.getInstance().getChild(InGameState.STATE_NAME)).getStateNode(),
