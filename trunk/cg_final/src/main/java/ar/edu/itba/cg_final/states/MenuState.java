@@ -495,7 +495,6 @@ public class MenuState extends RallyGameState {
 			}
 		}
 
-		AudioSystem.getSystem().update();
 		menu.update();
 		titleText.setTextColor(titleText.getTextColor().multLocal((float) 0.99));
 
