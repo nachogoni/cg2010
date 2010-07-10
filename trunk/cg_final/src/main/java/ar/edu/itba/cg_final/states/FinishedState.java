@@ -2,6 +2,8 @@ package ar.edu.itba.cg_final.states;
 
 import java.util.Date;
 
+import org.lwjgl.input.Keyboard;
+
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.settings.Score;
@@ -28,7 +30,7 @@ public class FinishedState extends RallyGameState {
 	Camera cam;
 	boolean flag = true;
 	private Text instText;
-	private static final String INSTRUCTIONS_TEXT = "Press ESC to go to menu";
+	private static final String INSTRUCTIONS_TEXT = "Press %s to go to menu";
 
 	public static final String STATE_NAME = "FinishedGame";
 
@@ -39,8 +41,10 @@ public class FinishedState extends RallyGameState {
 	}
 
 	private void addInstructions() {
+		String text = String.format(INSTRUCTIONS_TEXT, Keyboard.getKeyName(GlobalSettings.getInstance().getHexProperty("EXIT")));
+		
 		instText = Text.createDefaultTextLabel("Finish Instructions",
-				INSTRUCTIONS_TEXT);
+				text);
 		instText.setTextColor(ColorRGBA.white);
 		instText.setLightCombineMode(LightCombineMode.Off);
 		instText.setCullHint(CullHint.Never);
