@@ -53,6 +53,7 @@ public class MenuState extends RallyGameState {
 	private RallyMenuPanel gameInstructionsPanel;
 	private InputHandler backupHandler;
 	private RallyMenuItemVoid options;
+	private RallyMenuItemVoid highScores;
 	final static String STATE_NAME = "Menu";
 	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
 	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : UP";
@@ -225,7 +226,7 @@ public class MenuState extends RallyGameState {
 		});
 		mainPanel.addItem(gameInstructions);
 		
-		RallyMenuItemVoid highScores = new RallyMenuItemVoid("High Scores");
+		highScores = new RallyMenuItemVoid("High Scores");
 		highScores.setEnterAction(new IAction() {
 			public void performAction() {
 				keyActions.setPanel(highScorePanel);
@@ -324,8 +325,8 @@ public class MenuState extends RallyGameState {
 				GameUserSettings.getInstance().setMusicVolume(musicVol.getValue());
 			}
 		};
-		soundVol.setLeftAction(volMusic);
-		soundVol.setRightAction(volMusic);
+		musicVol.setLeftAction(volMusic);
+		musicVol.setRightAction(volMusic);
 		musicVol.changeValue(GameUserSettings.getInstance().getMusicVolume());
 		optionsPanel.addItem(musicVol);
 		
@@ -422,14 +423,15 @@ public class MenuState extends RallyGameState {
 			options.setEnabled(false);
 			mainPanel.setActiveOption(resumeGame);
 		}else{
-			options.setEnabled(true);
 			highRes.setEnabled(true);
 			resumeGame.setEnabled(false);
 			if ( RallyGame.getInstance().isGameOver() ){
 				newGame.setEnabled(false);
-				mainPanel.setActiveOption(options);
+				options.setEnabled(false);
+				mainPanel.setActiveOption(highScores);
 			}else{
 				newGame.setEnabled(true);
+				options.setEnabled(true);
 				mainPanel.setActiveOption(newGame);
 			}
 		}
