@@ -36,7 +36,7 @@ public class PreLoadState extends RallyGameState {
 		stateNode.setName(this.getName());
 
 		// Creamos el texto de informacion
-		info = Text.createDefaultTextLabel("loaderInfo", "Cargando...");
+		info = Text.createDefaultTextLabel("loaderInfo", "Loading...");
 		info.setLocalTranslation(width * 0.35f, height * 0.5f, 0);
 		info.setTextColor(new ColorRGBA(255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 0.95f));
 		info.setCullHint( Spatial.CullHint.Never );
@@ -56,7 +56,7 @@ public class PreLoadState extends RallyGameState {
 
 	private void refreshLabel(String text) {
 		StringBuffer lastText = info.getText();
-		lastText.replace(0, lastText.length(), "Cargando: " + text + "...");
+		lastText.replace(0, lastText.length(), "Loading: " + text + "...");
 		return;
 	}
 
@@ -109,7 +109,7 @@ public class PreLoadState extends RallyGameState {
 			switch (task) {
 			case 0:
 				// Actualizamos la fisica
-				refreshLabel("Fisica");
+				refreshLabel("Physics");
 				bar.getLocalScale().setX(task);
 				game.tunePhysics(inGameNode);
 				break;
@@ -121,7 +121,7 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 20:
 				// Cargamos el terreno
-				refreshLabel("Terreno");
+				refreshLabel("Terrain");
 				bar.getLocalScale().setX(task);
 				game.createRallyTrack(inGameNode, gs, gus);
 				break;
@@ -133,13 +133,13 @@ public class PreLoadState extends RallyGameState {
 				break;
 			case 40:
 				// Cargamos los autos
-				refreshLabel("Autos");
+				refreshLabel("Car");
 				bar.getLocalScale().setX(task);
 				game.createCar(inGameNode, gs);
 				break;
 			case 50:
 				// Cargamos la pista
-				refreshLabel("Arboles");
+				refreshLabel("Forest");
 				bar.getLocalScale().setX(task);
 				game.createForest(inGameNode);
 				break;
