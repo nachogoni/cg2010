@@ -40,6 +40,10 @@ c\'omo se modifican las distintas opciones de configuraci\'on del mismo y las
 conclusiones.
 \end{abstract}
 
+\pagebreak
+\tableofcontents
+\pagebreak
+
 \section{Introducci\'on}
 
 Haciendo uso del Framework JMonkey, dise\~namos e implementamos un juego de
@@ -313,22 +317,21 @@ Tracer}.  Se implementaron dos texturas procedurales, piedra y marmol.
 Donde en la figura \ref{fig:figure5} y \ref{fig:figure6} se puede observar las
 dos texturas procedurales realizadas, marmol y piedra respectivamente.
 
-Las dos fueron realizadas utilizando Perlin Noise, realizando las sumas
-sucesivas de los ruidos para distintas frecuencias.  Para m\'as detalle,
+Para las mismas, utilizamos Perlin Noise.  Para m\'as detalle,
 remitirse al informe del \textit{Trabajo Pr\'actico N\'umero 2 - Extensi\'on}.
 
 \subsection{Capturas de Pantalla}
 
 Otra de las caracter\'isticas que desarrollamos, fue la posibilidad de obtener
-capturas de pantallas de cualquier momento del juego.  Para realizar dicha
+capturas de pantallas en cualquier momento del juego.  Para realizar dicha
 acci\'on, hay que presionar la tecla $0$ (cero) en cualquier momento del
 mismo.
 Las im\'agenes producidas, son almacenadas en la carpeta $screenshots$
 presente en la ra\'iz del proyecto, y el
 nombre
-con el que se guardan es la fecha en que fueron realizados.
+con el que se guardan es la fecha en que fueron realizadas.
 
-Esta caracter\'istica fue muy utilizada a la hora de realizar este informe.
+Esta caracter\'istica la utilizamos mucho a la hora de realizar este informe.
 
 \subsection{Billboards}
 
@@ -349,7 +352,7 @@ vean con claridad las otras texturas detras de ellas.
  \centering
  \includegraphics[scale=0.4]{./billboard.png}
  % billboard.png: 640x480 pixel, 72dpi, 22.58x16.93 cm, bb=0 0 640 480
- \caption{\'Arboles con Texturas Billboard.}
+ \caption{\'Arboles y arbustos billboard.}
  \label{fig:figure7}
 \end{figure}
 
@@ -378,7 +381,7 @@ A lo largo de la carrera, el jugador puede presionar la tecla $C$ y esto va a
 cambiar la c\'amara desde donde se ve la carrera.  En cada checkpoint hay una
 c\'amara est\'atica que est\'a apuntando al mismo.
 
-En la figura \ref{fig:static} se puede apreciar una c\'amara est\'atica en el
+En la figura \ref{fig:static} observamos una c\'amara est\'atica en el
 segundo checkpoint.
 
 \begin{figure}
@@ -388,6 +391,19 @@ segundo checkpoint.
  \caption{C\'amara est\'atica en el segundo checkpoint}
  \label{fig:static}
 \end{figure}
+
+\subsection{Mapa de Posicionamiento}
+
+Otra caracter\'istica que decidimos implementar, fue el mapa de posicionamiento
+en pantalla.  Durante el juego, est\'a presente un mapa en la parte inferior
+izquierda que nos indica la posici\'on en la que estamos.
+
+En este mapa se pueden diferenciar tres tipos de puntos bien diferenciados. 
+Con amarillo, el auto del jugador, con color rojo, la grilla de partida y con
+color naranja, los distintos checkpoints presentes a trav\'es de la pista.
+
+En la figura \ref{fig:game} observamos, abajo a la izquierda, el mapa de
+posicionamiento en la pista.
 
 \subsection{Veloc\'imetro}
 
@@ -402,21 +418,9 @@ ese valor lineal a un \'angulo entre $-112.5$ y $112.5$ grados, que nos da la
 rotaci\'on de la aguja para un velocimetro que tolera velocidades entre 0 y 160
 kilometros por hora.
 
-En la figura \ref{fig:game} se puede observar, abajo a la derecha, el
+En la figura \ref{fig:game} observamos, abajo a la derecha, el
 veloc\'imetro del auto.
 
-\subsection{Mapa de Posicionamiento}
-
-Otra caracter\'istica que decidimos implementar, fue el mapa de posicionamiento
-en pantalla.  Durante el juego, est\'a presente un mapa en la parte inferior
-izquierda que nos indica la posici\'on en la que estamos.
-
-En este mapa se pueden diferenciar tres tipos de puntos bien diferenciados. 
-Con amarillo, el auto del jugador, con color rojo, la grilla de partida y con
-color naranja, los distintos checkpoints presentes a trav\'es de la pista.
-
-En la figura \ref{fig:game} se puede observar, abajo a la izquierda, el mapa de
-posicionamiento en la pista.
 
 \begin{figure}
  \centering
@@ -446,7 +450,8 @@ flechas hacia arriba para acelerar, hacia abajo para desacelerar y ir hacia
 atras, hacia la izquiera para doblar en esa direcci\'on y hacia la derecha para
 doblar a la derecha.
 
-Durante el juego, es posible pausar el mismo mediante la tecla $ESC$ y sacar
+Durante el juego, es posible pausar el mismo mediante la tecla $P$, ir al
+men\'u preseionando la tecla $ESC$ y sacar
 $screenshots$ con la tecla $0$.
 
 Adem\'as, es posible cambiar la c\'amara con la que se ve el veh\'iculo a otras
@@ -626,9 +631,10 @@ a un juego, las distintas fases de los mismos y adem\'as, logramos adquirir
 cierta experiencia utilizando un framework para el desarrollo de videojuegos en
 Java.
 
-Cabe destacar que debido a que el grupo eligi\'o utilizar JME2 para el
+Cabe destacar que debido a que decidimos utilizar JME2 para el
 desarrollo
-del juego, ante cada problema o situaci\'on que requiri\'o de asistencia,
+del juego, y que ante cada problema o situaci\'on en la que
+requerimos asistencia,
 logramos
 sortear el inconveniente gracias a la extensa documentaci\'on sobre el Framework
 que est\'a disponible en los distintos foros y en la misma documentaci\'on
@@ -640,5 +646,6 @@ desarrollo nos encontramos con varias disyuntivas las que nos llevaron a
 trabajar, discutir y decidir en equipo cual era la mejor soluci\'on para un
 problema dado.  De esta forma, pudimos desarrollar nuestra capacidad
 colaborativa y de trabajo en equipo.
+
 
 \end{document}
