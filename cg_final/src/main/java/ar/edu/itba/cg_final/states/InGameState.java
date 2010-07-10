@@ -243,8 +243,8 @@ public class InGameState extends RallyGameState {
 		if (audio == null) {
 			audio = game.getAudio();
 			audio.playList();
-			audio.playSound(soundsEffects.ENGINE);
 		}
+		audio.playSound(soundsEffects.ENGINE);
 		audio.unpauseAll();
 
 		//Timer
