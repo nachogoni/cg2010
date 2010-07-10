@@ -366,9 +366,9 @@ public class RallyGame extends BaseSimpleGame {
 			statNode.updateGeometricState(tpf, true);
 			initPause=null;
 		} else {
-			if (playing && initPause == null) {
+			if (checkPointTime != -1 && initPause == null) {
 				initPause = new Date();
-			} else if (playing) {
+			} else if (checkPointTime != -1) {
 				pauseTime+= new Date().getTime() - initPause.getTime();
 				initPause = new Date();
 			}
