@@ -19,12 +19,14 @@ public class RallyMenuPanel {
 	}
 	
 	private float maxwidth = 0.0f;
+	private float maxheight = 0.0f;
 	
 	public void addItem(RallyMenuItem<?> rmi){
 		Text itemSpatial = rmi.getSpatial();
 		float width = itemSpatial.getWidth();
 		maxwidth = maxwidth < width ? width : maxwidth;
 		float height = itemSpatial.getHeight();
+		maxheight = maxheight < height ? height : maxheight;
 		itemSpatial.setLocalTranslation(0, items.size() * height, 0);
 		items.add(rmi);
 		activeOption = items.size()-1;
@@ -38,7 +40,7 @@ public class RallyMenuPanel {
 			List<Spatial> children = node.getChildren();
 			if ( children != null && !children.isEmpty() ){
 				for(Spatial c:children)
-					c.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth() - maxwidth)/2, c.getLocalTranslation().getY(), c.getLocalTranslation().getZ());
+					c.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth() - maxwidth)/2, (DisplaySystem.getDisplaySystem().getHeight()-maxheight)/2.0f + c.getLocalTranslation().getY() - maxheight*items.size()/2.0f, c.getLocalTranslation().getZ());
 			}
 			first = false;
 		}

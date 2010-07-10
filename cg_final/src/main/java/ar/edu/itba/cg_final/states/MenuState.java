@@ -123,7 +123,7 @@ public class MenuState extends RallyGameState {
 		titleText.setLightCombineMode(LightCombineMode.Off);
 		titleText.setCullHint(CullHint.Never);
 		float width = titleText.getWidth();
-		titleText.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth()-width)/2.0f, DisplaySystem.getDisplaySystem().getHeight()*3/4,0);
+		titleText.setLocalTranslation((DisplaySystem.getDisplaySystem().getWidth()-width)/2.0f, DisplaySystem.getDisplaySystem().getHeight()*4/5,0);
 		
 		initialColor = new ColorRGBA(textColor);
 		menu.getMenuNode().attachChild(titleText);
