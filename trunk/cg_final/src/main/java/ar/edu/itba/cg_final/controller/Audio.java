@@ -68,7 +68,7 @@ public class Audio {
 	}
 	
 	public void playSound(soundsEffects sound) {
-		if (gus.isSfxOn())
+		if (gus.isSfxOn() && !RallyGame.getInstance().isPaused())
 			map.get(sound).play();
 	}
 	
