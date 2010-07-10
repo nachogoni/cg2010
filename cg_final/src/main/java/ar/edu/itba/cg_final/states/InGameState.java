@@ -228,7 +228,7 @@ public class InGameState extends RallyGameState {
 		gameTimeText.setRenderState( Text.getDefaultFontTextureState() );
 		gameTimeText.setRenderState( Text.getFontBlend() );
 		gameTimeText.setLightCombineMode(LightCombineMode.Off);
-		gameTimeText.setLocalScale(1.8f);
+		gameTimeText.setLocalScale(1.5f);
 		gameTimeText.setLocalTranslation(0, height - gameTimeText.getHeight(), 0);	
 	}
 
