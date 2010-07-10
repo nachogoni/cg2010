@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ar.edu.itba.cg_final.RallyGame;
-
+import ar.edu.itba.cg_final.settings.*;
 import com.jmex.audio.AudioSystem;
 import com.jmex.audio.AudioTrack;
 import com.jmex.audio.MusicTrackQueue;
@@ -14,6 +14,8 @@ import com.jmex.audio.MusicTrackQueue.RepeatType;
 public class Audio {
 
 	private MusicTrackQueue queue;
+	private GameUserSettings gus = GameUserSettings.getInstance();
+
 	
 	public enum soundsEffects {
 		HIT_SOUND, CHECKPOINT, ENGINE, ACEL 
@@ -40,17 +42,17 @@ public class Audio {
 		} 		
 	}
 	
-	public Audio(){
+	public Audio() {
 		queue = AudioSystem.getSystem().getMusicQueue();
 		queue.setCrossfadeinTime(0);
 		queue.setRepeatType(RepeatType.ALL);
 	}
 	
-	public void addSong(String path){
+	public void addSong(String path) {
 		AudioTrack aTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						path), false);
-		
+		aTrack.setVolume(gus.getMusicVolume());
 		queue.addTrack(aTrack);
 	}
 	
@@ -62,7 +64,7 @@ public class Audio {
 		AudioSystem.getSystem().cleanup();
 	}
 	
-	public void update(){
+	public void update() {
 		AudioSystem.getSystem().update();
 	}
 	
@@ -74,9 +76,9 @@ public class Audio {
 		AudioTrack audioTrack = AudioSystem.getSystem().createAudioTrack(
 				RallyGame.class.getClassLoader().getResource(
 						property), false);
+		audioTrack.setVolume(gus.getSfxVolume());
 		audioTrack.setLooping(loop);
 		map.put(effect, audioTrack);
-		
 	}
 	
 	public void addSound(String property, soundsEffects effect) {

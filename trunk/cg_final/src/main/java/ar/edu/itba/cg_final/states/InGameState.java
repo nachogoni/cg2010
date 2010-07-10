@@ -373,8 +373,15 @@ public class InGameState extends RallyGameState {
 	    	long checkPointTime = game.getCheckPointTime();
 	    	String lap = "";
 	    	if (checkPointTime > 0) {
+	    		int lapCount = game.getLapCount();
+	    		String laps = "";
+	    		if (lapCount > 0) {
+	    			laps = String.format(" Lap: %d", lapCount);
+	    		}
 	    		Date checkPointTimeDate = new Date(checkPointTime);
-	    		lap = String.format(" CheckPoint: %02d:%02d",checkPointTimeDate.getMinutes(), checkPointTimeDate.getSeconds());
+	    		lap = String.format(" CheckPoint: %02d:%02d%s",
+	    				checkPointTimeDate.getMinutes(), checkPointTimeDate.getSeconds(),
+	    				laps);
 	    	}
 	    	long raceTime  = new Date().getTime() - initTime + (long)game.getPauseTime();
 	    	Date raceTimeDate = new Date(raceTime);

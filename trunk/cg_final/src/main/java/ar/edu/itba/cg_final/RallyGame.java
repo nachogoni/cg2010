@@ -176,6 +176,9 @@ public class RallyGame extends BaseSimpleGame {
 		audio.addSound(gs.getProperty("EFFECT.ENGINE"), soundsEffects.ACEL, true);
 		
 	}
+	public int getLapCount() {
+		return laps;
+	}
 	
 	public void setCheckPointText(Text text) {
 		timeCheckPoint = text;
