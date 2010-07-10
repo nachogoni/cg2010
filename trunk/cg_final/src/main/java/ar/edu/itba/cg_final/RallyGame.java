@@ -40,7 +40,6 @@ import com.jme.scene.Text;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
-import com.jmex.physics.PhysicsDebugger;
 import com.jmex.physics.PhysicsSpace;
 import com.jmex.terrain.TerrainPage;
 
@@ -57,7 +56,6 @@ public class RallyGame extends BaseSimpleGame {
 	private float checkPointTimer;
 	private GameStateManager gameStateManager;
 	private PhysicsSpace physicsSpace;
-	protected boolean showPhysics;
 	private float physicsSpeed = 1;
 	private ArrayList<CheckPoint> checkPointList;
 	Text label;
@@ -208,7 +206,7 @@ public class RallyGame extends BaseSimpleGame {
 					lap = "Timer: ";
 					initTime = new Date().getTime();
 					actualTime = initTime;
-				} else if (laps == 1) { //TODO == 3 para que sean 3 vueltas!
+				} else if (laps == 3) { //TODO == 3 para que sean 3 vueltas!
 					// Termino el juego
 					lap = "Race: ";
 					checkPointTimer = 300;
@@ -398,15 +396,6 @@ public class RallyGame extends BaseSimpleGame {
 			showScreenShotTimer = 1;
 			StringBuffer timeText = screenShotText.getText();
 			timeText.replace(0, timeText.length(),"Screenshot!!");
-//			try {
-//				aWriter.write("TRACK1.OBSTACLES"+ i +".POS="+car.getPosition().x+","+car.getPosition().z);
-//				aWriter.flush();
-//				i++;
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
 		}
 		
 		GameStateManager.getInstance().update(tpf);
@@ -429,54 +418,30 @@ public class RallyGame extends BaseSimpleGame {
 	protected final void render(float interpolation) {
 		super.render(interpolation);
 
-		preRender();
-
 		Renderer r = display.getRenderer();
-
-		/** Draw the rootNode and all its children. */
-		r.draw(rootNode);
-
-		/** Call simpleRender() in any derived classes. */
-		simpleRender();
-
-		/** Draw the stats node to show our stat charts. */
-		r.draw(statNode);
-
-		doDebug(r);
+//
+//		/** Draw the rootNode and all its children. */
+//		r.draw(rootNode);
+//
+//		/** Call simpleRender() in any derived classes. */
+//		simpleRender();
+//
+//		/** Draw the stats node to show our stat charts. */
+//		r.draw(statNode);
+//
 		
 		GameStateManager.getInstance().render(tpf);
 		
 		if( screenshot ){
 			screenshot = false;
-			System.out.println("Screenshot!!!");
 			new File("screenshots").mkdir();
 			r.takeScreenShot("screenshots/" + new Date().toString());
-		}
-		
-		
-	}
-
-	/**
-     * 
-     */
-	protected void preRender() {
-
-	}
-
-	@Override
-	protected void doDebug(Renderer r) {
-		super.doDebug(r);
-
-		if (showPhysics) {
-			PhysicsDebugger.drawPhysics(getPhysicsSpace(), r);
 		}
 	}
 	
 	public void createForest(Node inGameStateNode) {
 		rallyTrack.initForest(inGameStateNode);
 	}
-	
-
 	
     public void tunePhysics(Node inGameStateNode) {
         getPhysicsSpace().setAutoRestThreshold( 0.2f );
@@ -493,9 +458,6 @@ public class RallyGame extends BaseSimpleGame {
     	
     	final Vector2f pos = gs.get2DVectorProperty("TRACK1.CAR.POSITION");
     	car.setPosition(pos.x, tp.getHeight(pos)-150+20, pos.y);
-//    	car.setRotation(0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0);
-//        car.getLocalRotation().set(new Quaternion(new float[]{0, gs.getFloatProperty("TRACK1.CAR.ROTATION"), 0}));
-    	//TODO: rotarlo...
         inGameStateNode.attachChild( car );
         inGameStateNode.updateGeometricState(0, true);
         
