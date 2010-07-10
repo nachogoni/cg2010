@@ -8,7 +8,6 @@ import ar.edu.itba.cg_final.settings.GameUserSettings;
 import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.utils.ResourceLoader;
 
-import com.jme.image.Texture;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.scene.Skybox;

@@ -3,11 +3,11 @@ package ar.edu.itba.cg_final.states;
 import java.util.Date;
 
 import ar.edu.itba.cg_final.RallyGame;
+import ar.edu.itba.cg_final.settings.GlobalSettings;
 import ar.edu.itba.cg_final.settings.Score;
 import ar.edu.itba.cg_final.settings.Scores;
 
 import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.math.Vector3f;
@@ -69,7 +69,7 @@ public class FinishedState extends RallyGameState {
 
 	public void setActions() {
 		RallyGame rg = RallyGame.getInstance();
-
+		GlobalSettings gs = GlobalSettings.getInstance();
 		InputHandler input = new InputHandler();
 		input.addAction(new InputAction() {
 
@@ -84,7 +84,7 @@ public class FinishedState extends RallyGameState {
 				GameStateManager.getInstance().activateChildNamed(
 						MenuState.STATE_NAME);
 			}
-		}, InputHandler.DEVICE_KEYBOARD, KeyInput.KEY_ESCAPE,
+		}, InputHandler.DEVICE_KEYBOARD, gs.getHexProperty("EXIT"),
 				InputHandler.AXIS_NONE, false);
 		rg.setInputHandler(input);
 	}

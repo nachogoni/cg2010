@@ -3,8 +3,6 @@ package ar.edu.itba.cg_final.states;
 import ar.edu.itba.cg_final.RallyGame;
 import ar.edu.itba.cg_final.states.utils.RallyFadeOutIn;
 
-import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jmex.game.state.GameState;
@@ -21,7 +19,7 @@ public abstract class RallyGameState  extends GameState {
 
 	public RallyGameState() {
 		super();
-//		KeyBindingManager.getKeyBindingManager().add("show menu", KeyInput.KEY_ESCAPE);	
+//		KeyBindingManager.getKeyBindingManager().add("show menu", gs.getHexProperty("EXIT"));	
 	}
 	
 	@Override

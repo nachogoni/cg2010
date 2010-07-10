@@ -61,7 +61,7 @@ public class ProceduralTexturePyramid extends Node {
         // assign the texture to the terrain
         TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         Texture t1 = TextureManager.loadTexture(pt.getImageIcon().getImage(),
-                Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear, true);
+                minF, maxF, true);
         ts.setTexture(t1, 0);
         
         t1.setApply(Texture.ApplyMode.Combine);
