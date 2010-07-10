@@ -335,7 +335,6 @@ public class InGameState extends RallyGameState {
 
 	@Override
 	public void render(float arg0) {
-		//TODO arreglar la condicion de la camara porque anda media chota
 		Camera cam = game.getCamara();
 		TerrainPage terrain = game.getRallyTrack().getTerrain();
         //We don't want the chase camera to go below the world, so always keep 

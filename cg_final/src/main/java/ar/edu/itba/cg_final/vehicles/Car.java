@@ -95,15 +95,6 @@ public class Car extends Node {
         this.attachChild( chassisNode );
     }
 
-    private void loadFancySmoke() {
-        // Smoke node was made with Ren's particle editor
-        Node smoke = Util.loadModel( CarData.SMOKE_MODEL );
-        smoke.setLocalTranslation( CarData.SMOKE_OFFSET );
-        smoke.setLocalScale( 0.02f );
-        Util.applyZBuffer( smoke );
-        chassisNode.attachChild( smoke );
-    }
-
     /**
      * Accelerates the car forward or backwards
      * Does it by accelerating both suspensions (4WD). If you want a front wheel drive, comment out
