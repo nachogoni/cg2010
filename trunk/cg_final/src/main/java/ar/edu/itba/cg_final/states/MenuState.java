@@ -31,7 +31,6 @@ import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.audio.AudioSystem;
-import com.jmex.audio.AudioTrack;
 import com.jmex.game.state.GameStateManager;
 
 public class MenuState extends RallyGameState {
@@ -53,6 +52,7 @@ public class MenuState extends RallyGameState {
 	private RallyMenuItemVoid newGame;
 	private RallyMenuPanel gameInstructionsPanel;
 	private InputHandler backupHandler;
+	private RallyMenuItemVoid options;
 	final static String STATE_NAME = "Menu";
 	private static final String INSTRUCTIONS_TEXT = "Use arrows to move between options. Left and right to change their values. Enter to go to submenu";
 	private static final String GAME_INSTRUCTIONS_UP = "Accelerate : UP";
@@ -234,7 +234,7 @@ public class MenuState extends RallyGameState {
 		});
 		mainPanel.addItem(highScores);
 		
-		RallyMenuItemVoid options = new RallyMenuItemVoid("Options");
+		options = new RallyMenuItemVoid("Options");
 		options.setEnterAction(new IAction() {
 			public void performAction() {
 				keyActions.setPanel(optionsPanel);
@@ -424,9 +424,15 @@ public class MenuState extends RallyGameState {
 		}else{
 			highRes.setEnabled(true);
 			resumeGame.setEnabled(false);
-			newGame.setEnabled(true);
-			mainPanel.setActiveOption(newGame);
+			if ( RallyGame.getInstance().isGameOver() ){
+				newGame.setEnabled(false);
+				mainPanel.setActiveOption(options);
+			}else{
+				newGame.setEnabled(true);
+				mainPanel.setActiveOption(newGame);
+			}
 		}
+
 		menu.setActivePanel(mainPanel);
 		menu.update();
 

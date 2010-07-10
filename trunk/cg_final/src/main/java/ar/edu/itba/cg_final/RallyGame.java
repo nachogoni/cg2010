@@ -324,6 +324,7 @@ public class RallyGame extends BaseSimpleGame {
 	private boolean firstFrame = true;
 	private float showScreenShotTimer;
 	private boolean showScreenShotTime;
+	private boolean gameOver = false;
 
 	/**
 	 * Called every frame to update scene information.
@@ -599,5 +600,10 @@ public class RallyGame extends BaseSimpleGame {
 
 	public void setGameOver() {
 		this.playing = false;
+		this.gameOver = true;
+	}
+	
+	public boolean isGameOver(){
+		return this.gameOver;
 	}
 }
