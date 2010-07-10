@@ -47,7 +47,6 @@ public class MenuState extends RallyGameState {
 	private Text instText;
 	private ColorRGBA initialColor;
 	private MenuInputHandler keyActions;
-	AudioTrack menuSong;
 	private boolean first;
 	private RallyMenuItemVoid resumeGame;
 	private RallyMenuItemBoolean highRes;
@@ -75,10 +74,6 @@ public class MenuState extends RallyGameState {
 		addTitle();
 		addUseInstructions();
 		stateNode.attachChild(menu.getMenuNode());
-		menuSong = AudioSystem.getSystem().createAudioTrack(
-				RallyGame.class.getClassLoader().getResource(
-						GlobalSettings.getInstance().getProperty("MUSIC.MENU")), false);
-		menuSong.setLooping(true);
 	}
 	
 
@@ -435,9 +430,6 @@ public class MenuState extends RallyGameState {
 		menu.setActivePanel(mainPanel);
 		menu.update();
 
-		if (menuSong.isStopped())
-			menuSong.play();
-		
 		if ( RallyGame.getInstance().isPaused() ){
 			first = true;
 			addFadeController("FadeMenuGame", rootNode,
@@ -468,7 +460,6 @@ public class MenuState extends RallyGameState {
 			backupHandler = new InputHandler();
 		RallyGame.getInstance().setInputHandler(backupHandler);
 		
-		menuSong.stop();
 		rootNode.detachChild(this.stateNode);
 		rootNode.updateRenderState();
 	}

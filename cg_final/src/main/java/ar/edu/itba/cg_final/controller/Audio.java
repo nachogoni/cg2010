@@ -24,7 +24,6 @@ public class Audio {
 	private Map<soundsEffects, AudioTrack> map = new HashMap<soundsEffects, AudioTrack>();
     
 	public void pauseAll() {
-		queue.stop();
 		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
 			AudioTrack sound = iterator.next();
 			if (!sound.isStopped()) {
@@ -33,7 +32,6 @@ public class Audio {
 		} 
 	}
 	public void unpauseAll() {
-		queue.play();
 		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
 			AudioTrack sound = iterator.next();
 			if (!sound.isPlaying() && sound.isActive()) {
