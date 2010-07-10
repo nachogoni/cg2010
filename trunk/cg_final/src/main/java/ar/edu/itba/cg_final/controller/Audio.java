@@ -26,8 +26,8 @@ public class Audio {
 	public void pauseAll() {
 		for (Iterator<AudioTrack> iterator = map.values().iterator(); iterator.hasNext();) {
 			AudioTrack sound = iterator.next();
-			if (!sound.isStopped()) {
-				sound.stop();
+			if (sound.isPlaying()) {
+				sound.pause();
 			}
 		} 
 	}
