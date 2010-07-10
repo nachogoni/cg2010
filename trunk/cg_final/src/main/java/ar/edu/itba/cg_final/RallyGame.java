@@ -386,7 +386,9 @@ public class RallyGame extends BaseSimpleGame {
 		if (showScreenShotTime) {
 			showScreenShotTimer-=tpf;
 			if (showScreenShotTimer <= 0) {
-				StringBuffer timeText = screenShotText.getText();
+				StringBuffer timeText = new StringBuffer();
+				if ( screenShotText != null )
+					timeText = screenShotText.getText();
 				timeText.replace(0, timeText.length(),"");
 				showScreenShotTime = false;
 			}
@@ -405,8 +407,10 @@ public class RallyGame extends BaseSimpleGame {
 			screenshot = true;
 			showScreenShotTime = true;
 			showScreenShotTimer = 1;
-			StringBuffer timeText = screenShotText.getText();
-			timeText.replace(0, timeText.length(),"Screenshot!!");
+			if ( screenShotText != null ){
+				StringBuffer timeText = screenShotText.getText();
+				timeText.replace(0, timeText.length(),"Screenshot!!");
+			}
 		}
 		
 		GameStateManager.getInstance().update(tpf);
