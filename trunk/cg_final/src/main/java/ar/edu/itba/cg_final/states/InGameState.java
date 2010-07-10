@@ -383,7 +383,7 @@ public class InGameState extends RallyGameState {
 	    				checkPointTimeDate.getMinutes(), checkPointTimeDate.getSeconds(),
 	    				laps);
 	    	}
-	    	long raceTime  = new Date().getTime() - initTime + (long)game.getPauseTime();
+	    	long raceTime  = new Date().getTime() - initTime - game.getPauseTime();
 	    	Date raceTimeDate = new Date(raceTime);
 	    	StringBuffer varText = gameTimeText.getText();
 	    	varText.replace(0, varText.length(),String.

@@ -63,6 +63,7 @@ public class RallyGame extends BaseSimpleGame {
 	Vector3f lastCheckPoint = new Vector3f();
 	private long checkPointTime = -1;
 	private long actualTime = -1;
+	private Date initPause;
 		
 	private Audio audio;
 	private Skybox skybox;	
@@ -74,7 +75,7 @@ public class RallyGame extends BaseSimpleGame {
 //	private static BufferedWriter aWriter;
 
 	private boolean playing = false;
-	private float pauseTime = 0;
+	private long pauseTime = 0;
 	private String firstCheckPoint = null;
 	private int laps = 0;
 	private long raceTime = 0;
@@ -228,7 +229,7 @@ public class RallyGame extends BaseSimpleGame {
 				timeCheckPoint.setLocalScale(1.5f);
 			}
 			// Creamos el string a mostrar
-			raceTime  = actualTime - initTime + (long)pauseTime;
+			raceTime  = actualTime - initTime - pauseTime;
 			checkPointTime = raceTime;
 			Date date = new Date(raceTime);
 			timeText.replace(0, timeText.length(),String.
@@ -363,8 +364,14 @@ public class RallyGame extends BaseSimpleGame {
 			/** Update controllers/render states/transforms/bounds for rootNode. */
 			rootNode.updateGeometricState(tpf, true);
 			statNode.updateGeometricState(tpf, true);
+			initPause=null;
 		} else {
-			pauseTime+=tpf;
+			if (playing && initPause == null) {
+				initPause = new Date();
+			} else if (playing) {
+				pauseTime+= new Date().getTime() - initPause.getTime();
+				initPause = new Date();
+			}
 		}
 
 		if (showCheckPointTime) {
@@ -582,7 +589,7 @@ public class RallyGame extends BaseSimpleGame {
 		return initTime;
 	}
 
-	public float getPauseTime() {
+	public long getPauseTime() {
 		return pauseTime;
 	}
 
