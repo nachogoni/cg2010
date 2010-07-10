@@ -33,7 +33,7 @@ Mediante el uso de im\'agenes describimos c\'omo fueron dise\~nadas e
 implementadas
 las distintas partes que componen al total de la aplicaci\'on.  Tambi\'en
 presentaremos los inconvenientes que surgieron a lo largo del desarrollo y
-c\'omo decidimos solucionarlos.  Por \'ultimo se explicaremos c\'omo se utiliza
+c\'omo decidimos solucionarlos.  Por \'ultimo explicaremos c\'omo se utiliza
 el
 juego,
 c\'omo se modifican las distintas opciones de configuraci\'on del mismo y las
@@ -45,16 +45,16 @@ conclusiones.
 Haciendo uso del Framework JMonkey, dise\~namos e implementamos un juego de
 rally,
 llamado Rally Uribe 100K.  A continuaci\'on, se describe c\'omo fue realizado el
-mismo, qu\'e caracter\'i­sticas posee y la forma en que se utiliza.
+mismo, qu\'e caracter\'iï¿½sticas posee y la forma en que se utiliza.
 
 Para el dise\~no e implementaci\'on del juego, partimos de la base del ejemplo
 proporcionado por el Framework utilizado, y tomando esa base, se realiz\'o
-el desarrollo de las nuevas caracter\'i­sticas.
+el desarrollo de las nuevas caracter\'iï¿½sticas.
 
 En la secci\'on \ref{el_juego} explicaremos c\'omo es el juego, los distintos
 estados, c\'omo es el sistema de puntaje y los sonidos del mismo.
 
-En la secci\'on \ref{caracteristicas} explicaremos qu\'e caracter\'i­sticas
+En la secci\'on \ref{caracteristicas} explicaremos qu\'e caracter\'iï¿½sticas
 adicionales desarrollamos para el juego, como las texturas procedurales,
 los screenshots, los arbustos billboard, los skybox intercambiables y dem\'as.
 
@@ -64,7 +64,7 @@ las teclas a utilizar por defecto, adem\'as de explicar c\'omo utilizar las
 distintas opciones del men\'u.
 
 En la secci\'on \ref{configuracion} mostraremos las distintas opciones de
-configuraci\'on, as\'i­ como los valores recomendados para la misma.  Tambi\'en
+configuraci\'on, as\'i como los valores recomendados para la misma.  Tambi\'en
 explicaremos c\'omo definir nuevas pistas, para que el usuario del mismo pueda
 crear
 sus propios recorridos y utilizarlos con el juego.
@@ -77,7 +77,7 @@ ense\~nanza obtenida del dise\~no y desarrollo del mismo.
 \section{El Juego}
 \label{el_juego}
 
-En esta secci\'on se explicaremos el juego como tal­.  El objetivo, el
+En esta secci\'on se explicaremos el juego como tal.  El objetivo, el
 modo
 de
 juego, los distintos estados, c\'omo es el sistema de puntajes y los sonidos
@@ -122,7 +122,7 @@ aplicaci\'on, el cual le presenta todas las opciones disponibles.  Una vez que
 el
 usuario selecciona la opci\'on para comenzar a jugar, se realiza la transici\'on
 al
-siguiente estado, el juego en s\'i­.
+siguiente estado, el juego en s\'i.
 
 \begin{figure}
 \begin{minipage}[b]{0.5\linewidth}
@@ -142,10 +142,10 @@ siguiente estado, el juego en s\'i­.
 \end{minipage}
 \end{figure}
 
-En este estado, es cuando el jugador maneja el veh\'i­culo a trav\'es del camino
-propuesto.  El veh\'i­culo en esta ocasi\'on, puede colisionar contra los
+En este estado, es cuando el jugador maneja el veh\'iculo a trav\'es del camino
+propuesto.  El veh\'iculo en esta ocasi\'on, puede colisionar contra los
 distintos
-objetos que componen la escena, como los \'arboles, los l\'i­mites del terreno y
+objetos que componen la escena, como los \'arboles, los l\'imites del terreno y
 las
 pir\'amides presentes en el recorrido.  Una vez finalizado el recorrido, se
 realiza la transici\'on al tercer y \'ultimo estado del juego.
@@ -182,16 +182,16 @@ dos pistas para tener cierto cambio en la m\'usica de ambiente pero sin entrar
 en
 la exageraci\'on de utilizar muchas.
 
-Tambi\'en fueron utilizados dos sonidos para ser utilizados por el veh\'i­culo
+Tambi\'en fueron utilizados dos sonidos para ser utilizados por el veh\'iculo
 para
 denotar situaciones en las que se est\'a acelerando y situaciones en las que no.
 
-Por último, fue utilizado un sonido para los momentos en que el veh\'i­culo
+Por \'ultimo, fue utilizado un sonido para los momentos en que el veh\'iculo
 colisiona contra algun objeto presente en el terreno.
 
-Todos los sonidos propios del veh\'i­culo y su entorno fueron obtenidos de
+Todos los sonidos propios del veh\'iculo y su entorno fueron obtenidos de
 Internet, de p\'aginas de uso libre y gratuito.  Los temas utilizados para la
-m\'usica ambiental, corresponden a la autor\'i­a de Santiago Vazquez, integrante
+m\'usica ambiental, corresponden a la autor\'ia de Santiago Vazquez, integrante
 del
 equipo.
 
@@ -276,10 +276,10 @@ rojo apuntando hacia abajo sobre el primer checkpoint.
 
 
 
-\section{Caracter\'i­sticas Extra}
+\section{Caracter\'isticas Extra}
 \label{caracteristicas}
 
-Dentro de las caracter\'i­sticas opcionales a implementar, nos inclinamos
+Dentro de las caracter\'isticas opcionales a implementar, nos inclinamos
 por las siguientes: texturas procedurales, capturas de pantallas, \'arboles con
 billboards, diferentes skyboxes, c\'amaras est\'aticas, velocimetro y mapa de
 posicionamiento.
@@ -319,7 +319,7 @@ remitirse al informe del \textit{Trabajo Pr\'actico N\'umero 2 - Extensi\'on}.
 
 \subsection{Capturas de Pantalla}
 
-Otra de las caracter\'i­sticas que desarrollamos, fue la posibilidad de obtener
+Otra de las caracter\'isticas que desarrollamos, fue la posibilidad de obtener
 capturas de pantallas de cualquier momento del juego.  Para realizar dicha
 acci\'on, hay que presionar la tecla $0$ (cero) en cualquier momento del
 mismo.
@@ -328,17 +328,17 @@ presente en la ra\'iz del proyecto, y el
 nombre
 con el que se guardan es la fecha en que fueron realizados.
 
-Esta caracter\'i­stica fue muy utilizada a la hora de realizar este informe.
+Esta caracter\'istica fue muy utilizada a la hora de realizar este informe.
 
 \subsection{Billboards}
 
-Otra caracter\'i­stica que implementamos, fue el hecho de contar con \'arboles y
+Otra caracter\'istica que implementamos, fue el hecho de contar con \'arboles y
 arbustos realizados con $billboards$ que nos provey\'o el Framework de JME.
 
 En las im\'agenes presentadas con antelaci\'on y m\'as precisamente en la figura
 \ref{fig:figure7}, puede observarse c\'omo este tipo de \'arboles son utilizados
 a lo largo de todo el recorrido; donde tambi\'en cabe mencionar que el
-veh\'i­culo
+veh\'iculo
 puede colisionar contra este tipo de texturas.
 
 Algo interesante sobre este tipo de texturas es que nos brindan la posibilidad
@@ -434,7 +434,7 @@ destacar que estas instrucciones est\'an basadas en la configuraci\'on default
 del
 juego, ya que cabe la posibilidad de modificar las teclas a utilizar.
 
-\subsection{¿C\'omo se Juega?}
+\subsection{Â¿C\'omo se Juega?}
 Para jugar al juego, solo es necesario conocer las teclas para moverse a traves
 de la pista.  Lo \'unico necesario es saber con qu\'e teclas avanzar,
 retroceder,
@@ -460,17 +460,17 @@ abajo, marcaremos la opci\'on deseada, mientras que con la tecla de enter,
 seleccionaremos la misma.
 
 En las opciones del men\'u que contengan distintas posibilidades de
-configuraci\'on, ya sea el momento del d\'i­a en cual vamos a correr, estado del
+configuraci\'on, ya sea el momento del d\'ia en cual vamos a correr, estado del
 sonido y dem\'as opciones, es necesario utilizar las flechas hacia la derecha e
 izquierda para cambiar la opci\'on.
 \section{Configuraci\'on}
 \label{configuracion}
-El juego, como mencionamos con antelaci\'on, tiene ciertas caracter\'i­sticas
+El juego, como mencionamos con antelaci\'on, tiene ciertas caracter\'isticas
 que
 son configurables.  Desde las teclas, las texturas de los skyboxes, las
-caracter\'i­sticas de las pistas y las pistas en s\'i­ son configurables.
+caracter\'isticas de las pistas y las pistas en s\'i son configurables.
 
-Todas estas caracter\'i­sticas configurables, pueden ser modificadas desde el
+Todas estas caracter\'isticas configurables, pueden ser modificadas desde el
 archivo $global.properties$.
 
 \subsection{Configuraci\'on del Juego}
@@ -547,7 +547,7 @@ TRACK1.TREE3.POS=642, -889
 TRACK1.TREE425.POS=1642, -1889
 \end{verbatim}
 
-Donde se puede observar c\'omo en la primera l\'i­nea, se le indica la cantidad
+Donde se puede observar c\'omo en la primera l\'inea, se le indica la cantidad
 de
 \'arboles presentes en la escena y luego, para cada uno de los \'arboles, una
 posici\'on dada por dos puntos.
@@ -587,10 +587,10 @@ en
 la pista presentada, donde cada uno tiene su posici\'on y su rotaci\'on en
 radiantes.
 
-Otra posibilidad ser\'i­a la de configurar las pir\'amides con texturas
+Otra posibilidad ser\'ia la de configurar las pir\'amides con texturas
 procedurales.  De forma similar que los ejemplos presentados con antelaci\'on,
 un
-ejemplo de una entrada en el archivo de configuraci\'on ser\'i­a:
+ejemplo de una entrada en el archivo de configuraci\'on ser\'ia:
 
 \begin{verbatim}
 TRACK1.PIRAMID.COUNT=2
