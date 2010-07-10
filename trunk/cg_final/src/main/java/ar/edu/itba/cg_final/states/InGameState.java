@@ -60,6 +60,7 @@ public class InGameState extends RallyGameState {
 	private Text gameTimeText;
 	Boolean setCameraPos = false;
 	Vector3f cameraPos = new Vector3f();
+	private Text screenShotText;
 	
 	
 	public InGameState() {
@@ -73,7 +74,7 @@ public class InGameState extends RallyGameState {
 		createSpeedmeter(GlobalSettings.getInstance(), GameUserSettings.getInstance());
 
 		createCheckpointTime();
-		
+		createScreenShotTime();
 	}
 	
 	private void createCheckpointTime() {
@@ -85,7 +86,21 @@ public class InGameState extends RallyGameState {
     	timeCheckPoint.setLightCombineMode(LightCombineMode.Off);
     	timeCheckPoint.setLocalScale(1.5f);
     	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
-    							(int)(height/3 - timeCheckPoint.getHeight()/2), 0);
+    							(int)(2*height/3 - timeCheckPoint.getHeight()/2), 0);
+	}
+
+	private void createScreenShotTime() {
+		screenShotText = Text.createDefaultTextLabel("ScreenShot", "Screenshot!!");
+		screenShotText.setTextColor(new ColorRGBA(124.0f/255.0f, 252.0f/255.0f, 0f, 0.95f));
+		screenShotText.setCullHint( Spatial.CullHint.Never );
+		screenShotText.setRenderState( Text.getDefaultFontTextureState() );
+		screenShotText.setRenderState( Text.getFontBlend() );
+		screenShotText.setLightCombineMode(LightCombineMode.Off);
+		screenShotText.setLocalScale(1.5f);
+		screenShotText.setLocalTranslation((int)(width/2 - screenShotText.getWidth()/2),
+    							(int)(height/3 - screenShotText.getHeight()/2), 0);
+		StringBuffer timeText = screenShotText.getText();
+		timeText.replace(0, timeText.length(),"");
 	}
 
 	private void createMap(GlobalSettings gs, GameUserSettings gus) {
@@ -247,8 +262,11 @@ public class InGameState extends RallyGameState {
 
     	// Checkpoint Time
     	stateNode.attachChild(timeCheckPoint);
-
     	game.setCheckPointText(timeCheckPoint);
+    	
+    	// ScreenShot text
+    	stateNode.attachChild(screenShotText);
+    	game.setScreenShotText(screenShotText);
     	
     	if (actions == null) {
     		actions = inGameActions();
@@ -303,6 +321,7 @@ public class InGameState extends RallyGameState {
 	   	stateNode.detachChild(mapCheckpoints);
     	stateNode.detachChild(carDisk);		
     	stateNode.detachChild(timeCheckPoint);
+    	stateNode.detachChild(screenShotText);
 		rootNode.detachChild(stateNode);
 		rootNode.updateRenderState();
 		if (audio != null) {
@@ -375,7 +394,7 @@ public class InGameState extends RallyGameState {
     			game.passThrough(playerCar.getName(), node.getName());
     			// Actualizamos la posicion del cartel
     	    	timeCheckPoint.setLocalTranslation((int)(width/2 - timeCheckPoint.getWidth()/2),
-						(int)(height/2 - timeCheckPoint.getHeight()/2), 0);
+						(int)(2*height/3 - timeCheckPoint.getHeight()/2), 0);
     		}		    	
 		}
 		if ( game.getRallyTrack().getForest().hasCollision(playerCar, true)) {

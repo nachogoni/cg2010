@@ -80,6 +80,7 @@ public class RallyGame extends BaseSimpleGame {
 	private String firstCheckPoint = null;
 	private int laps = 0;
 	private long raceTime = 0;
+	private Text screenShotText;
 	
 	public long getRaceTime() {
 		return raceTime;
@@ -148,6 +149,8 @@ public class RallyGame extends BaseSimpleGame {
 		playing = true;
 		((RallyGameState)gameStateManager.getChild("InGame")).
 		getStateNode().attachChild(timeCheckPoint);
+		((RallyGameState)gameStateManager.getChild("InGame")).
+		getStateNode().attachChild(screenShotText);
 	}
 	
 	public void setPause(boolean state) {
@@ -178,6 +181,10 @@ public class RallyGame extends BaseSimpleGame {
 	
 	public void setCheckPointText(Text text) {
 		timeCheckPoint = text;
+	}
+	
+	public void setScreenShotText(Text text) {
+		screenShotText = text;
 	}
 	
 	public void passThrough(String player, String checkPoint) {
@@ -314,6 +321,8 @@ public class RallyGame extends BaseSimpleGame {
 	}
 
 	private boolean firstFrame = true;
+	private float showScreenShotTimer;
+	private boolean showScreenShotTime;
 
 	/**
 	 * Called every frame to update scene information.
@@ -365,6 +374,15 @@ public class RallyGame extends BaseSimpleGame {
 			}
 		}
 		
+		if (showScreenShotTime) {
+			showScreenShotTimer-=tpf;
+			if (showScreenShotTimer <= 0) {
+				StringBuffer timeText = screenShotText.getText();
+				timeText.replace(0, timeText.length(),"");
+				showScreenShotTime = false;
+			}
+		}
+		
 		if (firstFrame) {
 			// drawing and calculating the first frame usually takes longer than
 			// the rest
@@ -376,6 +394,10 @@ public class RallyGame extends BaseSimpleGame {
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("screenshot",
 				false)){
 			screenshot = true;
+			showScreenShotTime = true;
+			showScreenShotTimer = 1;
+			StringBuffer timeText = screenShotText.getText();
+			timeText.replace(0, timeText.length(),"Screenshot!!");
 //			try {
 //				aWriter.write("TRACK1.OBSTACLES"+ i +".POS="+car.getPosition().x+","+car.getPosition().z);
 //				aWriter.flush();
