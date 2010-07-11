@@ -1,23 +1,33 @@
-**HowTo para correr el Final desde eclipse
+-- HowTo para ejecutar el proyecto --
+
+* Herramientas necesarias: maven2, subversion, Java JRE, Java API tools.
+(en Ubuntu/Debian: sudo apt-get install maven2 subversion japitools)
 
 * Checkout del proyecto cg_final desde eclipse o desde la consola con:
 
-svn checkout https://cg2010.googlecode.com/svn/trunk/cg_final cg_final
+svn checkout http://cg2010.googlecode.com/svn/trunk/cg_final cg_final
 
 * Desde la consola en el raiz del proyecto correr:
 
 sh lib/mvn-lib-install.sh
 
-* Correr despues la siguiente linea:
+* Luego ejecutar la siguiente linea:
 
-mvn clean install exec:java
+mvn clean install
 
-* Si se quiere usar desde eclipse, correr:
+y asegurandonos que nuestro repositorio de Maven2 este en (~/.m2/repository/)
+ejecutar el siguiente script:
+
+sh run.sh
+
+En el caso que el repositorio este en otro path, cambiar M2_REPO el archivo run.sh
+
+** Si se quiere usar desde eclipse, correr:
 
 mvn clean install eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true
 
-* Si se quiere correr desde eclipse, ir a Run->External Tools->External Tools Configuration... y crear una nueva configuracion
-* En location path, poner: 
+* Luego en eclipse, ir a Run->External Tools->External Tools Configuration... y
+crear una nueva configuracion. En location path, poner: 
 
 /usr/bin/mvn (o donde este el ejecutable de maven)
 
@@ -34,6 +44,8 @@ exec:java
 ** Otra forma es creando un nuevo Run configuration y en los argumentos de la VM poner:
 
 -Djava.library.path=${workspace_loc:/cg_final}/lib/lwjgl/native/linux:${workspace_loc:/cg_final}/lib/ode
+
+y ejecutar la configuracion.
 
 ------------------------------------------------------------------
 
