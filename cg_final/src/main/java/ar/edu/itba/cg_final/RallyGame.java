@@ -2,6 +2,7 @@ package ar.edu.itba.cg_final;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -475,6 +476,11 @@ public class RallyGame extends BaseSimpleGame {
     	
     	this.rallyTrack = rt;
     	inGameStateNode.attachChild(rt);
+    	
+    	// Camera far point
+    	if (gus.getHighRes()) {
+    		this.cam.setFrustumFar(2000);
+    	}
     }
     
     // Needed to apply restrictions on camera so it wont go below the terrain 

@@ -16,13 +16,14 @@
 \rhead[Grupo N\'umero 2]{Julio 2010}
 
 %opening
-\title{Trabajo Pr\'actico Final}
+\title{Trabajo Pr\'actico Final\\Rally Uribe 100K\\}
 \author{Guillermo Campelo\\Juan Ignacio Go\~ni\\Juan
 Tenaillon\\Santiago Vazquez}
 
 \begin{document}
 
 \maketitle
+
 
 \begin{abstract}
 El siguiente informe describimos como dise\~namos e implementamos el
@@ -405,6 +406,21 @@ color naranja, los distintos checkpoints presentes a trav\'es de la pista.
 En la figura \ref{fig:game} observamos, abajo a la izquierda, el mapa de
 posicionamiento en la pista.
 
+\subsection{Calidad de los gr\'aficos}
+
+Otra caracter\'istica que implementamos como opcional fue la posibilidad de
+determinar la calidad de las im\'agenes que se presentaban en el juego
+como podemos apreciar en las figuras \ref{fig:figure1} y \ref{fig:figure2}.
+En el menu de opciones podemos elegir si queremos jugar en alta o baja
+calidad.
+
+Con este par\'ametro determinamos la cantidad de \'arboles y arbustos que
+agregamos a la pista, la cantidad de obst\'aculos, el campo visual de la
+c\'amara y uno de los factores m\'as importantes, la calidad de las texturas.
+
+Esta \'ultima caracter\'istica fue vital para poder ejecutar el juego en
+computadoras cuyas placas de video no eran de gama media o alta.
+
 \subsection{Veloc\'imetro}
 
 El \'ultimo opcional que decidimos implementar, fue el velocimetro con una
@@ -416,7 +432,7 @@ dependiendo de la velocidad actual de veh\'iculo.
 Dependiendo de la velocidad lineal del veh\'iculo, hacemos una traducci\'on de
 ese valor lineal a un \'angulo entre $-112.5$ y $112.5$ grados, que nos da la
 rotaci\'on de la aguja para un velocimetro que tolera velocidades entre 0 y 160
-kilometros por hora.
+millas por hora.
 
 En la figura \ref{fig:game} observamos, abajo a la derecha, el
 veloc\'imetro del auto.
@@ -497,20 +513,20 @@ defecto, pero modificando los valores en el archivo $global.properties$ es
 posible modificarlas.
 
 \begin{verbatim}
+SCREENSHOT=0B
+PAUSE=19
+CAMERA=2E
+EXIT=01
+RETURN=1F
 FORWARD=C8
 BACKWARD=D0
 STEERLEFT=CB
 STEERRIGHT=CD
-HORN=23
-AXIS=2F
-SCREENSHOT=32
-PAUSE=19
 ARROWUP=C8
 ARROWDOWN=D0
 ARROWLEFT=CB
 ARROWRIGHT=CD
 SELECT=1C
-BACK=0E
 \end{verbatim}
 
 Los valores que tiene cada opci\'on, son un n\'umero hexadecimal que est\'a
