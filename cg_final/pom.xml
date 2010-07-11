@@ -8,7 +8,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>cg_final</name>
        <properties>
-          <main.class>ar.edu.itba.cg_final.Rally</main.class>
+          <main.class>ar.edu.itba.cg_final.RallyGame</main.class>
           <lwjgl.natives>${basedir}/lib/lwjgl/native</lwjgl.natives>
           <lwjgl.version>2.1</lwjgl.version>
       </properties>
